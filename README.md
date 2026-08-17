@@ -13,11 +13,15 @@ cuentas y los vídeos no salen del dispositivo.
    **Pages**.
 3. En *Build and deployment* → *Source*, elige **Deploy from a branch**.
 4. En *Branch*, elige `main` y la carpeta `/ (root)`. Pulsa **Save**.
-5. Espera un par de minutos. Arriba aparecerá la dirección, con esta forma:
-   `https://TU-USUARIO.github.io/NOMBRE-DEL-REPO/`
+5. Espera un par de minutos. La dirección será:
+
+   **https://jaquintano.github.io/Teseo/**
 
 Esa dirección es la que abres en el móvil. Es HTTPS, que es lo que hace falta
 para que más adelante funcione la instalación como aplicación.
+
+> Ojo con la mayúscula de *Teseo*: en la dirección de GitHub Pages las
+> mayúsculas y minúsculas sí cuentan.
 
 > Todas las rutas del proyecto son relativas (`./js/app.js`). Es
 > imprescindible: GitHub Pages sirve el sitio dentro de una subcarpeta con el
