@@ -17,9 +17,9 @@
 
 body {
   margin: 0;
-  /* Respeta la muesca y la barra inferior del iPhone. */
+  /* Respeta la muesca y la barra inferior del teléfono. */
   padding: 1rem max(1rem, env(safe-area-inset-right))
-           max(1rem, env(safe-area-inset-bottom))
+           max(2rem, env(safe-area-inset-bottom))
            max(1rem, env(safe-area-inset-left));
   background: var(--fondo);
   color: var(--texto);
@@ -28,34 +28,59 @@ body {
   line-height: 1.4;
 }
 
-header { margin-bottom: 1.5rem; }
+header { margin-bottom: 1.25rem; }
 
 h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.75rem;
   letter-spacing: 0.02em;
 }
 
-.subtitulo {
-  margin: 0.25rem 0 0;
+.version {
   color: var(--texto-suave);
-  font-size: 0.95rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  vertical-align: middle;
 }
 
-h2 {
-  margin: 0 0 0.75rem;
-  font-size: 1.05rem;
+/* --- Cabecera de cada pantalla ---------------------------------------- */
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.titulo-pantalla {
+  flex: 1;
+  margin: 0;
+  font-size: 1.3rem;
+  overflow-wrap: anywhere;
+}
+
+.subtitulo-seccion {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 0.95rem;
   color: var(--texto-suave);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
-section {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: var(--fondo-caja);
+.boton-volver,
+.boton-menu {
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  color: var(--acento);
   border: 1px solid var(--borde);
   border-radius: var(--radio);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  white-space: nowrap;
 }
 
 .ayuda {
@@ -64,15 +89,14 @@ section {
   font-size: 0.9rem;
 }
 
-/* Aparta un elemento de la vista sin quitarlo de la página. Se usa con el
-   input de fichero: sigue existiendo y siendo pulsable, pero no se ve. */
-.oculto-visualmente {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+.aviso {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.8rem;
+  background: rgba(192, 57, 43, 0.15);
+  border: 1px solid var(--peligro);
+  border-radius: var(--radio);
+  color: #ff9a8b;
+  font-size: 0.9rem;
 }
 
 /* --- Botones ---------------------------------------------------------- */
@@ -99,11 +123,6 @@ section {
 
 .boton:active { background: #37414f; }
 
-.boton:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
 .boton-principal {
   background: var(--acento);
   border-color: var(--acento);
@@ -118,17 +137,155 @@ section {
   color: #ff8a7a;
 }
 
-/* Los cuatro saltos de tiempo, en una fila de cuatro. */
-.rejilla-saltos {
+.desactivado {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* Aparta un elemento de la vista sin quitarlo de la página. Se usa con los
+   input de fichero: siguen existiendo y siendo pulsables, pero no se ven. */
+.oculto-visualmente {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- Campos de formulario --------------------------------------------- */
+
+.bloque-campo { margin-bottom: 1.25rem; }
+
+.etiqueta-campo {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.entrada {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  margin-bottom: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--fondo-caja);
+  color: var(--texto);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  font-family: inherit;
+  /* 17px o más: por debajo de 16px el navegador hace zoom al escribir. */
+  font-size: 1.05rem;
+}
+
+.entrada:focus {
+  outline: 2px solid var(--acento);
+  outline-offset: 1px;
+}
+
+textarea.entrada {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* --- Grupos de opciones ----------------------------------------------- */
+
+.grupo-opciones {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 0.5rem;
 }
 
-.rejilla-saltos .boton {
+.grupo-opciones.dos-columnas { grid-template-columns: repeat(2, 1fr); }
+.grupo-opciones.cinco-columnas { grid-template-columns: repeat(5, 1fr); }
+.grupo-opciones.compacto { grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); }
+
+.boton-opcion {
   margin-bottom: 0;
-  padding: 0.75rem 0.25rem;
-  font-size: 1rem;
+  padding: 0.75rem 0.5rem;
+  font-size: 0.95rem;
+}
+
+.boton-opcion.elegido {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #0b1220;
+}
+
+/* --- Listas ----------------------------------------------------------- */
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.ficha-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+  min-height: 64px;
+  padding: 0.75rem 1rem;
+  background: var(--fondo-caja);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  color: var(--texto);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.ficha-lista:active { background: #232b36; }
+
+.ficha-titulo {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.ficha-detalle {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+/* Ficha con un botón de borrar a la derecha. */
+.ficha-compuesta {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0;
+}
+
+.ficha-principal {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-height: 64px;
+  padding: 0.75rem 0 0.75rem 1rem;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.boton-icono {
+  width: 56px;
+  min-height: 64px;
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--borde);
+  color: #ff8a7a;
+  font-size: 1.2rem;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 /* --- Reproductor ------------------------------------------------------ */
@@ -162,7 +319,29 @@ video::-webkit-media-controls-panel {
   text-align: center;
 }
 
-/* --- Fichas de datos -------------------------------------------------- */
+.rejilla-saltos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.rejilla-saltos .boton {
+  margin-bottom: 0;
+  padding: 0.75rem 0.25rem;
+  font-size: 1rem;
+}
+
+.progreso {
+  margin: 0 0 1rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: center;
+}
+
+.progreso:empty { display: none; }
+
+/* --- Fichas de datos y registro --------------------------------------- */
 
 .ficha {
   display: grid;
@@ -179,22 +358,8 @@ video::-webkit-media-controls-panel {
   overflow-wrap: anywhere;
 }
 
-.ficha:empty { display: none; }
-
-.progreso {
-  margin: 0 0 1rem;
-  font-variant-numeric: tabular-nums;
-  font-size: 1.05rem;
-  font-weight: 700;
-  text-align: center;
-}
-
-.progreso:empty { display: none; }
-
-/* --- Registro --------------------------------------------------------- */
-
 .registro {
-  max-height: 40vh;
+  max-height: 45vh;
   margin: 0 0 0.75rem;
   padding: 0.75rem;
   overflow: auto;
@@ -207,5 +372,3 @@ video::-webkit-media-controls-panel {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-
-.registro .error { color: #ff9a8b; }

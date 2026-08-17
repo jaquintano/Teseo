@@ -12,8 +12,8 @@
 // JavaScript. Son unas pocas decenas de kilobytes.
 
 // Al cambiar este número, el navegador tira la copia vieja y guarda la nueva.
-// Hay que subirlo en cada despliegue.
-const VERSION = 'teseo-v4';
+// Hay que subirlo en cada despliegue, y el mismo en js/app.js.
+const VERSION = 'teseo-v5';
 
 // Los ficheros que forman la aplicación.
 const FICHEROS = [
@@ -22,9 +22,17 @@ const FICHEROS = [
   './manifest.webmanifest',
   './css/estilos.css',
   './js/app.js',
+  './js/constantes.js',
+  './js/db.js',
   './js/registro.js',
+  './js/ui.js',
   './js/video.js',
-  './js/prueba-almacenamiento.js',
+  './js/pantallas/asaltos.js',
+  './js/pantallas/etiquetado.js',
+  './js/pantallas/ficha-tirador.js',
+  './js/pantallas/menu.js',
+  './js/pantallas/perfil.js',
+  './js/pantallas/rivales.js',
   './iconos/icon-192.png',
   './iconos/icon-512.png',
   './iconos/apple-touch-icon.png',

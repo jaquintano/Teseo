@@ -1,59 +1,82 @@
 // Punto de entrada de Teseo.
 //
-// En la fase 2 arranca el reproductor, la prueba de almacenamiento y el
-// service worker que hace la aplicación instalable. Más adelante, este fichero
-// se encargará también de la navegación entre pantallas (perfil, rivales,
-// asaltos, etiquetado, estadísticas).
+// Da de alta las pantallas, arranca el service worker y decide qué se ve al
+// abrir la aplicación: el formulario de perfil si es la primera vez, y la
+// lista de asaltos a partir de entonces.
 
 import { registrar, capturarErroresGlobales } from './registro.js';
-import { iniciarVideo } from './video.js';
-import { iniciarPruebaAlmacenamiento } from './prueba-almacenamiento.js';
+import { registrarPantalla, ir } from './ui.js';
+import { obtenerPerfilPropio, pedirPersistencia } from './db.js';
 
-// Sube este número en cada despliegue, y el mismo en sw.js. Se muestra en
-// pantalla para poder comprobar de un vistazo qué versión tiene el móvil,
-// que con las copias guardadas no siempre es evidente.
-const VERSION = 'v4';
+import { pantallaPerfil } from './pantallas/perfil.js';
+import { pantallaRivales, pantallaRival } from './pantallas/rivales.js';
+import { pantallaInicio, pantallaAsaltoNuevo, pantallaAsalto } from './pantallas/asaltos.js';
+import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js';
+import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
+
+// Sube este número en cada despliegue, y el mismo en sw.js.
+const VERSION = 'v5';
 
 capturarErroresGlobales();
 
-document.getElementById('version').textContent = `Versión ${VERSION}`;
+// --- Alta de pantallas ------------------------------------------------
+// Todas menos la de etiquetado sueltan el vídeo que hubiera cargado, para
+// no dejar cientos de megas ocupando memoria al navegar.
+const conLimpieza = (dibujar) => (contenedor, datos) => {
+  soltarReproductor();
+  return dibujar(contenedor, datos);
+};
 
-registrar(`Teseo ${VERSION} iniciado. Navegador: ${navigator.userAgent}`);
-registrar(`Pantalla: ${window.innerWidth} × ${window.innerHeight} px, ` +
-          `densidad ${window.devicePixelRatio}.`);
-registrar(window.matchMedia('(display-mode: standalone)').matches
-  ? 'Ejecutándose como aplicación instalada.'
-  : 'Ejecutándose dentro del navegador.');
+registrarPantalla('perfil', conLimpieza(pantallaPerfil));
+registrarPantalla('inicio', conLimpieza(pantallaInicio));
+registrarPantalla('menu', conLimpieza(pantallaMenu));
+registrarPantalla('diagnostico', conLimpieza(pantallaDiagnostico));
+registrarPantalla('rivales', conLimpieza(pantallaRivales));
+registrarPantalla('rival', conLimpieza(pantallaRival));
+registrarPantalla('asalto-nuevo', conLimpieza(pantallaAsaltoNuevo));
+registrarPantalla('asalto', conLimpieza(pantallaAsalto));
+registrarPantalla('etiquetado', pantallaEtiquetado);
 
-iniciarVideo();
-iniciarPruebaAlmacenamiento();
+// --- Arranque ---------------------------------------------------------
+
+async function arrancar() {
+  document.getElementById('version').textContent = VERSION;
+
+  registrar(`Teseo ${VERSION} iniciado. Navegador: ${navigator.userAgent}`);
+  registrar(window.matchMedia('(display-mode: standalone)').matches
+    ? 'Ejecutándose como aplicación instalada.'
+    : 'Ejecutándose dentro del navegador.');
+
+  // Pedimos que el navegador no borre los vídeos si le falta espacio. Lo
+  // concede sin preguntar cuando la aplicación está instalada.
+  const protegido = await pedirPersistencia();
+  registrar(`Datos protegidos frente a borrado automático: ${protegido}.`);
+
+  const perfil = await obtenerPerfilPropio();
+  await ir(perfil ? 'inicio' : 'perfil');
+}
+
+arrancar().catch((error) => {
+  registrar(`No se pudo arrancar: ${error.message}`, 'error');
+  document.getElementById('pantalla').textContent =
+    `No se pudo arrancar Teseo: ${error.message}`;
+});
 
 // --- Service worker ---------------------------------------------------
-// Es lo que permite instalar la aplicación y que funcione sin cobertura.
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js')
-    .then((registro) => {
-      registrar(`Service worker registrado (ámbito: ${registro.scope}).`);
-    })
-    .catch((error) => {
-      registrar(`No se pudo registrar el service worker: ${error.message}`, 'error');
-    });
-} else {
-  registrar('Este navegador no soporta service workers: no se podrá instalar.', 'error');
+    .then((registro) => registrar(`Service worker registrado (ámbito: ${registro.scope}).`))
+    .catch((error) => registrar(`No se pudo registrar el service worker: ${error.message}`, 'error'));
 }
 
 // --- Botón de instalar ------------------------------------------------
-// Android avisa con este evento cuando considera que la aplicación se puede
-// instalar. Guardamos el aviso y lo usamos cuando el usuario pulse el botón.
 let avisoDeInstalacion = null;
 const btnInstalar = document.getElementById('btn-instalar');
 
 window.addEventListener('beforeinstallprompt', (evento) => {
-  // Sin esto, Chrome enseña su propia barrita y no nos deja elegir el momento.
   evento.preventDefault();
   avisoDeInstalacion = evento;
   btnInstalar.hidden = false;
-  registrar('El navegador ofrece instalar la aplicación.');
 });
 
 btnInstalar.addEventListener('click', async () => {
@@ -68,22 +91,4 @@ btnInstalar.addEventListener('click', async () => {
 window.addEventListener('appinstalled', () => {
   registrar('Teseo instalado en la pantalla de inicio.');
   btnInstalar.hidden = true;
-});
-
-// --- Registro ---------------------------------------------------------
-document.getElementById('btn-copiar-registro').addEventListener('click', async () => {
-  const texto = document.getElementById('registro').textContent;
-  try {
-    await navigator.clipboard.writeText(texto);
-    registrar('Registro copiado al portapapeles.');
-  } catch {
-    // Algunos navegadores bloquean el portapapeles. Plan B: seleccionarlo para
-    // que el usuario copie a mano.
-    const seleccion = window.getSelection();
-    const rango = document.createRange();
-    rango.selectNodeContents(document.getElementById('registro'));
-    seleccion.removeAllRanges();
-    seleccion.addRange(rango);
-    registrar('No he podido copiar solo. El texto queda seleccionado: cópialo a mano.', 'error');
-  }
 });

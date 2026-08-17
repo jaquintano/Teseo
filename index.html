@@ -18,106 +18,17 @@
 <body>
 
   <header>
-    <h1>Teseo</h1>
-    <p class="subtitulo">Prueba 1 · abrir vídeo y medir almacenamiento</p>
-    <p class="subtitulo" id="version"></p>
+    <h1>Teseo <span class="version" id="version"></span></h1>
     <button class="boton boton-principal" type="button" id="btn-instalar" hidden>
       Instalar en la pantalla de inicio
     </button>
   </header>
 
-  <!-- ---------------------------------------------------------------
-       1. Elegir el vídeo de la galería
-       --------------------------------------------------------------- -->
-  <section>
-    <h2>1 · Elegir vídeo</h2>
-    <!-- El input real se aparta de la vista y se pulsa a través de la
-         etiqueta, que sí podemos hacer grande. accept="video/*" abre la
-         galería. NO ponemos capture: eso forzaría a grabar en ese momento.
-         Lo escondemos con .oculto-visualmente y no con el atributo hidden:
-         Safari de iPhone se atraganta con los inputs de fichero en
-         display:none. -->
-    <input type="file" id="selector-video" accept="video/*" class="oculto-visualmente">
-    <label class="boton boton-principal" for="selector-video">
-      Abrir vídeo de la galería
-    </label>
-
-    <p class="ayuda">
-      El vídeo tiene que estar descargado en el móvil. Si Google Fotos lo ha
-      subido a la nube y ha liberado el espacio, Teseo no puede leerlo. Lo más
-      cómodo es etiquetar el mismo día del torneo, cuando los vídeos todavía
-      están en el teléfono.
-    </p>
-  </section>
-
-  <!-- ---------------------------------------------------------------
-       2. Reproductor
-       --------------------------------------------------------------- -->
-  <section id="zona-reproductor" hidden>
-    <h2>2 · Reproducción</h2>
-
-    <!-- Sin el atributo controls: la barra nativa del navegador se superpone
-         al vídeo y en vertical tapa casi toda la acción. El vídeo se maneja
-         sólo con los botones de abajo, y en la fase 4 con la línea de tiempo.
-         playsinline evita que el navegador se lo lleve a pantalla completa. -->
-    <video id="video" playsinline preload="metadata"
-           disablepictureinpicture disableremoteplayback></video>
-
-    <p id="tiempo" class="tiempo">0.00 s / — s</p>
-
-    <button class="boton boton-principal" id="btn-play" type="button">
-      Reproducir
-    </button>
-
-    <div class="rejilla-saltos">
-      <button class="boton" type="button" data-salto="-1">−1 s</button>
-      <button class="boton" type="button" data-salto="-0.1">−0,1 s</button>
-      <button class="boton" type="button" data-salto="0.1">+0,1 s</button>
-      <button class="boton" type="button" data-salto="1">+1 s</button>
-    </div>
-  </section>
-
-  <!-- ---------------------------------------------------------------
-       3. Ficha técnica del vídeo (para diagnosticar incompatibilidades)
-       --------------------------------------------------------------- -->
-  <section id="zona-ficha" hidden>
-    <h2>3 · Ficha del vídeo</h2>
-    <dl id="ficha-video" class="ficha"></dl>
-  </section>
-
-  <!-- ---------------------------------------------------------------
-       4. Prueba de almacenamiento
-       --------------------------------------------------------------- -->
-  <section>
-    <h2>4 · Almacenamiento</h2>
-    <p class="ayuda">
-      Aquí medimos cuánto espacio te deja usar este teléfono y si una copia
-      del vídeo sobrevive a cerrar la aplicación y reiniciar el móvil.
-      La copia se hace sola nada más abrir el vídeo: el fichero de la galería
-      deja de ser legible al poco rato, así que no se puede esperar.
-    </p>
-
-    <dl id="ficha-espacio" class="ficha"></dl>
-    <p id="progreso" class="progreso"></p>
-
-    <button class="boton" type="button" id="btn-espacio">Medir espacio</button>
-    <button class="boton" type="button" id="btn-legible">¿Sigue legible el vídeo abierto?</button>
-    <button class="boton" type="button" id="btn-persistir">Pedir permiso para conservar datos</button>
-    <button class="boton" type="button" id="btn-guardar">Guardar copia del vídeo</button>
-    <button class="boton" type="button" id="btn-reabrir">Reabrir copia guardada</button>
-    <button class="boton boton-peligro" type="button" id="btn-borrar">Borrar copia</button>
-  </section>
-
-  <!-- ---------------------------------------------------------------
-       5. Registro en pantalla
-       En el móvil no hay consola de desarrollador a mano, sobre todo en
-       iPhone. Este registro nos deja ver qué ha pasado sin cables.
-       --------------------------------------------------------------- -->
-  <section>
-    <h2>5 · Registro</h2>
-    <pre id="registro" class="registro"></pre>
-    <button class="boton" type="button" id="btn-copiar-registro">Copiar registro</button>
-  </section>
+  <!-- Toda la aplicación se dibuja aquí dentro, desde JavaScript.
+       Cada pantalla vacía este contenedor y pinta lo suyo. -->
+  <main id="pantalla">
+    <p class="ayuda">Cargando…</p>
+  </main>
 
   <script type="module" src="./js/app.js"></script>
 </body>
