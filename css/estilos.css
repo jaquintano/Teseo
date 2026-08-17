@@ -1,0 +1,190 @@
+/* Teseo — hoja de estilos única.
+   Pensada para móvil en vertical, de pie, y con los dedos.
+   Regla de oro: nada por debajo de 56 px de alto en algo que se toca. */
+
+:root {
+  --fondo: #12161c;
+  --fondo-caja: #1b212a;
+  --borde: #2c3542;
+  --texto: #eef2f7;
+  --texto-suave: #9aa7b8;
+  --acento: #4c8dff;
+  --peligro: #c0392b;
+  --radio: 12px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  /* Respeta la muesca y la barra inferior del iPhone. */
+  padding: 1rem max(1rem, env(safe-area-inset-right))
+           max(1rem, env(safe-area-inset-bottom))
+           max(1rem, env(safe-area-inset-left));
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+header { margin-bottom: 1.5rem; }
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.subtitulo {
+  margin: 0.25rem 0 0;
+  color: var(--texto-suave);
+  font-size: 0.95rem;
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--fondo-caja);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.ayuda {
+  margin: 0 0 1rem;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+/* Aparta un elemento de la vista sin quitarlo de la página. Se usa con el
+   input de fichero: sigue existiendo y siendo pulsable, pero no se ve. */
+.oculto-visualmente {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- Botones ---------------------------------------------------------- */
+
+.boton {
+  display: block;
+  width: 100%;
+  min-height: 56px;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #29313d;
+  color: var(--texto);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  /* Evita el retardo de 300 ms del doble toque en móvil. */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.boton:active { background: #37414f; }
+
+.boton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.boton-principal {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #0b1220;
+}
+
+.boton-principal:active { background: #3a78e0; }
+
+.boton-peligro {
+  background: transparent;
+  border-color: var(--peligro);
+  color: #ff8a7a;
+}
+
+/* Los cuatro saltos de tiempo, en una fila de cuatro. */
+.rejilla-saltos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.rejilla-saltos .boton {
+  margin-bottom: 0;
+  padding: 0.75rem 0.25rem;
+  font-size: 1rem;
+}
+
+/* --- Reproductor ------------------------------------------------------ */
+
+video {
+  display: block;
+  width: 100%;
+  max-height: 45vh;
+  margin-bottom: 0.75rem;
+  background: #000;
+  border-radius: var(--radio);
+}
+
+.tiempo {
+  margin: 0 0 0.75rem;
+  /* Tabular para que los dígitos no bailen al avanzar el tiempo. */
+  font-variant-numeric: tabular-nums;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* --- Fichas de datos -------------------------------------------------- */
+
+.ficha {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+}
+
+.ficha dt { color: var(--texto-suave); }
+
+.ficha dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.ficha:empty { display: none; }
+
+/* --- Registro --------------------------------------------------------- */
+
+.registro {
+  max-height: 40vh;
+  margin: 0 0 0.75rem;
+  padding: 0.75rem;
+  overflow: auto;
+  background: #0d1117;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  color: #cfe3ff;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.registro .error { color: #ff9a8b; }

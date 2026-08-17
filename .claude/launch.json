@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "teseo",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["servidor-local.js"],
+      "port": 8123
+    }
+  ]
+}
