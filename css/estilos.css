@@ -15,6 +15,13 @@
 
 * { box-sizing: border-box; }
 
+/* El zoom del navegador queda desactivado en toda la aplicación: si se
+   ampliara la página, los botones se moverían de sitio y habría que ir
+   buscándolos. "pan-x pan-y" deja desplazarse pero no hacer pinza, y de paso
+   quita el retardo del doble toque. El vídeo es la excepción: tiene su
+   propio zoom, que amplía sólo la imagen. */
+html, body { touch-action: pan-x pan-y; }
+
 /* El logotipo al pie del menú. Ocupa todo el ancho disponible: no hay nada
    debajo, así que puede crecer. */
 .logo-menu {
@@ -93,7 +100,7 @@ h1 {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: pan-x pan-y;
   white-space: nowrap;
 }
 
@@ -131,7 +138,7 @@ h1 {
   text-align: center;
   cursor: pointer;
   /* Evita el retardo de 300 ms del doble toque en móvil. */
-  touch-action: manipulation;
+  touch-action: pan-x pan-y;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -252,7 +259,7 @@ textarea.entrada {
   font-family: inherit;
   text-align: left;
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: pan-x pan-y;
 }
 
 .ficha-lista:active { background: #232b36; }
@@ -299,20 +306,49 @@ textarea.entrada {
   color: #ff8a7a;
   font-size: 1.2rem;
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: pan-x pan-y;
 }
 
 /* --- Reproductor ------------------------------------------------------ */
+
+/* El marco recorta la imagen cuando está ampliada, para que no se salga.
+   touch-action: none porque los gestos de aquí dentro los manejamos
+   nosotros: si no, el navegador se los quedaría. */
+.marco-video {
+  position: relative;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  background: #000;
+  border-radius: var(--radio);
+  touch-action: none;
+}
 
 video {
   display: block;
   width: 100%;
   max-height: 55vh;
-  margin-bottom: 0.75rem;
   background: #000;
-  border-radius: var(--radio);
+  transform-origin: center center;
   /* Evita que una pulsación larga saque el menú de "guardar vídeo". */
   -webkit-touch-callout: none;
+}
+
+/* Aparece sólo cuando hay zoom, para volver al tamaño normal de un toque. */
+.boton-ajustar {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  min-height: 40px;
+  padding: 0.4rem 0.9rem;
+  background: rgba(18, 22, 28, 0.85);
+  color: var(--texto);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: pan-x pan-y;
 }
 
 /* Por si algún navegador insiste en pintar sus propios controles encima.
@@ -356,7 +392,7 @@ video::-webkit-media-controls-panel {
   border: 1px solid var(--borde);
   border-radius: var(--radio);
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: pan-x pan-y;
   overflow: hidden;
 }
 
@@ -384,7 +420,7 @@ video::-webkit-media-controls-panel {
   border: 1px solid var(--fondo);
   border-radius: 4px;
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: pan-x pan-y;
 }
 
 .marca-favor { background: #35c46b; }
@@ -445,7 +481,7 @@ video::-webkit-media-controls-panel {
   color: var(--acento);
   font-weight: 600;
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: pan-x pan-y;
 }
 
 .filtros[open] summary { margin-bottom: 1rem; }

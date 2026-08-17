@@ -7,6 +7,7 @@
 import { registrar, capturarErroresGlobales } from './registro.js';
 import { registrarPantalla, ir } from './ui.js';
 import { obtenerPerfilPropio, pedirPersistencia } from './db.js';
+import { iniciarInstalacion } from './instalacion.js';
 
 import { pantallaPerfil } from './pantallas/perfil.js';
 import { pantallaRivales, pantallaRival } from './pantallas/rivales.js';
@@ -16,7 +17,7 @@ import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 import { pantallaEstadisticas } from './pantallas/estadisticas.js';
 
 // Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v12';
+const VERSION = 'v13';
 
 // No hay pantalla de arranque propia: la que pinta Android al abrir la
 // aplicación, hecha con el icono y el background_color del manifiesto, ya
@@ -75,67 +76,5 @@ if ('serviceWorker' in navigator) {
     .catch((error) => registrar(`No se pudo registrar el service worker: ${error.message}`, 'error'));
 }
 
-// --- Botón de instalar ------------------------------------------------
-//
-// El botón sólo debe verse mientras Teseo NO esté instalada. Hay tres formas
-// de saber que ya lo está, y usamos las tres porque ninguna es infalible:
-//
-//   1. Se está ejecutando en modo aplicación, sin barra de direcciones.
-//   2. El navegador nos dice que hay una versión instalada.
-//   3. Nosotros lo anotamos cuando se instaló, y eso sobrevive a cerrarla.
-//
-// La tercera es la que cubre el caso que se veía: instalarla y luego abrir la
-// dirección en el navegador, donde el botón volvía a aparecer.
-
-const btnInstalar = document.getElementById('btn-instalar');
-const CLAVE_INSTALADA = 'teseo-instalada';
-let avisoDeInstalacion = null;
-
-function enModoAplicacion() {
-  return window.matchMedia('(display-mode: standalone)').matches
-      || window.navigator.standalone === true;
-}
-
-async function yaEstaInstalada() {
-  if (enModoAplicacion()) return true;
-  if (localStorage.getItem(CLAVE_INSTALADA) === 'sí') return true;
-
-  if (navigator.getInstalledRelatedApps) {
-    try {
-      const instaladas = await navigator.getInstalledRelatedApps();
-      if (instaladas.length > 0) {
-        localStorage.setItem(CLAVE_INSTALADA, 'sí');
-        return true;
-      }
-    } catch { /* si el navegador no colabora, seguimos con lo demás */ }
-  }
-  return false;
-}
-
-window.addEventListener('beforeinstallprompt', async (evento) => {
-  // Sin esto, Chrome enseña su propia barrita y no nos deja elegir el momento.
-  evento.preventDefault();
-  avisoDeInstalacion = evento;
-  if (!await yaEstaInstalada()) btnInstalar.hidden = false;
-});
-
-btnInstalar.addEventListener('click', async () => {
-  if (!avisoDeInstalacion) return;
-  avisoDeInstalacion.prompt();
-  const { outcome } = await avisoDeInstalacion.userChoice;
-  registrar(`Instalación: ${outcome === 'accepted' ? 'aceptada' : 'rechazada'}.`);
-  if (outcome === 'accepted') localStorage.setItem(CLAVE_INSTALADA, 'sí');
-  avisoDeInstalacion = null;
-  btnInstalar.hidden = true;
-});
-
-window.addEventListener('appinstalled', () => {
-  registrar('Teseo instalada en la pantalla de inicio.');
-  localStorage.setItem(CLAVE_INSTALADA, 'sí');
-  btnInstalar.hidden = true;
-});
-
-// Y por si el aviso del navegador llega antes de que comprobemos nada.
-yaEstaInstalada().then((instalada) => {
-  if (instalada) btnInstalar.hidden = true;
-});
+// La opción de instalar vive ahora en el menú, no en la cabecera.
+iniciarInstalacion();

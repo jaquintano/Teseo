@@ -122,8 +122,101 @@ export function crearReproductor(opciones = {}) {
       onclick: () => saltar(salto.segundos),
     })));
 
+  // --- Zoom sobre el vídeo ---------------------------------------------
+  //
+  // El zoom del navegador está desactivado en toda la aplicación, para que
+  // los botones no se muevan de sitio. A cambio, el zoom del vídeo lo
+  // hacemos nosotros aquí: amplía sólo la imagen, dentro de su marco, y no
+  // toca el resto de la pantalla.
+
+  const ESCALA_MAXIMA = 4;
+  let escala = 1;
+  let despX = 0;
+  let despY = 0;
+
+  const btnAjustar = crear('button', {
+    type: 'button', class: 'boton-ajustar', texto: 'Ajustar', hidden: true,
+  });
+
+  const marco = crear('div', { class: 'marco-video' }, [video, btnAjustar]);
+
+  function aplicarZoom() {
+    // La imagen ampliada no puede desplazarse tanto que deje hueco al lado.
+    const maxX = (marco.clientWidth * (escala - 1)) / 2;
+    const maxY = (marco.clientHeight * (escala - 1)) / 2;
+    despX = Math.min(maxX, Math.max(-maxX, despX));
+    despY = Math.min(maxY, Math.max(-maxY, despY));
+
+    video.style.transform = `translate(${despX}px, ${despY}px) scale(${escala})`;
+    btnAjustar.hidden = escala <= 1.01;
+  }
+
+  function restablecerZoom() {
+    escala = 1;
+    despX = 0;
+    despY = 0;
+    aplicarZoom();
+  }
+
+  btnAjustar.addEventListener('click', restablecerZoom);
+
+  // Se siguen los dedos uno a uno: con dos, la distancia entre ellos manda
+  // el zoom; con uno, y sólo si ya está ampliado, se arrastra la imagen.
+  const dedos = new Map();
+  let distanciaInicial = 0;
+  let escalaInicial = 1;
+
+  marco.addEventListener('pointerdown', (evento) => {
+    // Registrar el dedo va PRIMERO: la captura del puntero puede fallar
+    // según el navegador, y si falla no debe llevarse por delante el gesto.
+    dedos.set(evento.pointerId, { x: evento.clientX, y: evento.clientY });
+    try {
+      marco.setPointerCapture(evento.pointerId);
+    } catch { /* seguimos igual: sólo perdemos el seguimiento fuera del marco */ }
+
+    if (dedos.size === 2) {
+      const [a, b] = [...dedos.values()];
+      distanciaInicial = Math.hypot(a.x - b.x, a.y - b.y);
+      escalaInicial = escala;
+    }
+  });
+
+  marco.addEventListener('pointermove', (evento) => {
+    if (!dedos.has(evento.pointerId)) return;
+    const anterior = dedos.get(evento.pointerId);
+    dedos.set(evento.pointerId, { x: evento.clientX, y: evento.clientY });
+
+    if (dedos.size >= 2 && distanciaInicial > 0) {
+      const [a, b] = [...dedos.values()];
+      const distancia = Math.hypot(a.x - b.x, a.y - b.y);
+      escala = Math.min(ESCALA_MAXIMA,
+                        Math.max(1, escalaInicial * (distancia / distanciaInicial)));
+      aplicarZoom();
+    } else if (dedos.size === 1 && escala > 1) {
+      despX += evento.clientX - anterior.x;
+      despY += evento.clientY - anterior.y;
+      aplicarZoom();
+    }
+  });
+
+  const soltarDedo = (evento) => {
+    dedos.delete(evento.pointerId);
+    if (dedos.size < 2) distanciaInicial = 0;
+    if (escala <= 1.01) restablecerZoom();
+  };
+  marco.addEventListener('pointerup', soltarDedo);
+  marco.addEventListener('pointercancel', soltarDedo);
+
+  // Con ratón: Ctrl + rueda, como en cualquier visor de imágenes.
+  marco.addEventListener('wheel', (evento) => {
+    if (!evento.ctrlKey) return;
+    evento.preventDefault();
+    escala = Math.min(ESCALA_MAXIMA, Math.max(1, escala * (evento.deltaY < 0 ? 1.15 : 0.87)));
+    aplicarZoom();
+  }, { passive: false });
+
   const elemento = crear('div', { class: 'reproductor' }, [
-    video, marcador, btnPlay, rejilla,
+    marco, marcador, btnPlay, rejilla,
   ]);
 
   return {
@@ -136,6 +229,7 @@ export function crearReproductor(opciones = {}) {
       urlActual = URL.createObjectURL(fichero);
       video.src = urlActual;
       video.load();
+      restablecerZoom();
     },
 
     /** Coloca el vídeo en un instante concreto, en segundos. */

@@ -3,6 +3,7 @@
 import { crear, cabecera, ir, formatearBytes } from '../ui.js';
 import { estimarEspacio, pedirPersistencia, obtenerPerfilPropio } from '../db.js';
 import { textoDelRegistro } from '../registro.js';
+import { sePuedeInstalar, instalar } from '../instalacion.js';
 
 export async function pantallaMenu(contenedor) {
   const perfil = await obtenerPerfilPropio();
@@ -28,6 +29,12 @@ export async function pantallaMenu(contenedor) {
       type: 'button', class: 'boton', texto: 'Diagnóstico',
       onclick: () => ir('diagnostico'),
     }),
+
+    // Sólo aparece si el navegador ofrece instalar y no lo está ya.
+    sePuedeInstalar() ? crear('button', {
+      type: 'button', class: 'boton', texto: 'Instalar en la pantalla de inicio',
+      onclick: async () => { await instalar(); ir('menu'); },
+    }) : null,
 
     crear('img', {
       class: 'logo-menu',
