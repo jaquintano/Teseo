@@ -52,7 +52,7 @@ function describirError(error) {
   if (!error) return 'error desconocido';
   switch (error.code) {
     case 1: return 'la carga se canceló';
-    case 2: return 'ya no se puede leer el fichero (el sistema le ha retirado el acceso a la aplicación)';
+    case 2: return 'no se pudieron leer los bytes del fichero (suele pasar cuando el vídeo está en Google Fotos y no guardado entero en el móvil)';
     case 3: return 'el vídeo está dañado o el navegador no sabe descodificarlo';
     case 4: return 'formato no soportado por este navegador (típico con vídeos HEVC/H.265 en Chrome de Android)';
     default: return `código ${error.code}`;

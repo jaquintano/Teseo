@@ -102,10 +102,10 @@ async function pedirPersistencia() {
  * pocos bytes del principio y del final. Es la prueba que nos dice si el
  * sistema le ha retirado el acceso a la aplicación.
  */
-async function comprobarLegible(silencioso = false) {
+async function comprobarLegible() {
   const fichero = obtenerFichero();
   if (!fichero) {
-    if (!silencioso) registrar('No hay ningún vídeo abierto.', 'error');
+    registrar('No hay ningún vídeo abierto.', 'error');
     return false;
   }
 
@@ -113,13 +113,32 @@ async function comprobarLegible(silencioso = false) {
   try {
     await fichero.slice(0, muestra).arrayBuffer();
     await fichero.slice(Math.max(0, fichero.size - muestra)).arrayBuffer();
-    registrar('El fichero sigue siendo legible.');
+    registrar('El fichero es legible: se han podido leer bytes del principio y del final.');
     return true;
   } catch (error) {
-    registrar(`El fichero YA NO es legible: ${error.name} — ${error.message}. ` +
-              'El sistema le ha retirado el acceso a la aplicación; hay que ' +
-              'volver a elegirlo en la galería.', 'error');
+    registrar(`NO se puede leer el fichero: ${error.name} — ${error.message}`, 'error');
+    registrar('Causa más probable: ese vídeo no está guardado entero en el móvil. ' +
+              'Google Fotos conserva la ficha y la miniatura, pero los bytes están ' +
+              'en la nube. Descárgalo al teléfono y vuelve a intentarlo, o elige el ' +
+              'vídeo desde "Archivos" en vez de desde "Fotos".', 'error');
     return false;
+  }
+}
+
+/**
+ * Lee un trozo del fichero, reintentando si falla. Si el vídeo viene de la
+ * nube, un fallo puede ser un tropiezo pasajero de la conexión.
+ */
+async function leerTrozo(fichero, desde, hasta, intentos = 3) {
+  for (let intento = 1; ; intento++) {
+    try {
+      return await fichero.slice(desde, hasta).arrayBuffer();
+    } catch (error) {
+      if (intento >= intentos) throw error;
+      registrar(`Fallo leyendo los bytes ${desde}–${hasta} (intento ${intento} de ` +
+                `${intentos}): ${error.name}. Reintento…`);
+      await new Promise((seguir) => setTimeout(seguir, 400 * intento));
+    }
   }
 }
 
@@ -139,19 +158,28 @@ async function guardarCopia() {
     return false;
   }
 
+  // Antes de lanzarnos a copiar 20 trozos, comprobamos que el fichero se deja
+  // leer. Si el vídeo está en la nube y no en el móvil, esto lo detecta ya y
+  // le damos al usuario un mensaje que se entienda.
+  if (!await comprobarLegible()) {
+    mostrarProgreso('No se puede leer este vídeo.');
+    return false;
+  }
+
   const totalTrozos = Math.ceil(fichero.size / TAMANO_TROZO);
   registrar(`Guardando copia de ${formatearBytes(fichero.size)} en ${totalTrozos} trozos…`);
   const empezado = performance.now();
+  let trozoEnCurso = 0;
 
   try {
     await vaciarAlmacen();
 
     for (let i = 0; i < totalTrozos; i++) {
+      trozoEnCurso = i;
       const desde = i * TAMANO_TROZO;
       const hasta = Math.min(desde + TAMANO_TROZO, fichero.size);
 
-      // Aquí es donde falla si el fichero ha dejado de ser legible.
-      const datos = await fichero.slice(desde, hasta).arrayBuffer();
+      const datos = await leerTrozo(fichero, desde, hasta);
 
       // Envolvemos los bytes en un blob nuevo, ya independiente del fichero
       // original de la galería.
@@ -178,8 +206,10 @@ async function guardarCopia() {
     return true;
 
   } catch (error) {
-    registrar(`Falló al guardar: ${error.name} — ${error.message}`, 'error');
-    mostrarProgreso('Falló al guardar.');
+    registrar(`Falló al guardar en el trozo ${trozoEnCurso + 1} de ${totalTrozos} ` +
+              `(bytes ${trozoEnCurso * TAMANO_TROZO} en adelante): ` +
+              `${error.name} — ${error.message}`, 'error');
+    mostrarProgreso(`Falló en el trozo ${trozoEnCurso + 1} de ${totalTrozos}.`);
     // Si se queda a medias, la copia no sirve: la borramos.
     try { await vaciarAlmacen(); } catch { /* da igual */ }
     await medirEspacio();
@@ -258,12 +288,11 @@ export function iniciarPruebaAlmacenamiento() {
   document.getElementById('btn-reabrir').addEventListener('click', reabrirCopia);
   document.getElementById('btn-borrar').addEventListener('click', borrarCopia);
 
-  // Nada más abrir un vídeo de la galería, lo copiamos. No se puede esperar:
-  // el acceso al fichero caduca. Si lo que se ha abierto es ya la copia
-  // guardada, no hay nada que hacer.
+  // Nada más abrir un vídeo de la galería, lo copiamos: así la aplicación deja
+  // de depender del fichero original cuanto antes. Si lo que se ha abierto es
+  // ya la copia guardada, no hay nada que hacer.
   alAbrirVideo(async (fichero, procedencia) => {
     if (procedencia !== 'galería') return;
-    registrar('Copiando el vídeo automáticamente, antes de que caduque el acceso…');
     await guardarCopia();
   });
 
