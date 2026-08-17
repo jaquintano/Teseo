@@ -108,7 +108,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   });
   const fecha = campo('Fecha', { value: asalto.fecha || hoy(), type: 'date' });
   const torneo = campo('Torneo', { value: asalto.torneo || '', placeholder: 'Nombre del torneo' });
-  const clubRival = campo('Club del rival', { value: asalto.clubRival || '' });
   const nota = campoLargo('Nota', { value: asalto.nota || '' });
 
   const aviso = crear('p', { class: 'aviso', texto: 'Elige un rival.', hidden: true });
@@ -136,7 +135,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     torneo.bloque,
     bloque('Fase', grupoOpciones(FASES, fase, (valor) => { fase = valor; },
       { clase: 'compacto' })),
-    clubRival.bloque,
     bloque('Fatiga percibida', grupoOpciones(FATIGA, fatiga,
       (valor) => { fatiga = valor; }, { clase: 'cinco-columnas' })),
     nota.bloque,
@@ -157,7 +155,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           tipoSesion,
           torneo: torneo.entrada.value.trim(),
           fase,
-          clubRival: clubRival.entrada.value.trim(),
+          // El club no se pregunta aquí: ya está en la ficha del rival.
           fatiga: fatiga ? Number(fatiga) : null,
           nota: nota.entrada.value.trim(),
         };
@@ -214,9 +212,8 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     cabecera(rival ? rival.nombre : 'Rival borrado', () => ir('inicio')),
 
     crear('p', { class: 'ayuda', texto: contexto }),
-    rival && rival.mano
-      ? crear('p', { class: 'ayuda', texto: `Rival ${etiquetaDe(MANOS, rival.mano).toLowerCase()}.` })
-      : null,
+    // El club del rival sale de su ficha, no se vuelve a preguntar en cada asalto.
+    rivalEnUnaLinea(rival),
 
     crear('h3', { class: 'subtitulo-seccion', texto: 'Tiempos' }),
     crear('p', {
@@ -242,6 +239,18 @@ export async function pantallaAsalto(contenedor, datos = {}) {
       },
     }),
   );
+}
+
+/** Resume al rival en una línea: mano, club y altura, lo que haya. */
+function rivalEnUnaLinea(rival) {
+  if (!rival) return null;
+  const partes = [
+    etiquetaDe(MANOS, rival.mano),
+    rival.club,
+    rival.altura ? `${rival.altura} cm` : '',
+  ].filter(Boolean);
+  if (partes.length === 0) return null;
+  return crear('p', { class: 'ayuda', texto: partes.join(' · ') });
 }
 
 /** Pinta la lista de tiempos de un asalto. */

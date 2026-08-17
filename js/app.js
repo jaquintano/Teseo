@@ -15,7 +15,7 @@ import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js
 import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 
 // Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v5';
+const VERSION = 'v6';
 
 capturarErroresGlobales();
 
@@ -70,13 +70,47 @@ if ('serviceWorker' in navigator) {
 }
 
 // --- Botón de instalar ------------------------------------------------
-let avisoDeInstalacion = null;
-const btnInstalar = document.getElementById('btn-instalar');
+//
+// El botón sólo debe verse mientras Teseo NO esté instalada. Hay tres formas
+// de saber que ya lo está, y usamos las tres porque ninguna es infalible:
+//
+//   1. Se está ejecutando en modo aplicación, sin barra de direcciones.
+//   2. El navegador nos dice que hay una versión instalada.
+//   3. Nosotros lo anotamos cuando se instaló, y eso sobrevive a cerrarla.
+//
+// La tercera es la que cubre el caso que se veía: instalarla y luego abrir la
+// dirección en el navegador, donde el botón volvía a aparecer.
 
-window.addEventListener('beforeinstallprompt', (evento) => {
+const btnInstalar = document.getElementById('btn-instalar');
+const CLAVE_INSTALADA = 'teseo-instalada';
+let avisoDeInstalacion = null;
+
+function enModoAplicacion() {
+  return window.matchMedia('(display-mode: standalone)').matches
+      || window.navigator.standalone === true;
+}
+
+async function yaEstaInstalada() {
+  if (enModoAplicacion()) return true;
+  if (localStorage.getItem(CLAVE_INSTALADA) === 'sí') return true;
+
+  if (navigator.getInstalledRelatedApps) {
+    try {
+      const instaladas = await navigator.getInstalledRelatedApps();
+      if (instaladas.length > 0) {
+        localStorage.setItem(CLAVE_INSTALADA, 'sí');
+        return true;
+      }
+    } catch { /* si el navegador no colabora, seguimos con lo demás */ }
+  }
+  return false;
+}
+
+window.addEventListener('beforeinstallprompt', async (evento) => {
+  // Sin esto, Chrome enseña su propia barrita y no nos deja elegir el momento.
   evento.preventDefault();
   avisoDeInstalacion = evento;
-  btnInstalar.hidden = false;
+  if (!await yaEstaInstalada()) btnInstalar.hidden = false;
 });
 
 btnInstalar.addEventListener('click', async () => {
@@ -84,11 +118,18 @@ btnInstalar.addEventListener('click', async () => {
   avisoDeInstalacion.prompt();
   const { outcome } = await avisoDeInstalacion.userChoice;
   registrar(`Instalación: ${outcome === 'accepted' ? 'aceptada' : 'rechazada'}.`);
+  if (outcome === 'accepted') localStorage.setItem(CLAVE_INSTALADA, 'sí');
   avisoDeInstalacion = null;
   btnInstalar.hidden = true;
 });
 
 window.addEventListener('appinstalled', () => {
-  registrar('Teseo instalado en la pantalla de inicio.');
+  registrar('Teseo instalada en la pantalla de inicio.');
+  localStorage.setItem(CLAVE_INSTALADA, 'sí');
   btnInstalar.hidden = true;
+});
+
+// Y por si el aviso del navegador llega antes de que comprobemos nada.
+yaEstaInstalada().then((instalada) => {
+  if (instalada) btnInstalar.hidden = true;
 });

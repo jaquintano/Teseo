@@ -63,6 +63,8 @@ export const TIPOS_DE_SESION = [
 // escribirla a mano, que es incómodo de pie en la sala.
 export const FASES = [
   { id: 'poule', etiqueta: 'Poule' },
+  { id: 't256', etiqueta: 'Tablón de 256' },
+  { id: 't128', etiqueta: 'Tablón de 128' },
   { id: 't64', etiqueta: 'Tablón de 64' },
   { id: 't32', etiqueta: 'Tablón de 32' },
   { id: 't16', etiqueta: 'Tablón de 16' },

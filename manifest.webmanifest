@@ -9,6 +9,13 @@
   "orientation": "portrait",
   "background_color": "#12161c",
   "theme_color": "#12161c",
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://jaquintano.github.io/Teseo/manifest.webmanifest"
+    }
+  ],
   "icons": [
     {
       "src": "./iconos/icon-192.png",
