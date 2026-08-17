@@ -233,6 +233,10 @@ export function iniciarVideo() {
   video.addEventListener('stalled', () => registrar('El vídeo no recibe datos (stalled).', 'error'));
   video.addEventListener('playing', () => registrar('Reproduciendo.'));
 
+  // Una pulsación larga sobre el vídeo saca el menú de "descargar vídeo",
+  // que aquí sólo estorba.
+  video.addEventListener('contextmenu', (evento) => evento.preventDefault());
+
   // --- Botones ---
   btnPlay.addEventListener('click', alternarReproduccion);
 

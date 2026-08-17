@@ -41,6 +41,13 @@
     <label class="boton boton-principal" for="selector-video">
       Abrir vídeo de la galería
     </label>
+
+    <p class="ayuda">
+      El vídeo tiene que estar descargado en el móvil. Si Google Fotos lo ha
+      subido a la nube y ha liberado el espacio, Teseo no puede leerlo. Lo más
+      cómodo es etiquetar el mismo día del torneo, cuando los vídeos todavía
+      están en el teléfono.
+    </p>
   </section>
 
   <!-- ---------------------------------------------------------------
@@ -49,9 +56,12 @@
   <section id="zona-reproductor" hidden>
     <h2>2 · Reproducción</h2>
 
-    <!-- playsinline es imprescindible en iPhone: sin él, Safari abre el
-         vídeo a pantalla completa y perdemos el control de la pantalla. -->
-    <video id="video" playsinline controls preload="metadata"></video>
+    <!-- Sin el atributo controls: la barra nativa del navegador se superpone
+         al vídeo y en vertical tapa casi toda la acción. El vídeo se maneja
+         sólo con los botones de abajo, y en la fase 4 con la línea de tiempo.
+         playsinline evita que el navegador se lo lleve a pantalla completa. -->
+    <video id="video" playsinline preload="metadata"
+           disablepictureinpicture disableremoteplayback></video>
 
     <p id="tiempo" class="tiempo">0.00 s / — s</p>
 

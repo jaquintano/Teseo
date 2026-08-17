@@ -12,7 +12,7 @@ import { iniciarPruebaAlmacenamiento } from './prueba-almacenamiento.js';
 // Sube este número en cada despliegue, y el mismo en sw.js. Se muestra en
 // pantalla para poder comprobar de un vistazo qué versión tiene el móvil,
 // que con las copias guardadas no siempre es evidente.
-const VERSION = 'v3';
+const VERSION = 'v4';
 
 capturarErroresGlobales();
 
