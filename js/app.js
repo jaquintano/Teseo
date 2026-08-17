@@ -15,9 +15,27 @@ import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js
 import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 
 // Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v7';
+const VERSION = 'v8';
+
+// Cuánto se ve el logotipo al abrir la aplicación.
+const DURACION_ARRANQUE = 3000;
 
 capturarErroresGlobales();
+
+// --- Pantalla de arranque ---------------------------------------------
+// Se quita sola a los 3 segundos. Va aparte del arranque de la aplicación,
+// que sigue su curso por debajo: cuando el logotipo se va, todo está listo.
+(function programarArranque() {
+  const capa = document.getElementById('arranque');
+  if (!capa) return;
+
+  setTimeout(() => {
+    capa.classList.add('desvaneciendo');
+    // Y fuera del todo cuando termine el desvanecido, para que no quede una
+    // capa invisible por encima de la aplicación.
+    setTimeout(() => capa.classList.add('fuera'), 500);
+  }, DURACION_ARRANQUE);
+})();
 
 // --- Alta de pantallas ------------------------------------------------
 // Todas menos la de etiquetado sueltan el vídeo que hubiera cargado, para

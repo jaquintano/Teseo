@@ -17,6 +17,13 @@
 </head>
 <body>
 
+  <!-- Pantalla de arranque: el logotipo a pantalla completa durante 3 s.
+       Va escrita aquí y no creada desde JavaScript para que aparezca de
+       inmediato, sin esperar a que se cargue nada. -->
+  <div id="arranque" class="arranque">
+    <img src="./iconos/logo-teseo.jpg" alt="Teseo, by CETC">
+  </div>
+
   <header>
     <h1>Teseo <span class="version" id="version"></span></h1>
     <button class="boton boton-principal" type="button" id="btn-instalar" hidden>

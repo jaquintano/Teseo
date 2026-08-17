@@ -68,7 +68,8 @@ js/pantallas/rivales.js        lista y ficha de rivales
 js/pantallas/asaltos.js        lista, alta y detalle de asaltos con sus tiempos
 js/pantallas/etiquetado.js     por ahora sólo reproduce; la fase 4 va aquí
 js/pantallas/menu.js           menú y diagnóstico
-iconos/                        generados por código, no dibujados a mano
+iconos/logo-teseo.jpg          el logotipo original, y la pantalla de arranque
+iconos/icon-*.png              recortes del escudo, generados desde el logotipo
 servidor-local.js              herramienta de desarrollo; GitHub Pages no la usa
 ```
 

@@ -15,6 +15,43 @@
 
 * { box-sizing: border-box; }
 
+/* --- Pantalla de arranque --------------------------------------------- */
+/* El logotipo a pantalla completa al abrir la aplicación. Se queda 3 s y se
+   desvanece. El fondo es el mismo del logotipo, para que no se note la
+   costura con la pantalla de carga que pinta Android antes. */
+
+.arranque {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: #f2f2f2;
+  transition: opacity 0.45s ease;
+}
+
+.arranque img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Al desvanecerse dejamos de interceptar los toques, o el primer toque del
+   usuario se perdería contra una capa invisible. */
+.arranque.desvaneciendo {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.arranque.fuera { display: none; }
+
+/* Quien prefiera no ver animaciones, que no las vea. */
+@media (prefers-reduced-motion: reduce) {
+  .arranque { transition: none; }
+}
+
 body {
   margin: 0;
   /* Respeta la muesca y la barra inferior del teléfono. */
