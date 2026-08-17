@@ -170,6 +170,16 @@ video {
 
 .ficha:empty { display: none; }
 
+.progreso {
+  margin: 0 0 1rem;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.progreso:empty { display: none; }
+
 /* --- Registro --------------------------------------------------------- */
 
 .registro {

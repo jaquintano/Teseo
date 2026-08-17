@@ -1,22 +1,33 @@
 // Prueba de almacenamiento — SÓLO PARA LA FASE 1.
 //
-// Sirve para contestar con datos reales, en tu Android y en tu iPhone, a tres
-// preguntas de las que depende el diseño de la aplicación:
+// Sirve para contestar con datos reales, en tu Android y en tu iPhone, a estas
+// preguntas, de las que depende el diseño de la aplicación:
 //
 //   1. ¿Cuánto espacio me deja usar este teléfono?
-//   2. ¿Puedo guardar una copia del vídeo y volver a reproducirla?
-//   3. ¿Sigue ahí la copia después de cerrar la app y reiniciar el móvil?
+//   2. ¿Cuánto tiempo sigue siendo legible el fichero que da la galería?
+//   3. ¿Puedo guardar una copia del vídeo y volver a reproducirla?
+//   4. ¿Sigue ahí la copia después de cerrar la app y reiniciar el móvil?
+//
+// La copia se guarda TROCEADA. Dos razones:
+//   - Leer el fichero en trozos de 8 MB nos dice exactamente en qué punto
+//     falla, si falla.
+//   - Cada trozo se copia a memoria y se vuelve a envolver en un blob nuevo,
+//     que ya no depende del fichero de la galería. Ese es el fallo que dio la
+//     primera prueba: al guardar el fichero tal cual, el navegador intenta
+//     leerlo en ese momento, y si el sistema ya le ha retirado el acceso,
+//     revienta con "InvalidBlob".
 //
 // En la fase 3 este fichero desaparece y su parte útil se integra en db.js.
 
 import { registrar, formatearBytes, pintarFicha } from './registro.js';
-import { obtenerFichero, cargarFichero } from './video.js';
+import { obtenerFichero, cargarFichero, alAbrirVideo } from './video.js';
 
 const NOMBRE_BD = 'teseo-prueba';
 const ALMACEN = 'videos';
-const CLAVE = 'prueba';
+const TAMANO_TROZO = 8 * 1024 * 1024;   // 8 MB
 
 const fichaEspacio = document.getElementById('ficha-espacio');
+const progreso = document.getElementById('progreso');
 
 /** Abre (y crea si hace falta) la base de datos local. */
 function abrirBD() {
@@ -31,14 +42,18 @@ function abrirBD() {
 }
 
 /** Envuelve una operación de IndexedDB en una promesa. */
-function operar(almacen, modo, accion) {
+function operar(modo, accion) {
   return abrirBD().then((bd) => new Promise((resolver, rechazar) => {
-    const transaccion = bd.transaction(almacen, modo);
-    const peticion = accion(transaccion.objectStore(almacen));
+    const transaccion = bd.transaction(ALMACEN, modo);
+    const peticion = accion(transaccion.objectStore(ALMACEN));
     transaccion.oncomplete = () => { bd.close(); resolver(peticion?.result); };
     transaccion.onerror = () => { bd.close(); rechazar(transaccion.error); };
     transaccion.onabort = () => { bd.close(); rechazar(transaccion.error); };
   }));
+}
+
+function mostrarProgreso(texto) {
+  progreso.textContent = texto;
 }
 
 /** Pregunta al navegador cuánto espacio hay usado y disponible. */
@@ -82,51 +97,124 @@ async function pedirPersistencia() {
   await medirEspacio();
 }
 
-/** Guarda una copia del vídeo abierto dentro del almacenamiento del navegador. */
+/**
+ * Comprueba si el fichero de la galería sigue siendo legible, leyendo unos
+ * pocos bytes del principio y del final. Es la prueba que nos dice si el
+ * sistema le ha retirado el acceso a la aplicación.
+ */
+async function comprobarLegible(silencioso = false) {
+  const fichero = obtenerFichero();
+  if (!fichero) {
+    if (!silencioso) registrar('No hay ningún vídeo abierto.', 'error');
+    return false;
+  }
+
+  const muestra = 64 * 1024;
+  try {
+    await fichero.slice(0, muestra).arrayBuffer();
+    await fichero.slice(Math.max(0, fichero.size - muestra)).arrayBuffer();
+    registrar('El fichero sigue siendo legible.');
+    return true;
+  } catch (error) {
+    registrar(`El fichero YA NO es legible: ${error.name} — ${error.message}. ` +
+              'El sistema le ha retirado el acceso a la aplicación; hay que ' +
+              'volver a elegirlo en la galería.', 'error');
+    return false;
+  }
+}
+
+/** Borra todo lo guardado, sin preguntar. Uso interno. */
+function vaciarAlmacen() {
+  return operar('readwrite', (almacen) => almacen.clear());
+}
+
+/**
+ * Guarda una copia del vídeo abierto, troceada, dentro del almacenamiento
+ * del navegador.
+ */
 async function guardarCopia() {
   const fichero = obtenerFichero();
   if (!fichero) {
     registrar('Primero abre un vídeo en el paso 1.', 'error');
-    return;
+    return false;
   }
 
-  registrar(`Guardando copia de ${formatearBytes(fichero.size)}… (puede tardar)`);
+  const totalTrozos = Math.ceil(fichero.size / TAMANO_TROZO);
+  registrar(`Guardando copia de ${formatearBytes(fichero.size)} en ${totalTrozos} trozos…`);
   const empezado = performance.now();
 
   try {
-    await operar(ALMACEN, 'readwrite', (almacen) => almacen.put({
-      blob: fichero,
+    await vaciarAlmacen();
+
+    for (let i = 0; i < totalTrozos; i++) {
+      const desde = i * TAMANO_TROZO;
+      const hasta = Math.min(desde + TAMANO_TROZO, fichero.size);
+
+      // Aquí es donde falla si el fichero ha dejado de ser legible.
+      const datos = await fichero.slice(desde, hasta).arrayBuffer();
+
+      // Envolvemos los bytes en un blob nuevo, ya independiente del fichero
+      // original de la galería.
+      await operar('readwrite', (almacen) =>
+        almacen.put(new Blob([datos], { type: fichero.type }), `trozo-${i}`));
+
+      mostrarProgreso(`Guardando… ${i + 1} de ${totalTrozos} ` +
+                      `(${Math.round(((i + 1) / totalTrozos) * 100)} %)`);
+    }
+
+    await operar('readwrite', (almacen) => almacen.put({
       nombre: fichero.name || '(sin nombre)',
       tamano: fichero.size,
       tipo: fichero.type,
+      totalTrozos,
       guardadoEl: new Date().toISOString(),
-    }, CLAVE));
+    }, 'meta'));
 
     const segundos = ((performance.now() - empezado) / 1000).toFixed(1);
-    registrar(`Copia guardada correctamente en ${segundos} s.`);
-  } catch (error) {
-    // El error típico aquí es QuotaExceededError: no cabe.
-    registrar(`No se pudo guardar la copia: ${error.name} — ${error.message}`, 'error');
-  }
+    const velocidad = (fichero.size / 1024 / 1024 / (segundos || 1)).toFixed(0);
+    registrar(`Copia guardada correctamente en ${segundos} s (${velocidad} MB/s).`);
+    mostrarProgreso('Copia guardada.');
+    await medirEspacio();
+    return true;
 
-  await medirEspacio();
+  } catch (error) {
+    registrar(`Falló al guardar: ${error.name} — ${error.message}`, 'error');
+    mostrarProgreso('Falló al guardar.');
+    // Si se queda a medias, la copia no sirve: la borramos.
+    try { await vaciarAlmacen(); } catch { /* da igual */ }
+    await medirEspacio();
+    return false;
+  }
 }
 
 /** Recupera la copia guardada y la carga en el reproductor. */
 async function reabrirCopia() {
   try {
-    const registro = await operar(ALMACEN, 'readonly', (almacen) => almacen.get(CLAVE));
-    if (!registro) {
+    const meta = await operar('readonly', (almacen) => almacen.get('meta'));
+    if (!meta) {
       registrar('No hay ninguna copia guardada.', 'error');
       return;
     }
 
-    registrar(`Copia encontrada: ${registro.nombre} · ${formatearBytes(registro.tamano)} · ` +
-              `guardada el ${new Date(registro.guardadoEl).toLocaleString('es-ES')}.`);
+    registrar(`Copia encontrada: ${meta.nombre} · ${formatearBytes(meta.tamano)} · ` +
+              `${meta.totalTrozos} trozos · guardada el ` +
+              `${new Date(meta.guardadoEl).toLocaleString('es-ES')}.`);
 
-    // Le devolvemos el nombre original al blob para que la ficha lo muestre.
-    const fichero = new File([registro.blob], registro.nombre, { type: registro.tipo });
+    const trozos = [];
+    for (let i = 0; i < meta.totalTrozos; i++) {
+      const trozo = await operar('readonly', (almacen) => almacen.get(`trozo-${i}`));
+      if (!trozo) {
+        registrar(`Falta el trozo ${i}: la copia está incompleta.`, 'error');
+        return;
+      }
+      trozos.push(trozo);
+      mostrarProgreso(`Recomponiendo… ${i + 1} de ${meta.totalTrozos}`);
+    }
+
+    mostrarProgreso('');
+    const fichero = new File(trozos, meta.nombre, { type: meta.tipo });
     cargarFichero(fichero, 'copia guardada');
+
   } catch (error) {
     registrar(`No se pudo leer la copia: ${error.name} — ${error.message}`, 'error');
   }
@@ -136,8 +224,9 @@ async function reabrirCopia() {
 async function borrarCopia() {
   if (!confirm('¿Borrar la copia del vídeo guardada en la aplicación?')) return;
   try {
-    await operar(ALMACEN, 'readwrite', (almacen) => almacen.delete(CLAVE));
+    await vaciarAlmacen();
     registrar('Copia borrada.');
+    mostrarProgreso('');
   } catch (error) {
     registrar(`No se pudo borrar: ${error.name} — ${error.message}`, 'error');
   }
@@ -147,11 +236,11 @@ async function borrarCopia() {
 /** Al arrancar, mira si quedó una copia de una sesión anterior. */
 async function comprobarCopiaPrevia() {
   try {
-    const registro = await operar(ALMACEN, 'readonly', (almacen) => almacen.get(CLAVE));
-    if (registro) {
-      registrar(`HAY una copia de una sesión anterior: ${registro.nombre}, ` +
-                `${formatearBytes(registro.tamano)}, guardada el ` +
-                `${new Date(registro.guardadoEl).toLocaleString('es-ES')}. ` +
+    const meta = await operar('readonly', (almacen) => almacen.get('meta'));
+    if (meta) {
+      registrar(`HAY una copia de una sesión anterior: ${meta.nombre}, ` +
+                `${formatearBytes(meta.tamano)}, guardada el ` +
+                `${new Date(meta.guardadoEl).toLocaleString('es-ES')}. ` +
                 `Pulsa "Reabrir copia guardada" para comprobar que se reproduce.`);
     } else {
       registrar('No hay ninguna copia guardada de sesiones anteriores.');
@@ -163,10 +252,20 @@ async function comprobarCopiaPrevia() {
 
 export function iniciarPruebaAlmacenamiento() {
   document.getElementById('btn-espacio').addEventListener('click', medirEspacio);
+  document.getElementById('btn-legible').addEventListener('click', () => comprobarLegible());
   document.getElementById('btn-persistir').addEventListener('click', pedirPersistencia);
   document.getElementById('btn-guardar').addEventListener('click', guardarCopia);
   document.getElementById('btn-reabrir').addEventListener('click', reabrirCopia);
   document.getElementById('btn-borrar').addEventListener('click', borrarCopia);
+
+  // Nada más abrir un vídeo de la galería, lo copiamos. No se puede esperar:
+  // el acceso al fichero caduca. Si lo que se ha abierto es ya la copia
+  // guardada, no hay nada que hacer.
+  alAbrirVideo(async (fichero, procedencia) => {
+    if (procedencia !== 'galería') return;
+    registrar('Copiando el vídeo automáticamente, antes de que caduque el acceso…');
+    await guardarCopia();
+  });
 
   medirEspacio();
   comprobarCopiaPrevia();

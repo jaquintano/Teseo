@@ -23,9 +23,28 @@ let ficheroActual = null;
 // vídeo o el navegador se queda con la memoria reservada.
 let urlActual = null;
 
+// play() devuelve una promesa que tarda en cumplirse. Si llamamos a pause()
+// mientras esa promesa está en el aire, el navegador cancela la reproducción
+// y suelta el error "The play() request was interrupted by a call to
+// pause()". Guardamos la promesa para no pisarla nunca.
+let promesaDeReproduccion = null;
+
+// Los saltos de tiempo se acumulan en vez de pisarse: si tocas +0,1 s cinco
+// veces seguidas mientras el vídeo aún está buscando el fotograma anterior,
+// el destino se suma y se aplica una sola vez.
+let destinoPendiente = null;
+
+// A quién avisar cuando se abre un vídeo nuevo.
+const suscriptores = [];
+
 /** Devuelve el fichero de vídeo abierto ahora mismo, o null. */
 export function obtenerFichero() {
   return ficheroActual;
+}
+
+/** Registra una función que se llamará cada vez que se abra un vídeo. */
+export function alAbrirVideo(funcion) {
+  suscriptores.push(funcion);
 }
 
 /** Traduce el código de error del elemento <video> a algo entendible. */
@@ -33,14 +52,14 @@ function describirError(error) {
   if (!error) return 'error desconocido';
   switch (error.code) {
     case 1: return 'la carga se canceló';
-    case 2: return 'fallo de red al leer el fichero';
+    case 2: return 'ya no se puede leer el fichero (el sistema le ha retirado el acceso a la aplicación)';
     case 3: return 'el vídeo está dañado o el navegador no sabe descodificarlo';
     case 4: return 'formato no soportado por este navegador (típico con vídeos HEVC/H.265 en Chrome de Android)';
     default: return `código ${error.code}`;
   }
 }
 
-/** Formatea una duración en segundos. */
+/** Formatea una duración en segundos como m:ss.cc */
 function formatearDuracion(segundos) {
   if (!isFinite(segundos)) return '—';
   const minutos = Math.floor(segundos / 60);
@@ -89,18 +108,64 @@ export function cargarFichero(fichero, procedencia = 'galería') {
     ['Duración', 'leyendo…'],
     ['Resolución', 'leyendo…'],
   ]);
+
+  for (const funcion of suscriptores) funcion(fichero, procedencia);
+}
+
+/**
+ * Pausa el vídeo sin cancelar una reproducción que aún esté arrancando.
+ */
+async function pausarConSeguridad() {
+  if (promesaDeReproduccion) {
+    try { await promesaDeReproduccion; } catch { /* ya se informó del fallo */ }
+  }
+  if (!video.paused) video.pause();
+}
+
+/** Aplica el salto acumulado, si el vídeo no está ya buscando. */
+function aplicarSalto() {
+  if (destinoPendiente === null || video.seeking) return;
+  const destino = destinoPendiente;
+  destinoPendiente = null;
+  video.currentTime = destino;
 }
 
 /** Mueve el tiempo del vídeo, sin salirse de los límites. */
-function saltar(segundos) {
+async function saltar(segundos) {
   if (!video.src) return;
-  // Al dar un salto, pausamos: los saltos son para afinar un instante.
-  video.pause();
+
+  // Al dar un salto pausamos: los saltos son para afinar un instante.
+  await pausarConSeguridad();
 
   const maximo = isFinite(video.duration) ? video.duration : Infinity;
-  const destino = Math.min(Math.max(0, video.currentTime + segundos), maximo);
-  video.currentTime = destino;
-  refrescarTiempo();
+  // Si ya hay un salto esperando, partimos de él y no del tiempo actual;
+  // así cinco toques seguidos suman cinco saltos.
+  const base = destinoPendiente ?? video.currentTime;
+  destinoPendiente = Math.min(Math.max(0, base + segundos), maximo);
+
+  // Pintamos el destino ya, aunque la imagen tarde un poco en llegar.
+  marcador.textContent = `${destinoPendiente.toFixed(2)} s / ` +
+    `${isFinite(video.duration) ? video.duration.toFixed(2) : '—'} s`;
+
+  aplicarSalto();
+}
+
+/** Reproduce o pausa, según el estado. */
+async function alternarReproduccion() {
+  if (!video.src) return;
+
+  if (video.paused) {
+    try {
+      promesaDeReproduccion = video.play();
+      await promesaDeReproduccion;
+    } catch (error) {
+      registrar(`El navegador rechazó reproducir: ${error.name} — ${error.message}`, 'error');
+    } finally {
+      promesaDeReproduccion = null;
+    }
+  } else {
+    await pausarConSeguridad();
+  }
 }
 
 export function iniciarVideo() {
@@ -156,19 +221,20 @@ export function iniciarVideo() {
 
   // Tras un salto, el tiempo real puede no ser exactamente el pedido:
   // el navegador ajusta al fotograma más cercano que sabe mostrar.
-  video.addEventListener('seeked', refrescarTiempo);
+  video.addEventListener('seeked', () => {
+    refrescarTiempo();
+    aplicarSalto();   // por si llegaron más toques mientras buscaba
+  });
   video.addEventListener('timeupdate', refrescarTiempo);
 
+  // Estos avisan de que el vídeo se ha quedado esperando datos. Si el
+  // reproductor se congela, aquí veremos por qué.
+  video.addEventListener('waiting', () => registrar('El vídeo espera datos (waiting).'));
+  video.addEventListener('stalled', () => registrar('El vídeo no recibe datos (stalled).', 'error'));
+  video.addEventListener('playing', () => registrar('Reproduciendo.'));
+
   // --- Botones ---
-  btnPlay.addEventListener('click', () => {
-    if (video.paused) {
-      // play() devuelve una promesa: en iPhone falla si el navegador cree
-      // que no ha habido gesto del usuario. Conviene registrarlo.
-      video.play().catch((e) => registrar(`El navegador rechazó reproducir: ${e.message}`, 'error'));
-    } else {
-      video.pause();
-    }
-  });
+  btnPlay.addEventListener('click', alternarReproduccion);
 
   for (const boton of document.querySelectorAll('[data-salto]')) {
     boton.addEventListener('click', () => saltar(parseFloat(boton.dataset.salto)));

@@ -71,11 +71,15 @@
     <p class="ayuda">
       Aquí medimos cuánto espacio te deja usar este teléfono y si una copia
       del vídeo sobrevive a cerrar la aplicación y reiniciar el móvil.
+      La copia se hace sola nada más abrir el vídeo: el fichero de la galería
+      deja de ser legible al poco rato, así que no se puede esperar.
     </p>
 
     <dl id="ficha-espacio" class="ficha"></dl>
+    <p id="progreso" class="progreso"></p>
 
     <button class="boton" type="button" id="btn-espacio">Medir espacio</button>
+    <button class="boton" type="button" id="btn-legible">¿Sigue legible el vídeo abierto?</button>
     <button class="boton" type="button" id="btn-persistir">Pedir permiso para conservar datos</button>
     <button class="boton" type="button" id="btn-guardar">Guardar copia del vídeo</button>
     <button class="boton" type="button" id="btn-reabrir">Reabrir copia guardada</button>
