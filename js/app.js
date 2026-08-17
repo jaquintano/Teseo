@@ -15,10 +15,10 @@ import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js
 import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 
 // Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v8';
+const VERSION = 'v9';
 
 // Cuánto se ve el logotipo al abrir la aplicación.
-const DURACION_ARRANQUE = 3000;
+const DURACION_ARRANQUE = 4000;
 
 capturarErroresGlobales();
 
