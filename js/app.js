@@ -15,26 +15,34 @@ import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js
 import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 
 // Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v9';
+const VERSION = 'v10';
 
-// Cuánto se ve el logotipo al abrir la aplicación.
+// Medio segundo de fondo liso antes de que aparezca el logotipo. Sirve de
+// puente con la pantalla de carga de Android, que muestra el escudo sin
+// texto y no se puede sustituir: así el escudo se va contra un fondo igual
+// en vez de que un logotipo distinto lo reemplace de golpe.
+const PAUSA_EN_BLANCO = 500;
+
+// Cuánto se ve el logotipo, una vez ha aparecido.
 const DURACION_ARRANQUE = 4000;
 
 capturarErroresGlobales();
 
 // --- Pantalla de arranque ---------------------------------------------
-// Se quita sola a los 3 segundos. Va aparte del arranque de la aplicación,
-// que sigue su curso por debajo: cuando el logotipo se va, todo está listo.
+// Va aparte del arranque de la aplicación, que sigue su curso por debajo:
+// cuando el logotipo se va, todo está listo.
 (function programarArranque() {
   const capa = document.getElementById('arranque');
   if (!capa) return;
+
+  setTimeout(() => capa.classList.add('mostrando'), PAUSA_EN_BLANCO);
 
   setTimeout(() => {
     capa.classList.add('desvaneciendo');
     // Y fuera del todo cuando termine el desvanecido, para que no quede una
     // capa invisible por encima de la aplicación.
     setTimeout(() => capa.classList.add('fuera'), 500);
-  }, DURACION_ARRANQUE);
+  }, PAUSA_EN_BLANCO + DURACION_ARRANQUE);
 })();
 
 // --- Alta de pantallas ------------------------------------------------

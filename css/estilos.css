@@ -33,11 +33,18 @@
   transition: opacity 0.45s ease;
 }
 
+/* El logotipo no se ve al principio: durante medio segundo sólo queda el
+   fondo liso. Así el escudo que pinta Android antes de que arranquemos se
+   desvanece contra un fondo idéntico, en vez de ser sustituido de golpe. */
 .arranque img {
   width: 100%;
   max-height: 100%;
   object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
+
+.arranque.mostrando img { opacity: 1; }
 
 /* Al desvanecerse dejamos de interceptar los toques, o el primer toque del
    usuario se perdería contra una capa invisible. */
@@ -50,7 +57,8 @@
 
 /* Quien prefiera no ver animaciones, que no las vea. */
 @media (prefers-reduced-motion: reduce) {
-  .arranque { transition: none; }
+  .arranque,
+  .arranque img { transition: none; }
 }
 
 body {
