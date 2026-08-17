@@ -73,6 +73,15 @@ export const FASES = [
   { id: 'final', etiqueta: 'Final' },
 ];
 
+// Tramos del asalto. Se reparten en tercios sobre el asalto COMPLETO,
+// encadenando sus tiempos uno detrás de otro: el final de un asalto a tres
+// tiempos es el último tercio del tercero, no el de cada uno.
+export const TRAMOS = [
+  { id: 'principio', etiqueta: 'Principio' },
+  { id: 'medio', etiqueta: 'Medio' },
+  { id: 'final', etiqueta: 'Final' },
+];
+
 /** Busca la etiqueta legible de un id dentro de un catálogo. */
 export function etiquetaDe(catalogo, id) {
   if (!id) return '';

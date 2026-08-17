@@ -13,9 +13,10 @@ import { pantallaRivales, pantallaRival } from './pantallas/rivales.js';
 import { pantallaInicio, pantallaAsaltoNuevo, pantallaAsalto } from './pantallas/asaltos.js';
 import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js';
 import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
+import { pantallaEstadisticas } from './pantallas/estadisticas.js';
 
 // Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v10';
+const VERSION = 'v11';
 
 // Medio segundo de fondo liso antes de que aparezca el logotipo. Sirve de
 // puente con la pantalla de carga de Android, que muestra el escudo sin
@@ -57,6 +58,7 @@ registrarPantalla('perfil', conLimpieza(pantallaPerfil));
 registrarPantalla('inicio', conLimpieza(pantallaInicio));
 registrarPantalla('menu', conLimpieza(pantallaMenu));
 registrarPantalla('diagnostico', conLimpieza(pantallaDiagnostico));
+registrarPantalla('estadisticas', conLimpieza(pantallaEstadisticas));
 registrarPantalla('rivales', conLimpieza(pantallaRivales));
 registrarPantalla('rival', conLimpieza(pantallaRival));
 registrarPantalla('asalto-nuevo', conLimpieza(pantallaAsaltoNuevo));

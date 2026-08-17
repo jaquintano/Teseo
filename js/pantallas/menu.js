@@ -13,6 +13,10 @@ export async function pantallaMenu(contenedor) {
     perfil ? crear('p', { class: 'ayuda', texto: `Conectado como ${perfil.nombre}.` }) : null,
 
     crear('button', {
+      type: 'button', class: 'boton boton-principal', texto: 'Estadísticas',
+      onclick: () => ir('estadisticas'),
+    }),
+    crear('button', {
       type: 'button', class: 'boton', texto: 'Mi perfil',
       onclick: () => ir('perfil', { volverA: 'menu' }),
     }),

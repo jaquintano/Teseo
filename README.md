@@ -4,8 +4,8 @@ Aplicación web para etiquetar vídeos de asaltos de esgrima (espada) y obtener
 estadísticas de rendimiento. Todo ocurre en el móvil: no hay servidor, no hay
 cuentas y los vídeos no salen del dispositivo.
 
-**Estado: fase 4.** Ya se puede etiquetar: línea de tiempo con marcas y las
-tres capas de botones. Faltan las estadísticas.
+**Estado: terminada.** Las cinco fases están hechas: perfil, rivales, asaltos
+con sus tiempos, etiquetado y estadísticas.
 
 Sólo se ha probado en Android. El club es de teléfonos Android; las decisiones
 que evitan problemas en iPhone se mantienen porque no cuestan nada, pero no se
@@ -58,6 +58,10 @@ sw.js                          service worker: instalación y uso sin cobertura
 css/estilos.css                estilos (botones grandes, uso a una mano)
 js/app.js                      arranque, alta de pantallas, service worker
 js/constantes.js               los catálogos: acciones, zonas, fases…
+js/calculo-estadisticas.js     LAS CUENTAS. Módulo independiente: no toca ni
+                               la pantalla ni la base de datos. Junto con
+                               constantes.js se puede llevar a otro sitio
+                               (por ejemplo, algo para el entrenador)
 js/db.js                       base de datos local y almacenamiento de vídeos
 js/ui.js                       piezas de interfaz y navegación entre pantallas
 js/registro.js                 registro interno, visible en Diagnóstico
@@ -108,10 +112,33 @@ o borrarla. Tocando la línea en cualquier otro sitio saltas a ese momento.
 5. Borra un intercambio.
 6. Cierra Teseo del todo y vuelve: debe estar todo.
 
+## Las estadísticas
+
+Se llega desde Menú → Estadísticas, y se pueden filtrar por rival, por mano
+del rival y por número de asalto de la sesión.
+
+**Ofensivas.** Eficacia por acción (intentos frente a tocados conseguidos),
+iniciativa (cuándo atacaste frente a cuándo defendiste), y el reparto de tus
+tocados por tramo del asalto y por zona de la pista.
+
+**Defensivas.** Eficacia de la parada-respuesta, y los tocados recibidos por
+zona del cuerpo y por zona de la pista.
+
+**Dobles.** Sobre el total de tocados, no sobre todos los intercambios.
+
+Dos criterios que conviene conocer para leerlas bien:
+
+- **El tramo se calcula sobre el asalto entero**, encadenando sus tiempos uno
+  detrás de otro. En un asalto a tres tiempos, el "final" es el último tercio
+  del tercer tiempo, no el último tercio de cada uno.
+- **En la iniciativa, un intercambio con las dos acciones marcadas cuenta
+  como ataque**: quien la inicia lleva la iniciativa, aunque luego tuviera
+  que defenderse.
+
 ## Fases
 
 1. ✅ Compatibilidad: abrir y reproducir vídeo, medir almacenamiento.
 2. ✅ Instalable en la pantalla de inicio y uso sin cobertura.
 3. ✅ Perfil, rivales, asaltos y tiempos con su vídeo.
 4. ✅ Etiquetado: línea de tiempo con marcas y las tres capas.
-5. Estadísticas y filtros.
+5. ✅ Estadísticas y filtros.

@@ -1,0 +1,202 @@
+// Pantalla de estadísticas.
+//
+// Aquí sólo se pinta. Las cuentas las hace calculo-estadisticas.js, que no
+// sabe nada de pantallas ni de base de datos y se puede llevar aparte.
+
+import { crear, rellenar, cabecera, ir, bloque, grupoOpciones } from '../ui.js';
+import { MANOS } from '../constantes.js';
+import { ALMACENES, listar, listarRivales } from '../db.js';
+import { prepararIntercambios, filtrar, calcular } from '../calculo-estadisticas.js';
+
+const unaCifra = (n) => (Math.round(n * 10) / 10).toString().replace('.', ',');
+
+/** Fila con etiqueta, barra proporcional y cifras. */
+function filaBarra(etiqueta, cuenta, porcentaje, maximo) {
+  const ancho = maximo > 0 ? (cuenta / maximo) * 100 : 0;
+  return crear('div', { class: 'fila-stat' }, [
+    crear('span', { class: 'fila-etiqueta', texto: etiqueta }),
+    crear('div', { class: 'barra' }, [
+      crear('div', { class: 'barra-relleno', style: `width: ${ancho}%` }),
+    ]),
+    crear('span', {
+      class: 'fila-cifra',
+      texto: porcentaje === null ? `${cuenta}` : `${cuenta} · ${unaCifra(porcentaje)} %`,
+    }),
+  ]);
+}
+
+/** Bloque de reparto: una barra por cada opción con datos. */
+function reparto(titulo, datos, ayuda) {
+  const conDatos = datos.filas.filter((f) => f.cuenta > 0);
+  const maximo = Math.max(0, ...datos.filas.map((f) => f.cuenta));
+
+  return crear('section', { class: 'bloque-stat' }, [
+    crear('h3', { class: 'subtitulo-seccion', texto: titulo }),
+    ayuda ? crear('p', { class: 'ayuda', texto: ayuda }) : null,
+    conDatos.length === 0
+      ? crear('p', { class: 'ayuda', texto: 'Sin datos todavía.' })
+      : crear('div', {}, conDatos.map((f) => filaBarra(f.etiqueta, f.cuenta, f.porcentaje, maximo))),
+    datos.sinIndicar > 0
+      ? crear('p', { class: 'ayuda', texto: `${datos.sinIndicar} sin indicar.` })
+      : null,
+  ]);
+}
+
+export async function pantallaEstadisticas(contenedor) {
+  const [asaltos, tiempos, intercambios, tiradores, rivales] = await Promise.all([
+    listar(ALMACENES.asaltos),
+    listar(ALMACENES.tiempos),
+    listar(ALMACENES.intercambios),
+    listar(ALMACENES.tiradores),
+    listarRivales(),
+  ]);
+
+  const preparados = prepararIntercambios({ asaltos, tiempos, intercambios, tiradores });
+
+  // Los números de asalto que existen de verdad, para no ofrecer filtros vacíos.
+  const numeros = [...new Set(asaltos.map((a) => a.numero).filter((n) => n != null))]
+    .sort((a, b) => a - b);
+
+  const filtros = { rivalId: null, manoRival: null, numeroAsalto: null };
+  const resultados = crear('div');
+
+  // --- Filtros ---
+  const selectorRival = crear('select', {
+    class: 'entrada',
+    onchange: (e) => { filtros.rivalId = e.target.value ? Number(e.target.value) : null; pintar(); },
+  });
+  selectorRival.append(crear('option', { value: '', texto: 'Todos los rivales' }));
+  for (const rival of rivales) {
+    selectorRival.append(crear('option', { value: rival.id, texto: rival.nombre }));
+  }
+
+  const selectorNumero = crear('select', {
+    class: 'entrada',
+    onchange: (e) => { filtros.numeroAsalto = e.target.value ? Number(e.target.value) : null; pintar(); },
+  });
+  selectorNumero.append(crear('option', { value: '', texto: 'Todos los asaltos' }));
+  for (const n of numeros) {
+    selectorNumero.append(crear('option', { value: n, texto: `Asalto ${n} de la sesión` }));
+  }
+
+  contenedor.append(
+    cabecera('Estadísticas', () => ir('menu')),
+
+    crear('details', { class: 'filtros' }, [
+      crear('summary', { texto: 'Filtros' }),
+      bloque('Rival', selectorRival),
+      bloque('Mano del rival', grupoOpciones(MANOS, null,
+        (valor) => { filtros.manoRival = valor; pintar(); }, { clase: 'dos-columnas' })),
+      bloque('Número de asalto', selectorNumero),
+    ]),
+
+    resultados,
+  );
+
+  pintar();
+
+  // ------------------------------------------------------------------
+
+  function pintar() {
+    const elegidos = filtrar(preparados, filtros);
+    const e = calcular(elegidos);
+
+    if (e.resumen.intercambios === 0) {
+      rellenar(resultados, crear('p', {
+        class: 'ayuda',
+        texto: intercambios.length === 0
+          ? 'Todavía no has etiquetado ningún intercambio. Las estadísticas ' +
+            'aparecerán en cuanto empieces.'
+          : 'Ningún intercambio cumple estos filtros.',
+      }));
+      return;
+    }
+
+    const r = e.resumen;
+    const maxEficacia = Math.max(0, ...e.ofensivas.eficaciaPorAccion.map((f) => f.intentos));
+
+    rellenar(resultados, [
+      // --- Resumen ---
+      crear('div', { class: 'resumen' }, [
+        dato(r.intercambios, 'intercambios'),
+        dato(r.asaltos, r.asaltos === 1 ? 'asalto' : 'asaltos'),
+        dato(r.aFavor, 'a favor'),
+        dato(r.enContra, 'en contra'),
+        dato(r.dobles, 'dobles'),
+      ]),
+
+      // --- Ofensivas ---
+      crear('h2', { class: 'titulo-bloque', texto: 'Ofensivas' }),
+
+      crear('section', { class: 'bloque-stat' }, [
+        crear('h3', { class: 'subtitulo-seccion', texto: 'Eficacia por acción' }),
+        crear('p', { class: 'ayuda', texto: 'Veces que la intentaste y de ésas cuántas acabaron en tocado tuyo.' }),
+        ...e.ofensivas.eficaciaPorAccion
+          .filter((f) => f.intentos > 0)
+          .map((f) => crear('div', { class: 'fila-stat' }, [
+            crear('span', { class: 'fila-etiqueta', texto: f.etiqueta }),
+            crear('div', { class: 'barra' }, [
+              crear('div', { class: 'barra-relleno barra-fondo', style: `width: ${maxEficacia ? (f.intentos / maxEficacia) * 100 : 0}%` }),
+              crear('div', { class: 'barra-relleno barra-exito', style: `width: ${maxEficacia ? (f.conseguidos / maxEficacia) * 100 : 0}%` }),
+            ]),
+            crear('span', { class: 'fila-cifra', texto: `${f.conseguidos}/${f.intentos} · ${unaCifra(f.porcentaje)} %` }),
+          ])),
+        e.ofensivas.eficaciaPorAccion.every((f) => f.intentos === 0)
+          ? crear('p', { class: 'ayuda', texto: 'Sin datos todavía.' }) : null,
+      ]),
+
+      crear('section', { class: 'bloque-stat' }, [
+        crear('h3', { class: 'subtitulo-seccion', texto: 'Iniciativa' }),
+        crear('p', { class: 'ayuda', texto: 'Cuándo llevaste tú la acción y cuándo tuviste que defender. Si marcaste las dos cosas en un intercambio, cuenta como ataque.' }),
+        filaBarra('Atacando', e.ofensivas.iniciativa.ataques, e.ofensivas.iniciativa.porcentajeAtaque,
+                  Math.max(e.ofensivas.iniciativa.ataques, e.ofensivas.iniciativa.defensas)),
+        filaBarra('Defendiendo', e.ofensivas.iniciativa.defensas, 100 - e.ofensivas.iniciativa.porcentajeAtaque,
+                  Math.max(e.ofensivas.iniciativa.ataques, e.ofensivas.iniciativa.defensas)),
+        e.ofensivas.iniciativa.sinAccion > 0
+          ? crear('p', { class: 'ayuda', texto: `${e.ofensivas.iniciativa.sinAccion} intercambio(s) sin acción marcada.` })
+          : null,
+      ]),
+
+      reparto('Tocados a favor por tramo', e.ofensivas.tocadosPorTramo,
+              'El asalto entero repartido en tercios, encadenando sus tiempos.'),
+
+      reparto('Tocados a favor por zona de la pista', e.ofensivas.tocadosPorZonaPista),
+
+      // --- Defensivas ---
+      crear('h2', { class: 'titulo-bloque', texto: 'Defensivas' }),
+
+      crear('section', { class: 'bloque-stat' }, [
+        crear('h3', { class: 'subtitulo-seccion', texto: 'Parada-respuesta' }),
+        crear('p', { class: 'ayuda', texto: 'De las veces que paraste, cuántas acabaron en tocado tuyo.' }),
+        e.defensivas.paradaRespuesta.intentos === 0
+          ? crear('p', { class: 'ayuda', texto: 'Sin datos todavía.' })
+          : crear('div', { class: 'resumen' }, [
+              dato(e.defensivas.paradaRespuesta.intentos, 'paradas'),
+              dato(e.defensivas.paradaRespuesta.conseguidos, 'con tocado'),
+              dato(`${unaCifra(e.defensivas.paradaRespuesta.porcentaje)} %`, 'eficacia'),
+            ]),
+      ]),
+
+      reparto('Tocados recibidos por zona del cuerpo', e.defensivas.recibidosPorZonaCuerpo),
+      reparto('Tocados recibidos por zona de la pista', e.defensivas.recibidosPorZonaPista),
+
+      // --- Dobles ---
+      crear('h2', { class: 'titulo-bloque', texto: 'Dobles' }),
+      crear('section', { class: 'bloque-stat' }, [
+        crear('p', { class: 'ayuda', texto: 'Sobre el total de tocados, no sobre todos los intercambios.' }),
+        crear('div', { class: 'resumen' }, [
+          dato(e.dobles.cuenta, 'dobles'),
+          dato(e.dobles.sobreTocados, 'tocados'),
+          dato(`${unaCifra(e.dobles.porcentaje)} %`, 'del total'),
+        ]),
+      ]),
+    ]);
+  }
+
+  function dato(valor, etiqueta) {
+    return crear('div', { class: 'dato' }, [
+      crear('span', { class: 'dato-valor', texto: String(valor) }),
+      crear('span', { class: 'dato-etiqueta', texto: etiqueta }),
+    ]);
+  }
+}
