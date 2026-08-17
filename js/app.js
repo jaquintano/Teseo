@@ -15,7 +15,7 @@ import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js
 import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 
 // Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v6';
+const VERSION = 'v7';
 
 capturarErroresGlobales();
 

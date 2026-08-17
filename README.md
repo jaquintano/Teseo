@@ -4,8 +4,8 @@ Aplicación web para etiquetar vídeos de asaltos de esgrima (espada) y obtener
 estadísticas de rendimiento. Todo ocurre en el móvil: no hay servidor, no hay
 cuentas y los vídeos no salen del dispositivo.
 
-**Estado: fase 3.** Ya es una aplicación de verdad: perfil, rivales, asaltos y
-tiempos con su vídeo. El etiquetado en sí llega en la fase 4.
+**Estado: fase 4.** Ya se puede etiquetar: línea de tiempo con marcas y las
+tres capas de botones. Faltan las estadísticas.
 
 Sólo se ha probado en Android. El club es de teléfonos Android; las decisiones
 que evitan problemas en iPhone se mantienen porque no cuestan nada, pero no se
@@ -43,9 +43,11 @@ asalto ── un combate contra un rival, con su contexto
           └── intercambios ── las etiquetas (fase 4)
 ```
 
-Un intercambio tendrá un instante en segundos y tres capas —acción ofensiva,
+Un intercambio tiene un instante en segundos y tres capas —acción ofensiva,
 acción defensiva y resultado—, todas opcionales. **Las capas describen lo que
-hiciste tú**, no lo que hizo el rival.
+hiciste tú**, no lo que hizo el rival. Cuando el resultado es un tocado (a
+favor, en contra o doble) se pueden añadir además la zona del cuerpo y la
+zona de la pista.
 
 ## Estructura
 
@@ -83,22 +85,32 @@ Sube el número de versión en **dos** sitios, que tienen que coincidir:
 Si no se sube, los móviles que ya tengan la aplicación guardada pueden seguir
 viendo la versión vieja. La versión aparece junto al título.
 
-## Qué probar en la fase 3
+## Cómo se etiqueta
 
-1. La primera vez pide tu ficha. Rellénala y pulsa *Empezar*.
-2. *Nuevo asalto* → *Dar de alta un rival nuevo* → crea uno. Debe volver al
-   asalto con ese rival ya elegido.
-3. Rellena el asalto y créalo.
-4. Añade el vídeo del primer tiempo. Debe copiarlo con su barra de progreso.
-5. Pulsa el tiempo: debe reproducirse el vídeo recuperado de la copia.
-6. Cierra Teseo del todo, ábrela otra vez y comprueba que sigue todo.
-7. Añade un segundo tiempo al mismo asalto, como en una directa.
-8. Menú → Diagnóstico: comprueba que *Datos protegidos* dice **sí**.
+Reproduce, pausa donde ha pasado algo, afina con los saltos de ±0,1 s y pulsa
+**Nuevo intercambio aquí**. Eso deja una marca en ese instante exacto y abre
+las tres capas de botones. Cada toque se guarda solo.
+
+La línea de tiempo bajo el vídeo lleva una marca por intercambio, con color
+según el resultado: verde a favor, rojo en contra, ámbar doble, gris el resto.
+Tocar una marca lleva el vídeo a ese instante y abre su ficha para corregirla
+o borrarla. Tocando la línea en cualquier otro sitio saltas a ese momento.
+
+## Qué probar en la fase 4
+
+1. Abre un tiempo con vídeo y etiqueta cinco o seis intercambios seguidos,
+   como lo harías de verdad.
+2. Comprueba que los saltos de ±0,1 s te dejan en el fotograma que quieres.
+3. Toca una marca ya puesta: debe llevarte a su instante y abrirla con lo que
+   habías elegido.
+4. Cambia el resultado a *Nada*: las zonas deben desaparecer.
+5. Borra un intercambio.
+6. Cierra Teseo del todo y vuelve: debe estar todo.
 
 ## Fases
 
 1. ✅ Compatibilidad: abrir y reproducir vídeo, medir almacenamiento.
 2. ✅ Instalable en la pantalla de inicio y uso sin cobertura.
 3. ✅ Perfil, rivales, asaltos y tiempos con su vídeo.
-4. Pantalla de etiquetado: línea de tiempo con marcas y las tres capas.
+4. ✅ Etiquetado: línea de tiempo con marcas y las tres capas.
 5. Estadísticas y filtros.

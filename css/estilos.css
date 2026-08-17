@@ -332,6 +332,80 @@ video::-webkit-media-controls-panel {
   font-size: 1rem;
 }
 
+/* --- Línea de tiempo con las marcas ----------------------------------- */
+
+.linea-tiempo {
+  position: relative;
+  height: 52px;
+  margin-bottom: 0.5rem;
+  background: var(--fondo-caja);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  cursor: pointer;
+  touch-action: manipulation;
+  overflow: hidden;
+}
+
+/* Dónde está el vídeo ahora mismo. */
+.cursor-tiempo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: var(--texto);
+  pointer-events: none;
+}
+
+/* Cada intercambio etiquetado. Estrecho para que quepan muchos, pero alto
+   para que se pueda dar con el dedo. */
+.marca {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 14px;
+  margin-left: -7px;
+  padding: 0;
+  background: var(--texto-suave);
+  border: 1px solid var(--fondo);
+  border-radius: 4px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.marca-favor { background: #35c46b; }
+.marca-contra { background: #e05a4a; }
+.marca-doble { background: #e2a13a; }
+.marca-nada { background: #6b7889; }
+.marca-vacio { background: #4c5c70; }
+
+.marca-activa {
+  border-color: var(--texto);
+  box-shadow: 0 0 0 2px var(--acento);
+}
+
+.contador { margin-bottom: 0.75rem; }
+
+/* --- Ficha del intercambio -------------------------------------------- */
+
+.editor { margin-bottom: 1rem; }
+
+.cabecera-editor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.instante {
+  flex: 1;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.pie { margin-top: 1rem; }
+
 .progreso {
   margin: 0 0 1rem;
   font-variant-numeric: tabular-nums;
