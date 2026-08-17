@@ -16,35 +16,13 @@ import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 import { pantallaEstadisticas } from './pantallas/estadisticas.js';
 
 // Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v11';
+const VERSION = 'v12';
 
-// Medio segundo de fondo liso antes de que aparezca el logotipo. Sirve de
-// puente con la pantalla de carga de Android, que muestra el escudo sin
-// texto y no se puede sustituir: así el escudo se va contra un fondo igual
-// en vez de que un logotipo distinto lo reemplace de golpe.
-const PAUSA_EN_BLANCO = 500;
-
-// Cuánto se ve el logotipo, una vez ha aparecido.
-const DURACION_ARRANQUE = 4000;
+// No hay pantalla de arranque propia: la que pinta Android al abrir la
+// aplicación, hecha con el icono y el background_color del manifiesto, ya
+// hace ese papel. Añadir otra encima sólo producía un salto entre las dos.
 
 capturarErroresGlobales();
-
-// --- Pantalla de arranque ---------------------------------------------
-// Va aparte del arranque de la aplicación, que sigue su curso por debajo:
-// cuando el logotipo se va, todo está listo.
-(function programarArranque() {
-  const capa = document.getElementById('arranque');
-  if (!capa) return;
-
-  setTimeout(() => capa.classList.add('mostrando'), PAUSA_EN_BLANCO);
-
-  setTimeout(() => {
-    capa.classList.add('desvaneciendo');
-    // Y fuera del todo cuando termine el desvanecido, para que no quede una
-    // capa invisible por encima de la aplicación.
-    setTimeout(() => capa.classList.add('fuera'), 500);
-  }, PAUSA_EN_BLANCO + DURACION_ARRANQUE);
-})();
 
 // --- Alta de pantallas ------------------------------------------------
 // Todas menos la de etiquetado sueltan el vídeo que hubiera cargado, para

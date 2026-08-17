@@ -28,6 +28,12 @@ export async function pantallaMenu(contenedor) {
       type: 'button', class: 'boton', texto: 'Diagnóstico',
       onclick: () => ir('diagnostico'),
     }),
+
+    crear('img', {
+      class: 'logo-menu',
+      src: './iconos/logo-teseo.jpg',
+      alt: 'Teseo, by CETC',
+    }),
   );
 }
 
