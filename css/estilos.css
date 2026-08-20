@@ -212,6 +212,98 @@ textarea.entrada {
   resize: vertical;
 }
 
+/* --- Barra deslizante -------------------------------------------------- */
+/* Se usa para la fatiga percibida. La barra se tiñe del azul (1) al rojo (5):
+   el color lo calcula el JavaScript y lo deja en --color-actual, y hasta
+   dónde llega el relleno en --relleno. */
+
+.etiqueta-deslizador {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.valor-deslizador {
+  color: var(--texto);
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.deslizador {
+  --relleno: 0%;
+  --color-actual: var(--acento);
+  --color-inicio: hsl(210 75% 55%);
+
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  /* Como todo lo que se toca: nada por debajo de 56 px de alto. */
+  height: 56px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  /* El body deja desplazarse en los dos ejes; si aquí no se quitara el
+     horizontal, arrastrar de lado movería la página en vez del tirador. */
+  touch-action: pan-y;
+}
+
+.deslizador:focus { outline: none; }
+.deslizador:focus-visible::-webkit-slider-runnable-track {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+.deslizador:focus-visible::-moz-range-track {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+
+.deslizador::-webkit-slider-runnable-track {
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(to right,
+      var(--color-inicio) 0%,
+      var(--color-actual) var(--relleno),
+      var(--borde) var(--relleno),
+      var(--borde) 100%);
+}
+
+.deslizador::-moz-range-track {
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(to right,
+      var(--color-inicio) 0%,
+      var(--color-actual) var(--relleno),
+      var(--borde) var(--relleno),
+      var(--borde) 100%);
+}
+
+/* El tirador va del color que le toque al valor: en el 1 la barra todavía no
+   se ve, y sin esto no habría nada azul que mirar. */
+.deslizador::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 32px;
+  height: 32px;
+  /* Para centrarlo sobre una barra de 14 px. */
+  margin-top: -9px;
+  border: 2px solid var(--fondo);
+  border-radius: 50%;
+  background: var(--color-actual);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.deslizador::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--fondo);
+  border-radius: 50%;
+  background: var(--color-actual);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
 /* --- Grupos de opciones ----------------------------------------------- */
 
 .grupo-opciones {
@@ -222,8 +314,6 @@ textarea.entrada {
 
 .grupo-opciones.dos-columnas { grid-template-columns: repeat(2, 1fr); }
 .grupo-opciones.tres-columnas { grid-template-columns: repeat(3, 1fr); }
-.grupo-opciones.cinco-columnas { grid-template-columns: repeat(5, 1fr); }
-.grupo-opciones.compacto { grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); }
 
 /* Las categorias son etiquetas cortas (M15, VET30) y son catorce, asi que
    se aprietan mas que el resto: con 88 px entran tres por fila incluso en

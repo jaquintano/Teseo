@@ -20,18 +20,27 @@ export function crear(etiqueta, propiedades = {}, hijos = []) {
     else elemento.setAttribute(nombre, valor);
   }
 
-  for (const hijo of [].concat(hijos)) {
+  anadir(elemento, hijos);
+  return elemento;
+}
+
+/**
+ * Cuelga hijos de un elemento saltándose los que no están.
+ *
+ * Hace falta porque `elemento.append(null)` no ignora el null: escribe la
+ * palabra "null" en la pantalla. Y las pantallas se montan con listas llenas
+ * de `condición ? algo : null`, así que hay que colar siempre por aquí.
+ */
+export function anadir(elemento, ...hijos) {
+  for (const hijo of hijos.flat()) {
     if (hijo) elemento.append(hijo);
   }
-  return elemento;
 }
 
 /** Vacía un elemento y le mete contenido nuevo. */
 export function rellenar(elemento, contenido) {
   elemento.textContent = '';
-  for (const hijo of [].concat(contenido)) {
-    if (hijo) elemento.append(hijo);
-  }
+  anadir(elemento, contenido);
 }
 
 /**
@@ -151,6 +160,50 @@ export function campoLargo(etiqueta, propiedades = {}) {
     crear('label', { class: 'etiqueta-campo', for: id, texto: etiqueta }),
     entrada,
   ]);
+  return { bloque, entrada };
+}
+
+/**
+ * Barra deslizante para un número corto: fatiga percibida, esfuerzo, etc.
+ *
+ * La barra se tiñe del azul al rojo según sube el valor, y el tirador lleva
+ * el color que toque —en el mínimo la barra todavía no se ve, así que sin
+ * eso no habría nada de color que mirar—.
+ *
+ * @param {string} etiqueta
+ * @param {{min?: number, max?: number, valor?: number}} opciones
+ */
+export function deslizador(etiqueta, opciones = {}) {
+  const min = opciones.min ?? 1;
+  const max = opciones.max ?? 5;
+  const id = `campo-${Math.random().toString(36).slice(2, 9)}`;
+
+  const entrada = crear('input', {
+    id, class: 'deslizador', type: 'range',
+    min, max, step: 1, value: opciones.valor ?? min,
+    oninput: pintar,
+  });
+  const marca = crear('span', { class: 'valor-deslizador' });
+
+  const bloque = crear('div', { class: 'bloque-campo' }, [
+    crear('label', { class: 'etiqueta-campo etiqueta-deslizador', for: id }, [
+      crear('span', { texto: etiqueta }),
+      marca,
+    ]),
+    entrada,
+  ]);
+
+  function pintar() {
+    const valor = Number(entrada.value);
+    const fraccion = max > min ? (valor - min) / (max - min) : 0;
+    // 210 grados es azul y 0 es rojo; por el camino pasa por verde y amarillo.
+    entrada.style.setProperty('--color-actual', `hsl(${Math.round(210 - 210 * fraccion)} 75% 55%)`);
+    entrada.style.setProperty('--relleno', `${fraccion * 100}%`);
+    marca.textContent = String(valor);
+  }
+
+  pintar();
+
   return { bloque, entrada };
 }
 

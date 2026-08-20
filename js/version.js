@@ -2,4 +2,4 @@
 //
 // Hay que subirla en cada despliegue, y poner la misma en sw.js (que no puede
 // importar de aquí porque se ejecuta aparte de la aplicación).
-export const VERSION = 'v21';
+export const VERSION = 'v22';

@@ -7,7 +7,7 @@
 // Los rankings vienen empaquetados dentro de Teseo (carpeta datos/), así que
 // esto funciona sin cobertura.
 
-import { crear, rellenar, cabecera, ir, bloque, desplegable } from '../ui.js';
+import { anadir, crear, rellenar, cabecera, ir, bloque, desplegable } from '../ui.js';
 import { nombreCompleto, etiquetaDe, CATEGORIAS } from '../constantes.js';
 import { generoDelUsuario, categoriasDelUsuario } from '../genero.js';
 import { ALMACENES, guardar, listar } from '../db.js';
@@ -18,10 +18,10 @@ export async function pantallaImportarRfee(contenedor) {
   const genero = generoDelUsuario();
   const categorias = categoriasDelUsuario();
 
-  contenedor.append(cabecera('Traer rivales de la RFEE', () => ir('rivales')));
+  anadir(contenedor, cabecera('Traer rivales de la RFEE', () => ir('rivales')));
 
   if (temporadas.length === 0) {
-    contenedor.append(crear('p', {
+    anadir(contenedor, crear('p', {
       class: 'aviso',
       texto: 'Teseo no trae ningún ranking todavía. Hay que descargarlos antes ' +
              'con la herramienta del proyecto.',
@@ -30,7 +30,7 @@ export async function pantallaImportarRfee(contenedor) {
   }
 
   if (categorias.length === 0) {
-    contenedor.append(
+    anadir(contenedor,
       crear('p', {
         class: 'aviso',
         texto: 'Tu perfil no dice en qué categorías compites, y de ahí sale qué ' +
@@ -47,7 +47,7 @@ export async function pantallaImportarRfee(contenedor) {
   let temporada = temporadas[0];
   const resultado = crear('div');
 
-  contenedor.append(
+  anadir(contenedor,
     crear('p', {
       class: 'ayuda',
       texto: `Se traen los rivales de ${categorias.map((c) => etiquetaDe(CATEGORIAS, c)).join(' y ')}, ` +

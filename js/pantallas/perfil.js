@@ -4,7 +4,7 @@
 // que rellena casi todo, o escribirlo a mano. Después se llega aquí desde el
 // menú, para corregir algo.
 
-import { crear, cabecera, ir, empezarEn } from '../ui.js';
+import { anadir, crear, cabecera, ir, empezarEn } from '../ui.js';
 import { fichaTirador } from './ficha-tirador.js';
 import { obtenerPerfilPropio, guardarPerfilPropio } from '../db.js';
 import { fijarPerfil } from '../genero.js';
@@ -48,7 +48,7 @@ export async function pantallaPerfil(contenedor, datos = {}) {
     },
   });
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera(esPrimeraVez ? 'Tus datos' : 'Mi perfil',
              esPrimeraVez ? () => ir('perfil') : () => ir(datos.volverA || 'inicio')),
 
@@ -70,7 +70,7 @@ export async function pantallaPerfil(contenedor, datos = {}) {
 
 /** Los dos caminos para crear el perfil la primera vez. */
 function pintarBienvenida(contenedor) {
-  contenedor.append(
+  anadir(contenedor,
     crear('div', { class: 'cabecera' }, [
       crear('h2', { class: 'titulo-pantalla', texto: 'Bienvenido a Teseo' }),
     ]),

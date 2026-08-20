@@ -4,8 +4,8 @@
 // suele ser uno; en directas, dos o tres), y cada tiempo tiene su vídeo.
 
 import {
-  crear, rellenar, cabecera, ir, campo, campoLargo, bloque, grupoOpciones, desplegable,
-  formatearFecha, formatearBytes, formatearSegundos,
+  anadir, crear, rellenar, cabecera, ir, campo, campoLargo, bloque, grupoOpciones,
+  desplegable, deslizador, formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
   TIPOS_DE_SESION, FASES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe,
@@ -18,7 +18,9 @@ import {
   guardarVideo, borrarAsalto, borrarTiempo, comprobarLegible,
 } from '../db.js';
 
-const FATIGA = [1, 2, 3, 4, 5].map((n) => ({ id: String(n), etiqueta: String(n) }));
+// La fatiga se apunta con una barra del 1 al 5, y una barra siempre marca
+// algo: si nadie la toca, queda en el punto medio.
+const FATIGA_POR_DEFECTO = 3;
 
 /** Fecha de hoy en el formato que entiende un <input type="date">. */
 function hoy() {
@@ -76,7 +78,7 @@ export async function pantallaInicio(contenedor) {
     ]));
   }
 
-  contenedor.append(
+  anadir(contenedor,
     crear('div', { class: 'cabecera' }, [
       crear('h2', { class: 'titulo-pantalla', texto: 'Mis asaltos' }),
       crear('button', {
@@ -114,7 +116,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   let rivalId = datos.rivalIdElegido ?? asalto.rivalId ?? null;
   let tipoSesion = asalto.tipoSesion || null;
   let fase = asalto.fase || null;
-  let fatiga = asalto.fatiga ? String(asalto.fatiga) : null;
 
   // --- Elección del rival ---
   // Con rankings enteros importados puede haber cientos de fichas, así que
@@ -217,6 +218,9 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     value: asalto.numero || '', type: 'number', inputmode: 'numeric', placeholder: '1',
   });
   const fecha = campo('Fecha', { value: asalto.fecha || hoy(), type: 'date' });
+  const fatiga = deslizador('Fatiga percibida', {
+    min: 1, max: 5, valor: asalto.fatiga || FATIGA_POR_DEFECTO,
+  });
   const nota = campoLargo('Nota', { value: asalto.nota || '' });
 
   // --- Competición ---
@@ -247,7 +251,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
 
   const aviso = crear('p', { class: 'aviso', texto: 'Elige un rival.', hidden: true });
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera(esNuevo ? 'Nuevo asalto' : 'Editar asalto',
              () => ir(esNuevo ? 'inicio' : 'asalto', { id: datos.id })),
 
@@ -280,10 +284,9 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
         }),
       }),
     ])),
-    bloque('Fase', grupoOpciones(FASES, fase, (valor) => { fase = valor; },
-      { clase: 'compacto' })),
-    bloque('Fatiga percibida', grupoOpciones(FATIGA, fatiga,
-      (valor) => { fatiga = valor; }, { clase: 'cinco-columnas' })),
+    desplegable('Fase', FASES, fase, (valor) => { fase = valor; },
+                { vacio: '— Sin indicar —' }).bloque,
+    fatiga.bloque,
     nota.bloque,
     aviso,
 
@@ -315,7 +318,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           competicionId,
           fase,
           // El club no se pregunta aquí: ya está en la ficha del rival.
-          fatiga: fatiga ? Number(fatiga) : null,
+          fatiga: Number(fatiga.entrada.value),
           nota: nota.entrada.value.trim(),
         };
 
@@ -374,7 +377,7 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     await anadirTiempo(fichero, asalto, tiempos.length, progreso, etiquetaBoton);
   });
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera(rival ? nombreCompleto(rival) : 'Rival borrado', () => ir('inicio')),
 
     crear('p', { class: 'ayuda', texto: contexto }),

@@ -5,7 +5,7 @@
 // así el contexto deja de teclearse en cada asalto.
 
 import {
-  crear, rellenar, cabecera, ir, campo, campoLargo, bloque, desplegable,
+  anadir, crear, rellenar, cabecera, ir, campo, campoLargo, bloque, desplegable,
   formatearFecha,
 } from '../ui.js';
 import { normalizar } from '../constantes.js';
@@ -55,7 +55,7 @@ export async function pantallaCompeticiones(contenedor, datos = {}) {
     ir('competiciones', { volverA });
   }
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera('Competiciones', () => ir(volverA)),
 
     crear('button', {
@@ -191,7 +191,7 @@ export async function pantallaCompeticion(contenedor, datos = {}) {
     }));
   }
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera(esNueva ? 'Nueva competición' : competicion.nombre,
              () => ir(volverA, datos.datosVuelta || {})),
 
@@ -222,10 +222,10 @@ export async function pantallaImportarCompeticiones(contenedor) {
   const genero = generoDelUsuario();
   const categorias = categoriasDelUsuario();
 
-  contenedor.append(cabecera('Traer del calendario', () => ir('competiciones')));
+  anadir(contenedor, cabecera('Traer del calendario', () => ir('competiciones')));
 
   if (temporadas.length === 0) {
-    contenedor.append(crear('p', {
+    anadir(contenedor, crear('p', {
       class: 'aviso',
       texto: 'Teseo no trae ningún calendario todavía. Hay que descargarlo antes ' +
              'con la herramienta del proyecto.',
@@ -234,7 +234,7 @@ export async function pantallaImportarCompeticiones(contenedor) {
   }
 
   if (categorias.length === 0) {
-    contenedor.append(
+    anadir(contenedor,
       crear('p', {
         class: 'aviso',
         texto: 'Tu perfil no dice en qué categorías compites, y de ahí sale qué ' +
@@ -251,7 +251,7 @@ export async function pantallaImportarCompeticiones(contenedor) {
   let temporada = temporadas[0];
   const resultado = crear('div');
 
-  contenedor.append(
+  anadir(contenedor,
     crear('p', {
       class: 'ayuda',
       texto: `Se traen las competiciones de ${categorias.join(' y ')}, espada ` +

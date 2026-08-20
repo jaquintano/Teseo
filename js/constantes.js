@@ -83,6 +83,11 @@ export const GENEROS = [
   { id: 'F', etiqueta: 'Femenino' },
 ];
 
+// Con qué llega rellena la ficha propia antes de que nadie toque nada. No es
+// una regla de la esgrima: es por dónde empieza casi todo el que abre Teseo,
+// y se cambia con un toque.
+export const GENERO_POR_DEFECTO = 'F';
+
 // Las categorías de la federación, de la más joven a la de más edad. El
 // tirador dice en cuáles compite —normalmente una o dos, porque se suele
 // tirar en la propia y en la de arriba— y con eso Teseo ya sabe qué rivales
@@ -103,6 +108,8 @@ export const CATEGORIAS = [
   { id: 'VET60', etiqueta: 'VET60' },
   { id: 'VET70', etiqueta: 'VET70' },
 ];
+
+export const CATEGORIA_POR_DEFECTO = 'M17';
 
 export const TIPOS_DE_SESION = [
   { id: 'entrenamiento', etiqueta: 'Entrenamiento' },

@@ -7,7 +7,7 @@
 // tener cientos de fichas. Por eso es una tabla con scroll y buscador, y por
 // eso se ordena poniendo arriba a quienes más te has cruzado.
 
-import { crear, rellenar, cabecera, ir, campo } from '../ui.js';
+import { anadir, crear, rellenar, cabecera, ir, campo } from '../ui.js';
 import { fichaTirador } from './ficha-tirador.js';
 import { etiquetaDe, MANOS, nombreCompleto, normalizar } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
@@ -52,7 +52,7 @@ export async function pantallaRivales(contenedor, datos = {}) {
     ir('rivales', { volverA });
   }
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera('Rivales', () => ir(volverA)),
 
     crear('button', {
@@ -176,7 +176,7 @@ export async function pantallaRival(contenedor, datos = {}) {
     }));
   }
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera(esNuevo ? 'Nuevo rival' : nombreCompleto(rival),
              () => ir(volverA, datos.datosVuelta || {})),
 

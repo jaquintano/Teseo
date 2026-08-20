@@ -18,7 +18,7 @@
 // saltas a ese momento del vídeo.
 
 import {
-  crear, rellenar, cabecera, ir, bloque, grupoOpciones,
+  anadir, crear, rellenar, cabecera, ir, bloque, grupoOpciones,
   formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
@@ -58,7 +58,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   const estado = crear('p', { class: 'ayuda', texto: 'Recuperando el vídeo…' });
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera(`${rival ? rival.nombre : 'Asalto'} · Tiempo ${tiempo.orden}`,
              () => ir('asalto', { id: tiempo.asaltoId })),
     estado,
@@ -70,7 +70,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     fichero = await leerVideo(tiempo);
   } catch (error) {
     estado.textContent = '';
-    contenedor.append(crear('p', {
+    anadir(contenedor, crear('p', {
       class: 'aviso',
       texto: `No se pudo recuperar el vídeo: ${error.message}`,
     }));
@@ -104,7 +104,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   });
 
   estado.remove();
-  contenedor.append(
+  anadir(contenedor,
     reproductor.elemento,
     barra,
     contador,

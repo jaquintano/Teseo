@@ -13,7 +13,7 @@
 import { crear, campo, campoLargo, desplegable, bloque, grupoOpcionesMultiple } from '../ui.js';
 import {
   MANOS, EMPUNADURAS, ESTATURAS, GENEROS, CATEGORIAS, ESTATURA_POR_DEFECTO,
-  opcionesPara,
+  GENERO_POR_DEFECTO, CATEGORIA_POR_DEFECTO, opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 
@@ -29,7 +29,7 @@ export function fichaTirador(tirador = {}, opciones = {}) {
 
   // Para las palabras que cambian: en tu ficha manda lo que elijas ahí mismo;
   // en la de un rival, lo que ya sabemos de ti.
-  let genero = tirador.genero || (esPropio ? null : generoDelUsuario());
+  let genero = tirador.genero || (esPropio ? GENERO_POR_DEFECTO : generoDelUsuario());
 
   const nombre = campo('Nombre', { value: tirador.nombre || '', placeholder: 'Nombre' });
   const apellidos = campo('Apellidos', {
@@ -48,7 +48,10 @@ export function fichaTirador(tirador = {}, opciones = {}) {
   let mano = tirador.mano || null;
   let empunadura = tirador.empunadura || null;
   let estatura = tirador.estatura || ESTATURA_POR_DEFECTO;
-  let categorias = tirador.categorias || [];
+  // La ficha propia arranca con una categoría marcada: casi nadie la deja
+  // como está, pero así se ve de un vistazo qué se espera aquí.
+  let categorias = tirador.categorias
+    || (esPropio ? [CATEGORIA_POR_DEFECTO] : []);
 
   // Los rivales que vienen del ranking llegan sin mano, porque la federación
   // no la publica. Se deja sin elegir para que se note que falta, en vez de
@@ -96,12 +99,6 @@ export function fichaTirador(tirador = {}, opciones = {}) {
     apellidos.bloque,
     selectorGenero ? selectorGenero.bloque : null,
     bloqueCategorias,
-    esPropio ? crear('p', {
-      class: 'ayuda',
-      texto: 'Se suele competir en la propia categoría y en la de arriba. Con ' +
-             'esto, Teseo ya sabe qué rivales y qué competiciones traerte sin ' +
-             'volver a preguntártelo.',
-    }) : null,
     esPropio ? crear('p', {
       class: 'ayuda',
       texto: 'En esgrima no se compite entre hombres y mujeres, así que esto ' +

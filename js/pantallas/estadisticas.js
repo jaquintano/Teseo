@@ -3,7 +3,7 @@
 // Aquí sólo se pinta. Las cuentas las hace calculo-estadisticas.js, que no
 // sabe nada de pantallas ni de base de datos y se puede llevar aparte.
 
-import { crear, rellenar, cabecera, ir, bloque, grupoOpciones } from '../ui.js';
+import { anadir, crear, rellenar, cabecera, ir, bloque, grupoOpciones } from '../ui.js';
 import { MANOS, nombreCompleto, opcionesPara } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 import { ALMACENES, listar, listarRivales } from '../db.js';
@@ -80,7 +80,7 @@ export async function pantallaEstadisticas(contenedor) {
     selectorNumero.append(crear('option', { value: n, texto: `Asalto ${n} de la sesión` }));
   }
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera('Estadísticas', () => ir('menu')),
 
     crear('details', { class: 'filtros' }, [

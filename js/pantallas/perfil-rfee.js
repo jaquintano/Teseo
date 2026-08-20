@@ -7,17 +7,17 @@
 // Lo único que la federación no publica es la mano y la empuñadura, así que
 // eso se rellena después.
 
-import { crear, rellenar, cabecera, ir, bloque, campo } from '../ui.js';
+import { anadir, crear, rellenar, cabecera, ir, bloque, campo } from '../ui.js';
 import { nombreCompleto, normalizar, ESTATURA_POR_DEFECTO } from '../constantes.js';
 import { listarRankings, cargarRanking } from '../rfee.js';
 
 export async function pantallaPerfilRfee(contenedor) {
   const rankings = await listarRankings();
 
-  contenedor.append(cabecera('Búscate en la RFEE', () => ir('perfil')));
+  anadir(contenedor, cabecera('Búscate en la RFEE', () => ir('perfil')));
 
   if (rankings.length === 0) {
-    contenedor.append(
+    anadir(contenedor,
       crear('p', {
         class: 'aviso',
         texto: 'Teseo no trae ningún ranking todavía. Tendrás que escribir tus ' +
@@ -58,7 +58,7 @@ export async function pantallaPerfilRfee(contenedor) {
     return s;
   };
 
-  contenedor.append(
+  anadir(contenedor,
     crear('p', {
       class: 'ayuda',
       texto: 'Elige tu categoría y búscate en la lista. Con eso quedan puestos ' +

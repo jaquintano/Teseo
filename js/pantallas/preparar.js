@@ -4,7 +4,7 @@
 // da ponerse a dar de alta gente a mano. Con las categorías del perfil ya
 // sabemos qué traer, así que sólo queda elegir la temporada y pulsar.
 
-import { crear, rellenar, cabecera, ir, bloque, desplegable } from '../ui.js';
+import { anadir, crear, rellenar, cabecera, ir, bloque, desplegable } from '../ui.js';
 import { etiquetaDe, CATEGORIAS } from '../constantes.js';
 import { generoDelUsuario, categoriasDelUsuario } from '../genero.js';
 import { ALMACENES, guardar, listar } from '../db.js';
@@ -25,10 +25,10 @@ export async function pantallaPreparar(contenedor) {
   // Las temporadas de las que hay algo, sea ranking o calendario.
   const temporadas = [...new Set([...deRanking, ...deCalendario])].sort().reverse();
 
-  contenedor.append(cabecera('Rellenar mis datos', () => ir('inicio')));
+  anadir(contenedor, cabecera('Rellenar mis datos', () => ir('inicio')));
 
   if (categorias.length === 0 || temporadas.length === 0) {
-    contenedor.append(crear('p', {
+    anadir(contenedor, crear('p', {
       class: 'aviso',
       texto: categorias.length === 0
         ? 'Tu perfil no dice en qué categorías compites, y de ahí sale qué traerte.'
@@ -40,7 +40,7 @@ export async function pantallaPreparar(contenedor) {
   let temporada = temporadas[0];
   const resultado = crear('div');
 
-  contenedor.append(
+  anadir(contenedor,
     crear('p', {
       class: 'texto-ayuda',
       texto: `Se traerán los rivales y las competiciones de ` +

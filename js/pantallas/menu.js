@@ -1,6 +1,6 @@
 // Menú y pantalla de diagnóstico.
 
-import { crear, cabecera, ir, formatearBytes } from '../ui.js';
+import { anadir, crear, cabecera, ir, formatearBytes } from '../ui.js';
 import {
   estimarEspacio, pedirPersistencia, obtenerPerfilPropio, borrarTodo,
 } from '../db.js';
@@ -12,7 +12,7 @@ import { nombreCompleto } from '../constantes.js';
 export async function pantallaMenu(contenedor) {
   const perfil = await obtenerPerfilPropio();
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera('Menú', () => ir('inicio')),
 
     perfil ? crear('p', {
@@ -79,7 +79,7 @@ export async function pantallaDiagnostico(contenedor) {
     }
   }
 
-  contenedor.append(
+  anadir(contenedor,
     cabecera('Diagnóstico', () => ir('menu')),
 
     crear('p', {

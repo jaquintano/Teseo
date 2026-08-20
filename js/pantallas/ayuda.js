@@ -6,7 +6,7 @@
 // IMPORTANTE: esta pantalla se actualiza en cada versión que añada o cambie
 // algo que el usuario vea. Si tocas una pantalla, pásate por aquí.
 
-import { crear, cabecera, ir } from '../ui.js';
+import { anadir, crear, cabecera, ir } from '../ui.js';
 import { VERSION } from '../version.js';
 
 /** Un apartado con su título y sus párrafos. */
@@ -18,7 +18,7 @@ function apartado(titulo, ...parrafos) {
 }
 
 export async function pantallaAyuda(contenedor) {
-  contenedor.append(
+  anadir(contenedor,
     cabecera('Ayuda', () => ir('menu')),
 
     crear('p', { class: 'texto-ayuda destacado', texto:
@@ -34,14 +34,19 @@ export async function pantallaAyuda(contenedor) {
       'Si no compites en el circuito federativo, puedes escribirlo todo a mano.',
       'Marca también las categorías en las que compites, normalmente la tuya y ' +
       'la de arriba. Con eso Teseo ya sabe qué rivales y qué competiciones ' +
-      'traerte, y no vuelve a preguntártelo.'),
+      'traerte, y no vuelve a preguntártelo.',
+      'El formulario llega con el género en "Femenino" y la categoría M17 ya ' +
+      'marcados, que es lo más habitual. Si no es tu caso, cámbialos.'),
 
     apartado('Cómo se usa, de principio a fin',
       '1. Graba el asalto con el móvil, como cualquier vídeo.',
       '2. En Teseo, pulsa "Nuevo asalto" y di contra quién fue.',
       '3. Añade el vídeo. Si el asalto tuvo varios tiempos, añade uno por tiempo.',
       '4. Abre el vídeo y ve marcando lo que pasa en cada intercambio.',
-      '5. Cuando quieras, entra en Estadísticas y mira qué te sale.'),
+      '5. Cuando quieras, entra en Estadísticas y mira qué te sale.',
+      'Del asalto puedes apuntar además la fase, que se elige de una lista ' +
+      '(poule, tablón de 32, final…), y la fatiga que sentiste, con una barra ' +
+      'del 1 al 5 que va del azul al rojo.'),
 
     apartado('Marcar un intercambio',
       'Reproduce el vídeo y pausa justo donde pasa algo. Con los botones de ' +
