@@ -4,22 +4,8 @@
  "categoria": "M13",
  "genero": "Femenino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=12&gender=W",
- "descargadoEl": "2026-08-20T10:09:30.504Z",
+ "descargadoEl": "2026-08-20T10:26:35.931Z",
  "tiradores": [
-  {
-   "idRfee": 2004,
-   "nombre": "CANDELA",
-   "apellidos": "ALMAZAN NOGALES",
-   "fechaNacimiento": "2013-07-28",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 2259,
-   "nombre": "ASTA",
-   "apellidos": "GRIGALIUNAS CAMPOMANES",
-   "fechaNacimiento": "2013-05-03",
-   "club": "CELC-M"
-  },
   {
    "idRfee": 1979,
    "nombre": "AILIN NILO",
@@ -28,18 +14,11 @@
    "club": "CETC-M"
   },
   {
-   "idRfee": 3081,
-   "nombre": "CLAUDIA",
-   "apellidos": "MONTENEGRO LOPEZ",
-   "fechaNacimiento": "2013-04-29",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 3979,
-   "nombre": "MARIA",
-   "apellidos": "GONZALEZ PINEDA",
-   "fechaNacimiento": "2013-09-08",
-   "club": "SAES-BU"
+   "idRfee": 2004,
+   "nombre": "CANDELA",
+   "apellidos": "ALMAZAN NOGALES",
+   "fechaNacimiento": "2013-07-28",
+   "club": "CREA-M"
   },
   {
    "idRfee": 2132,
@@ -49,6 +28,90 @@
    "club": "CNM-GC"
   },
   {
+   "idRfee": 2259,
+   "nombre": "ASTA",
+   "apellidos": "GRIGALIUNAS CAMPOMANES",
+   "fechaNacimiento": "2013-05-03",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 2892,
+   "nombre": "PAULA ELENA",
+   "apellidos": "GASCA",
+   "fechaNacimiento": "2013-03-10",
+   "club": "EDMC-VA"
+  },
+  {
+   "idRfee": 2896,
+   "nombre": "LUCÍA",
+   "apellidos": "LASÉN CARBELLIDO",
+   "fechaNacimiento": "2014-10-12",
+   "club": "EDMC-VA"
+  },
+  {
+   "idRfee": 3023,
+   "nombre": "AROA YITIAN",
+   "apellidos": "ELORZA CASTRILLO",
+   "fechaNacimiento": "2014-02-14",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 3079,
+   "nombre": "CLAIRE",
+   "apellidos": "LASTRAS FERNÁNDEZ",
+   "fechaNacimiento": "2013-04-03",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 3081,
+   "nombre": "CLAUDIA",
+   "apellidos": "MONTENEGRO LOPEZ",
+   "fechaNacimiento": "2013-04-29",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 3126,
+   "nombre": "ÁGUEDA",
+   "apellidos": "JUÁREZ GONZÁLEZ",
+   "fechaNacimiento": "2013-01-21",
+   "club": "CE-TO"
+  },
+  {
+   "idRfee": 3158,
+   "nombre": "JIMENA",
+   "apellidos": "GARRIDO SANCHEZ",
+   "fechaNacimiento": "2014-03-21",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 3877,
+   "nombre": "FABIOLA",
+   "apellidos": "INSA ROBLES-MONSERRAT",
+   "fechaNacimiento": "2015-02-04",
+   "club": "CNE-NA"
+  },
+  {
+   "idRfee": 3932,
+   "nombre": "CARMEN",
+   "apellidos": "ALMAZAN NOGALES",
+   "fechaNacimiento": "2015-07-23",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 3943,
+   "nombre": "TERESA",
+   "apellidos": "BENITO REGUILÓN",
+   "fechaNacimiento": "2015-06-05",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 3979,
+   "nombre": "MARIA",
+   "apellidos": "GONZALEZ PINEDA",
+   "fechaNacimiento": "2013-09-08",
+   "club": "SAES-BU"
+  },
+  {
    "idRfee": 3988,
    "nombre": "IRENE",
    "apellidos": "GONZALEZ PINEDA",
@@ -56,10 +119,31 @@
    "club": "SAES-BU"
   },
   {
-   "idRfee": 4710,
-   "nombre": "JULIA",
-   "apellidos": "CUENA BARAGAÑA",
-   "fechaNacimiento": "2014-08-12",
+   "idRfee": 3993,
+   "nombre": "CELIA",
+   "apellidos": "JIMENEZ ARROYO",
+   "fechaNacimiento": "2013-06-03",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 4000,
+   "nombre": "ALESSIA",
+   "apellidos": "FREZZA",
+   "fechaNacimiento": "2013-07-16",
+   "club": "CSA-GC"
+  },
+  {
+   "idRfee": 4007,
+   "nombre": "SOFIA",
+   "apellidos": "FRANCO SANCHEZ",
+   "fechaNacimiento": "2015-10-26",
+   "club": "EDMC-VA"
+  },
+  {
+   "idRfee": 4042,
+   "nombre": "MARIA ISABEL",
+   "apellidos": "MALDONADO VINOKUROVA",
+   "fechaNacimiento": "2015-05-26",
    "club": "CEP-M"
   },
   {
@@ -70,18 +154,60 @@
    "club": "SAARVI-VI"
   },
   {
-   "idRfee": 4000,
-   "nombre": "ALESSIA",
-   "apellidos": "FREZZA",
-   "fechaNacimiento": "2013-07-16",
-   "club": "CSA-GC"
+   "idRfee": 4478,
+   "nombre": "MARGOT",
+   "apellidos": "BUIRA &Agrave;VILA",
+   "fechaNacimiento": "2013-10-27",
+   "club": "CEMAR-B"
   },
   {
-   "idRfee": 3158,
-   "nombre": "JIMENA",
-   "apellidos": "GARRIDO SANCHEZ",
-   "fechaNacimiento": "2014-03-21",
-   "club": "VCE-VA"
+   "idRfee": 4549,
+   "nombre": "OIHANE",
+   "apellidos": "AGUSTÍN FERNÁNDEZ",
+   "fechaNacimiento": "2013-09-05",
+   "club": "SAARVI-VI"
+  },
+  {
+   "idRfee": 4550,
+   "nombre": "JUNE",
+   "apellidos": "QUINTELA FUENTES",
+   "fechaNacimiento": "2013-01-27",
+   "club": "SAARVI-VI"
+  },
+  {
+   "idRfee": 4641,
+   "nombre": "JULIA",
+   "apellidos": "JIMENEZ BENITO",
+   "fechaNacimiento": "2014-08-20",
+   "club": "EDMC-VA"
+  },
+  {
+   "idRfee": 4654,
+   "nombre": "NOA",
+   "apellidos": "REDONDO TORREGLOSA",
+   "fechaNacimiento": "2013-04-27",
+   "club": "CE-TO"
+  },
+  {
+   "idRfee": 4655,
+   "nombre": "CARLOTA",
+   "apellidos": "VIDAL CIPRES",
+   "fechaNacimiento": "2015-07-03",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 4706,
+   "nombre": "JULIA",
+   "apellidos": "FERNANDEZ DEL CAMPO ORENES",
+   "fechaNacimiento": "2013-12-04",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 4710,
+   "nombre": "JULIA",
+   "apellidos": "CUENA BARAGAÑA",
+   "fechaNacimiento": "2014-08-12",
+   "club": "CEP-M"
   },
   {
    "idRfee": 4711,
@@ -89,27 +215,6 @@
    "apellidos": "TORRES SOTO",
    "fechaNacimiento": "2015-08-13",
    "club": "CEP-M"
-  },
-  {
-   "idRfee": 2892,
-   "nombre": "PAULA ELENA",
-   "apellidos": "GASCA",
-   "fechaNacimiento": "2013-03-10",
-   "club": "EDMC-VA"
-  },
-  {
-   "idRfee": 3079,
-   "nombre": "CLAIRE",
-   "apellidos": "LASTRAS FERNÁNDEZ",
-   "fechaNacimiento": "2013-04-03",
-   "club": "CELC-M"
-  },
-  {
-   "idRfee": 4478,
-   "nombre": "MARGOT",
-   "apellidos": "BUIRA &Agrave;VILA",
-   "fechaNacimiento": "2013-10-27",
-   "club": "CEMAR-B"
   },
   {
    "idRfee": 4893,
@@ -126,90 +231,6 @@
    "club": "VCE-VA"
   },
   {
-   "idRfee": 5054,
-   "nombre": "VITALINA",
-   "apellidos": "KUDLA LISNA",
-   "fechaNacimiento": "2013-12-12",
-   "club": "SAARVI-VI"
-  },
-  {
-   "idRfee": 4549,
-   "nombre": "OIHANE",
-   "apellidos": "AGUSTÍN FERNÁNDEZ",
-   "fechaNacimiento": "2013-09-05",
-   "club": "SAARVI-VI"
-  },
-  {
-   "idRfee": 4007,
-   "nombre": "SOFIA",
-   "apellidos": "FRANCO SANCHEZ",
-   "fechaNacimiento": "2015-10-26",
-   "club": "EDMC-VA"
-  },
-  {
-   "idRfee": 5104,
-   "nombre": "BAHAR",
-   "apellidos": "DIVRIKLIOGLU",
-   "fechaNacimiento": "2015-08-25",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 4042,
-   "nombre": "MARIA ISABEL",
-   "apellidos": "MALDONADO VINOKUROVA",
-   "fechaNacimiento": "2015-05-26",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 3943,
-   "nombre": "TERESA",
-   "apellidos": "BENITO REGUILÓN",
-   "fechaNacimiento": "2015-06-05",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 3993,
-   "nombre": "CELIA",
-   "apellidos": "JIMENEZ ARROYO",
-   "fechaNacimiento": "2013-06-03",
-   "club": "SAJI-V"
-  },
-  {
-   "idRfee": 4550,
-   "nombre": "JUNE",
-   "apellidos": "QUINTELA FUENTES",
-   "fechaNacimiento": "2013-01-27",
-   "club": "SAARVI-VI"
-  },
-  {
-   "idRfee": 4706,
-   "nombre": "JULIA",
-   "apellidos": "FERNANDEZ DEL CAMPO ORENES",
-   "fechaNacimiento": "2013-12-04",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 2896,
-   "nombre": "LUCÍA",
-   "apellidos": "LASÉN CARBELLIDO",
-   "fechaNacimiento": "2014-10-12",
-   "club": "EDMC-VA"
-  },
-  {
-   "idRfee": 5105,
-   "nombre": "REBECCA",
-   "apellidos": "REES",
-   "fechaNacimiento": "2013-08-11",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 3877,
-   "nombre": "FABIOLA",
-   "apellidos": "INSA ROBLES-MONSERRAT",
-   "fechaNacimiento": "2015-02-04",
-   "club": "CNE-NA"
-  },
-  {
    "idRfee": 4942,
    "nombre": "DANNA VALENTINA",
    "apellidos": "GONZALEZ GONZALEZ",
@@ -217,46 +238,11 @@
    "club": "SAJI-V"
   },
   {
-   "idRfee": 3126,
-   "nombre": "ÁGUEDA",
-   "apellidos": "JUÁREZ GONZÁLEZ",
-   "fechaNacimiento": "2013-01-21",
-   "club": "CE-TO"
-  },
-  {
-   "idRfee": 3023,
-   "nombre": "AROA YITIAN",
-   "apellidos": "ELORZA CASTRILLO",
-   "fechaNacimiento": "2014-02-14",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 5115,
-   "nombre": "ZOE",
-   "apellidos": "MÉNDEZ MARTÍN",
-   "fechaNacimiento": "2013-09-19",
-   "club": "100TO-C"
-  },
-  {
-   "idRfee": 4655,
-   "nombre": "CARLOTA",
-   "apellidos": "VIDAL CIPRES",
-   "fechaNacimiento": "2015-07-03",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 5142,
-   "nombre": "VICTORIA",
-   "apellidos": "ROJAS GARCIA",
-   "fechaNacimiento": "2013-07-17",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 5121,
-   "nombre": "ISABEL",
-   "apellidos": "RODRIGUEZ DOMENE",
-   "fechaNacimiento": "2014-11-16",
-   "club": "CREA-M"
+   "idRfee": 5054,
+   "nombre": "VITALINA",
+   "apellidos": "KUDLA LISNA",
+   "fechaNacimiento": "2013-12-12",
+   "club": "SAARVI-VI"
   },
   {
    "idRfee": 5102,
@@ -266,18 +252,25 @@
    "club": "CETC-M"
   },
   {
-   "idRfee": 4641,
-   "nombre": "JULIA",
-   "apellidos": "JIMENEZ BENITO",
-   "fechaNacimiento": "2014-08-20",
-   "club": "EDMC-VA"
+   "idRfee": 5104,
+   "nombre": "BAHAR",
+   "apellidos": "DIVRIKLIOGLU",
+   "fechaNacimiento": "2015-08-25",
+   "club": "CEP-M"
   },
   {
-   "idRfee": 3932,
-   "nombre": "CARMEN",
-   "apellidos": "ALMAZAN NOGALES",
-   "fechaNacimiento": "2015-07-23",
-   "club": "CREA-M"
+   "idRfee": 5105,
+   "nombre": "REBECCA",
+   "apellidos": "REES",
+   "fechaNacimiento": "2013-08-11",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 5115,
+   "nombre": "ZOE",
+   "apellidos": "MÉNDEZ MARTÍN",
+   "fechaNacimiento": "2013-09-19",
+   "club": "100TO-C"
   },
   {
    "idRfee": 5117,
@@ -287,6 +280,13 @@
    "club": "CETC-M"
   },
   {
+   "idRfee": 5121,
+   "nombre": "ISABEL",
+   "apellidos": "RODRIGUEZ DOMENE",
+   "fechaNacimiento": "2014-11-16",
+   "club": "CREA-M"
+  },
+  {
    "idRfee": 5128,
    "nombre": "CAROLINA",
    "apellidos": "GRANDAS ARELLANO",
@@ -294,11 +294,11 @@
    "club": "CE-M"
   },
   {
-   "idRfee": 4654,
-   "nombre": "NOA",
-   "apellidos": "REDONDO TORREGLOSA",
-   "fechaNacimiento": "2013-04-27",
-   "club": "CE-TO"
+   "idRfee": 5142,
+   "nombre": "VICTORIA",
+   "apellidos": "ROJAS GARCIA",
+   "fechaNacimiento": "2013-07-17",
+   "club": "CREA-M"
   }
  ]
 }

@@ -4,49 +4,14 @@
  "categoria": "VET30",
  "genero": "Masculino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=13&gender=M",
- "descargadoEl": "2026-08-20T10:09:43.345Z",
+ "descargadoEl": "2026-08-20T10:26:48.635Z",
  "tiradores": [
   {
-   "idRfee": 2454,
-   "nombre": "ADRIA",
-   "apellidos": "TORRENS URRUTIA",
-   "fechaNacimiento": "1989-06-04",
-   "club": "SAG-B"
-  },
-  {
-   "idRfee": 4801,
-   "nombre": "DIEGO",
-   "apellidos": "GARCIA VIANA",
-   "fechaNacimiento": "1994-01-24",
-   "club": "CEX-M"
-  },
-  {
-   "idRfee": 1408,
-   "nombre": "JORDI",
-   "apellidos": "PRUNÉS MOY&Agrave;",
-   "fechaNacimiento": "1994-08-29",
-   "club": "CBE-BA"
-  },
-  {
-   "idRfee": 4793,
-   "nombre": "LUIS",
-   "apellidos": "PISONERO TARANTINO",
-   "fechaNacimiento": "1988-09-27",
-   "club": "CE-M"
-  },
-  {
-   "idRfee": 4265,
-   "nombre": "VITALII",
-   "apellidos": "MOSKALCHUK",
-   "fechaNacimiento": "1987-09-16",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 5008,
-   "nombre": "REINALDO",
-   "apellidos": "FÍNEZ BALLESTEROS",
-   "fechaNacimiento": "1991-03-30",
-   "club": "SAM-B"
+   "idRfee": 736,
+   "nombre": "ADRIÁN",
+   "apellidos": "PENIDO NUÑEZ",
+   "fechaNacimiento": "1989-09-04",
+   "club": "COMES-C"
   },
   {
    "idRfee": 933,
@@ -56,60 +21,11 @@
    "club": "CEA-V"
   },
   {
-   "idRfee": 4040,
-   "nombre": "VICTOR",
-   "apellidos": "CHINER RIDAURA",
-   "fechaNacimiento": "1989-10-21",
-   "club": "SAV-V"
-  },
-  {
-   "idRfee": 4988,
-   "nombre": "ANDREA",
-   "apellidos": "BALBI",
-   "fechaNacimiento": "1987-08-17",
-   "club": "CBC-CA"
-  },
-  {
    "idRfee": 965,
    "nombre": "EDUARDO",
    "apellidos": "CUBELLS TALAVERA",
    "fechaNacimiento": "1991-09-23",
    "club": "COE-M"
-  },
-  {
-   "idRfee": 5049,
-   "nombre": "MARCEL",
-   "apellidos": "VILALTA I SOLER",
-   "fechaNacimiento": "1994-12-09",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 4807,
-   "nombre": "ROBERTO",
-   "apellidos": "ROZALÉN CALVO",
-   "fechaNacimiento": "1991-12-19",
-   "club": "CNM-GC"
-  },
-  {
-   "idRfee": 736,
-   "nombre": "ADRIÁN",
-   "apellidos": "PENIDO NUÑEZ",
-   "fechaNacimiento": "1989-09-04",
-   "club": "COMES-C"
-  },
-  {
-   "idRfee": 4250,
-   "nombre": "ERIC",
-   "apellidos": "MILESI VIDAL",
-   "fechaNacimiento": "1994-09-22",
-   "club": "SANTCU-B"
-  },
-  {
-   "idRfee": 4341,
-   "nombre": "EDUARDO",
-   "apellidos": "MENDEZ MARTIN-ALBO",
-   "fechaNacimiento": "1995-12-29",
-   "club": "CEMAJ-M"
   },
   {
    "idRfee": 967,
@@ -119,6 +35,76 @@
    "club": "CCC-M"
   },
   {
+   "idRfee": 1408,
+   "nombre": "JORDI",
+   "apellidos": "PRUNÉS MOY&Agrave;",
+   "fechaNacimiento": "1994-08-29",
+   "club": "CBE-BA"
+  },
+  {
+   "idRfee": 2454,
+   "nombre": "ADRIA",
+   "apellidos": "TORRENS URRUTIA",
+   "fechaNacimiento": "1989-06-04",
+   "club": "SAG-B"
+  },
+  {
+   "idRfee": 4040,
+   "nombre": "VICTOR",
+   "apellidos": "CHINER RIDAURA",
+   "fechaNacimiento": "1989-10-21",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 4250,
+   "nombre": "ERIC",
+   "apellidos": "MILESI VIDAL",
+   "fechaNacimiento": "1994-09-22",
+   "club": "SANTCU-B"
+  },
+  {
+   "idRfee": 4265,
+   "nombre": "VITALII",
+   "apellidos": "MOSKALCHUK",
+   "fechaNacimiento": "1987-09-16",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 4341,
+   "nombre": "EDUARDO",
+   "apellidos": "MENDEZ MARTIN-ALBO",
+   "fechaNacimiento": "1995-12-29",
+   "club": "CEMAJ-M"
+  },
+  {
+   "idRfee": 4793,
+   "nombre": "LUIS",
+   "apellidos": "PISONERO TARANTINO",
+   "fechaNacimiento": "1988-09-27",
+   "club": "CE-M"
+  },
+  {
+   "idRfee": 4801,
+   "nombre": "DIEGO",
+   "apellidos": "GARCIA VIANA",
+   "fechaNacimiento": "1994-01-24",
+   "club": "CEX-M"
+  },
+  {
+   "idRfee": 4807,
+   "nombre": "ROBERTO",
+   "apellidos": "ROZALÉN CALVO",
+   "fechaNacimiento": "1991-12-19",
+   "club": "CNM-GC"
+  },
+  {
+   "idRfee": 4988,
+   "nombre": "ANDREA",
+   "apellidos": "BALBI",
+   "fechaNacimiento": "1987-08-17",
+   "club": "CBC-CA"
+  },
+  {
    "idRfee": 5000,
    "nombre": "CRISTIAN",
    "apellidos": "PIZARRO ALLENDES",
@@ -126,10 +112,24 @@
    "club": "FED-AND-C"
   },
   {
+   "idRfee": 5008,
+   "nombre": "REINALDO",
+   "apellidos": "FÍNEZ BALLESTEROS",
+   "fechaNacimiento": "1991-03-30",
+   "club": "SAM-B"
+  },
+  {
    "idRfee": 5048,
    "nombre": "RUBÉN DARÍO",
    "apellidos": "COSTA PÉREZ",
    "fechaNacimiento": "1991-07-02",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 5049,
+   "nombre": "MARCEL",
+   "apellidos": "VILALTA I SOLER",
+   "fechaNacimiento": "1994-12-09",
    "club": "SAM-B"
   }
  ]

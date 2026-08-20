@@ -4,7 +4,7 @@
  "categoria": "M20",
  "genero": "Masculino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=6&gender=M",
- "descargadoEl": "2026-08-20T10:09:37.640Z",
+ "descargadoEl": "2026-08-20T10:26:42.975Z",
  "tiradores": [
   {
    "idRfee": 99,
@@ -14,18 +14,53 @@
    "club": "SAES-BU"
   },
   {
-   "idRfee": 395,
-   "nombre": "RAYAN",
-   "apellidos": "RAMI ROZPIDE",
-   "fechaNacimiento": "2007-04-29",
-   "club": "SAMA-M"
+   "idRfee": 147,
+   "nombre": "BIEL",
+   "apellidos": "JIMENEZ GISBERT",
+   "fechaNacimiento": "2007-03-30",
+   "club": "SEA-T"
   },
   {
-   "idRfee": 343,
-   "nombre": "RICARDO",
-   "apellidos": "SANCHEZ ALMOGUERA",
-   "fechaNacimiento": "2006-01-27",
-   "club": "CELC-M"
+   "idRfee": 154,
+   "nombre": "ALEJANDRO",
+   "apellidos": "GALDEANO CANTERO",
+   "fechaNacimiento": "2006-11-09",
+   "club": "CNE-NA"
+  },
+  {
+   "idRfee": 155,
+   "nombre": "ALEJANDRO",
+   "apellidos": "MORENO JIMENEZ",
+   "fechaNacimiento": "2006-09-16",
+   "club": "CNE-NA"
+  },
+  {
+   "idRfee": 157,
+   "nombre": "YERAY",
+   "apellidos": "SANCHEZ BURGUI",
+   "fechaNacimiento": "2006-10-15",
+   "club": "CNE-NA"
+  },
+  {
+   "idRfee": 158,
+   "nombre": "MATEO",
+   "apellidos": "URMENETA REPARAZ",
+   "fechaNacimiento": "2006-09-11",
+   "club": "CNE-NA"
+  },
+  {
+   "idRfee": 167,
+   "nombre": "JORGE",
+   "apellidos": "PEREIRA EIRIZ",
+   "fechaNacimiento": "2006-05-11",
+   "club": "100TO-C"
+  },
+  {
+   "idRfee": 170,
+   "nombre": "ADRIÁN",
+   "apellidos": "VIDAL CARUNCHO",
+   "fechaNacimiento": "2006-11-04",
+   "club": "100TO-C"
   },
   {
    "idRfee": 182,
@@ -35,17 +70,192 @@
    "club": "VCE-VA"
   },
   {
-   "idRfee": 1733,
-   "nombre": "SALVADOR GABRIEL",
-   "apellidos": "VARGAS INCIARTE",
-   "fechaNacimiento": "2006-04-11",
+   "idRfee": 196,
+   "nombre": "ALVARO",
+   "apellidos": "ESQUINAS PALAU",
+   "fechaNacimiento": "2007-06-07",
+   "club": "CSA-GC"
+  },
+  {
+   "idRfee": 210,
+   "nombre": "&Agrave;LEX",
+   "apellidos": "ROCA VILARDEB&Ograve;",
+   "fechaNacimiento": "2007-12-29",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 211,
+   "nombre": "DIDAC",
+   "apellidos": "GAROLERA COMPTE",
+   "fechaNacimiento": "2007-11-26",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 213,
+   "nombre": "PAU",
+   "apellidos": "GILI LOPEZ",
+   "fechaNacimiento": "2007-01-15",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 234,
+   "nombre": "ERIC",
+   "apellidos": "BROUARD MORENO",
+   "fechaNacimiento": "2009-10-08",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 235,
+   "nombre": "GAEL",
+   "apellidos": "IÑIGO LAHERA",
+   "fechaNacimiento": "2009-02-13",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 246,
+   "nombre": "ORIOL",
+   "apellidos": "ESPÍ FONTELLES",
+   "fechaNacimiento": "2007-08-31",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 273,
+   "nombre": "VICENTE",
+   "apellidos": "JIMENEZ ZOTES",
+   "fechaNacimiento": "2007-08-02",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 287,
+   "nombre": "RAUL",
+   "apellidos": "MARTINEZ CANTOS",
+   "fechaNacimiento": "2008-04-28",
+   "club": "SADA-AB"
+  },
+  {
+   "idRfee": 294,
+   "nombre": "DIEGO",
+   "apellidos": "FORTUN AZCONA",
+   "fechaNacimiento": "2007-08-21",
+   "club": "CNE-NA"
+  },
+  {
+   "idRfee": 301,
+   "nombre": "JESÚS",
+   "apellidos": "PONS GIL",
+   "fechaNacimiento": "2007-11-20",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 303,
+   "nombre": "GONZALO",
+   "apellidos": "MORENO DOMINGO",
+   "fechaNacimiento": "2006-01-16",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 306,
+   "nombre": "JAVIER",
+   "apellidos": "ABAD PINAZO",
+   "fechaNacimiento": "2006-07-26",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 323,
+   "nombre": "DAVID",
+   "apellidos": "PEREZ MARTINEZ",
+   "fechaNacimiento": "2006-01-28",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 330,
+   "nombre": "GUILLERMO",
+   "apellidos": "MIGUEZ BENITO",
+   "fechaNacimiento": "2006-04-23",
+   "club": "SAES-BU"
+  },
+  {
+   "idRfee": 332,
+   "nombre": "JUAN",
+   "apellidos": "PEREZ WEBER",
+   "fechaNacimiento": "2006-01-10",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 336,
+   "nombre": "SERGIO",
+   "apellidos": "ELENA NAVARRO",
+   "fechaNacimiento": "2006-07-10",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 343,
+   "nombre": "RICARDO",
+   "apellidos": "SANCHEZ ALMOGUERA",
+   "fechaNacimiento": "2006-01-27",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 358,
+   "nombre": "NICOLÁS",
+   "apellidos": "FERRER BARATA",
+   "fechaNacimiento": "2009-01-13",
+   "club": "SEM-V"
+  },
+  {
+   "idRfee": 395,
+   "nombre": "RAYAN",
+   "apellidos": "RAMI ROZPIDE",
+   "fechaNacimiento": "2007-04-29",
    "club": "SAMA-M"
   },
   {
-   "idRfee": 550,
+   "idRfee": 398,
+   "nombre": "ELIOT",
+   "apellidos": "LEBHARD GOMEZ",
+   "fechaNacimiento": "2006-02-21",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 404,
+   "nombre": "JORGE",
+   "apellidos": "MARTIN LOPEZ",
+   "fechaNacimiento": "2006-05-19",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 424,
+   "nombre": "CARLOS",
+   "apellidos": "PEREZ GARCIA",
+   "fechaNacimiento": "2008-03-02",
+   "club": "SAN-NA"
+  },
+  {
+   "idRfee": 439,
+   "nombre": "MARCOS",
+   "apellidos": "ALVAREZ APARICIO",
+   "fechaNacimiento": "2008-08-15",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 528,
+   "nombre": "FERNANDO",
+   "apellidos": "LATORRE FERNANDEZ",
+   "fechaNacimiento": "2006-10-02",
+   "club": "SA-LO"
+  },
+  {
+   "idRfee": 531,
+   "nombre": "GONZALO",
+   "apellidos": "BUSTILLO NAVARRO",
+   "fechaNacimiento": "2006-11-09",
+   "club": "SA-LO"
+  },
+  {
+   "idRfee": 540,
    "nombre": "PABLO",
-   "apellidos": "RUIZ VÁZQUEZ",
-   "fechaNacimiento": "2007-05-17",
+   "apellidos": "ABELLAN POZA",
+   "fechaNacimiento": "2006-04-21",
    "club": "CELC-M"
   },
   {
@@ -56,522 +266,11 @@
    "club": "CELC-M"
   },
   {
-   "idRfee": 246,
-   "nombre": "ORIOL",
-   "apellidos": "ESPÍ FONTELLES",
-   "fechaNacimiento": "2007-08-31",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 332,
-   "nombre": "JUAN",
-   "apellidos": "PEREZ WEBER",
-   "fechaNacimiento": "2006-01-10",
-   "club": "VCE-VA"
-  },
-  {
-   "idRfee": 273,
-   "nombre": "VICENTE",
-   "apellidos": "JIMENEZ ZOTES",
-   "fechaNacimiento": "2007-08-02",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 634,
-   "nombre": "JOAN",
-   "apellidos": "FERRUS GARCIA",
-   "fechaNacimiento": "2007-04-04",
-   "club": "SAV-V"
-  },
-  {
-   "idRfee": 213,
-   "nombre": "PAU",
-   "apellidos": "GILI LOPEZ",
-   "fechaNacimiento": "2007-01-15",
-   "club": "CEMAR-B"
-  },
-  {
-   "idRfee": 781,
-   "nombre": "LUCAS",
-   "apellidos": "ENRIQUEZ RODRIGUEZ",
-   "fechaNacimiento": "2008-09-04",
-   "club": "CELC-M"
-  },
-  {
-   "idRfee": 899,
-   "nombre": "JORGE",
-   "apellidos": "CORDOBA ALVAREZ",
-   "fechaNacimiento": "2009-01-14",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 306,
-   "nombre": "JAVIER",
-   "apellidos": "ABAD PINAZO",
-   "fechaNacimiento": "2006-07-26",
-   "club": "SAV-V"
-  },
-  {
-   "idRfee": 167,
-   "nombre": "JORGE",
-   "apellidos": "PEREIRA EIRIZ",
-   "fechaNacimiento": "2006-05-11",
-   "club": "100TO-C"
-  },
-  {
-   "idRfee": 439,
-   "nombre": "MARCOS",
-   "apellidos": "ALVAREZ APARICIO",
-   "fechaNacimiento": "2008-08-15",
-   "club": "SA-GR"
-  },
-  {
-   "idRfee": 303,
-   "nombre": "GONZALO",
-   "apellidos": "MORENO DOMINGO",
-   "fechaNacimiento": "2006-01-16",
-   "club": "SAV-V"
-  },
-  {
-   "idRfee": 1174,
-   "nombre": "GABRIEL",
-   "apellidos": "DEL TORNO IGLESIAS",
-   "fechaNacimiento": "2007-11-26",
-   "club": "SAES-BU"
-  },
-  {
-   "idRfee": 154,
-   "nombre": "ALEJANDRO",
-   "apellidos": "GALDEANO CANTERO",
-   "fechaNacimiento": "2006-11-09",
-   "club": "CNE-NA"
-  },
-  {
-   "idRfee": 3287,
-   "nombre": "DIEGO JOSE",
-   "apellidos": "DELMORAL COMUNIAN",
-   "fechaNacimiento": "2009-12-29",
-   "club": "SAV-V"
-  },
-  {
-   "idRfee": 528,
-   "nombre": "FERNANDO",
-   "apellidos": "LATORRE FERNANDEZ",
-   "fechaNacimiento": "2006-10-02",
-   "club": "SA-LO"
-  },
-  {
-   "idRfee": 157,
-   "nombre": "YERAY",
-   "apellidos": "SANCHEZ BURGUI",
-   "fechaNacimiento": "2006-10-15",
-   "club": "CNE-NA"
-  },
-  {
-   "idRfee": 1155,
-   "nombre": "OBAC",
-   "apellidos": "TORNER SÁNCHEZ",
-   "fechaNacimiento": "2007-04-22",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 1731,
-   "nombre": "CARLOS ANDRÉS",
-   "apellidos": "ARITA RIVAS",
-   "fechaNacimiento": "2006-02-27",
-   "club": "100TO-C"
-  },
-  {
-   "idRfee": 531,
-   "nombre": "GONZALO",
-   "apellidos": "BUSTILLO NAVARRO",
-   "fechaNacimiento": "2006-11-09",
-   "club": "SA-LO"
-  },
-  {
-   "idRfee": 155,
-   "nombre": "ALEJANDRO",
-   "apellidos": "MORENO JIMENEZ",
-   "fechaNacimiento": "2006-09-16",
-   "club": "CNE-NA"
-  },
-  {
-   "idRfee": 2390,
-   "nombre": "IKER",
-   "apellidos": "ZARRABE GÓMEZ",
-   "fechaNacimiento": "2007-07-09",
-   "club": "SUÑE-BI"
-  },
-  {
-   "idRfee": 196,
-   "nombre": "ALVARO",
-   "apellidos": "ESQUINAS PALAU",
-   "fechaNacimiento": "2007-06-07",
-   "club": "CSA-GC"
-  },
-  {
-   "idRfee": 2043,
-   "nombre": "PABLO",
-   "apellidos": "DELSO CLEMENTE",
-   "fechaNacimiento": "2009-11-12",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 358,
-   "nombre": "NICOLÁS",
-   "apellidos": "FERRER BARATA",
-   "fechaNacimiento": "2009-01-13",
-   "club": "SEM-V"
-  },
-  {
-   "idRfee": 3568,
-   "nombre": "MATEO",
-   "apellidos": "COMPAGNONI BLANCH",
-   "fechaNacimiento": "2009-08-25",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 398,
-   "nombre": "ELIOT",
-   "apellidos": "LEBHARD GOMEZ",
-   "fechaNacimiento": "2006-02-21",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 1127,
-   "nombre": "ANGEL",
-   "apellidos": "TEMO PLANES",
-   "fechaNacimiento": "2007-02-24",
-   "club": "CEC-C"
-  },
-  {
-   "idRfee": 1114,
-   "nombre": "EDUARD MIHAI",
-   "apellidos": "CEBUC",
-   "fechaNacimiento": "2008-02-11",
-   "club": "EDMC-VA"
-  },
-  {
-   "idRfee": 147,
-   "nombre": "BIEL",
-   "apellidos": "JIMENEZ GISBERT",
-   "fechaNacimiento": "2007-03-30",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 1451,
-   "nombre": "RAUL",
-   "apellidos": "ESTIRADO LORINCZ",
-   "fechaNacimiento": "2010-11-28",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 158,
-   "nombre": "MATEO",
-   "apellidos": "URMENETA REPARAZ",
-   "fechaNacimiento": "2006-09-11",
-   "club": "CNE-NA"
-  },
-  {
-   "idRfee": 234,
-   "nombre": "ERIC",
-   "apellidos": "BROUARD MORENO",
-   "fechaNacimiento": "2009-10-08",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 2904,
-   "nombre": "IVAN",
-   "apellidos": "ALCAZAR TEBAR",
-   "fechaNacimiento": "2009-07-16",
-   "club": "CVA-CR"
-  },
-  {
-   "idRfee": 2311,
-   "nombre": "ALBERT",
-   "apellidos": "REES",
-   "fechaNacimiento": "2010-11-25",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 1560,
-   "nombre": "GABRIEL",
-   "apellidos": "BINDER ARROYO",
-   "fechaNacimiento": "2008-09-08",
-   "club": "EEA-CC"
-  },
-  {
-   "idRfee": 1505,
-   "nombre": "GUILLEM",
-   "apellidos": "VENDRELL FORTEZA-REY",
-   "fechaNacimiento": "2008-03-04",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 4125,
-   "nombre": "XAVIER",
-   "apellidos": "MELO",
-   "fechaNacimiento": "2011-03-08",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 1482,
-   "nombre": "AITOR",
-   "apellidos": "GOMEZ DORREGO",
-   "fechaNacimiento": "2008-06-21",
-   "club": "EEA-CC"
-  },
-  {
-   "idRfee": 294,
+   "idRfee": 545,
    "nombre": "DIEGO",
-   "apellidos": "FORTUN AZCONA",
-   "fechaNacimiento": "2007-08-21",
-   "club": "CNE-NA"
-  },
-  {
-   "idRfee": 1889,
-   "nombre": "POL",
-   "apellidos": "CID PAGES",
-   "fechaNacimiento": "2011-07-30",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 1829,
-   "nombre": "JOEL",
-   "apellidos": "GILI LÓPEZ",
-   "fechaNacimiento": "2010-02-09",
-   "club": "CEMAR-B"
-  },
-  {
-   "idRfee": 3273,
-   "nombre": "JAN",
-   "apellidos": "PUJOL FORCADA",
-   "fechaNacimiento": "2010-01-10",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 2947,
-   "nombre": "DANIEL",
-   "apellidos": "GARCIA TENA",
-   "fechaNacimiento": "2008-12-30",
-   "club": "SAV-V"
-  },
-  {
-   "idRfee": 3583,
-   "nombre": "ILIAN",
-   "apellidos": "RAMI ROZPIDE",
-   "fechaNacimiento": "2009-03-04",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 211,
-   "nombre": "DIDAC",
-   "apellidos": "GAROLERA COMPTE",
-   "fechaNacimiento": "2007-11-26",
-   "club": "CEMAR-B"
-  },
-  {
-   "idRfee": 1969,
-   "nombre": "JAVIER",
-   "apellidos": "GOMEZ VALERA",
-   "fechaNacimiento": "2010-10-26",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 235,
-   "nombre": "GAEL",
-   "apellidos": "IÑIGO LAHERA",
-   "fechaNacimiento": "2009-02-13",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 323,
-   "nombre": "DAVID",
-   "apellidos": "PEREZ MARTINEZ",
-   "fechaNacimiento": "2006-01-28",
-   "club": "SA-GR"
-  },
-  {
-   "idRfee": 1668,
-   "nombre": "PABLO",
-   "apellidos": "VAZQUEZ CAMBON",
-   "fechaNacimiento": "2009-06-30",
-   "club": "CEC-C"
-  },
-  {
-   "idRfee": 2008,
-   "nombre": "ALBERTO",
-   "apellidos": "MARTIN GAMAZO",
-   "fechaNacimiento": "2011-04-29",
-   "club": "SAES-BU"
-  },
-  {
-   "idRfee": 404,
-   "nombre": "JORGE",
-   "apellidos": "MARTIN LOPEZ",
-   "fechaNacimiento": "2006-05-19",
-   "club": "VCE-VA"
-  },
-  {
-   "idRfee": 2828,
-   "nombre": "EDUARD",
-   "apellidos": "MORENO CARAPUIG",
-   "fechaNacimiento": "2010-01-25",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 287,
-   "nombre": "RAUL",
-   "apellidos": "MARTINEZ CANTOS",
-   "fechaNacimiento": "2008-04-28",
-   "club": "SADA-AB"
-  },
-  {
-   "idRfee": 1626,
-   "nombre": "ALEJANDRO",
-   "apellidos": "SANCHIDRIAN GUTIERREZ",
-   "fechaNacimiento": "2009-04-16",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 1133,
-   "nombre": "PEDRO",
-   "apellidos": "MENDOZA ALMEIDA",
-   "fechaNacimiento": "2007-08-07",
-   "club": "CNE-NA"
-  },
-  {
-   "idRfee": 424,
-   "nombre": "CARLOS",
-   "apellidos": "PEREZ GARCIA",
-   "fechaNacimiento": "2008-03-02",
-   "club": "SAN-NA"
-  },
-  {
-   "idRfee": 4749,
-   "nombre": "NICOLAS",
-   "apellidos": "LUCAS",
-   "fechaNacimiento": "2007-03-06",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 2063,
-   "nombre": "LOIS",
-   "apellidos": "LONGUEIRA MUÑIZ",
-   "fechaNacimiento": "2009-09-06",
-   "club": "100TO-C"
-  },
-  {
-   "idRfee": 2882,
-   "nombre": "ALBERTO",
-   "apellidos": "GARCIA-VALDECASAS FORNIELES",
-   "fechaNacimiento": "2011-06-14",
-   "club": "SA-GR"
-  },
-  {
-   "idRfee": 1601,
-   "nombre": "GABRIEL",
-   "apellidos": "ORRO TABOADA",
-   "fechaNacimiento": "2008-04-23",
-   "club": "100TO-C"
-  },
-  {
-   "idRfee": 554,
-   "nombre": "PABLO",
-   "apellidos": "MARQUETA PEÑA",
-   "fechaNacimiento": "2008-05-06",
+   "apellidos": "MARTIN POLO",
+   "fechaNacimiento": "2008-12-10",
    "club": "CELC-M"
-  },
-  {
-   "idRfee": 1504,
-   "nombre": "BRUNO",
-   "apellidos": "VIOLA CILLEROS",
-   "fechaNacimiento": "2008-05-29",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 1313,
-   "nombre": "ALEJANDRO",
-   "apellidos": "RAMOS MORENO",
-   "fechaNacimiento": "2009-05-06",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 3786,
-   "nombre": "HECTOR",
-   "apellidos": "PUCHE MORENO",
-   "fechaNacimiento": "2007-09-10",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 2387,
-   "nombre": "ADRIAN",
-   "apellidos": "FUENTE BONILLA",
-   "fechaNacimiento": "2008-03-28",
-   "club": "SUÑE-BI"
-  },
-  {
-   "idRfee": 2900,
-   "nombre": "ÁLVARO",
-   "apellidos": "GARCÍA MORENO",
-   "fechaNacimiento": "2009-08-23",
-   "club": "CVA-CR"
-  },
-  {
-   "idRfee": 2094,
-   "nombre": "YAN XI",
-   "apellidos": "LI",
-   "fechaNacimiento": "2011-11-03",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 1738,
-   "nombre": "HÉCTOR",
-   "apellidos": "GARCÍA GARCÍA",
-   "fechaNacimiento": "2006-07-01",
-   "club": "SAJI-V"
-  },
-  {
-   "idRfee": 1201,
-   "nombre": "LUIS",
-   "apellidos": "VALBUENA FERNANDEZ GAYTAN",
-   "fechaNacimiento": "2006-01-18",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 3272,
-   "nombre": "IAN",
-   "apellidos": "PORRES FERRE",
-   "fechaNacimiento": "2009-04-27",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 4808,
-   "nombre": "LUIS",
-   "apellidos": "MARTINEZ COLL",
-   "fechaNacimiento": "2008-09-28",
-   "club": "SAG-B"
-  },
-  {
-   "idRfee": 1699,
-   "nombre": "SANTIAGO",
-   "apellidos": "MENDOZA ALMEIDA",
-   "fechaNacimiento": "2009-10-10",
-   "club": "CSA-GC"
-  },
-  {
-   "idRfee": 1937,
-   "nombre": "JAVIER",
-   "apellidos": "BENITEZ MORALES",
-   "fechaNacimiento": "2010-07-29",
-   "club": "SAN-NA"
-  },
-  {
-   "idRfee": 2672,
-   "nombre": "ADRIÁN",
-   "apellidos": "GARAY GOMAR",
-   "fechaNacimiento": "2009-07-10",
-   "club": "SAJI-V"
   },
   {
    "idRfee": 547,
@@ -588,235 +287,11 @@
    "club": "CELC-M"
   },
   {
-   "idRfee": 1658,
-   "nombre": "FERRAN",
-   "apellidos": "HIERRO PASTOR",
-   "fechaNacimiento": "2007-07-16",
-   "club": "SAJI-V"
-  },
-  {
-   "idRfee": 330,
-   "nombre": "GUILLERMO",
-   "apellidos": "MIGUEZ BENITO",
-   "fechaNacimiento": "2006-04-23",
-   "club": "SAES-BU"
-  },
-  {
-   "idRfee": 4243,
-   "nombre": "DANIEL",
-   "apellidos": "SALETE VALLEJO",
-   "fechaNacimiento": "2008-08-12",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 2180,
-   "nombre": "MARCOS",
-   "apellidos": "SÁNCHEZ GONZALEZ",
-   "fechaNacimiento": "2009-09-29",
-   "club": "CEA-V"
-  },
-  {
-   "idRfee": 2762,
-   "nombre": "JAIME",
-   "apellidos": "LOPEZ ATIENZAR",
-   "fechaNacimiento": "2008-06-08",
-   "club": "SADA-AB"
-  },
-  {
-   "idRfee": 336,
-   "nombre": "SERGIO",
-   "apellidos": "ELENA NAVARRO",
-   "fechaNacimiento": "2006-07-10",
-   "club": "SAV-V"
-  },
-  {
-   "idRfee": 540,
+   "idRfee": 550,
    "nombre": "PABLO",
-   "apellidos": "ABELLAN POZA",
-   "fechaNacimiento": "2006-04-21",
+   "apellidos": "RUIZ VÁZQUEZ",
+   "fechaNacimiento": "2007-05-17",
    "club": "CELC-M"
-  },
-  {
-   "idRfee": 1667,
-   "nombre": "DIEGO",
-   "apellidos": "SEGOVIA",
-   "fechaNacimiento": "2009-04-19",
-   "club": "CEC-C"
-  },
-  {
-   "idRfee": 3364,
-   "nombre": "RAÚL",
-   "apellidos": "PULIDO SERRANO",
-   "fechaNacimiento": "2007-02-14",
-   "club": "CPSS-M"
-  },
-  {
-   "idRfee": 170,
-   "nombre": "ADRIÁN",
-   "apellidos": "VIDAL CARUNCHO",
-   "fechaNacimiento": "2006-11-04",
-   "club": "100TO-C"
-  },
-  {
-   "idRfee": 1970,
-   "nombre": "IVAN",
-   "apellidos": "GRIFOL LANAS",
-   "fechaNacimiento": "2010-09-20",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 2064,
-   "nombre": "ANGEL DAVID",
-   "apellidos": "RIVAS PIOTROWSKI",
-   "fechaNacimiento": "2011-09-27",
-   "club": "100TO-C"
-  },
-  {
-   "idRfee": 1659,
-   "nombre": "ALEJANDRO",
-   "apellidos": "COPLENAS",
-   "fechaNacimiento": "2007-08-12",
-   "club": "SAJI-V"
-  },
-  {
-   "idRfee": 3284,
-   "nombre": "GONZALO",
-   "apellidos": "GARCÍA LA PARRA",
-   "fechaNacimiento": "2008-05-18",
-   "club": "CELC-M"
-  },
-  {
-   "idRfee": 2618,
-   "nombre": "HUGO",
-   "apellidos": "ZAMORANO SARDA",
-   "fechaNacimiento": "2007-09-26",
-   "club": "CELC-M"
-  },
-  {
-   "idRfee": 2669,
-   "nombre": "ROGER",
-   "apellidos": "MARTIN MONTOZA",
-   "fechaNacimiento": "2010-07-16",
-   "club": "CEMAR-B"
-  },
-  {
-   "idRfee": 210,
-   "nombre": "&Agrave;LEX",
-   "apellidos": "ROCA VILARDEB&Ograve;",
-   "fechaNacimiento": "2007-12-29",
-   "club": "CEMAR-B"
-  },
-  {
-   "idRfee": 4087,
-   "nombre": "REINALDO",
-   "apellidos": "RIVERO VELAZCO",
-   "fechaNacimiento": "2008-06-21",
-   "club": "VCE-VA"
-  },
-  {
-   "idRfee": 4240,
-   "nombre": "IVAN",
-   "apellidos": "BARBERO LACALLE",
-   "fechaNacimiento": "2009-03-05",
-   "club": "CEP-P"
-  },
-  {
-   "idRfee": 2786,
-   "nombre": "VICTOR",
-   "apellidos": "LOMAS MUÑOZ",
-   "fechaNacimiento": "2008-11-27",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 3356,
-   "nombre": "VICTOR",
-   "apellidos": "ROMAN .",
-   "fechaNacimiento": "2008-09-26",
-   "club": "CESAN"
-  },
-  {
-   "idRfee": 1565,
-   "nombre": "VICTOR",
-   "apellidos": "RODRÍGUEZ LAGUNA",
-   "fechaNacimiento": "2008-06-02",
-   "club": "SA-LO"
-  },
-  {
-   "idRfee": 3270,
-   "nombre": "IAN",
-   "apellidos": "PUJOL GIL",
-   "fechaNacimiento": "2009-06-04",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 2126,
-   "nombre": "MANUEL",
-   "apellidos": "VILLAMAR POCERO",
-   "fechaNacimiento": "2009-07-13",
-   "club": "EDMC-VA"
-  },
-  {
-   "idRfee": 2827,
-   "nombre": "JAN",
-   "apellidos": "MARTI STROGANOV",
-   "fechaNacimiento": "2010-03-17",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 1627,
-   "nombre": "ALVARO",
-   "apellidos": "GARCIA MATEO",
-   "fechaNacimiento": "2010-08-16",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 1589,
-   "nombre": "GABRIEL",
-   "apellidos": "SAEZ GARCIA",
-   "fechaNacimiento": "2008-11-23",
-   "club": "SADA-AB"
-  },
-  {
-   "idRfee": 4451,
-   "nombre": "DARÍO",
-   "apellidos": "LÁNDERER MESTRE",
-   "fechaNacimiento": "2009-09-29",
-   "club": "CET-CS"
-  },
-  {
-   "idRfee": 1687,
-   "nombre": "POL",
-   "apellidos": "PUJOL IBARBIA",
-   "fechaNacimiento": "2009-03-25",
-   "club": "CEMAR-B"
-  },
-  {
-   "idRfee": 3315,
-   "nombre": "DANEL",
-   "apellidos": "SEBASTIAN LOPEZ",
-   "fechaNacimiento": "2009-04-03",
-   "club": "SUÑE-BI"
-  },
-  {
-   "idRfee": 3570,
-   "nombre": "SAMUEL",
-   "apellidos": "SALGADO ROJO",
-   "fechaNacimiento": "2009-04-30",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 1736,
-   "nombre": "HECTOR",
-   "apellidos": "LOPEZ MENDEZ",
-   "fechaNacimiento": "2008-06-27",
-   "club": "EDMC-VA"
-  },
-  {
-   "idRfee": 3271,
-   "nombre": "DIDAC",
-   "apellidos": "CIARDELLA TOMAS",
-   "fechaNacimiento": "2009-03-08",
-   "club": "SEA-T"
   },
   {
    "idRfee": 553,
@@ -826,11 +301,284 @@
    "club": "CELC-M"
   },
   {
-   "idRfee": 545,
-   "nombre": "DIEGO",
-   "apellidos": "MARTIN POLO",
-   "fechaNacimiento": "2008-12-10",
+   "idRfee": 554,
+   "nombre": "PABLO",
+   "apellidos": "MARQUETA PEÑA",
+   "fechaNacimiento": "2008-05-06",
    "club": "CELC-M"
+  },
+  {
+   "idRfee": 634,
+   "nombre": "JOAN",
+   "apellidos": "FERRUS GARCIA",
+   "fechaNacimiento": "2007-04-04",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 781,
+   "nombre": "LUCAS",
+   "apellidos": "ENRIQUEZ RODRIGUEZ",
+   "fechaNacimiento": "2008-09-04",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 899,
+   "nombre": "JORGE",
+   "apellidos": "CORDOBA ALVAREZ",
+   "fechaNacimiento": "2009-01-14",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 910,
+   "nombre": "DARIO",
+   "apellidos": "ILLANA MORENO",
+   "fechaNacimiento": "2008-12-06",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 1114,
+   "nombre": "EDUARD MIHAI",
+   "apellidos": "CEBUC",
+   "fechaNacimiento": "2008-02-11",
+   "club": "EDMC-VA"
+  },
+  {
+   "idRfee": 1127,
+   "nombre": "ANGEL",
+   "apellidos": "TEMO PLANES",
+   "fechaNacimiento": "2007-02-24",
+   "club": "CEC-C"
+  },
+  {
+   "idRfee": 1133,
+   "nombre": "PEDRO",
+   "apellidos": "MENDOZA ALMEIDA",
+   "fechaNacimiento": "2007-08-07",
+   "club": "CNE-NA"
+  },
+  {
+   "idRfee": 1155,
+   "nombre": "OBAC",
+   "apellidos": "TORNER SÁNCHEZ",
+   "fechaNacimiento": "2007-04-22",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 1174,
+   "nombre": "GABRIEL",
+   "apellidos": "DEL TORNO IGLESIAS",
+   "fechaNacimiento": "2007-11-26",
+   "club": "SAES-BU"
+  },
+  {
+   "idRfee": 1201,
+   "nombre": "LUIS",
+   "apellidos": "VALBUENA FERNANDEZ GAYTAN",
+   "fechaNacimiento": "2006-01-18",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 1250,
+   "nombre": "ADRIANO",
+   "apellidos": "BRAVO LÓPEZ",
+   "fechaNacimiento": "2009-10-20",
+   "club": "CELP-MA"
+  },
+  {
+   "idRfee": 1313,
+   "nombre": "ALEJANDRO",
+   "apellidos": "RAMOS MORENO",
+   "fechaNacimiento": "2009-05-06",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 1371,
+   "nombre": "DAVID",
+   "apellidos": "APARICIO GUTIERREZ",
+   "fechaNacimiento": "2009-07-02",
+   "club": "EEA-CC"
+  },
+  {
+   "idRfee": 1418,
+   "nombre": "DANIEL",
+   "apellidos": "ÁLVAREZ DOMÍNGUEZ",
+   "fechaNacimiento": "2009-05-25",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 1451,
+   "nombre": "RAUL",
+   "apellidos": "ESTIRADO LORINCZ",
+   "fechaNacimiento": "2010-11-28",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 1482,
+   "nombre": "AITOR",
+   "apellidos": "GOMEZ DORREGO",
+   "fechaNacimiento": "2008-06-21",
+   "club": "EEA-CC"
+  },
+  {
+   "idRfee": 1503,
+   "nombre": "BIEL",
+   "apellidos": "CAPÓN RODRÍGUEZ",
+   "fechaNacimiento": "2008-07-10",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 1504,
+   "nombre": "BRUNO",
+   "apellidos": "VIOLA CILLEROS",
+   "fechaNacimiento": "2008-05-29",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 1505,
+   "nombre": "GUILLEM",
+   "apellidos": "VENDRELL FORTEZA-REY",
+   "fechaNacimiento": "2008-03-04",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 1560,
+   "nombre": "GABRIEL",
+   "apellidos": "BINDER ARROYO",
+   "fechaNacimiento": "2008-09-08",
+   "club": "EEA-CC"
+  },
+  {
+   "idRfee": 1565,
+   "nombre": "VICTOR",
+   "apellidos": "RODRÍGUEZ LAGUNA",
+   "fechaNacimiento": "2008-06-02",
+   "club": "SA-LO"
+  },
+  {
+   "idRfee": 1589,
+   "nombre": "GABRIEL",
+   "apellidos": "SAEZ GARCIA",
+   "fechaNacimiento": "2008-11-23",
+   "club": "SADA-AB"
+  },
+  {
+   "idRfee": 1601,
+   "nombre": "GABRIEL",
+   "apellidos": "ORRO TABOADA",
+   "fechaNacimiento": "2008-04-23",
+   "club": "100TO-C"
+  },
+  {
+   "idRfee": 1602,
+   "nombre": "ANTON",
+   "apellidos": "FRANCO ROBLES",
+   "fechaNacimiento": "2009-09-23",
+   "club": "100TO-C"
+  },
+  {
+   "idRfee": 1618,
+   "nombre": "ARITZ",
+   "apellidos": "FERRERAS RODRIGUEZ",
+   "fechaNacimiento": "2008-04-24",
+   "club": "CEVI-M"
+  },
+  {
+   "idRfee": 1626,
+   "nombre": "ALEJANDRO",
+   "apellidos": "SANCHIDRIAN GUTIERREZ",
+   "fechaNacimiento": "2009-04-16",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 1627,
+   "nombre": "ALVARO",
+   "apellidos": "GARCIA MATEO",
+   "fechaNacimiento": "2010-08-16",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 1652,
+   "nombre": "RICARDO",
+   "apellidos": "MARIN PEÑAS",
+   "fechaNacimiento": "2007-12-21",
+   "club": "SAES-BU"
+  },
+  {
+   "idRfee": 1658,
+   "nombre": "FERRAN",
+   "apellidos": "HIERRO PASTOR",
+   "fechaNacimiento": "2007-07-16",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 1659,
+   "nombre": "ALEJANDRO",
+   "apellidos": "COPLENAS",
+   "fechaNacimiento": "2007-08-12",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 1667,
+   "nombre": "DIEGO",
+   "apellidos": "SEGOVIA",
+   "fechaNacimiento": "2009-04-19",
+   "club": "CEC-C"
+  },
+  {
+   "idRfee": 1668,
+   "nombre": "PABLO",
+   "apellidos": "VAZQUEZ CAMBON",
+   "fechaNacimiento": "2009-06-30",
+   "club": "CEC-C"
+  },
+  {
+   "idRfee": 1687,
+   "nombre": "POL",
+   "apellidos": "PUJOL IBARBIA",
+   "fechaNacimiento": "2009-03-25",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 1699,
+   "nombre": "SANTIAGO",
+   "apellidos": "MENDOZA ALMEIDA",
+   "fechaNacimiento": "2009-10-10",
+   "club": "CSA-GC"
+  },
+  {
+   "idRfee": 1731,
+   "nombre": "CARLOS ANDRÉS",
+   "apellidos": "ARITA RIVAS",
+   "fechaNacimiento": "2006-02-27",
+   "club": "100TO-C"
+  },
+  {
+   "idRfee": 1733,
+   "nombre": "SALVADOR GABRIEL",
+   "apellidos": "VARGAS INCIARTE",
+   "fechaNacimiento": "2006-04-11",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 1736,
+   "nombre": "HECTOR",
+   "apellidos": "LOPEZ MENDEZ",
+   "fechaNacimiento": "2008-06-27",
+   "club": "EDMC-VA"
+  },
+  {
+   "idRfee": 1738,
+   "nombre": "HÉCTOR",
+   "apellidos": "GARCÍA GARCÍA",
+   "fechaNacimiento": "2006-07-01",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 1796,
+   "nombre": "MARIO",
+   "apellidos": "REGUEIRA ORIHUELA",
+   "fechaNacimiento": "2009-01-26",
+   "club": "CSA-GC"
   },
   {
    "idRfee": 1797,
@@ -840,17 +588,10 @@
    "club": "CSA-GC"
   },
   {
-   "idRfee": 3571,
-   "nombre": "ÁDAM",
-   "apellidos": "SALGADO ROJO",
-   "fechaNacimiento": "2010-08-03",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 1418,
-   "nombre": "DANIEL",
-   "apellidos": "ÁLVAREZ DOMÍNGUEZ",
-   "fechaNacimiento": "2009-05-25",
+   "idRfee": 1829,
+   "nombre": "JOEL",
+   "apellidos": "GILI LÓPEZ",
+   "fechaNacimiento": "2010-02-09",
    "club": "CEMAR-B"
   },
   {
@@ -861,13 +602,6 @@
    "club": "CEMAR-B"
   },
   {
-   "idRfee": 1796,
-   "nombre": "MARIO",
-   "apellidos": "REGUEIRA ORIHUELA",
-   "fechaNacimiento": "2009-01-26",
-   "club": "CSA-GC"
-  },
-  {
    "idRfee": 1838,
    "nombre": "MARIO",
    "apellidos": "PANADERO NOCEDA",
@@ -875,17 +609,87 @@
    "club": "SAES-BU"
   },
   {
-   "idRfee": 1503,
-   "nombre": "BIEL",
-   "apellidos": "CAPÓN RODRÍGUEZ",
-   "fechaNacimiento": "2008-07-10",
-   "club": "SAM-B"
+   "idRfee": 1885,
+   "nombre": "ALEX",
+   "apellidos": "CERVERA IGUALADA",
+   "fechaNacimiento": "2011-12-20",
+   "club": "SEA-T"
   },
   {
-   "idRfee": 1602,
-   "nombre": "ANTON",
-   "apellidos": "FRANCO ROBLES",
-   "fechaNacimiento": "2009-09-23",
+   "idRfee": 1888,
+   "nombre": "ARIO",
+   "apellidos": "ROSIQUE VALLDEPÉREZ",
+   "fechaNacimiento": "2011-12-12",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 1889,
+   "nombre": "POL",
+   "apellidos": "CID PAGES",
+   "fechaNacimiento": "2011-07-30",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 1937,
+   "nombre": "JAVIER",
+   "apellidos": "BENITEZ MORALES",
+   "fechaNacimiento": "2010-07-29",
+   "club": "SAN-NA"
+  },
+  {
+   "idRfee": 1938,
+   "nombre": "MARTIN",
+   "apellidos": "DE LA IGLESIA PEREZ",
+   "fechaNacimiento": "2011-03-08",
+   "club": "CNE-NA"
+  },
+  {
+   "idRfee": 1969,
+   "nombre": "JAVIER",
+   "apellidos": "GOMEZ VALERA",
+   "fechaNacimiento": "2010-10-26",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 1970,
+   "nombre": "IVAN",
+   "apellidos": "GRIFOL LANAS",
+   "fechaNacimiento": "2010-09-20",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 2007,
+   "nombre": "VICTOR MANUEL",
+   "apellidos": "CALLEJA GAMAZO",
+   "fechaNacimiento": "2012-12-17",
+   "club": "SAES-BU"
+  },
+  {
+   "idRfee": 2008,
+   "nombre": "ALBERTO",
+   "apellidos": "MARTIN GAMAZO",
+   "fechaNacimiento": "2011-04-29",
+   "club": "SAES-BU"
+  },
+  {
+   "idRfee": 2043,
+   "nombre": "PABLO",
+   "apellidos": "DELSO CLEMENTE",
+   "fechaNacimiento": "2009-11-12",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 2063,
+   "nombre": "LOIS",
+   "apellidos": "LONGUEIRA MUÑIZ",
+   "fechaNacimiento": "2009-09-06",
+   "club": "100TO-C"
+  },
+  {
+   "idRfee": 2064,
+   "nombre": "ANGEL DAVID",
+   "apellidos": "RIVAS PIOTROWSKI",
+   "fechaNacimiento": "2011-09-27",
    "club": "100TO-C"
   },
   {
@@ -896,32 +700,67 @@
    "club": "EEA-CC"
   },
   {
-   "idRfee": 301,
-   "nombre": "JESÚS",
-   "apellidos": "PONS GIL",
-   "fechaNacimiento": "2007-11-20",
-   "club": "SAV-V"
+   "idRfee": 2085,
+   "nombre": "JAIRO",
+   "apellidos": "CATALÁN BALLESTER",
+   "fechaNacimiento": "2010-03-26",
+   "club": "CEA-V"
   },
   {
-   "idRfee": 2427,
-   "nombre": "EDUARDO",
-   "apellidos": "HERRERO PASCUAL",
-   "fechaNacimiento": "2009-05-12",
+   "idRfee": 2094,
+   "nombre": "YAN XI",
+   "apellidos": "LI",
+   "fechaNacimiento": "2011-11-03",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 2124,
+   "nombre": "ALEJANDRO",
+   "apellidos": "CEPA BRAÑA",
+   "fechaNacimiento": "2010-04-05",
+   "club": "EDMC-VA"
+  },
+  {
+   "idRfee": 2126,
+   "nombre": "MANUEL",
+   "apellidos": "VILLAMAR POCERO",
+   "fechaNacimiento": "2009-07-13",
+   "club": "EDMC-VA"
+  },
+  {
+   "idRfee": 2143,
+   "nombre": "ALVAR",
+   "apellidos": "FERNANDEZ SARMIENTO",
+   "fechaNacimiento": "2010-11-16",
    "club": "SAES-BU"
   },
   {
-   "idRfee": 3266,
-   "nombre": "IGNACIO",
-   "apellidos": "FOLLONIER SIGUEIRO",
-   "fechaNacimiento": "2006-12-07",
-   "club": "SAJI-V"
+   "idRfee": 2180,
+   "nombre": "MARCOS",
+   "apellidos": "SÁNCHEZ GONZALEZ",
+   "fechaNacimiento": "2009-09-29",
+   "club": "CEA-V"
   },
   {
-   "idRfee": 1652,
-   "nombre": "RICARDO",
-   "apellidos": "MARIN PEÑAS",
-   "fechaNacimiento": "2007-12-21",
-   "club": "SAES-BU"
+   "idRfee": 2303,
+   "nombre": "IVÁN",
+   "apellidos": "ROMERO RODRIGUEZ",
+   "fechaNacimiento": "2007-04-01",
+   "club": "CEA-V"
+  },
+  {
+   "idRfee": 2306,
+   "nombre": "ANDRÉS DAVID",
+   "apellidos": "RAMIREZ FERNANDEZ",
+   "fechaNacimiento": "2010-03-23",
+   "club": "CEA-V"
+  },
+  {
+   "idRfee": 2311,
+   "nombre": "ALBERT",
+   "apellidos": "REES",
+   "fechaNacimiento": "2010-11-25",
+   "club": "CEP-M"
   },
   {
    "idRfee": 2320,
@@ -931,10 +770,493 @@
    "club": "CESAN"
   },
   {
+   "idRfee": 2381,
+   "nombre": "ERIC",
+   "apellidos": "GONZÁLEZ VICENT",
+   "fechaNacimiento": "2006-08-07",
+   "club": "CET-CS"
+  },
+  {
+   "idRfee": 2387,
+   "nombre": "ADRIAN",
+   "apellidos": "FUENTE BONILLA",
+   "fechaNacimiento": "2008-03-28",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 2390,
+   "nombre": "IKER",
+   "apellidos": "ZARRABE GÓMEZ",
+   "fechaNacimiento": "2007-07-09",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 2427,
+   "nombre": "EDUARDO",
+   "apellidos": "HERRERO PASCUAL",
+   "fechaNacimiento": "2009-05-12",
+   "club": "SAES-BU"
+  },
+  {
+   "idRfee": 2537,
+   "nombre": "JAVIER",
+   "apellidos": "MENDEZ CHARRY",
+   "fechaNacimiento": "2006-11-20",
+   "club": "CVA-CR"
+  },
+  {
+   "idRfee": 2543,
+   "nombre": "ANTONI",
+   "apellidos": "SABATER BARCELÓ",
+   "fechaNacimiento": "2008-04-15",
+   "club": "CBE-BA"
+  },
+  {
+   "idRfee": 2618,
+   "nombre": "HUGO",
+   "apellidos": "ZAMORANO SARDA",
+   "fechaNacimiento": "2007-09-26",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 2636,
+   "nombre": "IÑIGO",
+   "apellidos": "BAU",
+   "fechaNacimiento": "2009-10-19",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 2669,
+   "nombre": "ROGER",
+   "apellidos": "MARTIN MONTOZA",
+   "fechaNacimiento": "2010-07-16",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 2670,
+   "nombre": "EGOITZ",
+   "apellidos": "MARAÑON HERMOSILLA",
+   "fechaNacimiento": "2008-04-26",
+   "club": "CEGA-VI"
+  },
+  {
+   "idRfee": 2672,
+   "nombre": "ADRIÁN",
+   "apellidos": "GARAY GOMAR",
+   "fechaNacimiento": "2009-07-10",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 2762,
+   "nombre": "JAIME",
+   "apellidos": "LOPEZ ATIENZAR",
+   "fechaNacimiento": "2008-06-08",
+   "club": "SADA-AB"
+  },
+  {
+   "idRfee": 2770,
+   "nombre": "MIGUEL",
+   "apellidos": "RUESCAS SANCHEZ-BERMEJO",
+   "fechaNacimiento": "2010-05-14",
+   "club": "CEVI-M"
+  },
+  {
+   "idRfee": 2786,
+   "nombre": "VICTOR",
+   "apellidos": "LOMAS MUÑOZ",
+   "fechaNacimiento": "2008-11-27",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 2827,
+   "nombre": "JAN",
+   "apellidos": "MARTI STROGANOV",
+   "fechaNacimiento": "2010-03-17",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 2828,
+   "nombre": "EDUARD",
+   "apellidos": "MORENO CARAPUIG",
+   "fechaNacimiento": "2010-01-25",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 2858,
+   "nombre": "MYLOS",
+   "apellidos": "PUIGARDEU MARTRET",
+   "fechaNacimiento": "2009-06-02",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 2878,
+   "nombre": "GINES",
+   "apellidos": "AVILES VILLEGAS",
+   "fechaNacimiento": "2010-04-11",
+   "club": "CEV-MU"
+  },
+  {
+   "idRfee": 2882,
+   "nombre": "ALBERTO",
+   "apellidos": "GARCIA-VALDECASAS FORNIELES",
+   "fechaNacimiento": "2011-06-14",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 2900,
+   "nombre": "ÁLVARO",
+   "apellidos": "GARCÍA MORENO",
+   "fechaNacimiento": "2009-08-23",
+   "club": "CVA-CR"
+  },
+  {
+   "idRfee": 2904,
+   "nombre": "IVAN",
+   "apellidos": "ALCAZAR TEBAR",
+   "fechaNacimiento": "2009-07-16",
+   "club": "CVA-CR"
+  },
+  {
+   "idRfee": 2937,
+   "nombre": "XOEL",
+   "apellidos": "CASTRELOS DE DIOS",
+   "fechaNacimiento": "2011-08-24",
+   "club": "CECVi-PO"
+  },
+  {
+   "idRfee": 2947,
+   "nombre": "DANIEL",
+   "apellidos": "GARCIA TENA",
+   "fechaNacimiento": "2008-12-30",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 3005,
+   "nombre": "SERGIO",
+   "apellidos": "COLLADO MORALES",
+   "fechaNacimiento": "2010-05-31",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 3159,
+   "nombre": "DANIEL LUIS",
+   "apellidos": "GARCIA GOMEZ",
+   "fechaNacimiento": "2010-06-03",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 3266,
+   "nombre": "IGNACIO",
+   "apellidos": "FOLLONIER SIGUEIRO",
+   "fechaNacimiento": "2006-12-07",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 3270,
+   "nombre": "IAN",
+   "apellidos": "PUJOL GIL",
+   "fechaNacimiento": "2009-06-04",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 3271,
+   "nombre": "DIDAC",
+   "apellidos": "CIARDELLA TOMAS",
+   "fechaNacimiento": "2009-03-08",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 3272,
+   "nombre": "IAN",
+   "apellidos": "PORRES FERRE",
+   "fechaNacimiento": "2009-04-27",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 3273,
+   "nombre": "JAN",
+   "apellidos": "PUJOL FORCADA",
+   "fechaNacimiento": "2010-01-10",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 3282,
+   "nombre": "PABLO ALFREDO",
+   "apellidos": "LUENGAS ROYUELA",
+   "fechaNacimiento": "2006-06-04",
+   "club": "SAES-BU"
+  },
+  {
+   "idRfee": 3284,
+   "nombre": "GONZALO",
+   "apellidos": "GARCÍA LA PARRA",
+   "fechaNacimiento": "2008-05-18",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 3287,
+   "nombre": "DIEGO JOSE",
+   "apellidos": "DELMORAL COMUNIAN",
+   "fechaNacimiento": "2009-12-29",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 3311,
+   "nombre": "ALVARO",
+   "apellidos": "GARCIA MERINO",
+   "fechaNacimiento": "2007-02-22",
+   "club": "CEVI-M"
+  },
+  {
+   "idRfee": 3315,
+   "nombre": "DANEL",
+   "apellidos": "SEBASTIAN LOPEZ",
+   "fechaNacimiento": "2009-04-03",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 3319,
+   "nombre": "MARTIN",
+   "apellidos": "BUSTILLO",
+   "fechaNacimiento": "2008-12-19",
+   "club": "SA-LO"
+  },
+  {
+   "idRfee": 3332,
+   "nombre": "MARTIN",
+   "apellidos": "LAFUENTE ROJAS",
+   "fechaNacimiento": "2010-07-02",
+   "club": "CEA-Z"
+  },
+  {
+   "idRfee": 3356,
+   "nombre": "VICTOR",
+   "apellidos": "ROMAN .",
+   "fechaNacimiento": "2008-09-26",
+   "club": "CESAN"
+  },
+  {
+   "idRfee": 3364,
+   "nombre": "RAÚL",
+   "apellidos": "PULIDO SERRANO",
+   "fechaNacimiento": "2007-02-14",
+   "club": "CPSS-M"
+  },
+  {
+   "idRfee": 3407,
+   "nombre": "GABRIEL",
+   "apellidos": "SANCHEZ MAHILLO",
+   "fechaNacimiento": "2010-08-15",
+   "club": "CEVI-M"
+  },
+  {
+   "idRfee": 3409,
+   "nombre": "IÑIGO",
+   "apellidos": "MARIN MARQUINA",
+   "fechaNacimiento": "2010-12-24",
+   "club": "UTB-Z"
+  },
+  {
+   "idRfee": 3410,
+   "nombre": "MARIO",
+   "apellidos": "VIGARA CAMACHO",
+   "fechaNacimiento": "2010-06-20",
+   "club": "UTB-Z"
+  },
+  {
    "idRfee": 3416,
    "nombre": "IVAN",
    "apellidos": "MARTINEZ BENITO",
    "fechaNacimiento": "2008-07-04",
+   "club": "CCE-M"
+  },
+  {
+   "idRfee": 3568,
+   "nombre": "MATEO",
+   "apellidos": "COMPAGNONI BLANCH",
+   "fechaNacimiento": "2009-08-25",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 3570,
+   "nombre": "SAMUEL",
+   "apellidos": "SALGADO ROJO",
+   "fechaNacimiento": "2009-04-30",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 3571,
+   "nombre": "ÁDAM",
+   "apellidos": "SALGADO ROJO",
+   "fechaNacimiento": "2010-08-03",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 3583,
+   "nombre": "ILIAN",
+   "apellidos": "RAMI ROZPIDE",
+   "fechaNacimiento": "2009-03-04",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 3682,
+   "nombre": "ABRAHAM",
+   "apellidos": "TEOMIRO BERMEJO",
+   "fechaNacimiento": "2010-02-18",
+   "club": "fed-ext-c"
+  },
+  {
+   "idRfee": 3704,
+   "nombre": "TELMO",
+   "apellidos": "MIRAZ GONZÁLEZ",
+   "fechaNacimiento": "2009-07-19",
+   "club": "100TO-C"
+  },
+  {
+   "idRfee": 3719,
+   "nombre": "ANTONIO",
+   "apellidos": "CAMPILLO CASTILLO",
+   "fechaNacimiento": "2009-11-11",
+   "club": "CEV-MU"
+  },
+  {
+   "idRfee": 3720,
+   "nombre": "PABLO",
+   "apellidos": "NAVARRO GOMEZ",
+   "fechaNacimiento": "2010-03-30",
+   "club": "CEV-MU"
+  },
+  {
+   "idRfee": 3786,
+   "nombre": "HECTOR",
+   "apellidos": "PUCHE MORENO",
+   "fechaNacimiento": "2007-09-10",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 3847,
+   "nombre": "UNAI",
+   "apellidos": "GINES GIMENO",
+   "fechaNacimiento": "2010-03-15",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 3880,
+   "nombre": "IVÁN",
+   "apellidos": "GONZÁLEZ GALLEGO",
+   "fechaNacimiento": "2009-03-10",
+   "club": "CECVi-PO"
+  },
+  {
+   "idRfee": 3893,
+   "nombre": "PABLO",
+   "apellidos": "DE FEDERICO ELIPE",
+   "fechaNacimiento": "2010-12-14",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 3897,
+   "nombre": "DIEGO",
+   "apellidos": "CABEZA ESTEVEZ",
+   "fechaNacimiento": "2009-09-16",
+   "club": "SEM-V"
+  },
+  {
+   "idRfee": 3909,
+   "nombre": "ANDRÉS MANUEL",
+   "apellidos": "PEREZ SIMÓ",
+   "fechaNacimiento": "2009-10-16",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 4087,
+   "nombre": "REINALDO",
+   "apellidos": "RIVERO VELAZCO",
+   "fechaNacimiento": "2008-06-21",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 4089,
+   "nombre": "MARIO",
+   "apellidos": "FERNÁNDEZ FRADEJAS",
+   "fechaNacimiento": "2010-11-01",
+   "club": "SAARVI-VI"
+  },
+  {
+   "idRfee": 4090,
+   "nombre": "AMETS",
+   "apellidos": "HERNANI SÁEZ",
+   "fechaNacimiento": "2010-02-01",
+   "club": "SAARVI-VI"
+  },
+  {
+   "idRfee": 4125,
+   "nombre": "XAVIER",
+   "apellidos": "MELO",
+   "fechaNacimiento": "2011-03-08",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 4143,
+   "nombre": "ROGER",
+   "apellidos": "BLASCO LLADÓ",
+   "fechaNacimiento": "2009-04-24",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 4240,
+   "nombre": "IVAN",
+   "apellidos": "BARBERO LACALLE",
+   "fechaNacimiento": "2009-03-05",
+   "club": "CEP-P"
+  },
+  {
+   "idRfee": 4243,
+   "nombre": "DANIEL",
+   "apellidos": "SALETE VALLEJO",
+   "fechaNacimiento": "2008-08-12",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 4246,
+   "nombre": "DIEGO",
+   "apellidos": "MARTÍNEZ ARTIGAS",
+   "fechaNacimiento": "2008-11-14",
+   "club": "CEVI-M"
+  },
+  {
+   "idRfee": 4258,
+   "nombre": "RAMÓN",
+   "apellidos": "REY RIESCO",
+   "fechaNacimiento": "2009-01-03",
+   "club": "COMES-C"
+  },
+  {
+   "idRfee": 4300,
+   "nombre": "DIDAC",
+   "apellidos": "POLO RAMOS",
+   "fechaNacimiento": "2011-12-12",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 4322,
+   "nombre": "EKAITZ",
+   "apellidos": "GARCIA MARTIN",
+   "fechaNacimiento": "2010-05-21",
+   "club": "CEGA-VI"
+  },
+  {
+   "idRfee": 4342,
+   "nombre": "JAVIER",
+   "apellidos": "BASCUÑANA CABALLERO",
+   "fechaNacimiento": "2006-03-07",
+   "club": "CEV-MU"
+  },
+  {
+   "idRfee": 4346,
+   "nombre": "MARCOS",
+   "apellidos": "TROYANO MARI",
+   "fechaNacimiento": "2009-02-25",
    "club": "CCE-M"
   },
   {
@@ -945,445 +1267,11 @@
    "club": "CETC-M"
   },
   {
-   "idRfee": 4805,
-   "nombre": "ADRIAN",
-   "apellidos": "PIÑEIRO LANDA",
-   "fechaNacimiento": "2009-07-17",
-   "club": "SUÑE-BI"
-  },
-  {
-   "idRfee": 3704,
-   "nombre": "TELMO",
-   "apellidos": "MIRAZ GONZÁLEZ",
-   "fechaNacimiento": "2009-07-19",
-   "club": "100TO-C"
-  },
-  {
-   "idRfee": 910,
-   "nombre": "DARIO",
-   "apellidos": "ILLANA MORENO",
-   "fechaNacimiento": "2008-12-06",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 2537,
-   "nombre": "JAVIER",
-   "apellidos": "MENDEZ CHARRY",
-   "fechaNacimiento": "2006-11-20",
-   "club": "CVA-CR"
-  },
-  {
-   "idRfee": 3319,
-   "nombre": "MARTIN",
-   "apellidos": "BUSTILLO",
-   "fechaNacimiento": "2008-12-19",
-   "club": "SA-LO"
-  },
-  {
-   "idRfee": 4346,
-   "nombre": "MARCOS",
-   "apellidos": "TROYANO MARI",
-   "fechaNacimiento": "2009-02-25",
-   "club": "CCE-M"
-  },
-  {
-   "idRfee": 2636,
-   "nombre": "IÑIGO",
-   "apellidos": "BAU",
-   "fechaNacimiento": "2009-10-19",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 2007,
-   "nombre": "VICTOR MANUEL",
-   "apellidos": "CALLEJA GAMAZO",
-   "fechaNacimiento": "2012-12-17",
-   "club": "SAES-BU"
-  },
-  {
-   "idRfee": 2858,
-   "nombre": "MYLOS",
-   "apellidos": "PUIGARDEU MARTRET",
-   "fechaNacimiento": "2009-06-02",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 2381,
-   "nombre": "ERIC",
-   "apellidos": "GONZÁLEZ VICENT",
-   "fechaNacimiento": "2006-08-07",
+   "idRfee": 4451,
+   "nombre": "DARÍO",
+   "apellidos": "LÁNDERER MESTRE",
+   "fechaNacimiento": "2009-09-29",
    "club": "CET-CS"
-  },
-  {
-   "idRfee": 2543,
-   "nombre": "ANTONI",
-   "apellidos": "SABATER BARCELÓ",
-   "fechaNacimiento": "2008-04-15",
-   "club": "CBE-BA"
-  },
-  {
-   "idRfee": 3311,
-   "nombre": "ALVARO",
-   "apellidos": "GARCIA MERINO",
-   "fechaNacimiento": "2007-02-22",
-   "club": "CEVI-M"
-  },
-  {
-   "idRfee": 1938,
-   "nombre": "MARTIN",
-   "apellidos": "DE LA IGLESIA PEREZ",
-   "fechaNacimiento": "2011-03-08",
-   "club": "CNE-NA"
-  },
-  {
-   "idRfee": 3682,
-   "nombre": "ABRAHAM",
-   "apellidos": "TEOMIRO BERMEJO",
-   "fechaNacimiento": "2010-02-18",
-   "club": "fed-ext-c"
-  },
-  {
-   "idRfee": 2878,
-   "nombre": "GINES",
-   "apellidos": "AVILES VILLEGAS",
-   "fechaNacimiento": "2010-04-11",
-   "club": "CEV-MU"
-  },
-  {
-   "idRfee": 3897,
-   "nombre": "DIEGO",
-   "apellidos": "CABEZA ESTEVEZ",
-   "fechaNacimiento": "2009-09-16",
-   "club": "SEM-V"
-  },
-  {
-   "idRfee": 2143,
-   "nombre": "ALVAR",
-   "apellidos": "FERNANDEZ SARMIENTO",
-   "fechaNacimiento": "2010-11-16",
-   "club": "SAES-BU"
-  },
-  {
-   "idRfee": 1888,
-   "nombre": "ARIO",
-   "apellidos": "ROSIQUE VALLDEPÉREZ",
-   "fechaNacimiento": "2011-12-12",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 3720,
-   "nombre": "PABLO",
-   "apellidos": "NAVARRO GOMEZ",
-   "fechaNacimiento": "2010-03-30",
-   "club": "CEV-MU"
-  },
-  {
-   "idRfee": 4342,
-   "nombre": "JAVIER",
-   "apellidos": "BASCUÑANA CABALLERO",
-   "fechaNacimiento": "2006-03-07",
-   "club": "CEV-MU"
-  },
-  {
-   "idRfee": 4997,
-   "nombre": "ARITZ",
-   "apellidos": "LÓPEZ DE MUNAIN ZUAZO",
-   "fechaNacimiento": "2008-02-24",
-   "club": "SAARVI-VI"
-  },
-  {
-   "idRfee": 2670,
-   "nombre": "EGOITZ",
-   "apellidos": "MARAÑON HERMOSILLA",
-   "fechaNacimiento": "2008-04-26",
-   "club": "CEGA-VI"
-  },
-  {
-   "idRfee": 2303,
-   "nombre": "IVÁN",
-   "apellidos": "ROMERO RODRIGUEZ",
-   "fechaNacimiento": "2007-04-01",
-   "club": "CEA-V"
-  },
-  {
-   "idRfee": 1885,
-   "nombre": "ALEX",
-   "apellidos": "CERVERA IGUALADA",
-   "fechaNacimiento": "2011-12-20",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 4792,
-   "nombre": "DANIEL",
-   "apellidos": "TROYANO MARI",
-   "fechaNacimiento": "2006-09-16",
-   "club": "CCE-M"
-  },
-  {
-   "idRfee": 4992,
-   "nombre": "EDUARD LYNDON",
-   "apellidos": "BASSETT NAVARRO",
-   "fechaNacimiento": "2007-11-15",
-   "club": "SAV-V"
-  },
-  {
-   "idRfee": 4736,
-   "nombre": "RODRIGO",
-   "apellidos": "DE ANDRES DIAZ",
-   "fechaNacimiento": "2009-12-01",
-   "club": "CSA-GC"
-  },
-  {
-   "idRfee": 3719,
-   "nombre": "ANTONIO",
-   "apellidos": "CAMPILLO CASTILLO",
-   "fechaNacimiento": "2009-11-11",
-   "club": "CEV-MU"
-  },
-  {
-   "idRfee": 4981,
-   "nombre": "ALONSO",
-   "apellidos": "CANO FERNANDEZ",
-   "fechaNacimiento": "2008-06-12",
-   "club": "CEV-MU"
-  },
-  {
-   "idRfee": 3159,
-   "nombre": "DANIEL LUIS",
-   "apellidos": "GARCIA GOMEZ",
-   "fechaNacimiento": "2010-06-03",
-   "club": "VCE-VA"
-  },
-  {
-   "idRfee": 4953,
-   "nombre": "MANUEL",
-   "apellidos": "RODRÍGUEZ DEL RÍO",
-   "fechaNacimiento": "2008-07-11",
-   "club": "COMES-C"
-  },
-  {
-   "idRfee": 4090,
-   "nombre": "AMETS",
-   "apellidos": "HERNANI SÁEZ",
-   "fechaNacimiento": "2010-02-01",
-   "club": "SAARVI-VI"
-  },
-  {
-   "idRfee": 4258,
-   "nombre": "RAMÓN",
-   "apellidos": "REY RIESCO",
-   "fechaNacimiento": "2009-01-03",
-   "club": "COMES-C"
-  },
-  {
-   "idRfee": 4143,
-   "nombre": "ROGER",
-   "apellidos": "BLASCO LLADÓ",
-   "fechaNacimiento": "2009-04-24",
-   "club": "CEMAR-B"
-  },
-  {
-   "idRfee": 1371,
-   "nombre": "DAVID",
-   "apellidos": "APARICIO GUTIERREZ",
-   "fechaNacimiento": "2009-07-02",
-   "club": "EEA-CC"
-  },
-  {
-   "idRfee": 2937,
-   "nombre": "XOEL",
-   "apellidos": "CASTRELOS DE DIOS",
-   "fechaNacimiento": "2011-08-24",
-   "club": "CECVi-PO"
-  },
-  {
-   "idRfee": 4806,
-   "nombre": "LUCAS",
-   "apellidos": "LEON VELASCO",
-   "fechaNacimiento": "2010-09-16",
-   "club": "CEP-P"
-  },
-  {
-   "idRfee": 2306,
-   "nombre": "ANDRÉS DAVID",
-   "apellidos": "RAMIREZ FERNANDEZ",
-   "fechaNacimiento": "2010-03-23",
-   "club": "CEA-V"
-  },
-  {
-   "idRfee": 4745,
-   "nombre": "JUAN",
-   "apellidos": "BALZOLA ELORDUY",
-   "fechaNacimiento": "2010-07-09",
-   "club": "SUÑE-BI"
-  },
-  {
-   "idRfee": 3282,
-   "nombre": "PABLO ALFREDO",
-   "apellidos": "LUENGAS ROYUELA",
-   "fechaNacimiento": "2006-06-04",
-   "club": "SAES-BU"
-  },
-  {
-   "idRfee": 4798,
-   "nombre": "JUAN",
-   "apellidos": "VILLA TESO",
-   "fechaNacimiento": "2011-12-07",
-   "club": "VCE-VA"
-  },
-  {
-   "idRfee": 5038,
-   "nombre": "JUAN RAMON",
-   "apellidos": "LOPEZ DIAZ",
-   "fechaNacimiento": "2009-06-20",
-   "club": "FED-V-C"
-  },
-  {
-   "idRfee": 3880,
-   "nombre": "IVÁN",
-   "apellidos": "GONZÁLEZ GALLEGO",
-   "fechaNacimiento": "2009-03-10",
-   "club": "CECVi-PO"
-  },
-  {
-   "idRfee": 2085,
-   "nombre": "JAIRO",
-   "apellidos": "CATALÁN BALLESTER",
-   "fechaNacimiento": "2010-03-26",
-   "club": "CEA-V"
-  },
-  {
-   "idRfee": 4322,
-   "nombre": "EKAITZ",
-   "apellidos": "GARCIA MARTIN",
-   "fechaNacimiento": "2010-05-21",
-   "club": "CEGA-VI"
-  },
-  {
-   "idRfee": 4722,
-   "nombre": "PABLO",
-   "apellidos": "CABEZA ESTEVEZ",
-   "fechaNacimiento": "2011-10-19",
-   "club": "SEM-V"
-  },
-  {
-   "idRfee": 1250,
-   "nombre": "ADRIANO",
-   "apellidos": "BRAVO LÓPEZ",
-   "fechaNacimiento": "2009-10-20",
-   "club": "CELP-MA"
-  },
-  {
-   "idRfee": 3893,
-   "nombre": "PABLO",
-   "apellidos": "DE FEDERICO ELIPE",
-   "fechaNacimiento": "2010-12-14",
-   "club": "SAMA-M"
-  },
-  {
-   "idRfee": 2770,
-   "nombre": "MIGUEL",
-   "apellidos": "RUESCAS SANCHEZ-BERMEJO",
-   "fechaNacimiento": "2010-05-14",
-   "club": "CEVI-M"
-  },
-  {
-   "idRfee": 3005,
-   "nombre": "SERGIO",
-   "apellidos": "COLLADO MORALES",
-   "fechaNacimiento": "2010-05-31",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 4089,
-   "nombre": "MARIO",
-   "apellidos": "FERNÁNDEZ FRADEJAS",
-   "fechaNacimiento": "2010-11-01",
-   "club": "SAARVI-VI"
-  },
-  {
-   "idRfee": 3407,
-   "nombre": "GABRIEL",
-   "apellidos": "SANCHEZ MAHILLO",
-   "fechaNacimiento": "2010-08-15",
-   "club": "CEVI-M"
-  },
-  {
-   "idRfee": 4300,
-   "nombre": "DIDAC",
-   "apellidos": "POLO RAMOS",
-   "fechaNacimiento": "2011-12-12",
-   "club": "SEA-T"
-  },
-  {
-   "idRfee": 3847,
-   "nombre": "UNAI",
-   "apellidos": "GINES GIMENO",
-   "fechaNacimiento": "2010-03-15",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 4246,
-   "nombre": "DIEGO",
-   "apellidos": "MARTÍNEZ ARTIGAS",
-   "fechaNacimiento": "2008-11-14",
-   "club": "CEVI-M"
-  },
-  {
-   "idRfee": 2124,
-   "nombre": "ALEJANDRO",
-   "apellidos": "CEPA BRAÑA",
-   "fechaNacimiento": "2010-04-05",
-   "club": "EDMC-VA"
-  },
-  {
-   "idRfee": 1618,
-   "nombre": "ARITZ",
-   "apellidos": "FERRERAS RODRIGUEZ",
-   "fechaNacimiento": "2008-04-24",
-   "club": "CEVI-M"
-  },
-  {
-   "idRfee": 4756,
-   "nombre": "ENZO",
-   "apellidos": "MONTEREAU",
-   "fechaNacimiento": "2010-01-06",
-   "club": "CET-CS"
-  },
-  {
-   "idRfee": 3909,
-   "nombre": "ANDRÉS MANUEL",
-   "apellidos": "PEREZ SIMÓ",
-   "fechaNacimiento": "2009-10-16",
-   "club": "SAJI-V"
-  },
-  {
-   "idRfee": 3409,
-   "nombre": "IÑIGO",
-   "apellidos": "MARIN MARQUINA",
-   "fechaNacimiento": "2010-12-24",
-   "club": "UTB-Z"
-  },
-  {
-   "idRfee": 4744,
-   "nombre": "JOKIN",
-   "apellidos": "RODRIGO FECHILLA",
-   "fechaNacimiento": "2009-11-10",
-   "club": "SUÑE-BI"
-  },
-  {
-   "idRfee": 4971,
-   "nombre": "MARTÍN",
-   "apellidos": "GARCÍA LLORET",
-   "fechaNacimiento": "2008-06-09",
-   "club": "COMES-C"
-  },
-  {
-   "idRfee": 3410,
-   "nombre": "MARIO",
-   "apellidos": "VIGARA CAMACHO",
-   "fechaNacimiento": "2010-06-20",
-   "club": "UTB-Z"
   },
   {
    "idRfee": 4453,
@@ -1393,11 +1281,46 @@
    "club": "SAJI-V"
   },
   {
-   "idRfee": 3332,
-   "nombre": "MARTIN",
-   "apellidos": "LAFUENTE ROJAS",
-   "fechaNacimiento": "2010-07-02",
-   "club": "CEA-Z"
+   "idRfee": 4722,
+   "nombre": "PABLO",
+   "apellidos": "CABEZA ESTEVEZ",
+   "fechaNacimiento": "2011-10-19",
+   "club": "SEM-V"
+  },
+  {
+   "idRfee": 4736,
+   "nombre": "RODRIGO",
+   "apellidos": "DE ANDRES DIAZ",
+   "fechaNacimiento": "2009-12-01",
+   "club": "CSA-GC"
+  },
+  {
+   "idRfee": 4744,
+   "nombre": "JOKIN",
+   "apellidos": "RODRIGO FECHILLA",
+   "fechaNacimiento": "2009-11-10",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 4745,
+   "nombre": "JUAN",
+   "apellidos": "BALZOLA ELORDUY",
+   "fechaNacimiento": "2010-07-09",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 4749,
+   "nombre": "NICOLAS",
+   "apellidos": "LUCAS",
+   "fechaNacimiento": "2007-03-06",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 4756,
+   "nombre": "ENZO",
+   "apellidos": "MONTEREAU",
+   "fechaNacimiento": "2010-01-06",
+   "club": "CET-CS"
   },
   {
    "idRfee": 4773,
@@ -1405,6 +1328,83 @@
    "apellidos": "LUSTED",
    "fechaNacimiento": "2006-06-29",
    "club": "SAV-V"
+  },
+  {
+   "idRfee": 4792,
+   "nombre": "DANIEL",
+   "apellidos": "TROYANO MARI",
+   "fechaNacimiento": "2006-09-16",
+   "club": "CCE-M"
+  },
+  {
+   "idRfee": 4798,
+   "nombre": "JUAN",
+   "apellidos": "VILLA TESO",
+   "fechaNacimiento": "2011-12-07",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 4805,
+   "nombre": "ADRIAN",
+   "apellidos": "PIÑEIRO LANDA",
+   "fechaNacimiento": "2009-07-17",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 4806,
+   "nombre": "LUCAS",
+   "apellidos": "LEON VELASCO",
+   "fechaNacimiento": "2010-09-16",
+   "club": "CEP-P"
+  },
+  {
+   "idRfee": 4808,
+   "nombre": "LUIS",
+   "apellidos": "MARTINEZ COLL",
+   "fechaNacimiento": "2008-09-28",
+   "club": "SAG-B"
+  },
+  {
+   "idRfee": 4953,
+   "nombre": "MANUEL",
+   "apellidos": "RODRÍGUEZ DEL RÍO",
+   "fechaNacimiento": "2008-07-11",
+   "club": "COMES-C"
+  },
+  {
+   "idRfee": 4971,
+   "nombre": "MARTÍN",
+   "apellidos": "GARCÍA LLORET",
+   "fechaNacimiento": "2008-06-09",
+   "club": "COMES-C"
+  },
+  {
+   "idRfee": 4981,
+   "nombre": "ALONSO",
+   "apellidos": "CANO FERNANDEZ",
+   "fechaNacimiento": "2008-06-12",
+   "club": "CEV-MU"
+  },
+  {
+   "idRfee": 4992,
+   "nombre": "EDUARD LYNDON",
+   "apellidos": "BASSETT NAVARRO",
+   "fechaNacimiento": "2007-11-15",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 4997,
+   "nombre": "ARITZ",
+   "apellidos": "LÓPEZ DE MUNAIN ZUAZO",
+   "fechaNacimiento": "2008-02-24",
+   "club": "SAARVI-VI"
+  },
+  {
+   "idRfee": 5038,
+   "nombre": "JUAN RAMON",
+   "apellidos": "LOPEZ DIAZ",
+   "fechaNacimiento": "2009-06-20",
+   "club": "FED-V-C"
   }
  ]
 }

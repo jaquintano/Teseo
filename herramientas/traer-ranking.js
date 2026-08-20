@@ -144,6 +144,20 @@ async function traerUno(temporada, categoria, codigoGenero) {
   // un error: sencillamente no se guarda nada.
   if (tiradores.length === 0) return 'vacio';
 
+  // Ordenación propia y estable, siempre la misma.
+  //
+  // La federación devuelve la lista por puntuación, y entre tiradores
+  // empatados el orden baila de una descarga a otra. Como aquí no guardamos
+  // ni la posición ni los puntos, ese baile no aporta nada y en cambio hacía
+  // que el fichero pareciera distinto cada día. Ordenando por identificador
+  // el fichero sólo cambia cuando cambia alguien de verdad.
+  tiradores.sort((a, b) => {
+    if (a.idRfee != null && b.idRfee != null) return a.idRfee - b.idRfee;
+    if (a.idRfee != null) return -1;
+    if (b.idRfee != null) return 1;
+    return (a.apellidos + a.nombre).localeCompare(b.apellidos + b.nombre, 'es');
+  });
+
   const nombreFichero = 'ranking-' + temporada + '-' + ARMA + '-' + categoria + '-' + codigoGenero + '.json';
   const destino = path.join(RAIZ, 'datos', nombreFichero);
 

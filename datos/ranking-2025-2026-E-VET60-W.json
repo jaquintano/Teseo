@@ -4,21 +4,21 @@
  "categoria": "VET60",
  "genero": "Femenino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=18&gender=W",
- "descargadoEl": "2026-08-20T10:09:52.921Z",
+ "descargadoEl": "2026-08-20T10:26:58.197Z",
  "tiradores": [
+  {
+   "idRfee": 444,
+   "nombre": "ISABEL MARIA",
+   "apellidos": "VAZQUEZ CORBACHO",
+   "fechaNacimiento": "1966-05-02",
+   "club": "SA-GR"
+  },
   {
    "idRfee": 452,
    "nombre": "ROSA MARIA",
    "apellidos": "CANO DIOSA",
    "fechaNacimiento": "1965-10-07",
    "club": "CECVi-PO"
-  },
-  {
-   "idRfee": 1398,
-   "nombre": "PAULIEN",
-   "apellidos": "CLOSE VERBRUGGEN",
-   "fechaNacimiento": "1962-01-20",
-   "club": "CBE-BA"
   },
   {
    "idRfee": 983,
@@ -28,6 +28,13 @@
    "club": "COMES-C"
   },
   {
+   "idRfee": 1398,
+   "nombre": "PAULIEN",
+   "apellidos": "CLOSE VERBRUGGEN",
+   "fechaNacimiento": "1962-01-20",
+   "club": "CBE-BA"
+  },
+  {
    "idRfee": 1421,
    "nombre": "ANA CLARA",
    "apellidos": "RUIZ DIAZ",
@@ -35,11 +42,11 @@
    "club": "CE-TO"
   },
   {
-   "idRfee": 444,
-   "nombre": "ISABEL MARIA",
-   "apellidos": "VAZQUEZ CORBACHO",
-   "fechaNacimiento": "1966-05-02",
-   "club": "SA-GR"
+   "idRfee": 1869,
+   "nombre": "FRANCISCA JESÚS",
+   "apellidos": "ROMAN LÓPEZ",
+   "fechaNacimiento": "1959-01-03",
+   "club": "FED-AND-C"
   },
   {
    "idRfee": 2435,
@@ -47,13 +54,6 @@
    "apellidos": "ORBEA SALAZAR",
    "fechaNacimiento": "1961-05-18",
    "club": "SUÑE-BI"
-  },
-  {
-   "idRfee": 1869,
-   "nombre": "FRANCISCA JESÚS",
-   "apellidos": "ROMAN LÓPEZ",
-   "fechaNacimiento": "1959-01-03",
-   "club": "FED-AND-C"
   }
  ]
 }

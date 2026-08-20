@@ -4,21 +4,14 @@
  "categoria": "VET50",
  "genero": "Masculino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=17&gender=M",
- "descargadoEl": "2026-08-20T10:09:48.819Z",
+ "descargadoEl": "2026-08-20T10:26:54.101Z",
  "tiradores": [
   {
-   "idRfee": 988,
-   "nombre": "GREGORIO",
-   "apellidos": "ALCAZAR ROLDAN",
-   "fechaNacimiento": "1972-01-25",
-   "club": "CVA-CR"
-  },
-  {
-   "idRfee": 583,
-   "nombre": "RAUL",
-   "apellidos": "GOMEZ PAZ",
-   "fechaNacimiento": "1973-07-14",
-   "club": "CETC-M"
+   "idRfee": 328,
+   "nombre": "VÍCTOR",
+   "apellidos": "CASTRO SÁNCHEZ",
+   "fechaNacimiento": "1974-11-01",
+   "club": "COMES-C"
   },
   {
    "idRfee": 494,
@@ -28,18 +21,25 @@
    "club": "CCC-M"
   },
   {
-   "idRfee": 1389,
-   "nombre": "JOSE MARIA",
-   "apellidos": "REYES SARMIENTO",
-   "fechaNacimiento": "1969-10-13",
-   "club": "SAG-B"
-  },
-  {
    "idRfee": 503,
    "nombre": "JUAN",
    "apellidos": "RUIZ ALCONERO",
    "fechaNacimiento": "1972-11-01",
    "club": "ATENEO-M"
+  },
+  {
+   "idRfee": 583,
+   "nombre": "RAUL",
+   "apellidos": "GOMEZ PAZ",
+   "fechaNacimiento": "1973-07-14",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 722,
+   "nombre": "ADOLFO",
+   "apellidos": "MORO QUINTANA",
+   "fechaNacimiento": "1973-06-12",
+   "club": "CEGA-VI"
   },
   {
    "idRfee": 862,
@@ -49,13 +49,6 @@
    "club": "CBC-CA"
   },
   {
-   "idRfee": 5015,
-   "nombre": "GUILLERMO",
-   "apellidos": "FERRANDO VALDELOMAR",
-   "fechaNacimiento": "1967-08-25",
-   "club": "SAMA-M"
-  },
-  {
    "idRfee": 864,
    "nombre": "FRANCISCO JAVER",
    "apellidos": "VELA GARRIDO",
@@ -63,60 +56,11 @@
    "club": "CBC-CA"
   },
   {
-   "idRfee": 1024,
-   "nombre": "MANUEL",
-   "apellidos": "DOMÍNGUEZ GIL",
-   "fechaNacimiento": "1971-01-26",
-   "club": "CET-TFE"
-  },
-  {
-   "idRfee": 4727,
-   "nombre": "JOSE",
-   "apellidos": "ALVAREZ REJÓN",
-   "fechaNacimiento": "1973-04-27",
-   "club": "SA-GR"
-  },
-  {
-   "idRfee": 2577,
-   "nombre": "JOSE ANTONIO",
-   "apellidos": "RODRIGUEZ GONZALEZ",
-   "fechaNacimiento": "1970-01-07",
+   "idRfee": 905,
+   "nombre": "SERGIO",
+   "apellidos": "GARCIA CALDERON",
+   "fechaNacimiento": "1972-08-02",
    "club": "CREA-M"
-  },
-  {
-   "idRfee": 1348,
-   "nombre": "FRANCISCO",
-   "apellidos": "IGLESIAS PÉREZ",
-   "fechaNacimiento": "1974-12-12",
-   "club": "COMES-C"
-  },
-  {
-   "idRfee": 4017,
-   "nombre": "FRANCISCO JAVIER",
-   "apellidos": "GONZALEZ ROMERO",
-   "fechaNacimiento": "1970-10-04",
-   "club": "FED-V-C"
-  },
-  {
-   "idRfee": 4307,
-   "nombre": "FRANCO",
-   "apellidos": "SEIJAS COLMENARES",
-   "fechaNacimiento": "1968-07-20",
-   "club": "SA-GR"
-  },
-  {
-   "idRfee": 3816,
-   "nombre": "FRANCISCO JAVIER",
-   "apellidos": "ASENSIO MARÍN",
-   "fechaNacimiento": "1975-05-16",
-   "club": "CCC-M"
-  },
-  {
-   "idRfee": 1475,
-   "nombre": "JOSE DOMINGO",
-   "apellidos": "FERNANDEZ RAMOS",
-   "fechaNacimiento": "1973-05-26",
-   "club": "CE-M"
   },
   {
    "idRfee": 937,
@@ -126,11 +70,60 @@
    "club": "SAM-B"
   },
   {
-   "idRfee": 4064,
-   "nombre": "ADOLFO",
-   "apellidos": "SEGLAR RODRIGUEZ",
-   "fechaNacimiento": "1975-08-12",
-   "club": "SA-GR"
+   "idRfee": 973,
+   "nombre": "MIGUEL ANGEL",
+   "apellidos": "GALAN ROCILLO",
+   "fechaNacimiento": "1967-12-23",
+   "club": "CESAN"
+  },
+  {
+   "idRfee": 988,
+   "nombre": "GREGORIO",
+   "apellidos": "ALCAZAR ROLDAN",
+   "fechaNacimiento": "1972-01-25",
+   "club": "CVA-CR"
+  },
+  {
+   "idRfee": 1024,
+   "nombre": "MANUEL",
+   "apellidos": "DOMÍNGUEZ GIL",
+   "fechaNacimiento": "1971-01-26",
+   "club": "CET-TFE"
+  },
+  {
+   "idRfee": 1073,
+   "nombre": "JACOBO",
+   "apellidos": "MARTOS GARCIA",
+   "fechaNacimiento": "1973-07-17",
+   "club": "CEVI-M"
+  },
+  {
+   "idRfee": 1348,
+   "nombre": "FRANCISCO",
+   "apellidos": "IGLESIAS PÉREZ",
+   "fechaNacimiento": "1974-12-12",
+   "club": "COMES-C"
+  },
+  {
+   "idRfee": 1389,
+   "nombre": "JOSE MARIA",
+   "apellidos": "REYES SARMIENTO",
+   "fechaNacimiento": "1969-10-13",
+   "club": "SAG-B"
+  },
+  {
+   "idRfee": 1459,
+   "nombre": "ORSON",
+   "apellidos": "ALCOCER RODRÍGUEZ",
+   "fechaNacimiento": "1974-07-17",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 1475,
+   "nombre": "JOSE DOMINGO",
+   "apellidos": "FERNANDEZ RAMOS",
+   "fechaNacimiento": "1973-05-26",
+   "club": "CE-M"
   },
   {
    "idRfee": 1753,
@@ -140,11 +133,39 @@
    "club": "SEAC-CO"
   },
   {
-   "idRfee": 4377,
-   "nombre": "JORGE",
-   "apellidos": "RODRÍGUEZ BORRAJO",
-   "fechaNacimiento": "1974-12-29",
-   "club": "FED-G-C"
+   "idRfee": 2312,
+   "nombre": "FELIX",
+   "apellidos": "BARDON GOMEZ",
+   "fechaNacimiento": "1967-12-11",
+   "club": "CEVI-M"
+  },
+  {
+   "idRfee": 2574,
+   "nombre": "ANDRES",
+   "apellidos": "MARTINEZ JAEN",
+   "fechaNacimiento": "1969-12-03",
+   "club": "CEEC-M"
+  },
+  {
+   "idRfee": 2577,
+   "nombre": "JOSE ANTONIO",
+   "apellidos": "RODRIGUEZ GONZALEZ",
+   "fechaNacimiento": "1970-01-07",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 3192,
+   "nombre": "ALFONSO JAVIER",
+   "apellidos": "MARTI GUERRERO",
+   "fechaNacimiento": "1971-02-28",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 3354,
+   "nombre": "JOSE",
+   "apellidos": "GARCÍA PARDO",
+   "fechaNacimiento": "1973-03-17",
+   "club": "ELGATO-M"
   },
   {
    "idRfee": 3476,
@@ -154,17 +175,115 @@
    "club": "FED-AS-C"
   },
   {
-   "idRfee": 5010,
-   "nombre": "FRANCOIS",
-   "apellidos": "COLLET",
-   "fechaNacimiento": "1971-05-03",
-   "club": "SAM-B"
+   "idRfee": 3525,
+   "nombre": "NICOLÁS",
+   "apellidos": "MONTIS DE LUGUET",
+   "fechaNacimiento": "1974-03-21",
+   "club": "CEED-BA"
   },
   {
-   "idRfee": 3192,
-   "nombre": "ALFONSO JAVIER",
-   "apellidos": "MARTI GUERRERO",
-   "fechaNacimiento": "1971-02-28",
+   "idRfee": 3816,
+   "nombre": "FRANCISCO JAVIER",
+   "apellidos": "ASENSIO MARÍN",
+   "fechaNacimiento": "1975-05-16",
+   "club": "CCC-M"
+  },
+  {
+   "idRfee": 4017,
+   "nombre": "FRANCISCO JAVIER",
+   "apellidos": "GONZALEZ ROMERO",
+   "fechaNacimiento": "1970-10-04",
+   "club": "FED-V-C"
+  },
+  {
+   "idRfee": 4043,
+   "nombre": "JUAN ENRIQUE",
+   "apellidos": "ROMANI GARCIA",
+   "fechaNacimiento": "1970-04-13",
+   "club": "CED-V"
+  },
+  {
+   "idRfee": 4064,
+   "nombre": "ADOLFO",
+   "apellidos": "SEGLAR RODRIGUEZ",
+   "fechaNacimiento": "1975-08-12",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 4081,
+   "nombre": "FRANCISCO JAVIER",
+   "apellidos": "FERNANDEZ ACERO",
+   "fechaNacimiento": "1973-08-28",
+   "club": "CBC-CA"
+  },
+  {
+   "idRfee": 4095,
+   "nombre": "JORGE",
+   "apellidos": "CEINOS MORENO",
+   "fechaNacimiento": "1976-06-02",
+   "club": "CCC-M"
+  },
+  {
+   "idRfee": 4288,
+   "nombre": "LUIS JOSE",
+   "apellidos": "MUÑOZ CARO",
+   "fechaNacimiento": "1972-01-16",
+   "club": "CECR-CR"
+  },
+  {
+   "idRfee": 4307,
+   "nombre": "FRANCO",
+   "apellidos": "SEIJAS COLMENARES",
+   "fechaNacimiento": "1968-07-20",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 4365,
+   "nombre": "ARTURO",
+   "apellidos": "GONZÁLEZ CABERO",
+   "fechaNacimiento": "1976-06-29",
+   "club": "CEST-AV"
+  },
+  {
+   "idRfee": 4377,
+   "nombre": "JORGE",
+   "apellidos": "RODRÍGUEZ BORRAJO",
+   "fechaNacimiento": "1974-12-29",
+   "club": "FED-G-C"
+  },
+  {
+   "idRfee": 4427,
+   "nombre": "FERNANDO",
+   "apellidos": "GONZÁLEZ DÍAZ",
+   "fechaNacimiento": "1967-07-14",
+   "club": "FED-AS-C"
+  },
+  {
+   "idRfee": 4499,
+   "nombre": "CARLOS PRIMITIVO",
+   "apellidos": "SALCEDO PLAZA",
+   "fechaNacimiento": "1968-07-27",
+   "club": "CETORRE-MA"
+  },
+  {
+   "idRfee": 4727,
+   "nombre": "JOSE",
+   "apellidos": "ALVAREZ REJÓN",
+   "fechaNacimiento": "1973-04-27",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 4739,
+   "nombre": "JOSÉ IGNACIO",
+   "apellidos": "LINARES SÁNCHEZ",
+   "fechaNacimiento": "1968-10-03",
+   "club": "CCC-M"
+  },
+  {
+   "idRfee": 4951,
+   "nombre": "JORDI",
+   "apellidos": "PLANELLES GOMEZ",
+   "fechaNacimiento": "1974-07-15",
    "club": "SAV-V"
   },
   {
@@ -175,130 +294,18 @@
    "club": "SAV-V"
   },
   {
-   "idRfee": 4951,
-   "nombre": "JORDI",
-   "apellidos": "PLANELLES GOMEZ",
-   "fechaNacimiento": "1974-07-15",
-   "club": "SAV-V"
+   "idRfee": 5010,
+   "nombre": "FRANCOIS",
+   "apellidos": "COLLET",
+   "fechaNacimiento": "1971-05-03",
+   "club": "SAM-B"
   },
   {
-   "idRfee": 1073,
-   "nombre": "JACOBO",
-   "apellidos": "MARTOS GARCIA",
-   "fechaNacimiento": "1973-07-17",
-   "club": "CEVI-M"
-  },
-  {
-   "idRfee": 905,
-   "nombre": "SERGIO",
-   "apellidos": "GARCIA CALDERON",
-   "fechaNacimiento": "1972-08-02",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 2312,
-   "nombre": "FELIX",
-   "apellidos": "BARDON GOMEZ",
-   "fechaNacimiento": "1967-12-11",
-   "club": "CEVI-M"
-  },
-  {
-   "idRfee": 1459,
-   "nombre": "ORSON",
-   "apellidos": "ALCOCER RODRÍGUEZ",
-   "fechaNacimiento": "1974-07-17",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 4043,
-   "nombre": "JUAN ENRIQUE",
-   "apellidos": "ROMANI GARCIA",
-   "fechaNacimiento": "1970-04-13",
-   "club": "CED-V"
-  },
-  {
-   "idRfee": 722,
-   "nombre": "ADOLFO",
-   "apellidos": "MORO QUINTANA",
-   "fechaNacimiento": "1973-06-12",
-   "club": "CEGA-VI"
-  },
-  {
-   "idRfee": 4095,
-   "nombre": "JORGE",
-   "apellidos": "CEINOS MORENO",
-   "fechaNacimiento": "1976-06-02",
-   "club": "CCC-M"
-  },
-  {
-   "idRfee": 4739,
-   "nombre": "JOSÉ IGNACIO",
-   "apellidos": "LINARES SÁNCHEZ",
-   "fechaNacimiento": "1968-10-03",
-   "club": "CCC-M"
-  },
-  {
-   "idRfee": 3354,
-   "nombre": "JOSE",
-   "apellidos": "GARCÍA PARDO",
-   "fechaNacimiento": "1973-03-17",
-   "club": "ELGATO-M"
-  },
-  {
-   "idRfee": 4081,
-   "nombre": "FRANCISCO JAVIER",
-   "apellidos": "FERNANDEZ ACERO",
-   "fechaNacimiento": "1973-08-28",
-   "club": "CBC-CA"
-  },
-  {
-   "idRfee": 3525,
-   "nombre": "NICOLÁS",
-   "apellidos": "MONTIS DE LUGUET",
-   "fechaNacimiento": "1974-03-21",
-   "club": "CEED-BA"
-  },
-  {
-   "idRfee": 4365,
-   "nombre": "ARTURO",
-   "apellidos": "GONZÁLEZ CABERO",
-   "fechaNacimiento": "1976-06-29",
-   "club": "CEST-AV"
-  },
-  {
-   "idRfee": 4427,
-   "nombre": "FERNANDO",
-   "apellidos": "GONZÁLEZ DÍAZ",
-   "fechaNacimiento": "1967-07-14",
-   "club": "FED-AS-C"
-  },
-  {
-   "idRfee": 2574,
-   "nombre": "ANDRES",
-   "apellidos": "MARTINEZ JAEN",
-   "fechaNacimiento": "1969-12-03",
-   "club": "CEEC-M"
-  },
-  {
-   "idRfee": 328,
-   "nombre": "VÍCTOR",
-   "apellidos": "CASTRO SÁNCHEZ",
-   "fechaNacimiento": "1974-11-01",
-   "club": "COMES-C"
-  },
-  {
-   "idRfee": 973,
-   "nombre": "MIGUEL ANGEL",
-   "apellidos": "GALAN ROCILLO",
-   "fechaNacimiento": "1967-12-23",
-   "club": "CESAN"
-  },
-  {
-   "idRfee": 4499,
-   "nombre": "CARLOS PRIMITIVO",
-   "apellidos": "SALCEDO PLAZA",
-   "fechaNacimiento": "1968-07-27",
-   "club": "CETORRE-MA"
+   "idRfee": 5015,
+   "nombre": "GUILLERMO",
+   "apellidos": "FERRANDO VALDELOMAR",
+   "fechaNacimiento": "1967-08-25",
+   "club": "SAMA-M"
   },
   {
    "idRfee": 5046,
@@ -306,13 +313,6 @@
    "apellidos": "GARCÍA ESTRAVIZ",
    "fechaNacimiento": "1967-04-01",
    "club": "COMES-C"
-  },
-  {
-   "idRfee": 4288,
-   "nombre": "LUIS JOSE",
-   "apellidos": "MUÑOZ CARO",
-   "fechaNacimiento": "1972-01-16",
-   "club": "CECR-CR"
   }
  ]
 }
