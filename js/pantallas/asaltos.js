@@ -4,12 +4,12 @@
 // suele ser uno; en directas, dos o tres), y cada tiempo tiene su vídeo.
 
 import {
-  anadir, crear, rellenar, cabecera, ir, campo, campoLargo, bloque, grupoOpciones,
-  desplegable, deslizador, formatearFecha, formatearBytes, formatearSegundos,
+  anadir, crear, rellenar, cabecera, ir, campo, campoLargo, bloque, desplegable,
+  deslizador, formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  TIPOS_DE_SESION, FASES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe,
-  nombreCompleto, normalizar, opcionesPara,
+  TIPOS_DE_SESION, TIPO_DE_SESION_POR_DEFECTO, FASES, MANOS, EMPUNADURAS,
+  ESTATURAS, etiquetaDe, nombreCompleto, normalizar, opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 import { resumirCompeticion } from '../competiciones.js';
@@ -112,9 +112,9 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   const esNuevo = datos.id === undefined;
   const rivales = await listarRivales();
 
-  // Si venimos de crear un rival sobre la marcha, ya llega elegido.
+  // Si venimos de corregir la ficha del rival, ya llega elegido.
   let rivalId = datos.rivalIdElegido ?? asalto.rivalId ?? null;
-  let tipoSesion = asalto.tipoSesion || null;
+  let tipoSesion = asalto.tipoSesion || TIPO_DE_SESION_POR_DEFECTO;
   let fase = asalto.fase || null;
 
   // --- Elección del rival ---
@@ -143,7 +143,10 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
       .slice(0, 8);
 
     rellenar(candidatos, encontrados.length === 0
-      ? crear('p', { class: 'ayuda', texto: 'Nadie coincide. Puedes darlo de alta abajo.' })
+      ? crear('p', {
+          class: 'ayuda',
+          texto: 'Nadie coincide. Los rivales se dan de alta en Menú → Rivales.',
+        })
       : encontrados.map((r) => crear('button', {
           type: 'button', class: 'ficha-lista',
           onclick: () => {
@@ -214,9 +217,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     texto: 'Falta indicar con qué mano tira el rival.',
   });
 
-  const numero = campo('Número de asalto de la sesión', {
-    value: asalto.numero || '', type: 'number', inputmode: 'numeric', placeholder: '1',
-  });
   const fecha = campo('Fecha', { value: asalto.fecha || hoy(), type: 'date' });
   const fatiga = deslizador('Fatiga percibida', {
     min: 1, max: 5, valor: asalto.fatiga || FATIGA_POR_DEFECTO,
@@ -224,10 +224,9 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   const nota = campoLargo('Nota', { value: asalto.nota || '' });
 
   // --- Competición ---
-  // Antes era un campo de texto que había que teclear en cada asalto. Ahora
-  // se elige de las que tengas guardadas, que se traen del calendario de la
-  // federación o se añaden a mano.
-  let competicionId = datos.competicionIdElegida ?? asalto.competicionId ?? null;
+  // Sólo se elige entre las que ya tengas guardadas. Darlas de alta, tocarlas
+  // o borrarlas es cosa de Menú → Competiciones: aquí sólo se apunta cuál.
+  let competicionId = asalto.competicionId ?? null;
 
   const competiciones = (await listar(ALMACENES.competiciones))
     .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
@@ -237,7 +236,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     onchange: (evento) => { competicionId = Number(evento.target.value) || null; },
   });
   selectorCompeticion.append(crear('option', {
-    value: '', texto: '— Ninguna (entrenamiento) —',
+    value: '', texto: '— Sin indicar —',
   }));
   for (const competicion of competiciones) {
     const opcion = crear('option', {
@@ -251,41 +250,42 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
 
   const aviso = crear('p', { class: 'aviso', texto: 'Elige un rival.', hidden: true });
 
+  // La competición y la fase sólo tienen sentido si el asalto es de
+  // competición; en un entrenamiento estorban.
+  const bloqueCompeticion = bloque('Competición', selectorCompeticion);
+  const bloqueFase = desplegable('Fase', FASES, fase, (valor) => { fase = valor; },
+                                 { vacio: '— Sin indicar —' }).bloque;
+
+  function refrescarPorTipo() {
+    const esDeCompeticion = tipoSesion === 'competicion';
+    bloqueCompeticion.hidden = !esDeCompeticion;
+    bloqueFase.hidden = !esDeCompeticion;
+  }
+
   anadir(contenedor,
     cabecera(esNuevo ? 'Nuevo asalto' : 'Editar asalto',
              () => ir(esNuevo ? 'inicio' : 'asalto', { id: datos.id })),
 
     bloque('Rival', crear('div', {}, [
       elegido,
-      buscador.bloque,
+      // Los rivales se dan de alta en su pantalla, no aquí: al crear un
+      // asalto se elige entre los que ya tienes.
+      rivales.length === 0 ? crear('p', {
+        class: 'ayuda',
+        texto: 'Todavía no hay ningún rival. Se dan de alta en Menú → Rivales, ' +
+               'a mano o trayéndolos del ranking de la federación.',
+      }) : buscador.bloque,
       candidatos,
       avisoMano,
-      crear('button', {
-        type: 'button', class: 'boton', texto: 'Dar de alta un rival nuevo',
-        onclick: () => ir('rival', {
-          volverA: 'asalto-nuevo',
-          // Al guardarlo, volvemos aquí con el rival ya seleccionado.
-          alCrear: (id) => ir('asalto-nuevo', { ...datos, rivalIdElegido: id }),
-        }),
-      }),
     ])),
 
-    numero.bloque,
-    bloque('Tipo de sesión', grupoOpciones(TIPOS_DE_SESION, tipoSesion,
-      (valor) => { tipoSesion = valor; })),
+    desplegable('Tipo de sesión', TIPOS_DE_SESION, tipoSesion, (valor) => {
+      tipoSesion = valor;
+      refrescarPorTipo();
+    }).bloque,
     fecha.bloque,
-    bloque('Competición', crear('div', {}, [
-      selectorCompeticion,
-      crear('button', {
-        type: 'button', class: 'boton', texto: 'Añadir una competición',
-        onclick: () => ir('competicion', {
-          volverA: 'asalto-nuevo',
-          alCrear: (id) => ir('asalto-nuevo', { ...datos, competicionIdElegida: id }),
-        }),
-      }),
-    ])),
-    desplegable('Fase', FASES, fase, (valor) => { fase = valor; },
-                { vacio: '— Sin indicar —' }).bloque,
+    bloqueCompeticion,
+    bloqueFase,
     fatiga.bloque,
     nota.bloque,
     aviso,
@@ -309,14 +309,20 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           await guardar(ALMACENES.tiradores, { ...rival, mano: manoElegida });
         }
 
+        // Fuera de una competición no hay ni torneo ni fase que apuntar, así
+        // que no se quedan guardados de un cambio de idea.
+        const esDeCompeticion = tipoSesion === 'competicion';
+
         const ficha = {
           ...(asalto.id !== undefined ? { id: asalto.id } : {}),
           rivalId,
-          numero: numero.entrada.value ? Number(numero.entrada.value) : null,
+          // El número de asalto ya no se pregunta, pero el que tuvieran los
+          // asaltos viejos se conserva: las estadísticas filtran por él.
+          numero: asalto.numero ?? null,
           fecha: fecha.entrada.value || hoy(),
           tipoSesion,
-          competicionId,
-          fase,
+          competicionId: esDeCompeticion ? competicionId : null,
+          fase: esDeCompeticion ? fase : null,
           // El club no se pregunta aquí: ya está en la ficha del rival.
           fatiga: Number(fatiga.entrada.value),
           nota: nota.entrada.value.trim(),
@@ -328,9 +334,10 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     }),
   );
 
-  // Si ya venía un rival elegido —porque estás editando el asalto o acabas
-  // de darlo de alta— hay que pintarlo ahora.
+  // Si ya venía un rival elegido —porque estás editando el asalto o vuelves
+  // de corregir su ficha— hay que pintarlo ahora.
   pintarElegido();
+  refrescarPorTipo();
 }
 
 // --- Detalle de un asalto: sus tiempos --------------------------------

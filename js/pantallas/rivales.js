@@ -35,22 +35,9 @@ export async function pantallaRivales(contenedor, datos = {}) {
     return nombreCompleto(a).localeCompare(nombreCompleto(b), 'es');
   });
 
-  const sinUsar = ordenados.filter((rival) => !cuenta.get(rival.id));
-
   const cuerpo = crear('tbody');
   const buscador = campo('Buscar', { placeholder: 'Nombre o club', oninput: pintarFilas });
   const contador = crear('p', { class: 'ayuda' });
-
-  async function vaciarSinUsar() {
-    if (!confirm(`¿Borrar ${sinUsar.length} rivales contra los que no has ` +
-                 'registrado ningún asalto?\n\nLos que sí tienen asaltos se ' +
-                 'quedan. Siempre puedes volver a traerlos del ranking.')) return;
-
-    for (const rival of sinUsar) {
-      await borrar(ALMACENES.tiradores, rival.id);
-    }
-    ir('rivales', { volverA });
-  }
 
   anadir(contenedor,
     cabecera('Rivales', () => ir(volverA)),
@@ -59,18 +46,13 @@ export async function pantallaRivales(contenedor, datos = {}) {
       type: 'button', class: 'boton boton-principal', texto: 'Nuevo rival a mano',
       onclick: () => ir('rival', { volverA: 'rivales' }),
     }),
+    // Si ya hay fichas, traerlas otra vez es ponerlas al día: sólo se añaden
+    // las que falten.
     crear('button', {
-      type: 'button', class: 'boton', texto: 'Traer de la RFEE',
+      type: 'button', class: 'boton',
+      texto: rivales.length === 0 ? 'Traer de la RFEE' : 'Actualizar de la RFEE',
       onclick: () => ir('importar-rfee'),
     }),
-
-    // Traer un ranking entero deja cientos de fichas, y la mayoría no se
-    // usarán nunca. Esto quita las que no aparecen en ningún asalto.
-    sinUsar.length > 0 ? crear('button', {
-      type: 'button', class: 'boton boton-peligro',
-      texto: `Vaciar los ${sinUsar.length} rivales sin asaltos`,
-      onclick: vaciarSinUsar,
-    }) : null,
 
     rivales.length === 0 ? crear('p', {
       class: 'ayuda',
@@ -149,10 +131,8 @@ export async function pantallaRival(contenedor, datos = {}) {
       onclick: async () => {
         const ficha = leer();
         if (!ficha) return;
-        const id = await guardar(ALMACENES.tiradores, ficha);
-        // Si veníamos de crear un asalto, volvemos allí con el rival ya elegido.
-        if (datos.alCrear) datos.alCrear(id);
-        else ir(volverA, datos.datosVuelta || {});
+        await guardar(ALMACENES.tiradores, ficha);
+        ir(volverA, datos.datosVuelta || {});
       },
     }),
   ];

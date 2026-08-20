@@ -40,13 +40,16 @@ export async function pantallaAyuda(contenedor) {
 
     apartado('Cómo se usa, de principio a fin',
       '1. Graba el asalto con el móvil, como cualquier vídeo.',
-      '2. En Teseo, pulsa "Nuevo asalto" y di contra quién fue.',
+      '2. En Teseo, pulsa "Nuevo asalto" y elige de la lista contra quién fue. ' +
+      'Si el rival no está, date antes una vuelta por Menú → Rivales.',
       '3. Añade el vídeo. Si el asalto tuvo varios tiempos, añade uno por tiempo.',
       '4. Abre el vídeo y ve marcando lo que pasa en cada intercambio.',
       '5. Cuando quieras, entra en Estadísticas y mira qué te sale.',
-      'Del asalto puedes apuntar además la fase, que se elige de una lista ' +
-      '(poule, tablón de 32, final…), y la fatiga que sentiste, con una barra ' +
-      'del 1 al 5 que va del azul al rojo.'),
+      'Del asalto se apunta el tipo de sesión, que viene puesto en ' +
+      '"Competición". Si lo cambias a entrenamiento o amistoso desaparecen la ' +
+      'competición y la fase, que ahí no pintan nada.',
+      'Y la fatiga que sentiste, con una barra del 1 al 5 que va del azul al ' +
+      'rojo.'),
 
     apartado('Marcar un intercambio',
       'Reproduce el vídeo y pausa justo donde pasa algo. Con los botones de ' +
@@ -78,6 +81,8 @@ export async function pantallaAyuda(contenedor) {
       '"Traer de la RFEE": sólo te pide la temporada. Vienen con su nombre, su ' +
       'club y su fecha de nacimiento, pero sin saber con qué mano tiran: eso lo ' +
       'pones tú.',
+      'Cuando ya tienes fichas, ese botón pasa a decir "Actualizar de la RFEE": ' +
+      'vuelve a mirar el ranking y añade las que falten.',
       'La mano hace falta de verdad, porque las estadísticas te dejan comparar ' +
       'cómo te va contra diestros y contra zurdos.'),
 
@@ -88,14 +93,15 @@ export async function pantallaAyuda(contenedor) {
       'temporada y tu categoría, con su fecha y su población.',
       'Los torneos de tu club, que no están en el calendario federativo, los ' +
       'añades a mano.',
-      'Si el asalto es de entrenamiento, deja la competición en "Ninguna".'),
+      'Todo esto se hace aquí: al crear un asalto sólo se elige una de las que ' +
+      'ya tengas.'),
 
     apartado('Qué te dice Estadísticas',
       'Con qué acciones sueles tocar y con cuáles no. Si atacas más de lo que ' +
       'defiendes. En qué parte del asalto tocas más. Dónde te tocan a ti. Y ' +
       'cuántos dobles haces.',
-      'Arriba, en "Filtros", puedes mirar sólo contra un rival, sólo contra ' +
-      'zurdos, o sólo los primeros asaltos del día.'),
+      'Arriba, en "Filtros", puedes mirar sólo contra un rival o sólo contra ' +
+      'zurdos.'),
 
     apartado('Tus datos no salen del móvil',
       'No hay que registrarse ni hay contraseñas. Los vídeos, tus asaltos y ' +
@@ -108,8 +114,11 @@ export async function pantallaAyuda(contenedor) {
       'El vídeo tiene que estar descargado en el móvil. Si está sólo en la ' +
       'nube de Google Fotos, Teseo no puede leerlo y te avisará. Lo más cómodo ' +
       'es etiquetar el mismo día del torneo.',
-      'En Menú → Diagnóstico puedes ver cuánto espacio te queda y copiar un ' +
-      'registro de lo que ha pasado, por si hay que preguntar.'),
+      'En Menú → Configuración puedes ver cuánto espacio te queda y copiar un ' +
+      'registro de lo que ha pasado, por si hay que preguntar.',
+      'Ahí mismo puedes vaciar de golpe los rivales y las competiciones que no ' +
+      'aparecen en ningún asalto: traer un ranking entero deja muchas fichas ' +
+      'que no vas a usar.'),
 
     crear('p', { class: 'ayuda', texto: `Esta ayuda corresponde a la versión ${VERSION}.` }),
   );

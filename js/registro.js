@@ -1,7 +1,7 @@
 // Registro de lo que va pasando por dentro.
 //
 // En el móvil no hay consola de desarrollador a mano, así que guardamos aquí
-// lo importante y se puede leer y copiar desde Menú → Diagnóstico. Se queda
+// lo importante y se puede leer y copiar desde Menú → Configuración. Se queda
 // en memoria: al cerrar la aplicación desaparece.
 
 const lineas = [];

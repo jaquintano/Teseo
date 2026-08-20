@@ -38,22 +38,9 @@ export async function pantallaCompeticiones(contenedor, datos = {}) {
     cuenta.set(asalto.competicionId, (cuenta.get(asalto.competicionId) || 0) + 1);
   }
 
-  const sinUsar = competiciones.filter((c) => !cuenta.get(c.id));
-
   const cuerpo = crear('tbody');
   const buscador = campo('Buscar', { placeholder: 'Nombre o población', oninput: pintarFilas });
   const contador = crear('p', { class: 'ayuda' });
-
-  async function vaciarSinUsar() {
-    if (!confirm(`¿Borrar ${sinUsar.length} competiciones en las que no has ` +
-                 'registrado ningún asalto?\n\nLas que sí tienen asaltos se ' +
-                 'quedan. Siempre puedes volver a traerlas del calendario.')) return;
-
-    for (const competicion of sinUsar) {
-      await borrar(ALMACENES.competiciones, competicion.id);
-    }
-    ir('competiciones', { volverA });
-  }
 
   anadir(contenedor,
     cabecera('Competiciones', () => ir(volverA)),
@@ -62,16 +49,14 @@ export async function pantallaCompeticiones(contenedor, datos = {}) {
       type: 'button', class: 'boton boton-principal', texto: 'Nueva competición a mano',
       onclick: () => ir('competicion', { volverA: 'competiciones' }),
     }),
+    // Con el calendario ya traído, volver a traerlo es ponerlo al día.
     crear('button', {
-      type: 'button', class: 'boton', texto: 'Traer del calendario de la RFEE',
+      type: 'button', class: 'boton',
+      texto: competiciones.length === 0
+        ? 'Traer del calendario de la RFEE'
+        : 'Actualizar del calendario de la RFEE',
       onclick: () => ir('importar-competiciones'),
     }),
-
-    sinUsar.length > 0 ? crear('button', {
-      type: 'button', class: 'boton boton-peligro',
-      texto: `Vaciar las ${sinUsar.length} competiciones sin asaltos`,
-      onclick: vaciarSinUsar,
-    }) : null,
 
     competiciones.length === 0 ? crear('p', {
       class: 'ayuda',
@@ -158,7 +143,7 @@ export async function pantallaCompeticion(contenedor, datos = {}) {
         const valorNombre = nombre.entrada.value.trim();
         if (!valorNombre) { aviso.hidden = false; nombre.entrada.focus(); return; }
 
-        const id = await guardar(ALMACENES.competiciones, {
+        await guardar(ALMACENES.competiciones, {
           ...competicion,
           nombre: valorNombre,
           fecha: fecha.entrada.value || null,
@@ -168,8 +153,7 @@ export async function pantallaCompeticion(contenedor, datos = {}) {
           origen: competicion.origen || 'manual',
         });
 
-        if (datos.alCrear) datos.alCrear(id);
-        else ir(volverA, datos.datosVuelta || {});
+        ir(volverA, datos.datosVuelta || {});
       },
     }),
   ];

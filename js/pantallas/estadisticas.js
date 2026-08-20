@@ -54,7 +54,9 @@ export async function pantallaEstadisticas(contenedor) {
 
   const preparados = prepararIntercambios({ asaltos, tiempos, intercambios, tiradores });
 
-  // Los números de asalto que existen de verdad, para no ofrecer filtros vacíos.
+  // El número de asalto de la sesión ya no se pregunta al crear un asalto,
+  // pero los que se apuntaron en su día siguen ahí y se pueden seguir
+  // filtrando. Si no queda ninguno, el filtro no se ofrece.
   const numeros = [...new Set(asaltos.map((a) => a.numero).filter((n) => n != null))]
     .sort((a, b) => a - b);
 
@@ -88,7 +90,7 @@ export async function pantallaEstadisticas(contenedor) {
       bloque('Rival', selectorRival),
       bloque('Mano del rival', grupoOpciones(opcionesPara(MANOS, generoDelUsuario()), null,
         (valor) => { filtros.manoRival = valor; pintar(); }, { clase: 'tres-columnas' })),
-      bloque('Número de asalto', selectorNumero),
+      numeros.length > 0 ? bloque('Número de asalto', selectorNumero) : null,
     ]),
 
     resultados,
