@@ -4,7 +4,7 @@
  "categoria": "M15",
  "genero": "Femenino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=4&gender=W",
- "descargadoEl": "2026-08-20T09:43:41.463Z",
+ "descargadoEl": "2026-08-20T10:22:45.362Z",
  "tiradores": [
   {
    "idRfee": 1918,
@@ -567,18 +567,18 @@
    "club": "CREA-M"
   },
   {
-   "idRfee": 5174,
-   "nombre": "DARIANA ANTONELLA",
-   "apellidos": "MEZA DAMMERT",
-   "fechaNacimiento": "2012-07-10",
-   "club": "CELC-M"
-  },
-  {
    "idRfee": 5105,
    "nombre": "REBECCA",
    "apellidos": "REES",
    "fechaNacimiento": "2013-08-11",
    "club": "CEP-M"
+  },
+  {
+   "idRfee": 5174,
+   "nombre": "DARIANA ANTONELLA",
+   "apellidos": "MEZA DAMMERT",
+   "fechaNacimiento": "2012-07-10",
+   "club": "CELC-M"
   }
  ]
 }
