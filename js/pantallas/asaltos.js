@@ -27,6 +27,22 @@ const FATIGA_POR_DEFECTO = 3;
 // reciente arriba, se recorre al revés.
 const ORDEN_DE_FASE = new Map(FASES.map((fase, posicion) => [fase.id, posicion]));
 
+/**
+ * Cómo se nombra una competición al elegirla: primero la categoría, que es
+ * por donde se busca cuando compites en dos, y luego el torneo y el día.
+ */
+function etiquetaDeCompeticion(competicion) {
+  return [competicion.categoria, competicion.nombre, formatearFecha(competicion.fecha)]
+    .filter(Boolean).join(' · ');
+}
+
+/** Y en ese mismo orden se colocan: por categoría, torneo y fecha. */
+function compararCompeticiones(a, b) {
+  return (a.categoria || '').localeCompare(b.categoria || '', 'es')
+      || (a.nombre || '').localeCompare(b.nombre || '', 'es')
+      || (b.fecha || '').localeCompare(a.fecha || '');
+}
+
 /** Cuándo se tiró un asalto: lo dice su competición. */
 function fechaDeAsalto(asalto, competicion) {
   // Los asaltos viejos guardaban su propia fecha, de cuando se preguntaba.
@@ -38,6 +54,7 @@ function fechaDeAsalto(asalto, competicion) {
 // Cómo se agrupan los asaltos. Lo que agrupa desaparece de las filas: es lo
 // que permite que la tabla quepa en un móvil sin desplazarla de lado.
 const AGRUPACIONES = [
+  { id: 'ninguna', etiqueta: 'Sin agrupar' },
   { id: 'competicion', etiqueta: 'Competición' },
   { id: 'rival', etiqueta: 'Rival' },
 ];
@@ -59,17 +76,8 @@ export async function pantallaInicio(contenedor) {
   const competicionPorId = new Map(competiciones.map((c) => [c.id, c]));
   const rivalPorId = new Map(tiradores.map((t) => [t.id, t]));
 
-  // Lo último que se tiró, arriba: primero por el día de la competición y
-  // luego por la fase, que dentro de una competición es la hora del día. Los
-  // asaltos sin fase quedan detrás de los que la tienen.
-  const posicionDeFase = (asalto) => ORDEN_DE_FASE.get(asalto.fase) ?? -1;
-  asaltos.sort((a, b) =>
-    fechaDe(b).localeCompare(fechaDe(a))
-    || posicionDeFase(b) - posicionDeFase(a)
-    || b.id - a.id);
-
   const filtros = { rival: null, competicion: null };
-  let agrupacion = 'competicion';
+  let agrupacion = 'ninguna';
 
   const tabla = crear('div');
   const contador = crear('p', { class: 'ayuda' });
@@ -109,7 +117,7 @@ export async function pantallaInicio(contenedor) {
       crear('summary', { texto: 'Filtros y agrupación' }),
 
       desplegable('Agrupar por', AGRUPACIONES, agrupacion,
-        (valor) => { agrupacion = valor || 'competicion'; pintar(); }).bloque,
+        (valor) => { agrupacion = valor || 'ninguna'; pintar(); }).bloque,
 
       ...selectoresDeFiltro(),
     ]) : null,
@@ -128,12 +136,15 @@ export async function pantallaInicio(contenedor) {
       .map((id) => ({ id: String(id), etiqueta: nombreDeRival(rivalPorId.get(id)) }))
       .sort((a, b) => a.etiqueta.localeCompare(b.etiqueta, 'es'));
 
-    // Las competiciones, de la más reciente a la más antigua, y los asaltos
-    // que no son de ninguna al final.
+    // Por categoría, torneo y fecha, igual que al elegirla en el asalto. Los
+    // que no son de ninguna competición, al final.
     const deCompeticion = [...new Set(asaltos.map((a) => claveDeCompeticion(a)))]
       .map((clave) => ({ clave, ...tituloDeCompeticion(clave) }))
-      .sort((a, b) => (b.orden || '').localeCompare(a.orden || ''))
-      .map(({ clave, titulo }) => ({ id: clave, etiqueta: titulo }));
+      .sort((a, b) => {
+        if (!a.competicion || !b.competicion) return a.competicion ? -1 : 1;
+        return compararCompeticiones(a.competicion, b.competicion);
+      })
+      .map(({ clave, etiqueta }) => ({ id: clave, etiqueta }));
 
     return [
       deRival.length > 1 ? desplegable('Rival', deRival, null,
@@ -142,7 +153,7 @@ export async function pantallaInicio(contenedor) {
 
       deCompeticion.length > 1 ? desplegable('Competición', deCompeticion, null,
         (valor) => { filtros.competicion = valor; pintar(); },
-        { vacio: 'Todas las competiciones' }).bloque : null,
+        { vacio: 'Todas las competiciones', clase: 'compacta' }).bloque : null,
     ];
   }
 
@@ -158,14 +169,25 @@ export async function pantallaInicio(contenedor) {
     return asalto.torneo ? `t${asalto.torneo}` : 'sin';
   }
 
+  /**
+   * Cómo se llama un montón de asaltos: `titulo` y `detalle` son para la
+   * cabecera del grupo, donde manda el nombre del torneo, y `etiqueta` para
+   * el desplegable, donde se busca por categoría.
+   */
   function tituloDeCompeticion(clave) {
-    if (clave === 'sin') return { titulo: 'Sin competición', orden: '' };
-    if (clave.startsWith('t')) return { titulo: clave.slice(1), orden: '' };
+    if (clave === 'sin') {
+      return { titulo: 'Sin competición', etiqueta: 'Sin competición', orden: '' };
+    }
+    if (clave.startsWith('t')) {
+      return { titulo: clave.slice(1), etiqueta: clave.slice(1), orden: '' };
+    }
 
     const competicion = competicionPorId.get(Number(clave.slice(1)));
     return {
+      competicion,
       titulo: competicion.nombre,
       detalle: formatearFecha(competicion.fecha),
+      etiqueta: etiquetaDeCompeticion(competicion),
       orden: competicion.fecha || '',
     };
   }
@@ -178,6 +200,22 @@ export async function pantallaInicio(contenedor) {
 
   function fechaDe(asalto) {
     return fechaDeAsalto(asalto, competicionPorId.get(asalto.competicionId));
+  }
+
+  /**
+   * Sin agrupar, el orden es el de siempre en una lista: lo último que has
+   * apuntado, arriba. Agrupando manda el calendario: el día de la competición
+   * y, dentro de ella, la fase, que en un torneo es la hora del día. Los
+   * asaltos sin fase quedan detrás de los que la tienen.
+   */
+  function ordenar(lista) {
+    if (agrupacion === 'ninguna') return [...lista].sort((a, b) => b.id - a.id);
+
+    const posicionDeFase = (asalto) => ORDEN_DE_FASE.get(asalto.fase) ?? -1;
+    return [...lista].sort((a, b) =>
+      fechaDe(b).localeCompare(fechaDe(a))
+      || posicionDeFase(b) - posicionDeFase(a)
+      || b.id - a.id);
   }
 
   function grupoDe(asalto) {
@@ -221,10 +259,16 @@ export async function pantallaInicio(contenedor) {
       ? (enCompeticion || 'Sin competición')
       : nombreDeRival(rivalPorId.get(asalto.rivalId));
 
-    // Agrupando por competición, la fecha ya la dice la cabecera del grupo.
-    const secundaria = agrupacion === 'rival'
-      ? formatearFecha(fechaDe(asalto))
-      : (enCompeticion ? '' : formatearFecha(asalto.fecha));
+    // Sin cabecera de grupo, cada fila tiene que decir de dónde sale.
+    // Agrupando por competición, en cambio, la fecha ya la dice la cabecera.
+    let secundaria;
+    if (agrupacion === 'ninguna') {
+      secundaria = [enCompeticion, formatearFecha(fechaDe(asalto))].filter(Boolean).join(' · ');
+    } else if (agrupacion === 'rival') {
+      secundaria = formatearFecha(fechaDe(asalto));
+    } else {
+      secundaria = enCompeticion ? '' : formatearFecha(asalto.fecha);
+    }
 
     return crear('tr', {
       class: 'fila-rival',
@@ -254,15 +298,21 @@ export async function pantallaInicio(contenedor) {
     }
 
     const cuerpo = crear('tbody');
-    for (const grupo of agrupar(visibles)) {
-      cuerpo.append(crear('tr', { class: 'fila-grupo' }, [
-        crear('td', { colspan: '3' }, [
-          crear('span', { texto: grupo.titulo }),
-          grupo.detalle ? crear('span', { class: 'apagado', texto: ` · ${grupo.detalle}` }) : null,
-          crear('span', { class: 'cuenta-grupo', texto: String(grupo.asaltos.length) }),
-        ]),
-      ]));
-      for (const asalto of grupo.asaltos) cuerpo.append(filaDe(asalto));
+    const ordenados = ordenar(visibles);
+
+    if (agrupacion === 'ninguna') {
+      for (const asalto of ordenados) cuerpo.append(filaDe(asalto));
+    } else {
+      for (const grupo of agrupar(ordenados)) {
+        cuerpo.append(crear('tr', { class: 'fila-grupo' }, [
+          crear('td', { colspan: '3' }, [
+            crear('span', { texto: grupo.titulo }),
+            grupo.detalle ? crear('span', { class: 'apagado', texto: ` · ${grupo.detalle}` }) : null,
+            crear('span', { class: 'cuenta-grupo', texto: String(grupo.asaltos.length) }),
+          ]),
+        ]));
+        for (const asalto of grupo.asaltos) cuerpo.append(filaDe(asalto));
+      }
     }
 
     rellenar(tabla, crear('div', { class: 'tabla-scroll' }, [
@@ -432,10 +482,10 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   let competicionId = asalto.competicionId ?? null;
 
   const competiciones = (await listar(ALMACENES.competiciones))
-    .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+    .sort(compararCompeticiones);
 
   const selectorCompeticion = crear('select', {
-    class: 'entrada',
+    class: 'entrada compacta',
     onchange: (evento) => {
       competicionId = Number(evento.target.value) || null;
       if (competicionId != null) avisoCompeticion.hidden = true;
@@ -447,8 +497,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   for (const competicion of competiciones) {
     const opcion = crear('option', {
       value: competicion.id,
-      texto: [competicion.nombre, competicion.categoria, formatearFecha(competicion.fecha)]
-        .filter(Boolean).join(' · '),
+      texto: etiquetaDeCompeticion(competicion),
     });
     if (competicion.id === competicionId) opcion.selected = true;
     selectorCompeticion.append(opcion);

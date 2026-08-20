@@ -81,14 +81,15 @@ export function grupoOpciones(catalogo, valor, alElegir, opciones = {}) {
  * @param {Array<{id:string, etiqueta:string}>} catalogo
  * @param {string|null} valor el elegido ahora mismo
  * @param {(nuevoValor:string|null) => void} alElegir
- * @param {{vacio?: string}} opciones texto de la opción sin elegir; si no se
- *        indica, no se ofrece la posibilidad de dejarlo en blanco.
+ * @param {{vacio?: string, clase?: string}} opciones `vacio` es el texto de
+ *        la opción sin elegir; si no se indica, no se ofrece la posibilidad de
+ *        dejarlo en blanco. `clase` se añade a la del propio desplegable.
  */
 export function desplegable(etiqueta, catalogo, valor, alElegir, opciones = {}) {
   const id = `campo-${Math.random().toString(36).slice(2, 9)}`;
   const entrada = crear('select', {
     id,
-    class: 'entrada',
+    class: `entrada ${opciones.clase || ''}`.trim(),
     onchange: (evento) => alElegir(evento.target.value || null),
   });
 

@@ -71,7 +71,7 @@ export const EMPUNADURAS = [
 // La altura del rival no se puede saber con exactitud, así que se compara a
 // ojo con la propia.
 export const ESTATURAS = [
-  { id: 'similar', etiqueta: 'Similar' },
+  { id: 'similar', etiqueta: 'Altura similar' },
   { id: 'mas-alta', etiqueta: 'Más alto/a', M: 'Más alto', F: 'Más alta' },
   { id: 'mas-baja', etiqueta: 'Más bajo/a', M: 'Más bajo', F: 'Más baja' },
 ];

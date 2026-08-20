@@ -207,6 +207,11 @@ h1 {
   outline-offset: 1px;
 }
 
+/* Los nombres de las competiciones son largos —categoría, torneo y fecha— y
+   con el cuerpo de los demás campos no cabe ni uno. Aquí no se escribe, así
+   que no hay riesgo de que el navegador amplíe la página al tocarlo. */
+.entrada.compacta { font-size: 0.9rem; }
+
 textarea.entrada {
   min-height: 90px;
   resize: vertical;
