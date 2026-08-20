@@ -9,7 +9,7 @@ import {
 } from '../ui.js';
 import {
   TIPOS_DE_SESION, TIPO_DE_SESION_POR_DEFECTO, FASES, MANOS, EMPUNADURAS,
-  ESTATURAS, etiquetaDe, nombreCompleto, normalizar, opcionesPara,
+  ESTATURAS, etiquetaDe, nombreCompleto, coincide, opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 import { resumirCompeticion } from '../competiciones.js';
@@ -33,8 +33,10 @@ function hoy() {
 
 // Cómo se agrupan los asaltos. Lo que agrupa desaparece de las filas: es lo
 // que permite que la tabla quepa en un móvil sin desplazarla de lado.
+//
+// Por fecha no se agrupa: una competición se tira en un día, así que sería
+// partir los mismos montones dos veces.
 const AGRUPACIONES = [
-  { id: 'fecha', etiqueta: 'Fecha' },
   { id: 'competicion', etiqueta: 'Competición' },
   { id: 'rival', etiqueta: 'Rival' },
 ];
@@ -59,7 +61,7 @@ export async function pantallaInicio(contenedor) {
   asaltos.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '') || b.id - a.id);
 
   const filtros = { rival: null, competicion: null, tipoSesion: null };
-  let agrupacion = 'fecha';
+  let agrupacion = 'competicion';
 
   const tabla = crear('div');
   const contador = crear('p', { class: 'ayuda' });
@@ -99,7 +101,7 @@ export async function pantallaInicio(contenedor) {
       crear('summary', { texto: 'Filtros y agrupación' }),
 
       desplegable('Agrupar por', AGRUPACIONES, agrupacion,
-        (valor) => { agrupacion = valor || 'fecha'; pintar(); }).bloque,
+        (valor) => { agrupacion = valor || 'competicion'; pintar(); }).bloque,
 
       ...selectoresDeFiltro(),
     ]) : null,
@@ -174,22 +176,14 @@ export async function pantallaInicio(contenedor) {
   }
 
   function grupoDe(asalto) {
-    if (agrupacion === 'competicion') {
-      const clave = claveDeCompeticion(asalto);
-      return { clave, ...tituloDeCompeticion(clave) };
-    }
     if (agrupacion === 'rival') {
       return {
         clave: `r${asalto.rivalId}`,
         titulo: nombreDeRival(rivalPorId.get(asalto.rivalId)),
-        orden: '',
       };
     }
-    return {
-      clave: asalto.fecha || 'sin',
-      titulo: formatearFecha(asalto.fecha) || 'Sin fecha',
-      orden: asalto.fecha || '',
-    };
+    const clave = claveDeCompeticion(asalto);
+    return { clave, ...tituloDeCompeticion(clave) };
   }
 
   function agrupar(lista) {
@@ -224,9 +218,11 @@ export async function pantallaInicio(contenedor) {
       ? (enCompeticion || tipo || 'Sin competición')
       : nombreDeRival(rivalPorId.get(asalto.rivalId));
 
-    const secundaria = agrupacion === 'fecha'
-      ? (enCompeticion || tipo)
-      : formatearFecha(asalto.fecha);
+    // Agrupando por competición, la fecha ya la dice la cabecera del grupo:
+    // sólo hace falta en los asaltos que no son de ninguna.
+    const secundaria = agrupacion === 'rival'
+      ? formatearFecha(asalto.fecha)
+      : (enCompeticion ? '' : [tipo, formatearFecha(asalto.fecha)].filter(Boolean).join(' · '));
 
     return crear('tr', {
       class: 'fila-rival',
@@ -329,19 +325,21 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   }
 
   function pintarCandidatos() {
-    const busqueda = normalizar(buscador.entrada.value);
+    const busqueda = buscador.entrada.value.trim();
     if (!busqueda) { rellenar(candidatos, []); return; }
 
     const encontrados = rivales
-      .filter((r) => normalizar(nombreCompleto(r) + ' ' + (r.club || '')).includes(busqueda))
-      .slice(0, 8);
+      .filter((r) => coincide(nombreCompleto(r) + ' ' + (r.club || ''), busqueda));
+    // De pie en la sala no se lee una lista larga; si no está entre los
+    // primeros, más vale escribir otra palabra que ponerse a buscar.
+    const primeros = encontrados.slice(0, 8);
 
     rellenar(candidatos, encontrados.length === 0
       ? crear('p', {
           class: 'ayuda',
           texto: 'Nadie coincide. Los rivales se dan de alta en Menú → Rivales.',
         })
-      : encontrados.map((r) => crear('button', {
+      : primeros.map((r) => crear('button', {
           type: 'button', class: 'ficha-lista',
           onclick: () => {
             rivalId = r.id;
@@ -357,6 +355,14 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
             texto: [r.club, r.mano ? etiquetaDe(MANOS, r.mano, generoDelUsuario()) : 'sin mano'].filter(Boolean).join(' · '),
           }),
         ])));
+
+    if (encontrados.length > primeros.length) {
+      candidatos.append(crear('p', {
+        class: 'ayuda',
+        texto: `Y ${encontrados.length - primeros.length} más. Escribe otra ` +
+               'palabra para afinar.',
+      }));
+    }
   }
 
   function pintarElegido() {

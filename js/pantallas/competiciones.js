@@ -8,7 +8,7 @@ import {
   anadir, crear, rellenar, cabecera, ir, campo, campoLargo, bloque, desplegable,
   formatearFecha,
 } from '../ui.js';
-import { normalizar } from '../constantes.js';
+import { coincide } from '../constantes.js';
 import { generoDelUsuario, categoriasDelUsuario } from '../genero.js';
 import { ALMACENES, listar, listarPor, guardar, obtener, borrar } from '../db.js';
 import {
@@ -84,9 +84,9 @@ export async function pantallaCompeticiones(contenedor, datos = {}) {
   pintarFilas();
 
   function pintarFilas() {
-    const busqueda = normalizar(buscador.entrada.value);
+    const busqueda = buscador.entrada.value.trim();
     const visibles = busqueda
-      ? competiciones.filter((c) => normalizar(c.nombre + ' ' + (c.poblacion || '')).includes(busqueda))
+      ? competiciones.filter((c) => coincide(c.nombre + ' ' + (c.poblacion || ''), busqueda))
       : competiciones;
 
     contador.textContent = busqueda

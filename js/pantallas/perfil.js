@@ -54,8 +54,8 @@ export async function pantallaPerfil(contenedor, datos = {}) {
 
     datos.ficha ? crear('p', {
       class: 'aviso-bueno',
-      texto: `Te has reconocido como ${nombreCompleto(datos.ficha)}. Ya está casi ` +
-             'todo: sólo falta con qué mano tiras y qué empuñadura usas.',
+      texto: `Te has reconocido como ${nombreCompleto(datos.ficha)}. Repasa las ` +
+             'categorías en las que compites y listo.',
     }) : null,
 
     esPrimeraVez && !datos.ficha ? crear('p', {

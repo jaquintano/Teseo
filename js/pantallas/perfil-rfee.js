@@ -9,7 +9,7 @@
 
 import { anadir, crear, rellenar, cabecera, ir, bloque, campo } from '../ui.js';
 import {
-  nombreCompleto, normalizar, etiquetaDe, GENEROS, ESTATURA_POR_DEFECTO,
+  nombreCompleto, coincide, etiquetaDe, GENEROS, ESTATURA_POR_DEFECTO,
   GENERO_POR_DEFECTO, CATEGORIA_POR_DEFECTO,
 } from '../constantes.js';
 import { listarRankings, cargarRanking } from '../rfee.js';
@@ -117,10 +117,10 @@ export async function pantallaPerfilRfee(contenedor) {
   function pintarLista() {
     if (tiradoresDelRanking.length === 0) return;
 
-    const busqueda = normalizar(buscador.entrada.value);
+    const busqueda = buscador.entrada.value.trim();
     const visibles = busqueda
       ? tiradoresDelRanking.filter(({ fila }) =>
-          normalizar(fila.nombre + ' ' + fila.apellidos + ' ' + fila.club).includes(busqueda))
+          coincide(fila.nombre + ' ' + fila.apellidos + ' ' + fila.club, busqueda))
       : tiradoresDelRanking;
 
     const cuerpo = crear('tbody', {}, visibles.map(({ fila, ranking }) => crear('tr', {

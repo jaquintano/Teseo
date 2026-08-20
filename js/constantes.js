@@ -190,6 +190,22 @@ export function nombreCompleto(tirador) {
  * espacios de más. Sirve para saber si "José Pérez" y "JOSE PEREZ" son la
  * misma persona.
  */
+/**
+ * Si un texto cumple lo que se ha escrito en un buscador.
+ *
+ * Cada palabra tiene que aparecer, pero en el orden que sea: los tiradores se
+ * guardan como los publica la federación —"USEROS MARTÍN, MARÍA"— y nadie
+ * escribe eso; se escribe "maría useros". Por lo mismo, las comas cuentan
+ * como espacios.
+ */
+export function coincide(texto, busqueda) {
+  const palabras = normalizar(busqueda).split(' ').filter(Boolean);
+  if (palabras.length === 0) return true;
+
+  const donde = normalizar(String(texto).replace(/,/g, ' '));
+  return palabras.every((palabra) => donde.includes(palabra));
+}
+
 export function normalizar(texto) {
   return (texto || '')
     .normalize('NFD')

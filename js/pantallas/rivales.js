@@ -9,7 +9,7 @@
 
 import { anadir, crear, rellenar, cabecera, ir, campo } from '../ui.js';
 import { fichaTirador } from './ficha-tirador.js';
-import { etiquetaDe, MANOS, nombreCompleto, normalizar } from '../constantes.js';
+import { etiquetaDe, MANOS, nombreCompleto, coincide } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 import {
   ALMACENES, listarRivales, listar, guardar, obtener, borrar, listarPor,
@@ -83,9 +83,9 @@ export async function pantallaRivales(contenedor, datos = {}) {
   // ------------------------------------------------------------------
 
   function pintarFilas() {
-    const busqueda = normalizar(buscador.entrada.value);
+    const busqueda = buscador.entrada.value.trim();
     const visibles = busqueda
-      ? ordenados.filter((r) => normalizar(nombreCompleto(r) + ' ' + (r.club || '')).includes(busqueda))
+      ? ordenados.filter((r) => coincide(nombreCompleto(r) + ' ' + (r.club || ''), busqueda))
       : ordenados;
 
     contador.textContent = busqueda

@@ -29,8 +29,6 @@ export async function pantallaAyuda(contenedor) {
       'Teseo necesita saber quién eres. Lo más rápido es "Búscate en el ranking ' +
       'de la RFEE": eliges tu categoría, te buscas en la lista y quedan puestos ' +
       'tu nombre, tu fecha de nacimiento, tu club y tu género.',
-      'Después sólo tienes que decir con qué mano tiras y qué empuñadura usas, ' +
-      'que eso la federación no lo publica.',
       'Si no compites en el circuito federativo, puedes escribirlo todo a mano.',
       'Marca también las categorías en las que compites, normalmente la tuya y ' +
       'la de arriba. Con eso Teseo ya sabe qué rivales y qué competiciones ' +
@@ -54,9 +52,9 @@ export async function pantallaAyuda(contenedor) {
     apartado('La lista de asaltos',
       'La pantalla de inicio es una tabla: cada fila es un asalto y se abre ' +
       'tocándola. A la derecha va la fatiga que apuntaste, con su color.',
-      'En "Filtros y agrupación" eliges si quieres verlos por fecha, por ' +
-      'competición o por rival. Lo que agrupa desaparece de las filas, así que ' +
-      'agrupando por competición ves de un tirón contra quién tiraste en ella.',
+      'En "Filtros y agrupación" eliges si quieres verlos por competición o ' +
+      'por rival. Lo que agrupa desaparece de las filas, así que agrupando por ' +
+      'competición ves de un tirón contra quién tiraste en ella.',
       'Y puedes quedarte sólo con un rival, una competición o un tipo de ' +
       'sesión. Arriba te dice cuántos asaltos estás viendo de cuántos.'),
 
@@ -86,6 +84,9 @@ export async function pantallaAyuda(contenedor) {
     apartado('Rivales',
       'Los rivales se guardan aparte, porque te los cruzas muchas veces. Los ' +
       'das de alta una vez y luego los eliges de la lista.',
+      'Al buscar da igual el orden, los acentos y las mayúsculas: la ' +
+      'federación los publica como "USEROS MARTÍN, MARÍA" pero puedes escribir ' +
+      '"maria useros" y sale igual.',
       'Puedes traerlos de golpe del ranking de la federación, en Rivales → ' +
       '"Traer de la RFEE": sólo te pide la temporada. Vienen con su nombre, su ' +
       'club y su fecha de nacimiento, pero sin saber con qué mano tiran: eso lo ' +

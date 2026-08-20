@@ -9,6 +9,8 @@
 //     rankings que se te ofrecen al importar.
 //   - La estatura del rival no se pide en centímetros, que no hay forma de
 //     saberlos, sino comparada contigo.
+//   - La mano y la empuñadura sólo se preguntan del rival. Las tuyas ya te
+//     las sabes, y Teseo no las usa para nada.
 
 import { crear, campo, campoLargo, desplegable, bloque, grupoOpcionesMultiple } from '../ui.js';
 import {
@@ -65,12 +67,12 @@ export function fichaTirador(tirador = {}, opciones = {}) {
   const selectorEstatura = desplegable('Estatura, comparada contigo',
     opcionesPara(ESTATURAS, genero), estatura, (valor) => { estatura = valor; });
 
+  // Las palabras que cambian con el género —"Diestra" o "Diestro"— sólo
+  // salen en la ficha del rival, y ahí el género no se elige: es el tuyo.
   const selectorGenero = esPropio
     ? desplegable('Género', GENEROS, genero, (valor) => {
         genero = valor;
         avisoGenero.hidden = true;
-        // Al cambiarlo se rehacen las palabras que dependen de él.
-        rehacerEtiquetas();
       }, { vacio: '— Elige —' })
     : null;
 
@@ -99,9 +101,10 @@ export function fichaTirador(tirador = {}, opciones = {}) {
     apellidos.bloque,
     selectorGenero ? selectorGenero.bloque : null,
     bloqueCategorias,
-    selectorMano.bloque,
-    selectorEmpunadura.bloque,
-    // Tu propia estatura comparada contigo no significa nada.
+    // De ti no se preguntan: ni la mano ni la empuñadura ni la estatura
+    // comparada contigo significan nada aquí.
+    esPropio ? null : selectorMano.bloque,
+    esPropio ? null : selectorEmpunadura.bloque,
     esPropio ? null : selectorEstatura.bloque,
     fechaNacimiento.bloque,
     club.bloque,
@@ -110,16 +113,6 @@ export function fichaTirador(tirador = {}, opciones = {}) {
     avisoGenero,
     avisoCategorias,
   ]);
-
-  /** Reescribe las opciones que cambian de palabra según el género. */
-  function rehacerEtiquetas() {
-    for (const [selector, catalogo] of [[selectorMano, MANOS], [selectorEstatura, ESTATURAS]]) {
-      for (const opcion of selector.entrada.options) {
-        const encontrada = catalogo.find((o) => o.id === opcion.value);
-        if (encontrada) opcion.textContent = (genero && encontrada[genero]) || encontrada.etiqueta;
-      }
-    }
-  }
 
   function leer() {
     const valorNombre = nombre.entrada.value.trim();
@@ -148,8 +141,8 @@ export function fichaTirador(tirador = {}, opciones = {}) {
       apellidos: apellidos.entrada.value.trim(),
       genero,
       categorias: esPropio ? categorias : (tirador.categorias || null),
-      mano,
-      empunadura,
+      mano: esPropio ? null : mano,
+      empunadura: esPropio ? null : empunadura,
       estatura: esPropio ? null : estatura,
       fechaNacimiento: fechaNacimiento.entrada.value || null,
       club: club.entrada.value.trim(),
