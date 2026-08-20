@@ -38,16 +38,15 @@ export async function pantallaAyuda(contenedor) {
 
     apartado('Cómo se usa, de principio a fin',
       '1. Graba el asalto con el móvil, como cualquier vídeo.',
-      '2. En Teseo, pulsa "Nuevo asalto" y elige de la lista contra quién fue. ' +
-      'Si el rival no está, date antes una vuelta por Menú → Rivales.',
+      '2. En Teseo, pulsa "Nuevo asalto" y elige de la lista contra quién fue y ' +
+      'en qué competición. Si no están, date antes una vuelta por Menú → ' +
+      'Rivales o Menú → Competiciones.',
       '3. Añade el vídeo. Si el asalto tuvo varios tiempos, añade uno por tiempo.',
       '4. Abre el vídeo y ve marcando lo que pasa en cada intercambio.',
       '5. Cuando quieras, entra en Estadísticas y mira qué te sale.',
-      'Del asalto se apunta el tipo de sesión, que viene puesto en ' +
-      '"Competición". Si lo cambias a entrenamiento o amistoso desaparecen la ' +
-      'competición y la fase, que ahí no pintan nada.',
-      'Y la fatiga que sentiste, con una barra del 1 al 5 que va del azul al ' +
-      'rojo.'),
+      'Del asalto se apunta también la fase —poule, tablón de 32, final…— y la ' +
+      'fatiga que sentiste, con una barra del 1 al 5 que va del azul al rojo. ' +
+      'La fecha no se pregunta: la pone la competición.'),
 
     apartado('La lista de asaltos',
       'La pantalla de inicio es una tabla: cada fila es un asalto y se abre ' +
@@ -55,8 +54,10 @@ export async function pantallaAyuda(contenedor) {
       'En "Filtros y agrupación" eliges si quieres verlos por competición o ' +
       'por rival. Lo que agrupa desaparece de las filas, así que agrupando por ' +
       'competición ves de un tirón contra quién tiraste en ella.',
-      'Y puedes quedarte sólo con un rival, una competición o un tipo de ' +
-      'sesión. Arriba te dice cuántos asaltos estás viendo de cuántos.'),
+      'Y puedes quedarte sólo con un rival o una competición. Arriba te dice ' +
+      'cuántos asaltos estás viendo de cuántos.',
+      'Dentro de cada competición, arriba lo último que tiraste: la final es ' +
+      'más tarde que la poule.'),
 
     apartado('Marcar un intercambio',
       'Reproduce el vídeo y pausa justo donde pasa algo. Con los botones de ' +
@@ -98,7 +99,8 @@ export async function pantallaAyuda(contenedor) {
 
     apartado('Competiciones',
       'Igual que los rivales, los torneos se guardan aparte y luego se eligen ' +
-      'al crear el asalto, en vez de teclear el nombre cada vez.',
+      'al crear el asalto, en vez de teclear el nombre cada vez. Hace falta ' +
+      'una: es de donde sale la fecha del asalto.',
       'En Competiciones → "Traer del calendario de la RFEE" te bajas los de tu ' +
       'temporada y tu categoría, con su fecha y su población.',
       'Los torneos de tu club, que no están en el calendario federativo, los ' +

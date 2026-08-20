@@ -111,17 +111,6 @@ export const CATEGORIAS = [
 
 export const CATEGORIA_POR_DEFECTO = 'M17';
 
-export const TIPOS_DE_SESION = [
-  { id: 'entrenamiento', etiqueta: 'Entrenamiento' },
-  { id: 'competicion', etiqueta: 'Competición' },
-  { id: 'amistoso', etiqueta: 'Amistoso' },
-];
-
-// Casi todo lo que se graba y se etiqueta es de competición: es donde
-// interesa mirarse. De él dependen la competición y la fase, que en un
-// entrenamiento no pintan nada.
-export const TIPO_DE_SESION_POR_DEFECTO = 'competicion';
-
 // La fase es secundaria y opcional. Se ofrece como lista para no tener que
 // escribirla a mano, que es incómodo de pie en la sala.
 export const FASES = [

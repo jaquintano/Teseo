@@ -8,8 +8,8 @@ import {
   deslizador, colorDeEscala, formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  TIPOS_DE_SESION, TIPO_DE_SESION_POR_DEFECTO, FASES, MANOS, EMPUNADURAS,
-  ESTATURAS, etiquetaDe, nombreCompleto, coincide, opcionesPara,
+  FASES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe, nombreCompleto, coincide,
+  opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 import { resumirCompeticion } from '../competiciones.js';
@@ -22,20 +22,21 @@ import {
 // algo: si nadie la toca, queda en el punto medio.
 const FATIGA_POR_DEFECTO = 3;
 
-/** Fecha de hoy en el formato que entiende un <input type="date">. */
-function hoy() {
-  const ahora = new Date();
-  const desfase = ahora.getTimezoneOffset() * 60000;
-  return new Date(ahora - desfase).toISOString().slice(0, 10);
+// Dentro de una competición, el orden de las fases ES el orden del día: la
+// poule es lo primero que se tira y la final lo último. Para enseñar lo más
+// reciente arriba, se recorre al revés.
+const ORDEN_DE_FASE = new Map(FASES.map((fase, posicion) => [fase.id, posicion]));
+
+/** Cuándo se tiró un asalto: lo dice su competición. */
+function fechaDeAsalto(asalto, competicion) {
+  // Los asaltos viejos guardaban su propia fecha, de cuando se preguntaba.
+  return (competicion && competicion.fecha) || asalto.fecha || '';
 }
 
 // --- Lista de asaltos (pantalla de inicio) ----------------------------
 
 // Cómo se agrupan los asaltos. Lo que agrupa desaparece de las filas: es lo
 // que permite que la tabla quepa en un móvil sin desplazarla de lado.
-//
-// Por fecha no se agrupa: una competición se tira en un día, así que sería
-// partir los mismos montones dos veces.
 const AGRUPACIONES = [
   { id: 'competicion', etiqueta: 'Competición' },
   { id: 'rival', etiqueta: 'Rival' },
@@ -58,9 +59,16 @@ export async function pantallaInicio(contenedor) {
   const competicionPorId = new Map(competiciones.map((c) => [c.id, c]));
   const rivalPorId = new Map(tiradores.map((t) => [t.id, t]));
 
-  asaltos.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '') || b.id - a.id);
+  // Lo último que se tiró, arriba: primero por el día de la competición y
+  // luego por la fase, que dentro de una competición es la hora del día. Los
+  // asaltos sin fase quedan detrás de los que la tienen.
+  const posicionDeFase = (asalto) => ORDEN_DE_FASE.get(asalto.fase) ?? -1;
+  asaltos.sort((a, b) =>
+    fechaDe(b).localeCompare(fechaDe(a))
+    || posicionDeFase(b) - posicionDeFase(a)
+    || b.id - a.id);
 
-  const filtros = { rival: null, competicion: null, tipoSesion: null };
+  const filtros = { rival: null, competicion: null };
   let agrupacion = 'competicion';
 
   const tabla = crear('div');
@@ -127,8 +135,6 @@ export async function pantallaInicio(contenedor) {
       .sort((a, b) => (b.orden || '').localeCompare(a.orden || ''))
       .map(({ clave, titulo }) => ({ id: clave, etiqueta: titulo }));
 
-    const deTipo = TIPOS_DE_SESION.filter((t) => asaltos.some((a) => a.tipoSesion === t.id));
-
     return [
       deRival.length > 1 ? desplegable('Rival', deRival, null,
         (valor) => { filtros.rival = valor; pintar(); },
@@ -137,10 +143,6 @@ export async function pantallaInicio(contenedor) {
       deCompeticion.length > 1 ? desplegable('Competición', deCompeticion, null,
         (valor) => { filtros.competicion = valor; pintar(); },
         { vacio: 'Todas las competiciones' }).bloque : null,
-
-      deTipo.length > 1 ? desplegable('Tipo de sesión', deTipo, null,
-        (valor) => { filtros.tipoSesion = valor; pintar(); },
-        { vacio: 'Todos los tipos' }).bloque : null,
     ];
   }
 
@@ -171,8 +173,11 @@ export async function pantallaInicio(contenedor) {
   function pasaFiltros(asalto) {
     if (filtros.rival && String(asalto.rivalId) !== filtros.rival) return false;
     if (filtros.competicion && claveDeCompeticion(asalto) !== filtros.competicion) return false;
-    if (filtros.tipoSesion && asalto.tipoSesion !== filtros.tipoSesion) return false;
     return true;
+  }
+
+  function fechaDe(asalto) {
+    return fechaDeAsalto(asalto, competicionPorId.get(asalto.competicionId));
   }
 
   function grupoDe(asalto) {
@@ -195,15 +200,14 @@ export async function pantallaInicio(contenedor) {
     }
 
     const salida = [...grupos.values()];
-    // Por rival mandan aquéllos con los que más te has cruzado. Si no, arriba
-    // lo más reciente: manda la fecha del asalto más nuevo del grupo y no la
-    // de la competición, que puede estar mal puesta en el calendario.
+    // Por rival mandan aquéllos con los que más te has cruzado; por
+    // competición, la más reciente arriba. Dentro de cada montón el orden ya
+    // viene dado, que los asaltos se ordenaron al cargarlos.
     if (agrupacion === 'rival') {
       salida.sort((a, b) => b.asaltos.length - a.asaltos.length
                          || a.titulo.localeCompare(b.titulo, 'es'));
     } else {
-      const masReciente = (grupo) => grupo.asaltos[0].fecha || '';
-      salida.sort((a, b) => masReciente(b).localeCompare(masReciente(a)));
+      salida.sort((a, b) => (b.orden || '').localeCompare(a.orden || ''));
     }
     return salida;
   }
@@ -211,18 +215,16 @@ export async function pantallaInicio(contenedor) {
   function filaDe(asalto) {
     const competicion = competicionPorId.get(asalto.competicionId);
     const enCompeticion = nombreDeCompeticion(competicion, asalto);
-    const tipo = etiquetaDe(TIPOS_DE_SESION, asalto.tipoSesion);
 
     // La columna principal dice lo que no está ya en la cabecera del grupo.
     const principal = agrupacion === 'rival'
-      ? (enCompeticion || tipo || 'Sin competición')
+      ? (enCompeticion || 'Sin competición')
       : nombreDeRival(rivalPorId.get(asalto.rivalId));
 
-    // Agrupando por competición, la fecha ya la dice la cabecera del grupo:
-    // sólo hace falta en los asaltos que no son de ninguna.
+    // Agrupando por competición, la fecha ya la dice la cabecera del grupo.
     const secundaria = agrupacion === 'rival'
-      ? formatearFecha(asalto.fecha)
-      : (enCompeticion ? '' : [tipo, formatearFecha(asalto.fecha)].filter(Boolean).join(' · '));
+      ? formatearFecha(fechaDe(asalto))
+      : (enCompeticion ? '' : formatearFecha(asalto.fecha));
 
     return crear('tr', {
       class: 'fila-rival',
@@ -304,7 +306,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
 
   // Si venimos de corregir la ficha del rival, ya llega elegido.
   let rivalId = datos.rivalIdElegido ?? asalto.rivalId ?? null;
-  let tipoSesion = asalto.tipoSesion || TIPO_DE_SESION_POR_DEFECTO;
   let fase = asalto.fase || null;
 
   // --- Elección del rival ---
@@ -420,7 +421,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     texto: 'Falta indicar con qué mano tira el rival.',
   });
 
-  const fecha = campo('Fecha', { value: asalto.fecha || hoy(), type: 'date' });
   const fatiga = deslizador('Fatiga percibida', {
     min: 1, max: 5, valor: asalto.fatiga || FATIGA_POR_DEFECTO,
   });
@@ -436,7 +436,10 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
 
   const selectorCompeticion = crear('select', {
     class: 'entrada',
-    onchange: (evento) => { competicionId = Number(evento.target.value) || null; },
+    onchange: (evento) => {
+      competicionId = Number(evento.target.value) || null;
+      if (competicionId != null) avisoCompeticion.hidden = true;
+    },
   });
   selectorCompeticion.append(crear('option', {
     value: '', texto: '— Sin indicar —',
@@ -452,18 +455,11 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   }
 
   const aviso = crear('p', { class: 'aviso', texto: 'Elige un rival.', hidden: true });
-
-  // La competición y la fase sólo tienen sentido si el asalto es de
-  // competición; en un entrenamiento estorban.
-  const bloqueCompeticion = bloque('Competición', selectorCompeticion);
-  const bloqueFase = desplegable('Fase', FASES, fase, (valor) => { fase = valor; },
-                                 { vacio: '— Sin indicar —' }).bloque;
-
-  function refrescarPorTipo() {
-    const esDeCompeticion = tipoSesion === 'competicion';
-    bloqueCompeticion.hidden = !esDeCompeticion;
-    bloqueFase.hidden = !esDeCompeticion;
-  }
+  // Sin competición un asalto no tiene ni cuándo ni dónde: es el único sitio
+  // del que sale la fecha desde que dejó de preguntarse.
+  const avisoCompeticion = crear('p', {
+    class: 'aviso', texto: 'Elige la competición.', hidden: true,
+  });
 
   anadir(contenedor,
     cabecera(esNuevo ? 'Nuevo asalto' : 'Editar asalto',
@@ -482,13 +478,10 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
       avisoMano,
     ])),
 
-    fecha.bloque,
-    desplegable('Tipo de sesión', TIPOS_DE_SESION, tipoSesion, (valor) => {
-      tipoSesion = valor;
-      refrescarPorTipo();
-    }).bloque,
-    bloqueCompeticion,
-    bloqueFase,
+    bloque('Competición', selectorCompeticion),
+    avisoCompeticion,
+    desplegable('Fase', FASES, fase, (valor) => { fase = valor; },
+                { vacio: '— Sin indicar —' }).bloque,
     fatiga.bloque,
     nota.bloque,
     aviso,
@@ -499,6 +492,13 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
       onclick: async () => {
         if (!rivalId) { aviso.hidden = false; return; }
         aviso.hidden = true;
+
+        if (competicionId == null) {
+          avisoCompeticion.hidden = false;
+          avisoCompeticion.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+        avisoCompeticion.hidden = true;
 
         // Sin la mano del rival no se guarda: las estadísticas se filtran por
         // ella y un asalto sin ese dato quedaría cojo.
@@ -512,20 +512,17 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           await guardar(ALMACENES.tiradores, { ...rival, mano: manoElegida });
         }
 
-        // Fuera de una competición no hay ni torneo ni fase que apuntar, así
-        // que no se quedan guardados de un cambio de idea.
-        const esDeCompeticion = tipoSesion === 'competicion';
-
         const ficha = {
           ...(asalto.id !== undefined ? { id: asalto.id } : {}),
           rivalId,
-          // El número de asalto ya no se pregunta, pero el que tuvieran los
-          // asaltos viejos se conserva: las estadísticas filtran por él.
+          // El número de asalto y la fecha ya no se preguntan, pero los que
+          // tuvieran los asaltos viejos se conservan: el número porque las
+          // estadísticas filtran por él, y la fecha porque puede ser la única
+          // que tengan. La de los nuevos sale de su competición.
           numero: asalto.numero ?? null,
-          fecha: fecha.entrada.value || hoy(),
-          tipoSesion,
-          competicionId: esDeCompeticion ? competicionId : null,
-          fase: esDeCompeticion ? fase : null,
+          fecha: asalto.fecha ?? null,
+          competicionId,
+          fase,
           // El club no se pregunta aquí: ya está en la ficha del rival.
           fatiga: Number(fatiga.entrada.value),
           nota: nota.entrada.value.trim(),
@@ -540,7 +537,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   // Si ya venía un rival elegido —porque estás editando el asalto o vuelves
   // de corregir su ficha— hay que pintarlo ahora.
   pintarElegido();
-  refrescarPorTipo();
 }
 
 // --- Detalle de un asalto: sus tiempos --------------------------------
@@ -559,10 +555,9 @@ export async function pantallaAsalto(contenedor, datos = {}) {
   tiempos.sort((a, b) => a.orden - b.orden);
 
   const contexto = [
-    formatearFecha(asalto.fecha),
-    asalto.numero ? `Asalto ${asalto.numero}` : '',
-    etiquetaDe(TIPOS_DE_SESION, asalto.tipoSesion),
     nombreDeCompeticion(competicion, asalto),
+    formatearFecha(fechaDeAsalto(asalto, competicion)),
+    asalto.numero ? `Asalto ${asalto.numero}` : '',
     etiquetaDe(FASES, asalto.fase),
     asalto.fatiga ? `Fatiga ${asalto.fatiga}/5` : '',
   ].filter(Boolean).join(' · ');
