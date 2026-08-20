@@ -173,7 +173,13 @@ export async function ir(nombre, datos = {}) {
   // Volver a la pantalla de inicio deshace todo el camino andado. Si no, al
   // llegar a ella quedarían entradas debajo y el botón de atrás de Android
   // volvería a meterse por donde veníamos en vez de salir de la aplicación.
-  if (nombre === pantallaDeInicio && profundidad > 0) {
+  //
+  // Ojo: sólo si no se lleva nada. Al retroceder se repinta con los datos que
+  // había guardados en el historial, así que lo que se pase ahora se
+  // perdería; y a veces la pantalla de inicio se visita con datos, como la
+  // ficha que traes de buscarte en el ranking.
+  const sinDatos = Object.keys(datos).length === 0;
+  if (nombre === pantallaDeInicio && profundidad > 0 && sinDatos) {
     history.go(-profundidad);
     return;   // de pintar se encarga el manejador de "atrás"
   }

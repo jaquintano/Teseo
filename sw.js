@@ -13,7 +13,7 @@
 
 // Al cambiar este número, el navegador tira la copia vieja y guarda la nueva.
 // Hay que subirlo en cada despliegue, y el mismo en js/app.js.
-const VERSION = 'teseo-v16';
+const VERSION = 'teseo-v17';
 
 // Los ficheros que forman la aplicación.
 const FICHEROS = [
@@ -40,6 +40,7 @@ const FICHEROS = [
   './js/pantallas/importar-rfee.js',
   './js/pantallas/menu.js',
   './js/pantallas/perfil.js',
+  './js/pantallas/perfil-rfee.js',
   './js/pantallas/rivales.js',
   './iconos/icon-192.png',
   './iconos/icon-512.png',

@@ -25,6 +25,14 @@ export async function pantallaAyuda(contenedor) {
       'Teseo sirve para ver en qué eres bueno y en qué no, mirando tus propios ' +
       'asaltos. Grabas, marcas lo que pasa, y la aplicación saca las cuentas.' }),
 
+    apartado('La primera vez',
+      'Teseo necesita saber quién eres. Lo más rápido es "Búscate en el ranking ' +
+      'de la RFEE": eliges tu categoría, te buscas en la lista y quedan puestos ' +
+      'tu nombre, tu fecha de nacimiento, tu club y tu género.',
+      'Después sólo tienes que decir con qué mano tiras y qué empuñadura usas, ' +
+      'que eso la federación no lo publica.',
+      'Si no compites en el circuito federativo, puedes escribirlo todo a mano.'),
+
     apartado('Cómo se usa, de principio a fin',
       '1. Graba el asalto con el móvil, como cualquier vídeo.',
       '2. En Teseo, pulsa "Nuevo asalto" y di contra quién fue.',

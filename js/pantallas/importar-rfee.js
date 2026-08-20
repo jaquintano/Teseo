@@ -6,7 +6,7 @@
 import { crear, rellenar, cabecera, ir, bloque, formatearFecha } from '../ui.js';
 import { nombreCompleto } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
-import { ALMACENES, guardar, listarRivales } from '../db.js';
+import { ALMACENES, guardar, listar } from '../db.js';
 import {
   listarRankings, cargarRanking, planificarImportacion, rellenarHuecos,
 } from '../rfee.js';
@@ -96,7 +96,9 @@ export async function pantallaImportarRfee(contenedor) {
 
     const [ranking, locales] = await Promise.all([
       cargarRanking(elegido.fichero),
-      listarRivales(),
+      // Todos, incluido tu propio perfil: si te elegiste del ranking, no
+      // debes aparecer luego como rival de ti mismo.
+      listar(ALMACENES.tiradores),
     ]);
     const plan = planificarImportacion(ranking, locales);
 

@@ -12,6 +12,7 @@ import { fijarGenero } from './genero.js';
 import { VERSION } from './version.js';
 
 import { pantallaPerfil } from './pantallas/perfil.js';
+import { pantallaPerfilRfee } from './pantallas/perfil-rfee.js';
 import { pantallaRivales, pantallaRival } from './pantallas/rivales.js';
 import { pantallaInicio, pantallaAsaltoNuevo, pantallaAsalto } from './pantallas/asaltos.js';
 import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js';
@@ -36,6 +37,7 @@ const conLimpieza = (dibujar) => (contenedor, datos) => {
 };
 
 registrarPantalla('perfil', conLimpieza(pantallaPerfil));
+registrarPantalla('perfil-rfee', conLimpieza(pantallaPerfilRfee));
 registrarPantalla('inicio', conLimpieza(pantallaInicio));
 registrarPantalla('menu', conLimpieza(pantallaMenu));
 registrarPantalla('diagnostico', conLimpieza(pantallaDiagnostico));

@@ -466,6 +466,17 @@ video::-webkit-media-controls-panel {
 
 .progreso:empty { display: none; }
 
+/* Confirmación de que algo ha salido bien, al contrario que .aviso. */
+.aviso-bueno {
+  margin: 0 0 1.25rem;
+  padding: 0.7rem 0.9rem;
+  background: rgba(53, 196, 107, 0.12);
+  border: 1px solid #35c46b;
+  border-radius: var(--radio);
+  color: #a8e6c0;
+  font-size: 0.9rem;
+}
+
 /* --- Ayuda ------------------------------------------------------------- */
 
 .texto-ayuda {
