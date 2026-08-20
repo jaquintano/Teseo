@@ -1,0 +1,673 @@
+{
+ "temporada": "2025-2026",
+ "arma": "Espada",
+ "modalidad": "Individual",
+ "origen": "https://app.skermo.org/calendar/public/rfee/results?season=16&weapon%5B%5D=E&modality%5B%5D=1",
+ "descargadoEl": "2026-08-20T11:40:00.540Z",
+ "competiciones": [
+  {
+   "idRfee": 9476,
+   "nombre": "TNR M20",
+   "fecha": "2025-09-20",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "AMPOSTA"
+  },
+  {
+   "idRfee": 9481,
+   "nombre": "TNR M20",
+   "fecha": "2025-09-28",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9552,
+   "nombre": "TNR ABS",
+   "fecha": "2025-10-04",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "MEDINA DEL CAMPO"
+  },
+  {
+   "idRfee": 9557,
+   "nombre": "TNR ABS",
+   "fecha": "2025-10-18",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "VALLADOLID"
+  },
+  {
+   "idRfee": 9577,
+   "nombre": "TNR M17",
+   "fecha": "2025-11-01",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "ALCOBENDAS"
+  },
+  {
+   "idRfee": 9578,
+   "nombre": "TNR M17",
+   "fecha": "2025-11-02",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "ALCOBENDAS"
+  },
+  {
+   "idRfee": 9581,
+   "nombre": "TNR M15",
+   "fecha": "2025-11-22",
+   "genero": "M",
+   "categoria": "M15",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9582,
+   "nombre": "TNR M13",
+   "fecha": "2025-11-23",
+   "genero": "M",
+   "categoria": "M13",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9583,
+   "nombre": "TNR M13",
+   "fecha": "2025-11-23",
+   "genero": "F",
+   "categoria": "M13",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9586,
+   "nombre": "TNR M20",
+   "fecha": "2025-11-30",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "ZARATAN"
+  },
+  {
+   "idRfee": 9587,
+   "nombre": "TNR M20",
+   "fecha": "2025-11-29",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "ZARATAN"
+  },
+  {
+   "idRfee": 9600,
+   "nombre": "TNR M15",
+   "fecha": "2025-11-22",
+   "genero": "F",
+   "categoria": "M15",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9605,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "M",
+   "categoria": "VET30",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9606,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "F",
+   "categoria": "VET40",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9607,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "F",
+   "categoria": "VET50",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9608,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "F",
+   "categoria": "VET60",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9610,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "M",
+   "categoria": "VET40",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9611,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "M",
+   "categoria": "VET50",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9612,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "M",
+   "categoria": "VET60",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9613,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "M",
+   "categoria": "VET70",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9643,
+   "nombre": "TNR ABS (2/3)",
+   "fecha": "2026-01-17",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "ALCOBENDAS"
+  },
+  {
+   "idRfee": 9653,
+   "nombre": "TNR M17 (2/2)",
+   "fecha": "2026-01-25",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "PALENCIA"
+  },
+  {
+   "idRfee": 9654,
+   "nombre": "TNR M17 (2/2)",
+   "fecha": "2026-01-24",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "PALENCIA"
+  },
+  {
+   "idRfee": 9655,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "F",
+   "categoria": "VET30",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": 9656,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "F",
+   "categoria": "VET40",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": 9657,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "F",
+   "categoria": "VET50",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": 9658,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "F",
+   "categoria": "VET60",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": 9660,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "M",
+   "categoria": "VET30",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": 9661,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "M",
+   "categoria": "VET40",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": 9662,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "M",
+   "categoria": "VET50",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": 9663,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "M",
+   "categoria": "VET60",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": 9664,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "M",
+   "categoria": "VET70",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": 9696,
+   "nombre": "TNR ABS (2/3)",
+   "fecha": "2026-02-21",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "ALBACETE"
+  },
+  {
+   "idRfee": 9714,
+   "nombre": "PRUEBA CTO ESPAÑA SILLA RUEDAS (1/4)",
+   "fecha": "2025-11-29",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "SR1"
+  },
+  {
+   "idRfee": 9723,
+   "nombre": "TNR M15 (2/3)",
+   "fecha": "2026-03-14",
+   "genero": "F",
+   "categoria": "M15",
+   "poblacion": "CIUDAD REAL"
+  },
+  {
+   "idRfee": 9724,
+   "nombre": "TNR M15 (2/3)",
+   "fecha": "2026-03-14",
+   "genero": "M",
+   "categoria": "M15",
+   "poblacion": "CIUDAD REAL"
+  },
+  {
+   "idRfee": 9729,
+   "nombre": "TNR M13 (2/3)",
+   "fecha": "2026-03-15",
+   "genero": "F",
+   "categoria": "M13",
+   "poblacion": "CIUDAD REAL"
+  },
+  {
+   "idRfee": 9730,
+   "nombre": "TNR M13 (2/3)",
+   "fecha": "2026-03-15",
+   "genero": "M",
+   "categoria": "M13",
+   "poblacion": "CIUDAD REAL"
+  },
+  {
+   "idRfee": 9743,
+   "nombre": "TNR ABS (3/3)",
+   "fecha": "2026-03-21",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "LOGROÑO"
+  },
+  {
+   "idRfee": 9744,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "F",
+   "categoria": "VET30",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": 9745,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "M",
+   "categoria": "VET30",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": 9750,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "F",
+   "categoria": "VET40",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": 9751,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "M",
+   "categoria": "VET40",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": 9756,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "F",
+   "categoria": "VET50",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": 9757,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "M",
+   "categoria": "VET50",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": 9762,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "F",
+   "categoria": "VET60",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": 9763,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "M",
+   "categoria": "VET60",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": 9770,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "M",
+   "categoria": "VET70",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": 9781,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "F",
+   "categoria": "VET30",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9783,
+   "nombre": "CAMPEONATO DE ESPAÑA M20",
+   "fecha": "2026-03-07",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "LOGROÑO"
+  },
+  {
+   "idRfee": 9784,
+   "nombre": "CAMPEONATO DE ESPAÑA M20",
+   "fecha": "2026-03-07",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "LOGROÑO"
+  },
+  {
+   "idRfee": 9787,
+   "nombre": "CAMPEONATO DE ESPAÑA SUB23",
+   "fecha": "2026-03-08",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "LOGROÑO"
+  },
+  {
+   "idRfee": 9788,
+   "nombre": "CAMPEONATO DE ESPAÑA SUB23",
+   "fecha": "2026-03-08",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "LOGROÑO"
+  },
+  {
+   "idRfee": 9791,
+   "nombre": "CAMPEONATO DE ESPAÑA M13",
+   "fecha": "2026-04-12",
+   "genero": "F",
+   "categoria": "M13",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9792,
+   "nombre": "CAMPEONATO DE ESPAÑA M13",
+   "fecha": "2026-04-12",
+   "genero": "M",
+   "categoria": "M13",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": 9810,
+   "nombre": "TNR ABS (3/3)",
+   "fecha": "2026-04-18",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "VALENCIA"
+  },
+  {
+   "idRfee": 9814,
+   "nombre": "TNR M15 (3/3)",
+   "fecha": "2026-04-26",
+   "genero": "F",
+   "categoria": "M15",
+   "poblacion": "COLMENAR VIEJO"
+  },
+  {
+   "idRfee": 9815,
+   "nombre": "TNR M15 (3/3)",
+   "fecha": "2026-04-26",
+   "genero": "M",
+   "categoria": "M15",
+   "poblacion": "COLMENAR VIEJO"
+  },
+  {
+   "idRfee": 9822,
+   "nombre": "PRUEBA CTO ESPAÑA SILLA RUEDAS (2/4)",
+   "fecha": "2026-02-14",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "TRES CANTOS"
+  },
+  {
+   "idRfee": 9823,
+   "nombre": "PRUEBA CTO ESPAÑA SILLA RUEDAS (2/4)",
+   "fecha": "2026-02-14",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "TRES CANTOS"
+  },
+  {
+   "idRfee": 9833,
+   "nombre": "PRUEBA CTO ESPAÑA SILLA RUEDAS (3/4)",
+   "fecha": "2026-05-02",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "VIGO"
+  },
+  {
+   "idRfee": 9834,
+   "nombre": "PRUEBA CTO ESPAÑA SILLA RUEDAS (3/4)",
+   "fecha": "2026-05-02",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "VIGO"
+  },
+  {
+   "idRfee": 9840,
+   "nombre": "PRUEBA CTO ESPAÑA SILLA RUEDAS (4/4)",
+   "fecha": "2026-06-20",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "SAN SEBASTIAN"
+  },
+  {
+   "idRfee": 9845,
+   "nombre": "CAMPEONATO DE ESPAÑA M17",
+   "fecha": "2026-05-09",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "OLMEDO"
+  },
+  {
+   "idRfee": 9846,
+   "nombre": "CAMPEONATO DE ESPAÑA M17",
+   "fecha": "2026-05-09",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "OLMEDO"
+  },
+  {
+   "idRfee": 9857,
+   "nombre": "CAMPEONATO DE ESPAÑA M15",
+   "fecha": "2026-05-24",
+   "genero": "F",
+   "categoria": "M15",
+   "poblacion": "TORREJON DE ARDOZ"
+  },
+  {
+   "idRfee": 9858,
+   "nombre": "CAMPEONATO DE ESPAÑA M15",
+   "fecha": "2026-05-24",
+   "genero": "M",
+   "categoria": "M15",
+   "poblacion": "TORREJON DE ARDOZ"
+  },
+  {
+   "idRfee": 9869,
+   "nombre": "CAMPEONATO DE ESPAÑA ABSOLUTO",
+   "fecha": "2026-06-06",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "LAS ROZAS"
+  },
+  {
+   "idRfee": 9870,
+   "nombre": "CAMPEONATO DE ESPAÑA ABSOLUTO",
+   "fecha": "2026-06-06",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "LAS ROZAS"
+  },
+  {
+   "idRfee": 9881,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "F",
+   "categoria": "VET30",
+   "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": 9882,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "F",
+   "categoria": "VET40",
+   "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": 9883,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "F",
+   "categoria": "VET50",
+   "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": 9884,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "F",
+   "categoria": "VET60",
+   "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": 9886,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "M",
+   "categoria": "VET30",
+   "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": 9887,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "M",
+   "categoria": "VET40",
+   "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": 9888,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "M",
+   "categoria": "VET50",
+   "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": 9889,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "M",
+   "categoria": "VET60",
+   "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": 9890,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "M",
+   "categoria": "VET70",
+   "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CRITERIUM NACIONAL",
+   "fecha": "2026-06-21",
+   "genero": "M",
+   "categoria": "M11",
+   "poblacion": "VEGA DE MATUTE"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CRITERIUM NACIONAL",
+   "fecha": "2026-06-21",
+   "genero": "F",
+   "categoria": "M11",
+   "poblacion": "VEGA DE MATUTE"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CRITERIUM NACIONAL M-9",
+   "fecha": "2026-06-21",
+   "genero": "M",
+   "categoria": "M9",
+   "poblacion": "VEGA DE MATUTE"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CRITERIUM NACIONAL M-9",
+   "fecha": "2026-06-21",
+   "genero": "F",
+   "categoria": "M9",
+   "poblacion": "VEGA DE MATUTE"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CAMPEONATO DE ESPAÑA VETERANOS",
+   "fecha": "2026-06-27",
+   "genero": "F",
+   "categoria": "VET70",
+   "poblacion": "SANT CUGAT"
+  }
+ ]
+}

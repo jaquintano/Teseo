@@ -12,6 +12,7 @@ import {
   nombreCompleto, normalizar, opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
+import { resumirCompeticion } from '../competiciones.js';
 import {
   ALMACENES, guardar, obtener, listar, listarPor, listarRivales,
   guardarVideo, borrarAsalto, borrarTiempo, comprobarLegible,
@@ -29,10 +30,13 @@ function hoy() {
 // --- Lista de asaltos (pantalla de inicio) ----------------------------
 
 export async function pantallaInicio(contenedor) {
-  const [asaltos, tiradores] = await Promise.all([
+  const [asaltos, tiradores, competiciones] = await Promise.all([
     listar(ALMACENES.asaltos),
     listar(ALMACENES.tiradores),
+    listar(ALMACENES.competiciones),
   ]);
+
+  const competicionPorId = new Map(competiciones.map((c) => [c.id, c]));
 
   const porId = new Map(tiradores.map((t) => [t.id, t]));
   asaltos.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '') || b.id - a.id);
@@ -52,7 +56,7 @@ export async function pantallaInicio(contenedor) {
       formatearFecha(asalto.fecha),
       asalto.numero ? `Asalto ${asalto.numero}` : '',
       etiquetaDe(TIPOS_DE_SESION, asalto.tipoSesion),
-      asalto.torneo,
+      nombreDeCompeticion(competicionPorId.get(asalto.competicionId), asalto),
     ].filter(Boolean).join(' · ');
 
     lista.append(crear('button', {
@@ -195,8 +199,33 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     value: asalto.numero || '', type: 'number', inputmode: 'numeric', placeholder: '1',
   });
   const fecha = campo('Fecha', { value: asalto.fecha || hoy(), type: 'date' });
-  const torneo = campo('Torneo', { value: asalto.torneo || '', placeholder: 'Nombre del torneo' });
   const nota = campoLargo('Nota', { value: asalto.nota || '' });
+
+  // --- Competición ---
+  // Antes era un campo de texto que había que teclear en cada asalto. Ahora
+  // se elige de las que tengas guardadas, que se traen del calendario de la
+  // federación o se añaden a mano.
+  let competicionId = datos.competicionIdElegida ?? asalto.competicionId ?? null;
+
+  const competiciones = (await listar(ALMACENES.competiciones))
+    .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+
+  const selectorCompeticion = crear('select', {
+    class: 'entrada',
+    onchange: (evento) => { competicionId = Number(evento.target.value) || null; },
+  });
+  selectorCompeticion.append(crear('option', {
+    value: '', texto: '— Ninguna (entrenamiento) —',
+  }));
+  for (const competicion of competiciones) {
+    const opcion = crear('option', {
+      value: competicion.id,
+      texto: [competicion.nombre, competicion.categoria, formatearFecha(competicion.fecha)]
+        .filter(Boolean).join(' · '),
+    });
+    if (competicion.id === competicionId) opcion.selected = true;
+    selectorCompeticion.append(opcion);
+  }
 
   const aviso = crear('p', { class: 'aviso', texto: 'Elige un rival.', hidden: true });
 
@@ -223,7 +252,16 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     bloque('Tipo de sesión', grupoOpciones(TIPOS_DE_SESION, tipoSesion,
       (valor) => { tipoSesion = valor; })),
     fecha.bloque,
-    torneo.bloque,
+    bloque('Competición', crear('div', {}, [
+      selectorCompeticion,
+      crear('button', {
+        type: 'button', class: 'boton', texto: 'Añadir una competición',
+        onclick: () => ir('competicion', {
+          volverA: 'asalto-nuevo',
+          alCrear: (id) => ir('asalto-nuevo', { ...datos, competicionIdElegida: id }),
+        }),
+      }),
+    ])),
     bloque('Fase', grupoOpciones(FASES, fase, (valor) => { fase = valor; },
       { clase: 'compacto' })),
     bloque('Fatiga percibida', grupoOpciones(FATIGA, fatiga,
@@ -256,7 +294,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           numero: numero.entrada.value ? Number(numero.entrada.value) : null,
           fecha: fecha.entrada.value || hoy(),
           tipoSesion,
-          torneo: torneo.entrada.value.trim(),
+          competicionId,
           fase,
           // El club no se pregunta aquí: ya está en la ficha del rival.
           fatiga: fatiga ? Number(fatiga) : null,
@@ -280,9 +318,12 @@ export async function pantallaAsalto(contenedor, datos = {}) {
   const asalto = await obtener(ALMACENES.asaltos, datos.id);
   if (!asalto) { ir('inicio'); return; }
 
-  const [rival, tiempos] = await Promise.all([
+  const [rival, tiempos, competicion] = await Promise.all([
     obtener(ALMACENES.tiradores, asalto.rivalId),
     listarPor(ALMACENES.tiempos, 'por-asalto', asalto.id),
+    asalto.competicionId != null
+      ? obtener(ALMACENES.competiciones, asalto.competicionId)
+      : Promise.resolve(null),
   ]);
   tiempos.sort((a, b) => a.orden - b.orden);
 
@@ -290,7 +331,7 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     formatearFecha(asalto.fecha),
     asalto.numero ? `Asalto ${asalto.numero}` : '',
     etiquetaDe(TIPOS_DE_SESION, asalto.tipoSesion),
-    asalto.torneo,
+    nombreDeCompeticion(competicion, asalto),
     etiquetaDe(FASES, asalto.fase),
     asalto.fatiga ? `Fatiga ${asalto.fatiga}/5` : '',
   ].filter(Boolean).join(' · ');
@@ -355,6 +396,16 @@ export async function pantallaAsalto(contenedor, datos = {}) {
       },
     }),
   );
+}
+
+/**
+ * Cómo se nombra la competición de un asalto.
+ * Los asaltos de antes de que existieran las competiciones guardaban el
+ * torneo como texto suelto; si lo tienen, se sigue mostrando.
+ */
+function nombreDeCompeticion(competicion, asalto) {
+  if (competicion) return competicion.nombre;
+  return asalto.torneo || '';
 }
 
 /** Resume al rival en una línea: mano, club y altura, lo que haya. */

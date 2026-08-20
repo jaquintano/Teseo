@@ -1,9 +1,10 @@
-# Actualiza solos los rankings de la federación, todos los días a las 18:00.
+# Actualiza solos los rankings y el calendario de la federación, todos los
+# días a las 18:00.
 #
 # Descarga las dos últimas temporadas, espada, todas las categorías y ambos
 # géneros, y sólo hace un commit si algo ha cambiado de verdad.
 
-name: Actualizar rankings de la RFEE
+name: Actualizar datos de la RFEE
 
 on:
   schedule:
@@ -49,6 +50,10 @@ jobs:
         if: steps.hora.outputs.seguir == 'si'
         run: node herramientas/traer-ranking.js --todo --ultimas 2
 
+      - name: Traer el calendario de competiciones
+        if: steps.hora.outputs.seguir == 'si'
+        run: node herramientas/traer-competiciones.js --todo --ultimas 2
+
       - name: Guardar sólo si ha cambiado algo
         if: steps.hora.outputs.seguir == 'si'
         run: |
@@ -61,6 +66,6 @@ jobs:
           fi
 
           git add datos/
-          git commit -m "Rankings de la RFEE al $(TZ=Europe/Madrid date +%d/%m/%Y)"
+          git commit -m "Datos de la RFEE al $(TZ=Europe/Madrid date +%d/%m/%Y)"
           git push
           echo "Rankings actualizados."

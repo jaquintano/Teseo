@@ -14,6 +14,8 @@
 //                 directas dos o tres), y cada tiempo tiene su propio vídeo.
 //   videoTrozos   los vídeos, partidos en bloques de 8 MB.
 //   intercambios  las etiquetas. Cada una cuelga de un tiempo.
+//   competiciones los torneos, traidos del calendario de la federacion o
+//                 escritos a mano. Un asalto puede apuntar a uno.
 //
 // Por qué los vídeos van troceados
 // --------------------------------
@@ -25,7 +27,7 @@
 import { nombreCompleto } from './constantes.js';
 
 const NOMBRE_BD = 'teseo';
-const VERSION_BD = 1;
+const VERSION_BD = 2;
 const TAMANO_TROZO = 8 * 1024 * 1024;
 
 export const ALMACENES = {
@@ -35,6 +37,7 @@ export const ALMACENES = {
   tiempos: 'tiempos',
   videoTrozos: 'videoTrozos',
   intercambios: 'intercambios',
+  competiciones: 'competiciones',
 };
 
 let conexion = null;
@@ -47,8 +50,11 @@ export function abrir() {
     const peticion = indexedDB.open(NOMBRE_BD, VERSION_BD);
 
     // Sólo se ejecuta cuando la base de datos no existe o sube de versión.
+    // Version 2: se anadio el almacen de competiciones y el indice que
+    // relaciona los asaltos con ellas. Los datos anteriores no se tocan.
     peticion.onupgradeneeded = () => {
       const bd = peticion.result;
+      const transaccion = peticion.transaction;
 
       if (!bd.objectStoreNames.contains(ALMACENES.ajustes)) {
         bd.createObjectStore(ALMACENES.ajustes);
@@ -71,6 +77,19 @@ export function abrir() {
 
       if (!bd.objectStoreNames.contains(ALMACENES.videoTrozos)) {
         bd.createObjectStore(ALMACENES.videoTrozos);
+      }
+
+      if (!bd.objectStoreNames.contains(ALMACENES.competiciones)) {
+        const almacen = bd.createObjectStore(ALMACENES.competiciones, { keyPath: 'id', autoIncrement: true });
+        almacen.createIndex('por-temporada', 'temporada');
+      }
+
+      // Indice nuevo sobre un almacen que ya existia.
+      if (bd.objectStoreNames.contains(ALMACENES.asaltos)) {
+        const asaltos = transaccion.objectStore(ALMACENES.asaltos);
+        if (!asaltos.indexNames.contains('por-competicion')) {
+          asaltos.createIndex('por-competicion', 'competicionId');
+        }
       }
 
       if (!bd.objectStoreNames.contains(ALMACENES.intercambios)) {

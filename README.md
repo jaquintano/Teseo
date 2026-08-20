@@ -193,6 +193,29 @@ nacimiento y club de **menores de edad**. Todo se queda en el dispositivo y no
 sale de él, pero conviene importar sólo las categorías en las que realmente
 competís, no el catálogo entero.
 
+## Competiciones
+
+Funcionan como los rivales: se guardan aparte y luego se eligen al crear el
+asalto, en vez de teclear el nombre del torneo cada vez. Antes había un campo
+de texto libre llamado "Torneo"; los asaltos antiguos lo conservan y se sigue
+mostrando, pero los nuevos apuntan a una competición.
+
+Desde **Competiciones → Traer del calendario de la RFEE** se importa el
+calendario federativo. Se traen sólo las de **espada individual**, y de ellas
+sólo las **de tu género**; la categoría se elige. El tipo de competición (TNR,
+Cto. España…) no se filtra: vienen todas.
+
+Cada temporada es **un solo fichero** con todas las categorías y ambos
+géneros: son unas ochenta competiciones, y no compensa partirlo como se hace
+con los rankings.
+
+```bash
+node herramientas/traer-competiciones.js --temporada 2025-2026
+node herramientas/traer-competiciones.js --todo --ultimas 2
+```
+
+La tarea automática diaria baja el calendario junto con los rankings.
+
 ## Detalles que conviene conocer
 
 **El género del tirador manda en toda la aplicación.** Se pide al crear tu

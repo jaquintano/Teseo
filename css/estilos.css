@@ -538,6 +538,14 @@ video::-webkit-media-controls-panel {
 .fila-rival { cursor: pointer; }
 .fila-rival:active { background: #232b36; }
 
+/* Para meter un dato secundario debajo del principal dentro de una celda. */
+.segunda-linea {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+}
+
 .tabla-rivales .derecha { text-align: right; }
 .tabla-rivales .apagado { color: var(--texto-suave); }
 

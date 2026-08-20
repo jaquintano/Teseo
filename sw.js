@@ -13,7 +13,7 @@
 
 // Al cambiar este número, el navegador tira la copia vieja y guarda la nueva.
 // Hay que subirlo en cada despliegue, y el mismo en js/app.js.
-const VERSION = 'teseo-v17';
+const VERSION = 'teseo-v18';
 
 // Los ficheros que forman la aplicación.
 const FICHEROS = [
@@ -23,6 +23,7 @@ const FICHEROS = [
   './css/estilos.css',
   './js/app.js',
   './js/calculo-estadisticas.js',
+  './js/competiciones.js',
   './js/constantes.js',
   './js/db.js',
   './js/genero.js',
@@ -33,6 +34,7 @@ const FICHEROS = [
   './js/ui.js',
   './js/video.js',
   './js/pantallas/asaltos.js',
+  './js/pantallas/competiciones.js',
   './js/pantallas/ayuda.js',
   './js/pantallas/estadisticas.js',
   './js/pantallas/etiquetado.js',
@@ -48,6 +50,7 @@ const FICHEROS = [
   './iconos/apple-touch-icon.png',
   './iconos/logo-teseo.jpg',
   './datos/rankings.json',
+  './datos/competiciones.json',
 ];
 
 // --- Instalación: guardar una copia de la aplicación ---

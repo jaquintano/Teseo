@@ -1,0 +1,335 @@
+// Pantallas de competiciones: la lista, la ficha de una y la importación.
+//
+// Funciona como la de rivales: puedes escribirlas a mano o traerlas del
+// calendario de la federación. Un asalto puede apuntar a una competición, y
+// así el contexto deja de teclearse en cada asalto.
+
+import {
+  crear, rellenar, cabecera, ir, campo, campoLargo, bloque, desplegable,
+  formatearFecha,
+} from '../ui.js';
+import { normalizar } from '../constantes.js';
+import { generoDelUsuario } from '../genero.js';
+import { ALMACENES, listar, listarPor, guardar, obtener, borrar } from '../db.js';
+import {
+  listarCalendarios, cargarCalendario, fichaDesdeCalendario,
+  planificarImportacion, resumirCompeticion,
+} from '../competiciones.js';
+
+/** Las tuyas, de la más reciente a la más antigua. */
+async function listarCompeticiones() {
+  const todas = await listar(ALMACENES.competiciones);
+  return todas.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '')
+                           || a.nombre.localeCompare(b.nombre, 'es'));
+}
+
+// --- Lista ------------------------------------------------------------
+
+export async function pantallaCompeticiones(contenedor, datos = {}) {
+  const volverA = datos.volverA || 'menu';
+  const [competiciones, asaltos] = await Promise.all([
+    listarCompeticiones(),
+    listar(ALMACENES.asaltos),
+  ]);
+
+  // Cuántos asaltos has registrado en cada una.
+  const cuenta = new Map();
+  for (const asalto of asaltos) {
+    if (asalto.competicionId == null) continue;
+    cuenta.set(asalto.competicionId, (cuenta.get(asalto.competicionId) || 0) + 1);
+  }
+
+  const sinUsar = competiciones.filter((c) => !cuenta.get(c.id));
+
+  const cuerpo = crear('tbody');
+  const buscador = campo('Buscar', { placeholder: 'Nombre o población', oninput: pintarFilas });
+  const contador = crear('p', { class: 'ayuda' });
+
+  async function vaciarSinUsar() {
+    if (!confirm(`¿Borrar ${sinUsar.length} competiciones en las que no has ` +
+                 'registrado ningún asalto?\n\nLas que sí tienen asaltos se ' +
+                 'quedan. Siempre puedes volver a traerlas del calendario.')) return;
+
+    for (const competicion of sinUsar) {
+      await borrar(ALMACENES.competiciones, competicion.id);
+    }
+    ir('competiciones', { volverA });
+  }
+
+  contenedor.append(
+    cabecera('Competiciones', () => ir(volverA)),
+
+    crear('button', {
+      type: 'button', class: 'boton boton-principal', texto: 'Nueva competición a mano',
+      onclick: () => ir('competicion', { volverA: 'competiciones' }),
+    }),
+    crear('button', {
+      type: 'button', class: 'boton', texto: 'Traer del calendario de la RFEE',
+      onclick: () => ir('importar-competiciones'),
+    }),
+
+    sinUsar.length > 0 ? crear('button', {
+      type: 'button', class: 'boton boton-peligro',
+      texto: `Vaciar las ${sinUsar.length} competiciones sin asaltos`,
+      onclick: vaciarSinUsar,
+    }) : null,
+
+    competiciones.length === 0 ? crear('p', {
+      class: 'ayuda',
+      texto: 'Todavía no hay ninguna competición. Tráelas del calendario de la ' +
+             'federación, o añade a mano las de tu club.',
+    }) : null,
+
+    competiciones.length > 0 ? buscador.bloque : null,
+    contador,
+
+    competiciones.length > 0 ? crear('div', { class: 'tabla-scroll' }, [
+      crear('table', { class: 'tabla-rivales' }, [
+        crear('thead', {}, [
+          crear('tr', {}, [
+            crear('th', { texto: 'Competición' }),
+            crear('th', { texto: 'Fecha' }),
+            crear('th', { class: 'derecha', texto: 'Asaltos' }),
+          ]),
+        ]),
+        cuerpo,
+      ]),
+    ]) : null,
+  );
+
+  pintarFilas();
+
+  function pintarFilas() {
+    const busqueda = normalizar(buscador.entrada.value);
+    const visibles = busqueda
+      ? competiciones.filter((c) => normalizar(c.nombre + ' ' + (c.poblacion || '')).includes(busqueda))
+      : competiciones;
+
+    contador.textContent = busqueda
+      ? `${visibles.length} de ${competiciones.length} competiciones.`
+      : `${competiciones.length} competici${competiciones.length === 1 ? 'ón' : 'ones'}.`;
+
+    rellenar(cuerpo, visibles.map((competicion) => crear('tr', {
+      class: 'fila-rival',
+      onclick: () => ir('competicion', { id: competicion.id, volverA: 'competiciones' }),
+    }, [
+      crear('td', {}, [
+        crear('span', { texto: competicion.nombre }),
+        crear('span', { class: 'segunda-linea', texto: resumirCompeticion(competicion) }),
+      ]),
+      crear('td', { class: 'apagado', texto: formatearFecha(competicion.fecha) }),
+      crear('td', { class: 'derecha', texto: String(cuenta.get(competicion.id) || 0) }),
+    ])));
+
+    if (visibles.length === 0) {
+      rellenar(cuerpo, crear('tr', {}, [
+        crear('td', { colspan: '3', class: 'apagado', texto: 'Ninguna coincide con esa búsqueda.' }),
+      ]));
+    }
+  }
+}
+
+// --- Ficha de una competición -----------------------------------------
+
+export async function pantallaCompeticion(contenedor, datos = {}) {
+  const competicion = datos.id !== undefined
+    ? await obtener(ALMACENES.competiciones, datos.id)
+    : {};
+  const esNueva = datos.id === undefined;
+  const volverA = datos.volverA || 'competiciones';
+
+  const nombre = campo('Nombre', {
+    value: competicion.nombre || '', placeholder: 'Nombre de la competición',
+  });
+  const fecha = campo('Fecha', { value: competicion.fecha || '', type: 'date' });
+  const poblacion = campo('Población', {
+    value: competicion.poblacion || '', placeholder: 'Dónde se celebró',
+  });
+  const notas = campoLargo('Notas', {
+    value: competicion.notas || '', placeholder: 'Cómo fue, qué salió bien, qué no',
+  });
+
+  const aviso = crear('p', { class: 'aviso', texto: 'El nombre es obligatorio.', hidden: true });
+
+  const botones = [
+    crear('button', {
+      type: 'button', class: 'boton boton-principal',
+      texto: esNueva ? 'Crear competición' : 'Guardar cambios',
+      onclick: async () => {
+        const valorNombre = nombre.entrada.value.trim();
+        if (!valorNombre) { aviso.hidden = false; nombre.entrada.focus(); return; }
+
+        const id = await guardar(ALMACENES.competiciones, {
+          ...competicion,
+          nombre: valorNombre,
+          fecha: fecha.entrada.value || null,
+          poblacion: poblacion.entrada.value.trim(),
+          notas: notas.entrada.value.trim(),
+          genero: competicion.genero || generoDelUsuario(),
+          origen: competicion.origen || 'manual',
+        });
+
+        if (datos.alCrear) datos.alCrear(id);
+        else ir(volverA, datos.datosVuelta || {});
+      },
+    }),
+  ];
+
+  if (!esNueva) {
+    botones.push(crear('button', {
+      type: 'button', class: 'boton boton-peligro', texto: 'Borrar competición',
+      onclick: async () => {
+        const suyos = await listarPor(ALMACENES.asaltos, 'por-competicion', competicion.id);
+        if (suyos.length > 0) {
+          alert(`No se puede borrar: tiene ${suyos.length} asalto(s) registrado(s). ` +
+                'Cámbiales la competición o bórralos antes.');
+          return;
+        }
+        if (!confirm(`¿Borrar "${competicion.nombre}"?`)) return;
+        await borrar(ALMACENES.competiciones, competicion.id);
+        ir(volverA, datos.datosVuelta || {});
+      },
+    }));
+  }
+
+  contenedor.append(
+    cabecera(esNueva ? 'Nueva competición' : competicion.nombre,
+             () => ir(volverA, datos.datosVuelta || {})),
+
+    competicion.origen === 'rfee' ? crear('p', {
+      class: 'ayuda',
+      texto: `Traída del calendario de la RFEE (${competicion.categoria}, ` +
+             `temporada ${competicion.temporada}).`,
+    }) : null,
+
+    nombre.bloque,
+    fecha.bloque,
+    poblacion.bloque,
+    notas.bloque,
+    aviso,
+    ...botones,
+  );
+}
+
+// --- Importación del calendario ---------------------------------------
+
+export async function pantallaImportarCompeticiones(contenedor) {
+  const calendarios = await listarCalendarios();
+
+  contenedor.append(cabecera('Traer del calendario', () => ir('competiciones')));
+
+  if (calendarios.length === 0) {
+    contenedor.append(crear('p', {
+      class: 'aviso',
+      texto: 'Teseo no trae ningún calendario todavía. Hay que descargarlo antes ' +
+             'con la herramienta del proyecto.',
+    }));
+    return;
+  }
+
+  // El género es el tuyo y no se elige: en esgrima no hay competiciones
+  // mixtas, así que las del otro sobran.
+  const miGenero = generoDelUsuario() || 'M';
+  const etiquetaGenero = miGenero === 'F' ? 'Femenino' : 'Masculino';
+
+  let temporada = calendarios[0].temporada;
+  let categoria = 'todas';
+
+  const resultado = crear('div');
+
+  const selectorTemporada = crear('select', {
+    class: 'entrada',
+    onchange: (evento) => { temporada = evento.target.value; refrescar(); },
+  });
+  for (const calendario of calendarios) {
+    selectorTemporada.append(crear('option', {
+      value: calendario.temporada, texto: calendario.temporada,
+    }));
+  }
+
+  const contenedorCategoria = crear('div');
+
+  contenedor.append(
+    crear('p', {
+      class: 'ayuda',
+      texto: 'El calendario viaja dentro de Teseo, así que esto funciona sin ' +
+             'cobertura. Sólo se traen competiciones de espada individual.',
+    }),
+
+    bloque('Temporada', selectorTemporada),
+    bloque('Arma', crear('p', { class: 'valor-fijo', texto: 'Espada' })),
+    bloque('Modalidad', crear('p', { class: 'valor-fijo', texto: 'Individual' })),
+    contenedorCategoria,
+    bloque('Género', crear('p', { class: 'valor-fijo', texto: etiquetaGenero })),
+
+    resultado,
+  );
+
+  refrescar();
+
+  // ------------------------------------------------------------------
+
+  async function refrescar() {
+    const elegido = calendarios.find((c) => c.temporada === temporada);
+    if (!elegido) return;
+
+    rellenar(resultado, crear('p', { class: 'ayuda', texto: 'Comprobando…' }));
+
+    const [calendario, locales] = await Promise.all([
+      cargarCalendario(elegido.fichero),
+      listar(ALMACENES.competiciones),
+    ]);
+
+    // Sólo las de tu género. La categoría se elige aparte.
+    const deTuGenero = calendario.competiciones.filter((c) => c.genero === miGenero);
+    const categorias = [...new Set(deTuGenero.map((c) => c.categoria))];
+
+    // El desplegable de categorías se rehace con lo que hay en esta temporada.
+    rellenar(contenedorCategoria, bloque('Categoría', desplegable('',
+      [{ id: 'todas', etiqueta: 'Todas las categorías' },
+       ...categorias.map((c) => ({ id: c, etiqueta: c }))],
+      categoria, (valor) => { categoria = valor || 'todas'; refrescar(); }).entrada));
+
+    const candidatas = deTuGenero
+      .filter((c) => categoria === 'todas' || c.categoria === categoria)
+      .map((fila) => fichaDesdeCalendario(fila, calendario));
+
+    const plan = planificarImportacion(candidatas, locales);
+
+    rellenar(resultado, [
+      crear('p', {
+        class: 'ayuda',
+        texto: `${candidatas.length} competiciones de ${etiquetaGenero.toLowerCase()} ` +
+               `en ${temporada}, calendario descargado el ` +
+               `${formatearFecha(calendario.descargadoEl)}.`,
+      }),
+
+      crear('div', { class: 'resumen' }, [
+        dato(plan.nuevas.length, 'nuevas'),
+        dato(plan.yaEstan, 'ya las tienes'),
+      ]),
+
+      plan.nuevas.length === 0
+        ? crear('p', { class: 'ayuda', texto: 'No hay nada que traer.' })
+        : crear('button', {
+            type: 'button', class: 'boton boton-principal',
+            texto: `Importar (${plan.nuevas.length})`,
+            onclick: async (evento) => {
+              evento.target.classList.add('desactivado');
+              evento.target.textContent = 'Importando…';
+              for (const ficha of plan.nuevas) {
+                await guardar(ALMACENES.competiciones, ficha);
+              }
+              ir('competiciones');
+            },
+          }),
+    ]);
+  }
+
+  function dato(valor, etiqueta) {
+    return crear('div', { class: 'dato' }, [
+      crear('span', { class: 'dato-valor', texto: String(valor) }),
+      crear('span', { class: 'dato-etiqueta', texto: etiqueta }),
+    ]);
+  }
+}

@@ -67,6 +67,15 @@ export async function pantallaAyuda(contenedor) {
       'La mano hace falta de verdad, porque las estadísticas te dejan comparar ' +
       'cómo te va contra diestros y contra zurdos.'),
 
+    apartado('Competiciones',
+      'Igual que los rivales, los torneos se guardan aparte y luego se eligen ' +
+      'al crear el asalto, en vez de teclear el nombre cada vez.',
+      'En Competiciones → "Traer del calendario de la RFEE" te bajas los de tu ' +
+      'temporada y tu categoría, con su fecha y su población.',
+      'Los torneos de tu club, que no están en el calendario federativo, los ' +
+      'añades a mano.',
+      'Si el asalto es de entrenamiento, deja la competición en "Ninguna".'),
+
     apartado('Qué te dice Estadísticas',
       'Con qué acciones sueles tocar y con cuáles no. Si atacas más de lo que ' +
       'defiendes. En qué parte del asalto tocas más. Dónde te tocan a ti. Y ' +

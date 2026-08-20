@@ -20,6 +20,9 @@ import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 import { pantallaEstadisticas } from './pantallas/estadisticas.js';
 import { pantallaImportarRfee } from './pantallas/importar-rfee.js';
 import { pantallaAyuda } from './pantallas/ayuda.js';
+import {
+  pantallaCompeticiones, pantallaCompeticion, pantallaImportarCompeticiones,
+} from './pantallas/competiciones.js';
 
 
 // No hay pantalla de arranque propia: la que pinta Android al abrir la
@@ -46,6 +49,9 @@ registrarPantalla('ayuda', conLimpieza(pantallaAyuda));
 registrarPantalla('rivales', conLimpieza(pantallaRivales));
 registrarPantalla('rival', conLimpieza(pantallaRival));
 registrarPantalla('importar-rfee', conLimpieza(pantallaImportarRfee));
+registrarPantalla('competiciones', conLimpieza(pantallaCompeticiones));
+registrarPantalla('competicion', conLimpieza(pantallaCompeticion));
+registrarPantalla('importar-competiciones', conLimpieza(pantallaImportarCompeticiones));
 registrarPantalla('asalto-nuevo', conLimpieza(pantallaAsaltoNuevo));
 registrarPantalla('asalto', conLimpieza(pantallaAsalto));
 registrarPantalla('etiquetado', pantallaEtiquetado);

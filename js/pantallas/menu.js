@@ -33,6 +33,10 @@ export async function pantallaMenu(contenedor) {
       onclick: () => ir('rivales', { volverA: 'menu' }),
     }),
     crear('button', {
+      type: 'button', class: 'boton', texto: 'Competiciones',
+      onclick: () => ir('competiciones', { volverA: 'menu' }),
+    }),
+    crear('button', {
       type: 'button', class: 'boton', texto: 'Ayuda',
       onclick: () => ir('ayuda'),
     }),
