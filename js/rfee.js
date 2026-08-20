@@ -52,6 +52,54 @@ export async function cargarRanking(fichero) {
   return respuesta.json();
 }
 
+/**
+ * Junta en un solo plan todos los rankings de una temporada que le
+ * corresponden al tirador: su género y las categorías en las que compite.
+ *
+ * Es lo que permite que el formulario de importar sólo pregunte la
+ * temporada: lo demás ya se sabe de su perfil.
+ *
+ * @param {{temporada: string, genero: string, categorias: Array<string>}} quien
+ * @param {Array} locales todos los tiradores ya guardados
+ */
+export async function planParaMisCategorias(quien, locales) {
+  const etiquetaGenero = quien.genero === 'F' ? 'Femenino' : 'Masculino';
+  const indice = await listarRankings();
+
+  const miosDeEstaTemporada = indice.filter((r) =>
+    r.temporada === quien.temporada
+    && r.genero === etiquetaGenero
+    && quien.categorias.includes(r.categoria));
+
+  const nuevos = [];
+  const completables = [];
+  let sinCambios = 0;
+  const categoriasEncontradas = [];
+
+  // Se van acumulando sobre la misma lista, para que alguien que aparezca en
+  // dos categorías no se cuente dos veces como nuevo.
+  let acumulados = [...locales];
+
+  for (const entrada of miosDeEstaTemporada) {
+    const ranking = await cargarRanking(entrada.fichero);
+    const plan = planificarImportacion(ranking, acumulados);
+
+    nuevos.push(...plan.nuevos);
+    completables.push(...plan.completables);
+    sinCambios += plan.sinCambios;
+    acumulados = acumulados.concat(plan.nuevos);
+    categoriasEncontradas.push(entrada.categoria);
+  }
+
+  return { nuevos, completables, sinCambios, categorias: categoriasEncontradas };
+}
+
+/** Las temporadas de las que Teseo trae ranking, de la más reciente atrás. */
+export async function temporadasDisponibles() {
+  const indice = await listarRankings();
+  return [...new Set(indice.map((r) => r.temporada))].sort().reverse();
+}
+
 // --- Decidir qué importar ---------------------------------------------
 
 /** Construye una ficha de tirador nueva a partir de una fila del ranking. */

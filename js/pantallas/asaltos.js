@@ -14,7 +14,7 @@ import {
 import { generoDelUsuario } from '../genero.js';
 import { resumirCompeticion } from '../competiciones.js';
 import {
-  ALMACENES, guardar, obtener, listar, listarPor, listarRivales,
+  ALMACENES, guardar, obtener, listar, listarPor, listarRivales, obtenerPerfilPropio,
   guardarVideo, borrarAsalto, borrarTiempo, comprobarLegible,
 } from '../db.js';
 
@@ -30,11 +30,18 @@ function hoy() {
 // --- Lista de asaltos (pantalla de inicio) ----------------------------
 
 export async function pantallaInicio(contenedor) {
-  const [asaltos, tiradores, competiciones] = await Promise.all([
+  const [asaltos, tiradores, competiciones, perfil] = await Promise.all([
     listar(ALMACENES.asaltos),
     listar(ALMACENES.tiradores),
     listar(ALMACENES.competiciones),
+    obtenerPerfilPropio(),
   ]);
+
+  // Sin rivales ni competiciones no se puede hacer gran cosa, y darlos de
+  // alta a mano da pereza. Como sabemos sus categorias, se le ofrece
+  // rellenarlo todo de una vez.
+  const rivales = tiradores.filter((t) => !perfil || t.id !== perfil.id);
+  const vacia = rivales.length === 0 && competiciones.length === 0;
 
   const competicionPorId = new Map(competiciones.map((c) => [c.id, c]));
 
@@ -77,8 +84,19 @@ export async function pantallaInicio(contenedor) {
         onclick: () => ir('menu'),
       }),
     ]),
+    vacia ? crear('div', { class: 'sugerencia' }, [
+      crear('p', { class: 'texto-ayuda', texto:
+        '¿Quieres rellenar la base de datos de rivales y competiciones de tus ' +
+        'categorías? Se traen de la federación y así no tienes que darlos de ' +
+        'alta uno a uno.' }),
+      crear('button', {
+        type: 'button', class: 'boton boton-principal', texto: 'Sí, rellenarlo',
+        onclick: () => ir('preparar'),
+      }),
+    ]) : null,
+
     crear('button', {
-      type: 'button', class: 'boton boton-principal', texto: 'Nuevo asalto',
+      type: 'button', class: vacia ? 'boton' : 'boton boton-principal', texto: 'Nuevo asalto',
       onclick: () => ir('asalto-nuevo'),
     }),
     lista,

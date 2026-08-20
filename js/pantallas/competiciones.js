@@ -9,11 +9,10 @@ import {
   formatearFecha,
 } from '../ui.js';
 import { normalizar } from '../constantes.js';
-import { generoDelUsuario } from '../genero.js';
+import { generoDelUsuario, categoriasDelUsuario } from '../genero.js';
 import { ALMACENES, listar, listarPor, guardar, obtener, borrar } from '../db.js';
 import {
-  listarCalendarios, cargarCalendario, fichaDesdeCalendario,
-  planificarImportacion, resumirCompeticion,
+  planParaMisCategorias, temporadasDisponibles, resumirCompeticion,
 } from '../competiciones.js';
 
 /** Las tuyas, de la más reciente a la más antigua. */
@@ -211,14 +210,21 @@ export async function pantallaCompeticion(contenedor, datos = {}) {
   );
 }
 
+
 // --- Importación del calendario ---------------------------------------
+//
+// Sólo pregunta la temporada. El arma es espada, la modalidad individual, el
+// género el tuyo y las categorías en las que compites: todo eso ya está en
+// tu perfil.
 
 export async function pantallaImportarCompeticiones(contenedor) {
-  const calendarios = await listarCalendarios();
+  const temporadas = await temporadasDisponibles();
+  const genero = generoDelUsuario();
+  const categorias = categoriasDelUsuario();
 
   contenedor.append(cabecera('Traer del calendario', () => ir('competiciones')));
 
-  if (calendarios.length === 0) {
+  if (temporadas.length === 0) {
     contenedor.append(crear('p', {
       class: 'aviso',
       texto: 'Teseo no trae ningún calendario todavía. Hay que descargarlo antes ' +
@@ -227,81 +233,58 @@ export async function pantallaImportarCompeticiones(contenedor) {
     return;
   }
 
-  // El género es el tuyo y no se elige: en esgrima no hay competiciones
-  // mixtas, así que las del otro sobran.
-  const miGenero = generoDelUsuario() || 'M';
-  const etiquetaGenero = miGenero === 'F' ? 'Femenino' : 'Masculino';
-
-  let temporada = calendarios[0].temporada;
-  let categoria = 'todas';
-
-  const resultado = crear('div');
-
-  const selectorTemporada = crear('select', {
-    class: 'entrada',
-    onchange: (evento) => { temporada = evento.target.value; refrescar(); },
-  });
-  for (const calendario of calendarios) {
-    selectorTemporada.append(crear('option', {
-      value: calendario.temporada, texto: calendario.temporada,
-    }));
+  if (categorias.length === 0) {
+    contenedor.append(
+      crear('p', {
+        class: 'aviso',
+        texto: 'Tu perfil no dice en qué categorías compites, y de ahí sale qué ' +
+               'competiciones traerte.',
+      }),
+      crear('button', {
+        type: 'button', class: 'boton boton-principal', texto: 'Ir a mi perfil',
+        onclick: () => ir('perfil', { volverA: 'competiciones' }),
+      }),
+    );
+    return;
   }
 
-  const contenedorCategoria = crear('div');
+  let temporada = temporadas[0];
+  const resultado = crear('div');
 
   contenedor.append(
     crear('p', {
       class: 'ayuda',
-      texto: 'El calendario viaja dentro de Teseo, así que esto funciona sin ' +
-             'cobertura. Sólo se traen competiciones de espada individual.',
+      texto: `Se traen las competiciones de ${categorias.join(' y ')}, espada ` +
+             `individual, ${genero === 'F' ? 'femenino' : 'masculino'}. Sale de tu perfil.`,
     }),
 
-    bloque('Temporada', selectorTemporada),
-    bloque('Arma', crear('p', { class: 'valor-fijo', texto: 'Espada' })),
-    bloque('Modalidad', crear('p', { class: 'valor-fijo', texto: 'Individual' })),
-    contenedorCategoria,
-    bloque('Género', crear('p', { class: 'valor-fijo', texto: etiquetaGenero })),
+    bloque('Temporada', desplegable('',
+      temporadas.map((t) => ({ id: t, etiqueta: t })), temporada,
+      (valor) => { temporada = valor; refrescar(); }).entrada),
 
     resultado,
   );
 
   refrescar();
 
-  // ------------------------------------------------------------------
-
   async function refrescar() {
-    const elegido = calendarios.find((c) => c.temporada === temporada);
-    if (!elegido) return;
-
     rellenar(resultado, crear('p', { class: 'ayuda', texto: 'Comprobando…' }));
 
-    const [calendario, locales] = await Promise.all([
-      cargarCalendario(elegido.fichero),
-      listar(ALMACENES.competiciones),
-    ]);
+    const locales = await listar(ALMACENES.competiciones);
+    const plan = await planParaMisCategorias({ temporada, genero, categorias }, locales);
 
-    // Sólo las de tu género. La categoría se elige aparte.
-    const deTuGenero = calendario.competiciones.filter((c) => c.genero === miGenero);
-    const categorias = [...new Set(deTuGenero.map((c) => c.categoria))];
-
-    // El desplegable de categorías se rehace con lo que hay en esta temporada.
-    rellenar(contenedorCategoria, bloque('Categoría', desplegable('',
-      [{ id: 'todas', etiqueta: 'Todas las categorías' },
-       ...categorias.map((c) => ({ id: c, etiqueta: c }))],
-      categoria, (valor) => { categoria = valor || 'todas'; refrescar(); }).entrada));
-
-    const candidatas = deTuGenero
-      .filter((c) => categoria === 'todas' || c.categoria === categoria)
-      .map((fila) => fichaDesdeCalendario(fila, calendario));
-
-    const plan = planificarImportacion(candidatas, locales);
+    if (plan.categorias.length === 0) {
+      rellenar(resultado, crear('p', {
+        class: 'aviso',
+        texto: `Teseo no trae competiciones de tus categorías para ${temporada}.`,
+      }));
+      return;
+    }
 
     rellenar(resultado, [
       crear('p', {
         class: 'ayuda',
-        texto: `${candidatas.length} competiciones de ${etiquetaGenero.toLowerCase()} ` +
-               `en ${temporada}, calendario descargado el ` +
-               `${formatearFecha(calendario.descargadoEl)}.`,
+        texto: `Categorías encontradas: ${plan.categorias.join(', ')}.`,
       }),
 
       crear('div', { class: 'resumen' }, [

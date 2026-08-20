@@ -1,21 +1,31 @@
-// El género del tirador que usa la aplicación.
+// Lo que Teseo sabe del tirador que la usa, y que vale para toda la
+// aplicación: su género y las categorías en las que compite.
 //
 // Como en esgrima no se dan asaltos entre hombres y mujeres, el género del
 // dueño de la aplicación vale también para todos sus rivales. Con saber el
-// suyo basta para escribir "Diestra" o "Diestro" en todas partes, y para no
-// ofrecerle rankings del otro género al importar.
+// suyo basta para escribir "Diestra" o "Diestro" en todas partes.
 //
-// Se carga una vez al arrancar y se refresca si edita su perfil.
+// Y con sus categorías basta para saber qué rivales y qué competiciones
+// traerle, sin volver a preguntárselo en cada formulario.
+//
+// Se carga al arrancar y se refresca cuando edita su perfil.
 
 let generoActual = null;
+let categoriasActuales = [];
 
 /** 'M', 'F' o null si todavía no hay perfil. */
 export function generoDelUsuario() {
   return generoActual;
 }
 
-export function fijarGenero(genero) {
-  generoActual = genero || null;
+/** Las categorías en las que compite. [] si todavía no hay perfil. */
+export function categoriasDelUsuario() {
+  return categoriasActuales;
+}
+
+export function fijarPerfil(perfil) {
+  generoActual = (perfil && perfil.genero) || null;
+  categoriasActuales = (perfil && perfil.categorias) || [];
 }
 
 /**

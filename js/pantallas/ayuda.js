@@ -31,7 +31,10 @@ export async function pantallaAyuda(contenedor) {
       'tu nombre, tu fecha de nacimiento, tu club y tu género.',
       'Después sólo tienes que decir con qué mano tiras y qué empuñadura usas, ' +
       'que eso la federación no lo publica.',
-      'Si no compites en el circuito federativo, puedes escribirlo todo a mano.'),
+      'Si no compites en el circuito federativo, puedes escribirlo todo a mano.',
+      'Marca también las categorías en las que compites, normalmente la tuya y ' +
+      'la de arriba. Con eso Teseo ya sabe qué rivales y qué competiciones ' +
+      'traerte, y no vuelve a preguntártelo.'),
 
     apartado('Cómo se usa, de principio a fin',
       '1. Graba el asalto con el móvil, como cualquier vídeo.',
@@ -58,12 +61,18 @@ export async function pantallaAyuda(contenedor) {
       'Puedes ampliar el vídeo con dos dedos, y el botón "Ajustar" lo devuelve ' +
       'a su tamaño.'),
 
+    apartado('Rellenar de golpe',
+      'La primera vez, en la pantalla de inicio, Teseo te ofrece traerte de una ' +
+      'vez todos los rivales y todas las competiciones de tus categorías. Es lo ' +
+      'más cómodo: sólo tienes que elegir la temporada.'),
+
     apartado('Rivales',
       'Los rivales se guardan aparte, porque te los cruzas muchas veces. Los ' +
       'das de alta una vez y luego los eliges de la lista.',
       'Puedes traerlos de golpe del ranking de la federación, en Rivales → ' +
-      '"Traer de la RFEE". Vienen con su nombre, su club y su fecha de ' +
-      'nacimiento, pero sin saber con qué mano tiran: eso lo pones tú.',
+      '"Traer de la RFEE": sólo te pide la temporada. Vienen con su nombre, su ' +
+      'club y su fecha de nacimiento, pero sin saber con qué mano tiran: eso lo ' +
+      'pones tú.',
       'La mano hace falta de verdad, porque las estadísticas te dejan comparar ' +
       'cómo te va contra diestros y contra zurdos.'),
 

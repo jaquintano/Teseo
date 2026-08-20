@@ -91,6 +91,35 @@ export function planificarImportacion(candidatas, locales) {
   return { nuevas, yaEstan };
 }
 
+/**
+ * Plan de importación de una temporada para el tirador: sólo su género y las
+ * categorías en las que compite.
+ *
+ * @param {{temporada: string, genero: string, categorias: Array<string>}} quien
+ * @param {Array} locales las competiciones ya guardadas
+ */
+export async function planParaMisCategorias(quien, locales) {
+  const indice = await listarCalendarios();
+  const entrada = indice.find((c) => c.temporada === quien.temporada);
+  if (!entrada) return { nuevas: [], yaEstan: 0, categorias: [] };
+
+  const calendario = await cargarCalendario(entrada.fichero);
+
+  const mias = calendario.competiciones.filter((c) =>
+    c.genero === quien.genero && quien.categorias.includes(c.categoria));
+
+  const candidatas = mias.map((fila) => fichaDesdeCalendario(fila, calendario));
+  const plan = planificarImportacion(candidatas, locales);
+
+  return { ...plan, categorias: [...new Set(mias.map((c) => c.categoria))] };
+}
+
+/** Las temporadas de las que Teseo trae calendario, de la más reciente atrás. */
+export async function temporadasDisponibles() {
+  const indice = await listarCalendarios();
+  return [...new Set(indice.map((c) => c.temporada))].sort().reverse();
+}
+
 /** Cómo se lee una competición de un vistazo. */
 export function resumirCompeticion(competicion) {
   if (!competicion) return '';

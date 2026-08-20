@@ -697,3 +697,14 @@ video::-webkit-media-controls-panel {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* Tarjeta que propone rellenar la base de datos cuando está vacía. */
+.sugerencia {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background: var(--fondo-caja);
+  border: 1px solid var(--acento);
+  border-radius: var(--radio);
+}
+
+.sugerencia .texto-ayuda { margin-bottom: 1rem; }

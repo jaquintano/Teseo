@@ -7,7 +7,7 @@
 import { crear, cabecera, ir, empezarEn } from '../ui.js';
 import { fichaTirador } from './ficha-tirador.js';
 import { obtenerPerfilPropio, guardarPerfilPropio } from '../db.js';
-import { fijarGenero } from '../genero.js';
+import { fijarPerfil } from '../genero.js';
 import { nombreCompleto } from '../constantes.js';
 
 export async function pantallaPerfil(contenedor, datos = {}) {
@@ -37,7 +37,7 @@ export async function pantallaPerfil(contenedor, datos = {}) {
       if (!ficha) return;
       await guardarPerfilPropio(ficha);
       // Las palabras de toda la aplicación dependen de esto.
-      fijarGenero(ficha.genero);
+      fijarPerfil(ficha);
       if (esPrimeraVez) {
         // Recién creado el perfil, la pantalla de inicio pasa a ser el fondo
         // del historial: desde ella, atrás sale de la aplicación.

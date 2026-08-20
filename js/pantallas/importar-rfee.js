@@ -1,31 +1,26 @@
-// Pantalla de importación desde la federación.
+// Pantalla de importación de rivales desde el ranking de la federación.
 //
-// Los rankings vienen empaquetados dentro de Teseo (carpeta datos/). Aquí se
-// elige cuál, se enseña qué va a pasar, y sólo entonces se guarda.
+// Sólo pregunta la temporada. El arma es siempre espada, el género es el tuyo
+// y las categorías son en las que compites: todo eso ya está en tu perfil y
+// no tiene sentido volver a pedírtelo.
+//
+// Los rankings vienen empaquetados dentro de Teseo (carpeta datos/), así que
+// esto funciona sin cobertura.
 
-import { crear, rellenar, cabecera, ir, bloque, formatearFecha } from '../ui.js';
-import { nombreCompleto } from '../constantes.js';
-import { generoDelUsuario } from '../genero.js';
+import { crear, rellenar, cabecera, ir, bloque, desplegable } from '../ui.js';
+import { nombreCompleto, etiquetaDe, CATEGORIAS } from '../constantes.js';
+import { generoDelUsuario, categoriasDelUsuario } from '../genero.js';
 import { ALMACENES, guardar, listar } from '../db.js';
-import {
-  listarRankings, cargarRanking, planificarImportacion, rellenarHuecos,
-} from '../rfee.js';
+import { planParaMisCategorias, rellenarHuecos, temporadasDisponibles } from '../rfee.js';
 
 export async function pantallaImportarRfee(contenedor) {
-  const todos = await listarRankings();
+  const temporadas = await temporadasDisponibles();
+  const genero = generoDelUsuario();
+  const categorias = categoriasDelUsuario();
 
-  // En esgrima no hay asaltos entre hombres y mujeres, asi que no tiene
-  // sentido ofrecer el ranking del otro genero: seria llenar la lista de
-  // rivales con gente contra la que nunca vas a tirar.
-  const miGenero = generoDelUsuario();
-  const etiquetaGenero = miGenero === 'F' ? 'Femenino' : 'Masculino';
-  const rankings = miGenero
-    ? todos.filter((r) => r.genero === etiquetaGenero)
-    : todos;
+  contenedor.append(cabecera('Traer rivales de la RFEE', () => ir('rivales')));
 
-  contenedor.append(cabecera('Traer de la RFEE', () => ir('rivales')));
-
-  if (rankings.length === 0) {
+  if (temporadas.length === 0) {
     contenedor.append(crear('p', {
       class: 'aviso',
       texto: 'Teseo no trae ningún ranking todavía. Hay que descargarlos antes ' +
@@ -34,38 +29,34 @@ export async function pantallaImportarRfee(contenedor) {
     return;
   }
 
-  // Los desplegables se construyen con lo que hay de verdad, para no ofrecer
-  // combinaciones que no existan.
-  const unicos = (campo) => [...new Set(rankings.map((r) => r[campo]))];
+  if (categorias.length === 0) {
+    contenedor.append(
+      crear('p', {
+        class: 'aviso',
+        texto: 'Tu perfil no dice en qué categorías compites, y de ahí sale qué ' +
+               'rivales traerte.',
+      }),
+      crear('button', {
+        type: 'button', class: 'boton boton-principal', texto: 'Ir a mi perfil',
+        onclick: () => ir('perfil', { volverA: 'rivales' }),
+      }),
+    );
+    return;
+  }
 
-  let temporada = unicos('temporada')[0];
-  let categoria = unicos('categoria')[0];
-  const genero = etiquetaGenero;
-
+  let temporada = temporadas[0];
   const resultado = crear('div');
-
-  const selector = (campo, valorInicial, alCambiar) => {
-    const s = crear('select', { class: 'entrada', onchange: (e) => { alCambiar(e.target.value); refrescar(); } });
-    for (const valor of unicos(campo)) {
-      const o = crear('option', { value: valor, texto: valor });
-      if (valor === valorInicial) o.selected = true;
-      s.append(o);
-    }
-    return s;
-  };
 
   contenedor.append(
     crear('p', {
       class: 'ayuda',
-      texto: 'Los rankings viajan dentro de Teseo, así que esto funciona sin ' +
-             'cobertura. No se piden a la federación en este momento.',
+      texto: `Se traen los rivales de ${categorias.map((c) => etiquetaDe(CATEGORIAS, c)).join(' y ')}, ` +
+             `espada, ${genero === 'F' ? 'femenino' : 'masculino'}. Sale de tu perfil.`,
     }),
 
-    bloque('Temporada', selector('temporada', temporada, (v) => { temporada = v; })),
-    bloque('Arma', crear('p', { class: 'valor-fijo', texto: 'Espada' })),
-    bloque('Categoría', selector('categoria', categoria, (v) => { categoria = v; })),
-    // El género no se elige: es el tuyo, y no hay asaltos mixtos.
-    bloque('Género', crear('p', { class: 'valor-fijo', texto: etiquetaGenero })),
+    bloque('Temporada', desplegable('',
+      temporadas.map((t) => ({ id: t, etiqueta: t })), temporada,
+      (valor) => { temporada = valor; refrescar(); }).entrada),
 
     resultado,
   );
@@ -74,33 +65,21 @@ export async function pantallaImportarRfee(contenedor) {
 
   // ------------------------------------------------------------------
 
-  function rankingElegido() {
-    return rankings.find((r) => r.temporada === temporada
-                             && r.categoria === categoria
-                             && r.genero === genero);
-  }
-
   async function refrescar() {
-    const elegido = rankingElegido();
+    rellenar(resultado, crear('p', { class: 'ayuda', texto: 'Comprobando…' }));
 
-    if (!elegido) {
+    // Todos, incluido tu propio perfil: si te elegiste del ranking, no debes
+    // aparecer luego como rival de ti mismo.
+    const locales = await listar(ALMACENES.tiradores);
+    const plan = await planParaMisCategorias({ temporada, genero, categorias }, locales);
+
+    if (plan.categorias.length === 0) {
       rellenar(resultado, crear('p', {
         class: 'aviso',
-        texto: 'Teseo no trae ese ranking. Prueba otra combinación, o pide que ' +
-               'se descargue.',
+        texto: `Teseo no trae rankings de tus categorías para ${temporada}.`,
       }));
       return;
     }
-
-    rellenar(resultado, crear('p', { class: 'ayuda', texto: 'Comprobando…' }));
-
-    const [ranking, locales] = await Promise.all([
-      cargarRanking(elegido.fichero),
-      // Todos, incluido tu propio perfil: si te elegiste del ranking, no
-      // debes aparecer luego como rival de ti mismo.
-      listar(ALMACENES.tiradores),
-    ]);
-    const plan = planificarImportacion(ranking, locales);
 
     const muestra = (fichas, cuantas = 5) => fichas.slice(0, cuantas)
       .map((f) => nombreCompleto(f.ficha || f)).join(' · ')
@@ -109,8 +88,7 @@ export async function pantallaImportarRfee(contenedor) {
     rellenar(resultado, [
       crear('p', {
         class: 'ayuda',
-        texto: `${ranking.tiradores.length} tiradores en el ranking, descargado el ` +
-               `${formatearFecha(ranking.descargadoEl)}.`,
+        texto: `Rankings encontrados: ${plan.categorias.join(', ')}.`,
       }),
 
       crear('div', { class: 'resumen' }, [
@@ -142,7 +120,7 @@ export async function pantallaImportarRfee(contenedor) {
       crear('p', {
         class: 'ayuda',
         texto: 'La federación no publica la mano, así que llegarán sin ella. ' +
-               'Se te pedirá la primera vez que crees un asalto contra cada una.',
+               'Se te pedirá la primera vez que crees un asalto contra cada uno.',
       }),
     ]);
   }

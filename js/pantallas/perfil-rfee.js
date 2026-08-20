@@ -152,6 +152,9 @@ export async function pantallaPerfilRfee(contenedor) {
         fechaNacimiento: fila.fechaNacimiento,
         club: fila.club,
         genero: ranking.genero === 'Femenino' ? 'F' : 'M',
+        // Ya sabemos una categoría en la que compite: la del ranking en el
+        // que se ha encontrado. Puede añadir más, que es lo normal.
+        categorias: [ranking.categoria],
         mano: null,
         empunadura: null,
         estatura: ESTATURA_POR_DEFECTO,

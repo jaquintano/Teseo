@@ -216,6 +216,25 @@ node herramientas/traer-competiciones.js --todo --ultimas 2
 
 La tarea automática diaria baja el calendario junto con los rankings.
 
+## Todo cuelga del perfil
+
+En el perfil se indican **el género y las categorías en las que compite** el
+tirador. Las dos cosas son obligatorias, y de ahí sale casi todo lo demás:
+
+- Las palabras que cambian: *Diestra* o *Diestro*, *Más alta* o *Más alto*.
+- Qué rivales se traen: los de **su género** y **sus categorías**.
+- Qué competiciones se traen: las mismas categorías, espada, individual.
+
+Por eso **los formularios de importar sólo preguntan la temporada**. El arma
+es siempre espada, y el género y la categoría ya se saben.
+
+Cuando alguien compite en dos categorías —lo normal: la suya y la de arriba—
+se traen las dos y **quien aparece en ambas no se duplica**: los rankings se
+van acumulando sobre la misma lista.
+
+Y si la aplicación está vacía de rivales y competiciones, la pantalla de
+inicio ofrece traérselo todo de una vez.
+
 ## Detalles que conviene conocer
 
 **El género del tirador manda en toda la aplicación.** Se pide al crear tu

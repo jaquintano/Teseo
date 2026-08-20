@@ -10,9 +10,10 @@
 //   - La estatura del rival no se pide en centímetros, que no hay forma de
 //     saberlos, sino comparada contigo.
 
-import { crear, campo, campoLargo, desplegable } from '../ui.js';
+import { crear, campo, campoLargo, desplegable, bloque, grupoOpcionesMultiple } from '../ui.js';
 import {
-  MANOS, EMPUNADURAS, ESTATURAS, GENEROS, ESTATURA_POR_DEFECTO, opcionesPara,
+  MANOS, EMPUNADURAS, ESTATURAS, GENEROS, CATEGORIAS, ESTATURA_POR_DEFECTO,
+  opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 
@@ -47,6 +48,7 @@ export function fichaTirador(tirador = {}, opciones = {}) {
   let mano = tirador.mano || null;
   let empunadura = tirador.empunadura || null;
   let estatura = tirador.estatura || ESTATURA_POR_DEFECTO;
+  let categorias = tirador.categorias || [];
 
   // Los rivales que vienen del ranking llegan sin mano, porque la federación
   // no la publica. Se deja sin elegir para que se note que falta, en vez de
@@ -70,6 +72,19 @@ export function fichaTirador(tirador = {}, opciones = {}) {
     : null;
 
   const aviso = crear('p', { class: 'aviso', texto: 'El nombre es obligatorio.', hidden: true });
+  const avisoCategorias = crear('p', {
+    class: 'aviso', hidden: true,
+    texto: 'Marca al menos una categoría: de ahí salen los rivales y las ' +
+           'competiciones que Teseo te trae.',
+  });
+
+  const bloqueCategorias = esPropio
+    ? bloque('Categorías en las que compites',
+        grupoOpcionesMultiple(CATEGORIAS, categorias, (valores) => {
+          categorias = valores;
+          avisoCategorias.hidden = true;
+        }, { clase: 'compacto' }))
+    : null;
   const avisoGenero = crear('p', {
     class: 'aviso', hidden: true,
     texto: 'Hace falta el género: de él dependen las palabras de la aplicación ' +
@@ -80,6 +95,13 @@ export function fichaTirador(tirador = {}, opciones = {}) {
     nombre.bloque,
     apellidos.bloque,
     selectorGenero ? selectorGenero.bloque : null,
+    bloqueCategorias,
+    esPropio ? crear('p', {
+      class: 'ayuda',
+      texto: 'Se suele competir en la propia categoría y en la de arriba. Con ' +
+             'esto, Teseo ya sabe qué rivales y qué competiciones traerte sin ' +
+             'volver a preguntártelo.',
+    }) : null,
     esPropio ? crear('p', {
       class: 'ayuda',
       texto: 'En esgrima no se compite entre hombres y mujeres, así que esto ' +
@@ -94,6 +116,7 @@ export function fichaTirador(tirador = {}, opciones = {}) {
     notas.bloque,
     aviso,
     avisoGenero,
+    avisoCategorias,
   ]);
 
   /** Reescribe las opciones que cambian de palabra según el género. */
@@ -120,6 +143,11 @@ export function fichaTirador(tirador = {}, opciones = {}) {
       return null;
     }
 
+    if (esPropio && categorias.length === 0) {
+      avisoCategorias.hidden = false;
+      return null;
+    }
+
     return {
       // Si la ficha ya existía, conservamos su id para actualizarla en vez
       // de crear una nueva, y también su procedencia.
@@ -127,6 +155,7 @@ export function fichaTirador(tirador = {}, opciones = {}) {
       nombre: valorNombre,
       apellidos: apellidos.entrada.value.trim(),
       genero,
+      categorias: esPropio ? categorias : (tirador.categorias || null),
       mano,
       empunadura,
       estatura: esPropio ? null : estatura,

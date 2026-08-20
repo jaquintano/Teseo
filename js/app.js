@@ -8,7 +8,7 @@ import { registrar, capturarErroresGlobales } from './registro.js';
 import { registrarPantalla, ir, empezarEn, iniciarBotonAtras } from './ui.js';
 import { obtenerPerfilPropio, pedirPersistencia } from './db.js';
 import { iniciarInstalacion } from './instalacion.js';
-import { fijarGenero } from './genero.js';
+import { fijarPerfil } from './genero.js';
 import { VERSION } from './version.js';
 
 import { pantallaPerfil } from './pantallas/perfil.js';
@@ -20,6 +20,7 @@ import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 import { pantallaEstadisticas } from './pantallas/estadisticas.js';
 import { pantallaImportarRfee } from './pantallas/importar-rfee.js';
 import { pantallaAyuda } from './pantallas/ayuda.js';
+import { pantallaPreparar } from './pantallas/preparar.js';
 import {
   pantallaCompeticiones, pantallaCompeticion, pantallaImportarCompeticiones,
 } from './pantallas/competiciones.js';
@@ -46,6 +47,7 @@ registrarPantalla('menu', conLimpieza(pantallaMenu));
 registrarPantalla('diagnostico', conLimpieza(pantallaDiagnostico));
 registrarPantalla('estadisticas', conLimpieza(pantallaEstadisticas));
 registrarPantalla('ayuda', conLimpieza(pantallaAyuda));
+registrarPantalla('preparar', conLimpieza(pantallaPreparar));
 registrarPantalla('rivales', conLimpieza(pantallaRivales));
 registrarPantalla('rival', conLimpieza(pantallaRival));
 registrarPantalla('importar-rfee', conLimpieza(pantallaImportarRfee));
@@ -75,7 +77,7 @@ async function arrancar() {
 
   // De aqui salen las palabras que cambian (Diestra o Diestro) y los
   // rankings que se pueden importar.
-  fijarGenero(perfil ? perfil.genero : null);
+  fijarPerfil(perfil);
 
   // El boton de retroceso de Android hace de "Volver" en todas las
   // pantallas, y solo sale de la aplicacion desde la de inicio.

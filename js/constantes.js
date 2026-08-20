@@ -83,6 +83,27 @@ export const GENEROS = [
   { id: 'F', etiqueta: 'Femenino' },
 ];
 
+// Las categorías de la federación, de la más joven a la de más edad. El
+// tirador dice en cuáles compite —normalmente una o dos, porque se suele
+// tirar en la propia y en la de arriba— y con eso Teseo ya sabe qué rivales
+// y qué competiciones traerle sin volver a preguntárselo.
+export const CATEGORIAS = [
+  { id: 'M9', etiqueta: 'M9' },
+  { id: 'M11', etiqueta: 'M11' },
+  { id: 'M13', etiqueta: 'M13' },
+  { id: 'M14', etiqueta: 'M14' },
+  { id: 'M15', etiqueta: 'M15' },
+  { id: 'M17', etiqueta: 'M17' },
+  { id: 'M20', etiqueta: 'M20' },
+  { id: 'M23', etiqueta: 'M23' },
+  { id: 'ABS', etiqueta: 'Absoluta' },
+  { id: 'VET30', etiqueta: 'VET30' },
+  { id: 'VET40', etiqueta: 'VET40' },
+  { id: 'VET50', etiqueta: 'VET50' },
+  { id: 'VET60', etiqueta: 'VET60' },
+  { id: 'VET70', etiqueta: 'VET70' },
+];
+
 export const TIPOS_DE_SESION = [
   { id: 'entrenamiento', etiqueta: 'Entrenamiento' },
   { id: 'competicion', etiqueta: 'Competición' },

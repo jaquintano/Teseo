@@ -101,6 +101,37 @@ export function desplegable(etiqueta, catalogo, valor, alElegir, opciones = {}) 
   return { bloque, entrada };
 }
 
+/**
+ * Fila de botones grandes donde se pueden marcar varios a la vez.
+ * Se usa para las categorías en las que compite el tirador.
+ *
+ * @param {Array<{id:string, etiqueta:string}>} catalogo
+ * @param {Array<string>} valores los marcados ahora mismo
+ * @param {(nuevosValores:Array<string>) => void} alCambiar
+ */
+export function grupoOpcionesMultiple(catalogo, valores, alCambiar, opciones = {}) {
+  const elegidos = new Set(valores || []);
+  const contenedor = crear('div', { class: `grupo-opciones ${opciones.clase || ''}`.trim() });
+
+  for (const opcion of catalogo) {
+    const boton = crear('button', {
+      type: 'button',
+      class: 'boton boton-opcion' + (elegidos.has(opcion.id) ? ' elegido' : ''),
+      texto: opcion.etiqueta,
+      onclick: () => {
+        if (elegidos.has(opcion.id)) elegidos.delete(opcion.id);
+        else elegidos.add(opcion.id);
+        boton.classList.toggle('elegido', elegidos.has(opcion.id));
+        // En el orden del catálogo, no en el que se hayan ido pulsando.
+        alCambiar(catalogo.filter((o) => elegidos.has(o.id)).map((o) => o.id));
+      },
+    });
+    contenedor.append(boton);
+  }
+
+  return contenedor;
+}
+
 /** Campo de texto con su etiqueta encima. */
 export function campo(etiqueta, propiedades = {}) {
   const id = `campo-${Math.random().toString(36).slice(2, 9)}`;
