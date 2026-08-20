@@ -65,6 +65,42 @@ export function grupoOpciones(catalogo, valor, alElegir, opciones = {}) {
   return contenedor;
 }
 
+/**
+ * Desplegable de un catálogo, con su etiqueta encima.
+ *
+ * @param {string} etiqueta
+ * @param {Array<{id:string, etiqueta:string}>} catalogo
+ * @param {string|null} valor el elegido ahora mismo
+ * @param {(nuevoValor:string|null) => void} alElegir
+ * @param {{vacio?: string}} opciones texto de la opción sin elegir; si no se
+ *        indica, no se ofrece la posibilidad de dejarlo en blanco.
+ */
+export function desplegable(etiqueta, catalogo, valor, alElegir, opciones = {}) {
+  const id = `campo-${Math.random().toString(36).slice(2, 9)}`;
+  const entrada = crear('select', {
+    id,
+    class: 'entrada',
+    onchange: (evento) => alElegir(evento.target.value || null),
+  });
+
+  if (opciones.vacio !== undefined) {
+    entrada.append(crear('option', { value: '', texto: opciones.vacio }));
+  }
+
+  for (const opcion of catalogo) {
+    const elemento = crear('option', { value: opcion.id, texto: opcion.etiqueta });
+    if (opcion.id === valor) elemento.selected = true;
+    entrada.append(elemento);
+  }
+
+  const bloque = crear('div', { class: 'bloque-campo' }, [
+    crear('label', { class: 'etiqueta-campo', for: id, texto: etiqueta }),
+    entrada,
+  ]);
+
+  return { bloque, entrada };
+}
+
 /** Campo de texto con su etiqueta encima. */
 export function campo(etiqueta, propiedades = {}) {
   const id = `campo-${Math.random().toString(36).slice(2, 9)}`;

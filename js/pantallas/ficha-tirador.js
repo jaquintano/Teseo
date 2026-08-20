@@ -7,8 +7,8 @@
 // así se ordenan bien. Para los que das de alta a mano basta con rellenar el
 // nombre: si dejas los apellidos vacíos, se muestra tal cual lo escribas.
 
-import { crear, campo, campoLargo, bloque, grupoOpciones } from '../ui.js';
-import { MANOS } from '../constantes.js';
+import { crear, campo, campoLargo, desplegable } from '../ui.js';
+import { MANOS, EMPUNADURAS } from '../constantes.js';
 
 /**
  * Construye el formulario de un tirador.
@@ -37,13 +37,24 @@ export function fichaTirador(tirador = {}) {
   });
 
   let mano = tirador.mano || null;
+  let empunadura = tirador.empunadura || null;
+
+  // Los que vienen del ranking de la federación llegan sin mano, porque no la
+  // publican. Se deja el desplegable sin elegir para que se note que falta,
+  // en vez de darlo por "Desconocido" sin que nadie lo haya mirado.
+  const selectorMano = desplegable('Mano', MANOS, mano,
+    (valor) => { mano = valor; }, { vacio: '— Sin indicar —' });
+
+  const selectorEmpunadura = desplegable('Empuñadura', EMPUNADURAS, empunadura,
+    (valor) => { empunadura = valor; }, { vacio: '— Sin indicar —' });
 
   const aviso = crear('p', { class: 'aviso', texto: 'El nombre es obligatorio.', hidden: true });
 
   const formulario = crear('div', {}, [
     nombre.bloque,
     apellidos.bloque,
-    bloque('Mano', grupoOpciones(MANOS, mano, (valor) => { mano = valor; }, { clase: 'dos-columnas' })),
+    selectorMano.bloque,
+    selectorEmpunadura.bloque,
     fechaNacimiento.bloque,
     altura.bloque,
     club.bloque,
@@ -69,6 +80,7 @@ export function fichaTirador(tirador = {}) {
       nombre: valorNombre,
       apellidos: apellidos.entrada.value.trim(),
       mano,
+      empunadura,
       fechaNacimiento: fechaNacimiento.entrada.value || null,
       altura: alturaTexto ? Number(alturaTexto) : null,
       club: club.entrada.value.trim(),

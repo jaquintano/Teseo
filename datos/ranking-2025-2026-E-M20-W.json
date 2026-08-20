@@ -1,0 +1,766 @@
+{
+ "temporada": "2025-2026",
+ "arma": "Espada",
+ "categoria": "M20",
+ "genero": "Femenino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=6&gender=W",
+ "descargadoEl": "2026-08-20T10:09:39.044Z",
+ "tiradores": [
+  {
+   "idRfee": 125,
+   "nombre": "MARTINA",
+   "apellidos": "TORREGO ALVAREZ",
+   "fechaNacimiento": "2006-06-28",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 383,
+   "nombre": "LUCIA",
+   "apellidos": "ABAJO SALCEDO",
+   "fechaNacimiento": "2008-03-19",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 276,
+   "nombre": "CANDELA",
+   "apellidos": "LOZANO PORRAS",
+   "fechaNacimiento": "2006-03-06",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 135,
+   "nombre": "DANIELA",
+   "apellidos": "PINYOL TOMAS",
+   "fechaNacimiento": "2006-08-01",
+   "club": "SEA-T"
+  },
+  {
+   "idRfee": 544,
+   "nombre": "MONICA",
+   "apellidos": "JUANES CARREÑO",
+   "fechaNacimiento": "2008-05-18",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 366,
+   "nombre": "SILVIA",
+   "apellidos": "GÓMEZ LÓPEZ",
+   "fechaNacimiento": "2007-04-11",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 1511,
+   "nombre": "ALEJANDRA",
+   "apellidos": "RODRIGUEZ VICENTE",
+   "fechaNacimiento": "2007-11-18",
+   "club": "SAES-BU"
+  },
+  {
+   "idRfee": 2258,
+   "nombre": "CLARA",
+   "apellidos": "GRIGALIUNAS CAMPOMANES",
+   "fechaNacimiento": "2010-05-15",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 895,
+   "nombre": "LUCIA",
+   "apellidos": "ANGULO SAN MARTIN",
+   "fechaNacimiento": "2008-02-19",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 270,
+   "nombre": "PAULA",
+   "apellidos": "GARCIA BLANCO",
+   "fechaNacimiento": "2007-01-25",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 2294,
+   "nombre": "INES",
+   "apellidos": "ACEDO TRABUCO",
+   "fechaNacimiento": "2008-01-31",
+   "club": "ECC-BU"
+  },
+  {
+   "idRfee": 1648,
+   "nombre": "MARTA",
+   "apellidos": "NAVARRO NUÑEZ",
+   "fechaNacimiento": "2007-02-01",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 989,
+   "nombre": "ALICIA",
+   "apellidos": "ALCAZAR TEBAR",
+   "fechaNacimiento": "2007-06-25",
+   "club": "CE-TO"
+  },
+  {
+   "idRfee": 112,
+   "nombre": "LUCIA",
+   "apellidos": "JAÑEZ QUINTANILLA",
+   "fechaNacimiento": "2006-03-30",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 2926,
+   "nombre": "GIULIA",
+   "apellidos": "DAL PONTE RUAQUE",
+   "fechaNacimiento": "2008-11-30",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 4124,
+   "nombre": "LEONOR",
+   "apellidos": "MELO",
+   "fechaNacimiento": "2006-10-18",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 325,
+   "nombre": "JULIA",
+   "apellidos": "RUEDA MOLINERO",
+   "fechaNacimiento": "2008-12-22",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 385,
+   "nombre": "MARTINA",
+   "apellidos": "GONZALEZ HUERTAS",
+   "fechaNacimiento": "2006-04-28",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 2745,
+   "nombre": "ARIADNA",
+   "apellidos": "MARÍ VILACHÁ",
+   "fechaNacimiento": "2008-05-16",
+   "club": "CCC-M"
+  },
+  {
+   "idRfee": 2253,
+   "nombre": "INÉS",
+   "apellidos": "CRISTÍA CAMPOMANES",
+   "fechaNacimiento": "2010-06-26",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 251,
+   "nombre": "BELEN",
+   "apellidos": "PEDROSA MATEOS",
+   "fechaNacimiento": "2006-11-18",
+   "club": "ECC-BU"
+  },
+  {
+   "idRfee": 1082,
+   "nombre": "GABRIELA",
+   "apellidos": "ALVAREZ SANZ",
+   "fechaNacimiento": "2007-05-23",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 1600,
+   "nombre": "VERA",
+   "apellidos": "PEREIRO CONCHA",
+   "fechaNacimiento": "2009-07-28",
+   "club": "100TO-C"
+  },
+  {
+   "idRfee": 440,
+   "nombre": "EVA",
+   "apellidos": "ALVAREZ APARICIO",
+   "fechaNacimiento": "2010-08-01",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 153,
+   "nombre": "IRENE",
+   "apellidos": "ARREGUI IDOATE",
+   "fechaNacimiento": "2007-06-21",
+   "club": "SAN-NA"
+  },
+  {
+   "idRfee": 1739,
+   "nombre": "CANDELA",
+   "apellidos": "GOMEZ PARDO",
+   "fechaNacimiento": "2006-10-30",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 2344,
+   "nombre": "MARIA",
+   "apellidos": "ORTEGA LÓPEZ",
+   "fechaNacimiento": "2008-12-26",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 441,
+   "nombre": "CONSTANZA",
+   "apellidos": "GARCIA-VALDECASAS FORNIELES",
+   "fechaNacimiento": "2008-11-25",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 1106,
+   "nombre": "MARTA",
+   "apellidos": "BRAVO LLINARES",
+   "fechaNacimiento": "2006-10-22",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 1559,
+   "nombre": "AURORA",
+   "apellidos": "BINDER ARROYO",
+   "fechaNacimiento": "2010-10-02",
+   "club": "EEA-CC"
+  },
+  {
+   "idRfee": 1569,
+   "nombre": "ANDREA",
+   "apellidos": "LÓPEZ PERIS",
+   "fechaNacimiento": "2008-02-14",
+   "club": "CEA-V"
+  },
+  {
+   "idRfee": 1202,
+   "nombre": "ANDREA",
+   "apellidos": "PEREZ GARCIA",
+   "fechaNacimiento": "2007-12-15",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 815,
+   "nombre": "IRENE",
+   "apellidos": "PRIETO LUNA",
+   "fechaNacimiento": "2007-01-13",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 429,
+   "nombre": "EUNATE",
+   "apellidos": "RUIZ SEGURA",
+   "fechaNacimiento": "2009-01-25",
+   "club": "SAN-NA"
+  },
+  {
+   "idRfee": 1513,
+   "nombre": "CARLA",
+   "apellidos": "ALCAZAR RAMIREZ",
+   "fechaNacimiento": "2008-09-21",
+   "club": "SADA-AB"
+  },
+  {
+   "idRfee": 2440,
+   "nombre": "MARIAM",
+   "apellidos": "APRIAMASHVILI",
+   "fechaNacimiento": "2009-01-08",
+   "club": "ECC-BU"
+  },
+  {
+   "idRfee": 1185,
+   "nombre": "NATALIA",
+   "apellidos": "DIEZ MARIÑO",
+   "fechaNacimiento": "2008-01-22",
+   "club": "COMES-C"
+  },
+  {
+   "idRfee": 4164,
+   "nombre": "LIDIA",
+   "apellidos": "RODRIGUEZ FLORES",
+   "fechaNacimiento": "2006-02-22",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 575,
+   "nombre": "PAULA",
+   "apellidos": "CABALLERO SOLCHAGA",
+   "fechaNacimiento": "2009-06-16",
+   "club": "CEA-Z"
+  },
+  {
+   "idRfee": 1737,
+   "nombre": "LOLA",
+   "apellidos": "HERAS FUENTES",
+   "fechaNacimiento": "2006-11-28",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 149,
+   "nombre": "CLARA",
+   "apellidos": "PÉREZ DEL CASTILLO",
+   "fechaNacimiento": "2006-11-07",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 3874,
+   "nombre": "VALERIA",
+   "apellidos": "MUÑOZ ZALDIVAR",
+   "fechaNacimiento": "2012-06-29",
+   "club": "CEA-V"
+  },
+  {
+   "idRfee": 901,
+   "nombre": "IRENE",
+   "apellidos": "DASWANI ANGULO",
+   "fechaNacimiento": "2009-01-10",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 2413,
+   "nombre": "ALEJANDRA",
+   "apellidos": "DEL PESO OROPESIANO",
+   "fechaNacimiento": "2009-04-12",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 279,
+   "nombre": "JULIANA SOFIA",
+   "apellidos": "MORENO VALIENTE",
+   "fechaNacimiento": "2006-04-20",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 2441,
+   "nombre": "MARIAM",
+   "apellidos": "BANDZELADZE",
+   "fechaNacimiento": "2009-08-06",
+   "club": "ECC-BU"
+  },
+  {
+   "idRfee": 2305,
+   "nombre": "MIRIAM",
+   "apellidos": "RAMOS MORENO",
+   "fechaNacimiento": "2010-02-08",
+   "club": "CEA-V"
+  },
+  {
+   "idRfee": 249,
+   "nombre": "NORMA",
+   "apellidos": "BENITEZ PERULLES",
+   "fechaNacimiento": "2007-01-03",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 917,
+   "nombre": "CAYETANA",
+   "apellidos": "REDEL ADEVA",
+   "fechaNacimiento": "2008-07-17",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 3293,
+   "nombre": "SOFIA",
+   "apellidos": "FEBRES AMAYA",
+   "fechaNacimiento": "2006-08-05",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 1831,
+   "nombre": "AINARA",
+   "apellidos": "FUNES GONZALEZ",
+   "fechaNacimiento": "2010-04-07",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 4765,
+   "nombre": "INGRID",
+   "apellidos": "LINDHOLM",
+   "fechaNacimiento": "2006-06-27",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 3563,
+   "nombre": "INES",
+   "apellidos": "SEGURA SAENZ",
+   "fechaNacimiento": "2011-05-01",
+   "club": "SA-LO"
+  },
+  {
+   "idRfee": 2156,
+   "nombre": "LUCÍA XUAN",
+   "apellidos": "ALONSO OLMOS",
+   "fechaNacimiento": "2011-02-15",
+   "club": "CEA-VA"
+  },
+  {
+   "idRfee": 2125,
+   "nombre": "NORA",
+   "apellidos": "GONZALEZ RODILANA",
+   "fechaNacimiento": "2010-07-16",
+   "club": "EDMC-VA"
+  },
+  {
+   "idRfee": 1572,
+   "nombre": "ROCIO",
+   "apellidos": "SANCHEZ TATTI",
+   "fechaNacimiento": "2008-08-22",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 205,
+   "nombre": "VALERIA",
+   "apellidos": "MIQUELE LISBONA",
+   "fechaNacimiento": "2006-01-14",
+   "club": "CEA-Z"
+  },
+  {
+   "idRfee": 3613,
+   "nombre": "ALBA",
+   "apellidos": "ZUBIARRAIN MARTINEZ",
+   "fechaNacimiento": "2008-10-26",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 1918,
+   "nombre": "JIMENA",
+   "apellidos": "MORAL HOJAS",
+   "fechaNacimiento": "2011-07-04",
+   "club": "ECC-BU"
+  },
+  {
+   "idRfee": 2314,
+   "nombre": "ELENA",
+   "apellidos": "DE CUENCA ALONSO",
+   "fechaNacimiento": "2007-07-24",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 2073,
+   "nombre": "ADRIANA",
+   "apellidos": "BASTANTE GOMEZ LIMON",
+   "fechaNacimiento": "2010-12-26",
+   "club": "CVA-CR"
+  },
+  {
+   "idRfee": 2201,
+   "nombre": "MALENA",
+   "apellidos": "AYUSO FRAUSCHER",
+   "fechaNacimiento": "2010-03-25",
+   "club": "CE-M"
+  },
+  {
+   "idRfee": 3575,
+   "nombre": "ESTELA PATRICIA",
+   "apellidos": "RUIZ GARRIDO",
+   "fechaNacimiento": "2010-05-21",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 4375,
+   "nombre": "DOLORES",
+   "apellidos": "RODRIGUEZ GARRIDO",
+   "fechaNacimiento": "2006-09-15",
+   "club": "FED-AND-C"
+  },
+  {
+   "idRfee": 1522,
+   "nombre": "ILINCA",
+   "apellidos": "LUNGU",
+   "fechaNacimiento": "2009-04-20",
+   "club": "SAN-NA"
+  },
+  {
+   "idRfee": 3265,
+   "nombre": "NICOLE",
+   "apellidos": "LOPEZ KASHANOVA",
+   "fechaNacimiento": "2007-10-30",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 1837,
+   "nombre": "ONA",
+   "apellidos": "BASANTA LATORRE",
+   "fechaNacimiento": "2008-12-20",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 1647,
+   "nombre": "NATALIA",
+   "apellidos": "LOPEZ BELLIDO",
+   "fechaNacimiento": "2008-02-20",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 3820,
+   "nombre": "MARAM",
+   "apellidos": "ALOUANE MEDKOUR KEBIR",
+   "fechaNacimiento": "2009-04-30",
+   "club": "SAARVI-VI"
+  },
+  {
+   "idRfee": 4220,
+   "nombre": "ALBA",
+   "apellidos": "FERNANDEZ ANTON",
+   "fechaNacimiento": "2009-01-12",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 3871,
+   "nombre": "HELENA",
+   "apellidos": "MARTÍN SÁNCHEZ",
+   "fechaNacimiento": "2010-11-22",
+   "club": "fed-ext-c"
+  },
+  {
+   "idRfee": 4309,
+   "nombre": "CARLA",
+   "apellidos": "SOTO MARTIN",
+   "fechaNacimiento": "2011-09-21",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 1982,
+   "nombre": "ELENA",
+   "apellidos": "QUINTANO MAYOR",
+   "fechaNacimiento": "2011-11-10",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 4811,
+   "nombre": "AFRICA",
+   "apellidos": "MARQUES CANO",
+   "fechaNacimiento": "2010-10-06",
+   "club": "CBC-CA"
+  },
+  {
+   "idRfee": 4747,
+   "nombre": "LAIA",
+   "apellidos": "BARRENKUA RODRIGUEZ",
+   "fechaNacimiento": "2007-08-04",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 3917,
+   "nombre": "STEFANY",
+   "apellidos": "LÓPEZ SAAVEDRA",
+   "fechaNacimiento": "2010-04-05",
+   "club": "100TO-C"
+  },
+  {
+   "idRfee": 2327,
+   "nombre": "NATALIA",
+   "apellidos": "GARCÍA CAMACHO",
+   "fechaNacimiento": "2007-10-21",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 4544,
+   "nombre": "CELIA",
+   "apellidos": "DURAN VALERO",
+   "fechaNacimiento": "2012-01-03",
+   "club": "CEA-V"
+  },
+  {
+   "idRfee": 2165,
+   "nombre": "SOFIA",
+   "apellidos": "ORTEGA MANZANO",
+   "fechaNacimiento": "2012-05-14",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 996,
+   "nombre": "JULIA",
+   "apellidos": "MORENO HERRERA",
+   "fechaNacimiento": "2009-06-13",
+   "club": "CESAN"
+  },
+  {
+   "idRfee": 244,
+   "nombre": "VINYET",
+   "apellidos": "ASPURO GARCIA",
+   "fechaNacimiento": "2006-12-19",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 4088,
+   "nombre": "CLAUDIA",
+   "apellidos": "CABEZA PÉREZ",
+   "fechaNacimiento": "2008-10-09",
+   "club": "SAARVI-VI"
+  },
+  {
+   "idRfee": 2996,
+   "nombre": "ONA",
+   "apellidos": "HERMOSO CASTILLO",
+   "fechaNacimiento": "2011-02-17",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 3608,
+   "nombre": "MARÍA",
+   "apellidos": "USEROS MARTÍN",
+   "fechaNacimiento": "2011-10-07",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 4770,
+   "nombre": "OLIVIA",
+   "apellidos": "SEPULVEDA COLLADO",
+   "fechaNacimiento": "2010-02-01",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 4778,
+   "nombre": "MARIA",
+   "apellidos": "BENÍTEZ DE LUGO RAMOS",
+   "fechaNacimiento": "2009-09-15",
+   "club": "SAN-NA"
+  },
+  {
+   "idRfee": 2163,
+   "nombre": "MARTINA",
+   "apellidos": "INFIESTA RUBIO",
+   "fechaNacimiento": "2012-06-22",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 1765,
+   "nombre": "SANDRA",
+   "apellidos": "SUAREZ LIQUETE",
+   "fechaNacimiento": "2011-09-02",
+   "club": "CESAN"
+  },
+  {
+   "idRfee": 1144,
+   "nombre": "ISABEL",
+   "apellidos": "PINTADO COLLADO",
+   "fechaNacimiento": "2007-01-07",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 4219,
+   "nombre": "HENAR",
+   "apellidos": "SANZ MORENO",
+   "fechaNacimiento": "2011-05-31",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 4446,
+   "nombre": "IRATI",
+   "apellidos": "LEGARISTI SIMO",
+   "fechaNacimiento": "2010-08-03",
+   "club": "CEGA-VI"
+  },
+  {
+   "idRfee": 4331,
+   "nombre": "JIMENA",
+   "apellidos": "MARTÍN SÁNCHEZ",
+   "fechaNacimiento": "2012-04-01",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 4168,
+   "nombre": "VALERIA",
+   "apellidos": "LANA CAAMAÑO",
+   "fechaNacimiento": "2011-02-18",
+   "club": "CEA-Z"
+  },
+  {
+   "idRfee": 4737,
+   "nombre": "NAIARA LISBET",
+   "apellidos": "CAMPOVERDE CURAY",
+   "fechaNacimiento": "2009-02-10",
+   "club": "CEGA-VI"
+  },
+  {
+   "idRfee": 4863,
+   "nombre": "MAR",
+   "apellidos": "PLANELLES RAPUN",
+   "fechaNacimiento": "2009-12-22",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 4167,
+   "nombre": "SOFIA ANGELY",
+   "apellidos": "CEBALLOS MAIZ",
+   "fechaNacimiento": "2011-08-16",
+   "club": "CEA-Z"
+  },
+  {
+   "idRfee": 4564,
+   "nombre": "JULIA",
+   "apellidos": "MILLÁN MARZO",
+   "fechaNacimiento": "2010-12-16",
+   "club": "SAARVI-VI"
+  },
+  {
+   "idRfee": 4862,
+   "nombre": "KARLA ANDREA",
+   "apellidos": "PEREZ DE TORO",
+   "fechaNacimiento": "2010-09-07",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 2885,
+   "nombre": "MIREN",
+   "apellidos": "URREA LANDA",
+   "fechaNacimiento": "2010-04-10",
+   "club": "FED-NA-C"
+  },
+  {
+   "idRfee": 4330,
+   "nombre": "GRACIA",
+   "apellidos": "MARTÍN SANCHEZ",
+   "fechaNacimiento": "2009-11-17",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 4482,
+   "nombre": "DARIA",
+   "apellidos": "ACHEPOVSKAIA",
+   "fechaNacimiento": "2012-09-03",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 2939,
+   "nombre": "GABRIELA",
+   "apellidos": "RODRÍGUEZ SEOANE",
+   "fechaNacimiento": "2010-03-16",
+   "club": "CECVi-PO"
+  },
+  {
+   "idRfee": 2886,
+   "nombre": "NAIA",
+   "apellidos": "URREA LANDA",
+   "fechaNacimiento": "2010-04-10",
+   "club": "FED-NA-C"
+  },
+  {
+   "idRfee": 4952,
+   "nombre": "LAURA",
+   "apellidos": "PARIENTE NARANJO",
+   "fechaNacimiento": "2010-11-16",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 3612,
+   "nombre": "LUCIA",
+   "apellidos": "MATEOS IGLESIAS",
+   "fechaNacimiento": "2011-08-10",
+   "club": "VCE-VA"
+  },
+  {
+   "idRfee": 4386,
+   "nombre": "ANAKAMILA",
+   "apellidos": "CARRANZA PEREZ",
+   "fechaNacimiento": "2006-03-11",
+   "club": "CET-CS"
+  },
+  {
+   "idRfee": 2649,
+   "nombre": "LAURA",
+   "apellidos": "MORA ARCAS",
+   "fechaNacimiento": "2009-10-27",
+   "club": "100TO-C"
+  },
+  {
+   "idRfee": 2078,
+   "nombre": "VERA",
+   "apellidos": "GONZALEZ JAIME",
+   "fechaNacimiento": "2010-04-11",
+   "club": "CVA-CR"
+  }
+ ]
+}

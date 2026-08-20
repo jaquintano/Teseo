@@ -1,0 +1,59 @@
+{
+ "temporada": "2025-2026",
+ "arma": "Espada",
+ "categoria": "VET70",
+ "genero": "Masculino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=19&gender=M",
+ "descargadoEl": "2026-08-20T10:09:54.301Z",
+ "tiradores": [
+  {
+   "idRfee": 4497,
+   "nombre": "JAN GEORGE ALBIN",
+   "apellidos": "BADE",
+   "fechaNacimiento": "1955-06-10",
+   "club": "FED-AND-C"
+  },
+  {
+   "idRfee": 1466,
+   "nombre": "JUAN FERNANDO",
+   "apellidos": "DAMAS FLORES",
+   "fechaNacimiento": "1949-04-18",
+   "club": "CELC-M"
+  },
+  {
+   "idRfee": 5045,
+   "nombre": "JOSE MARIA",
+   "apellidos": "PONS COVEÑAS",
+   "fechaNacimiento": "1950-07-31",
+   "club": "CCC-M"
+  },
+  {
+   "idRfee": 3080,
+   "nombre": "PEDRO",
+   "apellidos": "CALDERON MILLSTEIN",
+   "fechaNacimiento": "1943-08-18",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 3707,
+   "nombre": "JOSÉ ANTONIO",
+   "apellidos": "VALLÉS MUÑOZ",
+   "fechaNacimiento": "1955-03-23",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 1277,
+   "nombre": "JULIO",
+   "apellidos": "RUBIO MARQUES",
+   "fechaNacimiento": "1944-08-10",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 4463,
+   "nombre": "MARCOS",
+   "apellidos": "GUTIERREZ DAVILA",
+   "fechaNacimiento": "1953-04-25",
+   "club": "CBC-CA"
+  }
+ ]
+}

@@ -22,6 +22,8 @@
 // nuevo, ya independiente del fichero original, va bien y además nos dice en
 // qué bloque falla si algo va mal.
 
+import { nombreCompleto } from './constantes.js';
+
 const NOMBRE_BD = 'teseo';
 const VERSION_BD = 1;
 const TAMANO_TROZO = 8 * 1024 * 1024;
@@ -164,7 +166,9 @@ export async function listarRivales() {
   const todos = await listar(ALMACENES.tiradores);
   return todos
     .filter((tirador) => tirador.id !== propioId)
-    .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+    // Por el nombre tal y como se muestra, que con apellidos delante no es
+    // lo mismo que el nombre de pila.
+    .sort((a, b) => nombreCompleto(a).localeCompare(nombreCompleto(b), 'es'));
 }
 
 // --- Vídeos -----------------------------------------------------------

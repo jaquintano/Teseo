@@ -118,7 +118,93 @@ function leerArgumentos() {
     temporada: valor('temporada'),
     categoria: valor('categoria'),
     genero: valor('genero'),
+    todo: args.includes('--todo'),
+    ultimas: Number(valor('ultimas') || 2),
   };
+}
+
+/** Las N temporadas más recientes de las que conocemos. */
+function ultimasTemporadas(cuantas) {
+  return Object.keys(TEMPORADAS).slice(-cuantas);
+}
+
+/**
+ * Descarga un ranking y lo guarda.
+ * @returns {'guardado'|'sin-cambios'|'vacio'}
+ */
+async function traerUno(temporada, categoria, codigoGenero) {
+  const url = BASE + '?season=' + TEMPORADAS[temporada] + '&weapon=' + ARMA +
+              '&category=' + CATEGORIAS[categoria] + '&gender=' + codigoGenero;
+
+  const respuesta = await fetch(url);
+  if (!respuesta.ok) throw new Error('La federación respondió ' + respuesta.status);
+
+  const tiradores = extraerTiradores(await respuesta.text());
+  // Hay combinaciones sin nadie (categorías de veteranos, por ejemplo). No es
+  // un error: sencillamente no se guarda nada.
+  if (tiradores.length === 0) return 'vacio';
+
+  const nombreFichero = 'ranking-' + temporada + '-' + ARMA + '-' + categoria + '-' + codigoGenero + '.json';
+  const destino = path.join(RAIZ, 'datos', nombreFichero);
+
+  // Si los tiradores son exactamente los mismos, no reescribimos el fichero.
+  // Si no, la fecha de descarga cambiaría cada día y habría un commit diario
+  // aunque no se hubiera movido nada.
+  if (fs.existsSync(destino)) {
+    const previo = JSON.parse(fs.readFileSync(destino, 'utf8'));
+    if (JSON.stringify(previo.tiradores) === JSON.stringify(tiradores)) return 'sin-cambios';
+  }
+
+  const contenido = {
+    temporada,
+    arma: 'Espada',
+    categoria,
+    genero: codigoGenero === 'W' ? 'Femenino' : 'Masculino',
+    origen: url,
+    descargadoEl: new Date().toISOString(),
+    tiradores,
+  };
+
+  fs.mkdirSync(path.join(RAIZ, 'datos'), { recursive: true });
+  fs.writeFileSync(destino, JSON.stringify(contenido, null, 1) + '\n');
+  return 'guardado';
+}
+
+/** Baja todas las combinaciones: últimas temporadas, todas las categorías, ambos géneros. */
+async function traerTodo(cuantasTemporadas) {
+  const temporadas = ultimasTemporadas(cuantasTemporadas);
+  const categorias = Object.keys(CATEGORIAS);
+  const generos = ['M', 'W'];
+
+  console.log('Temporadas: ' + temporadas.join(', '));
+  console.log('Categorías: ' + categorias.join(', '));
+
+  const cuenta = { guardado: 0, 'sin-cambios': 0, vacio: 0, error: 0 };
+
+  for (const temporada of temporadas) {
+    for (const categoria of categorias) {
+      for (const genero of generos) {
+        const etiqueta = `${temporada} ${categoria} ${genero === 'W' ? 'F' : 'M'}`;
+        try {
+          const resultado = await traerUno(temporada, categoria, genero);
+          cuenta[resultado]++;
+          console.log(`  ${etiqueta}: ${resultado}`);
+        } catch (error) {
+          cuenta.error++;
+          console.warn(`  ${etiqueta}: ERROR ${error.message}`);
+        }
+        // Un respiro entre peticiones: son unas cuantas y no hay prisa.
+        await new Promise((seguir) => setTimeout(seguir, 1200));
+      }
+    }
+  }
+
+  console.log(`Resumen: ${cuenta.guardado} guardados, ${cuenta['sin-cambios']} sin cambios, ` +
+              `${cuenta.vacio} vacíos, ${cuenta.error} con error.`);
+
+  if (cuenta.guardado === 0 && cuenta.error > 0) {
+    throw new Error('No se pudo traer ningún ranking.');
+  }
 }
 
 /**
@@ -150,45 +236,26 @@ function actualizarIndice() {
 }
 
 async function principal() {
-  const { temporada, categoria, genero } = leerArgumentos();
+  const { temporada, categoria, genero, todo, ultimas } = leerArgumentos();
+
+  if (todo) {
+    await traerTodo(ultimas);
+    actualizarIndice();
+    return;
+  }
 
   if (!TEMPORADAS[temporada] || !CATEGORIAS[categoria] || !GENEROS[genero]) {
-    console.error('Uso: node herramientas/traer-ranking.js --temporada 2025-2026 --categoria M15 --genero F');
+    console.error('Uso:');
+    console.error('  node herramientas/traer-ranking.js --temporada 2025-2026 --categoria M15 --genero F');
+    console.error('  node herramientas/traer-ranking.js --todo [--ultimas 2]');
     console.error('  Temporadas: ' + Object.keys(TEMPORADAS).join(', '));
     console.error('  Categorías: ' + Object.keys(CATEGORIAS).join(', '));
     console.error('  Géneros:    M (masculino) o F (femenino)');
     process.exit(1);
   }
 
-  const codigoGenero = GENEROS[genero];
-  const url = BASE + '?season=' + TEMPORADAS[temporada] + '&weapon=' + ARMA +
-              '&category=' + CATEGORIAS[categoria] + '&gender=' + codigoGenero;
-
-  console.log('Pidiendo ' + url);
-  const respuesta = await fetch(url);
-  if (!respuesta.ok) throw new Error('La federación respondió ' + respuesta.status);
-
-  const tiradores = extraerTiradores(await respuesta.text());
-  if (tiradores.length === 0) throw new Error('No se encontró ningún tirador. ¿Ha cambiado la página?');
-
-  const sinId = tiradores.filter((t) => t.idRfee === null).length;
-  if (sinId > 0) console.warn('AVISO: ' + sinId + ' tirador(es) sin identificador.');
-
-  const nombreFichero = 'ranking-' + temporada + '-' + ARMA + '-' + categoria + '-' + codigoGenero + '.json';
-  const contenido = {
-    temporada,
-    arma: 'Espada',
-    categoria,
-    genero: codigoGenero === 'W' ? 'Femenino' : 'Masculino',
-    origen: url,
-    descargadoEl: new Date().toISOString(),
-    tiradores,
-  };
-
-  fs.mkdirSync(path.join(RAIZ, 'datos'), { recursive: true });
-  fs.writeFileSync(path.join(RAIZ, 'datos', nombreFichero),
-                   JSON.stringify(contenido, null, 1) + '\n');
-  console.log('Guardado datos/' + nombreFichero + ' con ' + tiradores.length + ' tiradores.');
+  const resultado = await traerUno(temporada, categoria, GENEROS[genero]);
+  console.log(`${temporada} ${categoria} ${genero}: ${resultado}`);
 
   actualizarIndice();
 }

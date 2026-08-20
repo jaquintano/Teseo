@@ -4,7 +4,7 @@
 // sabe nada de pantallas ni de base de datos y se puede llevar aparte.
 
 import { crear, rellenar, cabecera, ir, bloque, grupoOpciones } from '../ui.js';
-import { MANOS } from '../constantes.js';
+import { MANOS, nombreCompleto } from '../constantes.js';
 import { ALMACENES, listar, listarRivales } from '../db.js';
 import { prepararIntercambios, filtrar, calcular } from '../calculo-estadisticas.js';
 
@@ -67,7 +67,7 @@ export async function pantallaEstadisticas(contenedor) {
   });
   selectorRival.append(crear('option', { value: '', texto: 'Todos los rivales' }));
   for (const rival of rivales) {
-    selectorRival.append(crear('option', { value: rival.id, texto: rival.nombre }));
+    selectorRival.append(crear('option', { value: rival.id, texto: nombreCompleto(rival) }));
   }
 
   const selectorNumero = crear('select', {
@@ -86,7 +86,7 @@ export async function pantallaEstadisticas(contenedor) {
       crear('summary', { texto: 'Filtros' }),
       bloque('Rival', selectorRival),
       bloque('Mano del rival', grupoOpciones(MANOS, null,
-        (valor) => { filtros.manoRival = valor; pintar(); }, { clase: 'dos-columnas' })),
+        (valor) => { filtros.manoRival = valor; pintar(); }, { clase: 'tres-columnas' })),
       bloque('Número de asalto', selectorNumero),
     ]),
 

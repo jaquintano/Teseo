@@ -130,15 +130,37 @@ de otro sitio web salvo que ese sitio lo autorice, y `app.skermo.org` no lo
 autoriza. Comprobado: la petición llega, pero la respuesta vuelve ilegible.
 Como efecto secundario bueno, la importación funciona sin cobertura.
 
-Para añadir o actualizar un ranking, desde el ordenador:
+### Se actualizan solos
+
+Hay una tarea automática (`.github/workflows/actualizar-rankings.yml`) que
+**todos los días a las 18:00 de Madrid** descarga las dos últimas temporadas,
+espada, todas las categorías y ambos géneros, y hace un commit **sólo si algo
+ha cambiado**.
+
+GitHub programa sus tareas en horario UTC y no entiende de cambios de hora,
+así que la tarea se dispara a las 16:00 y a las 17:00 UTC y el primer paso
+comprueba qué hora es en Madrid: se ejecuta la que caiga a las 18:00 y la
+otra se descarta. Así funciona igual en verano que en invierno.
+
+Para que funcione hace falta que el repositorio tenga permisos de escritura
+para las tareas: **Settings → Actions → General → Workflow permissions →
+Read and write permissions**.
+
+También se puede lanzar a mano desde la pestaña **Actions** del repositorio.
+
+### O a mano, desde el ordenador
 
 ```bash
+# Un ranking concreto
 node herramientas/traer-ranking.js --temporada 2025-2026 --categoria M15 --genero F
+
+# Todo: las dos últimas temporadas, todas las categorías, ambos géneros
+node herramientas/traer-ranking.js --todo --ultimas 2
 ```
 
-Eso deja el fichero en `datos/` y rehace el índice. Luego hay que subirlo al
-repositorio como cualquier otro cambio, **y añadirlo a la lista de `sw.js`**
-para que se guarde junto con la aplicación.
+Eso deja los ficheros en `datos/` y rehace el índice. Los rankings **no** se
+precargan con la aplicación: son 19 ficheros y creciendo, así que se piden
+cuando hacen falta y el service worker los va guardando por el camino.
 
 Reglas de la importación:
 
@@ -150,7 +172,11 @@ Reglas de la importación:
 - **La mano llega siempre vacía**, porque la federación no la publica. En la
   tabla de rivales se señala en ámbar, y se pide de forma obligatoria la
   primera vez que creas un asalto contra esa persona: sin ella, ese asalto
-  quedaría fuera de los filtros de las estadísticas.
+  quedaría fuera de los filtros de las estadísticas. Se puede marcar
+  *Desconocido*, que es distinto de dejarlo sin mirar: ese asalto no saldrá
+  al filtrar por diestro o por zurdo, pero sí en el resto de estadísticas.
+- **La empuñadura** (francesa, pistola o desconocida) se rellena a mano: la
+  federación tampoco la publica.
 - **El club viene como código** (`ECC-BU`, `CETC-M`), que es lo que publica la
   federación. Se puede corregir a mano.
 

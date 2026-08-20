@@ -1,0 +1,206 @@
+{
+ "temporada": "2025-2026",
+ "arma": "Espada",
+ "categoria": "VET40",
+ "genero": "Masculino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=14&gender=M",
+ "descargadoEl": "2026-08-20T10:09:46.059Z",
+ "tiradores": [
+  {
+   "idRfee": 2738,
+   "nombre": "VICENTE",
+   "apellidos": "GARDE LA CASA",
+   "fechaNacimiento": "1977-09-01",
+   "club": "CE-TO"
+  },
+  {
+   "idRfee": 372,
+   "nombre": "JAVIER",
+   "apellidos": "ALONSO ESCOBAR",
+   "fechaNacimiento": "1981-10-04",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 5028,
+   "nombre": "PABLO",
+   "apellidos": "SERRALLACH LLOPIS",
+   "fechaNacimiento": "1978-12-21",
+   "club": "SAG-B"
+  },
+  {
+   "idRfee": 2369,
+   "nombre": "DAVID",
+   "apellidos": "RAMILA GUTIERREZ",
+   "fechaNacimiento": "1978-02-02",
+   "club": "CREA-M"
+  },
+  {
+   "idRfee": 263,
+   "nombre": "FRANCISCO",
+   "apellidos": "ROMERO GARCIA CIFO",
+   "fechaNacimiento": "1980-12-06",
+   "club": "FED-V-C"
+  },
+  {
+   "idRfee": 1859,
+   "nombre": "ROBERTO",
+   "apellidos": "MORENO GARCÍA",
+   "fechaNacimiento": "1977-09-19",
+   "club": "SEAC-CO"
+  },
+  {
+   "idRfee": 874,
+   "nombre": "RUBEN",
+   "apellidos": "SERNA MUÑOZ",
+   "fechaNacimiento": "1978-02-03",
+   "club": "CEV-MU"
+  },
+  {
+   "idRfee": 1891,
+   "nombre": "ROBERTO",
+   "apellidos": "ALVAREZ ABRIL",
+   "fechaNacimiento": "1978-08-04",
+   "club": "SAV-V"
+  },
+  {
+   "idRfee": 587,
+   "nombre": "ROMAN ERNESTO",
+   "apellidos": "REYNOSO RAFAEL",
+   "fechaNacimiento": "1980-03-18",
+   "club": "CEP-M"
+  },
+  {
+   "idRfee": 4772,
+   "nombre": "JONATHAN",
+   "apellidos": "MARTI FRAIZ",
+   "fechaNacimiento": "1982-04-27",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 3833,
+   "nombre": "NAUDY ALEJANDRO",
+   "apellidos": "MENDOZA FREITEZ",
+   "fechaNacimiento": "1983-06-05",
+   "club": "CNM-GC"
+  },
+  {
+   "idRfee": 5092,
+   "nombre": "JORDI",
+   "apellidos": "LLIBRE MOYA",
+   "fechaNacimiento": "1983-09-11",
+   "club": "CEMAR-B"
+  },
+  {
+   "idRfee": 4144,
+   "nombre": "ERICK JOSÉ",
+   "apellidos": "AMALFI AGUILERA",
+   "fechaNacimiento": "1981-04-11",
+   "club": "CNM-GC"
+  },
+  {
+   "idRfee": 3829,
+   "nombre": "SERGIO ALBERTO",
+   "apellidos": "NORDELO OTALORA",
+   "fechaNacimiento": "1984-01-03",
+   "club": "CNM-GC"
+  },
+  {
+   "idRfee": 4299,
+   "nombre": "JUAN ANTONIO",
+   "apellidos": "RUBIALES CABRERA",
+   "fechaNacimiento": "1981-10-09",
+   "club": "CEEC-M"
+  },
+  {
+   "idRfee": 1375,
+   "nombre": "NÉSTOR",
+   "apellidos": "LÓPEZ DEL MORAL",
+   "fechaNacimiento": "1983-11-16",
+   "club": "ELGATO-M"
+  },
+  {
+   "idRfee": 4987,
+   "nombre": "JESUS",
+   "apellidos": "DEL PINO RUIZ",
+   "fechaNacimiento": "1982-05-14",
+   "club": "CBC-CA"
+  },
+  {
+   "idRfee": 3353,
+   "nombre": "YAGO",
+   "apellidos": "CRISTÍA",
+   "fechaNacimiento": "1977-03-17",
+   "club": "ELGATO-M"
+  },
+  {
+   "idRfee": 4757,
+   "nombre": "MANUEL",
+   "apellidos": "CHICO GARRASTACHU",
+   "fechaNacimiento": "1984-06-26",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 856,
+   "nombre": "ROGER",
+   "apellidos": "SEÑIS LOPEZ",
+   "fechaNacimiento": "1982-08-10",
+   "club": "CEG-B"
+  },
+  {
+   "idRfee": 5258,
+   "nombre": "DAVIDE",
+   "apellidos": "STRANGIS",
+   "fechaNacimiento": "1982-03-16",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 1905,
+   "nombre": "JUAN PABLO",
+   "apellidos": "ALVEAR ZAPATA",
+   "fechaNacimiento": "1979-11-13",
+   "club": "CEVI-M"
+  },
+  {
+   "idRfee": 4046,
+   "nombre": "PABLO",
+   "apellidos": "SORIANO MAUDOS",
+   "fechaNacimiento": "1986-03-07",
+   "club": "SAJI-V"
+  },
+  {
+   "idRfee": 3341,
+   "nombre": "ABRAHAM",
+   "apellidos": "CASTRO NEIRA",
+   "fechaNacimiento": "1986-08-04",
+   "club": "COMES-C"
+  },
+  {
+   "idRfee": 5044,
+   "nombre": "ZEUXIS ALEJANDRO",
+   "apellidos": "CONDE DE FELIPE",
+   "fechaNacimiento": "1981-11-22",
+   "club": "CNM-GC"
+  },
+  {
+   "idRfee": 5001,
+   "nombre": "ALBERTO",
+   "apellidos": "NEIRA YAÑEZ",
+   "fechaNacimiento": "1985-04-14",
+   "club": "SAMA-M"
+  },
+  {
+   "idRfee": 1460,
+   "nombre": "CARLOS",
+   "apellidos": "PENA COBIAN",
+   "fechaNacimiento": "1977-06-19",
+   "club": "CE-M"
+  },
+  {
+   "idRfee": 5233,
+   "nombre": "IEVGEN",
+   "apellidos": "MYRGORODSKI",
+   "fechaNacimiento": "1986-03-11",
+   "club": "SAV-V"
+  }
+ ]
+}

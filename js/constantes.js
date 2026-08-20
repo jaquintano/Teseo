@@ -48,9 +48,18 @@ export const ZONAS_PISTA = [
   { id: 'extremo-rival', etiqueta: 'Extremo del rival' },
 ];
 
+// Los identificadores 'diestro' y 'zurdo' se quedan como estaban aunque las
+// etiquetas hayan cambiado: hay asaltos guardados que dependen de ellos.
 export const MANOS = [
-  { id: 'diestro', etiqueta: 'Diestro' },
-  { id: 'zurdo', etiqueta: 'Zurdo' },
+  { id: 'diestro', etiqueta: 'Diestro/a' },
+  { id: 'zurdo', etiqueta: 'Zurdo/a' },
+  { id: 'desconocido', etiqueta: 'Desconocido' },
+];
+
+export const EMPUNADURAS = [
+  { id: 'francesa', etiqueta: 'Francesa' },
+  { id: 'pistola', etiqueta: 'Pistola' },
+  { id: 'desconocido', etiqueta: 'Desconocido' },
 ];
 
 export const TIPOS_DE_SESION = [

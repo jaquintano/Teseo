@@ -1,5 +1,50 @@
 [
  {
+  "fichero": "ranking-2025-2026-E-ABS-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "ABS",
+  "genero": "Masculino",
+  "cuantos": 313,
+  "descargadoEl": "2026-08-20T10:09:40.524Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-ABS-W.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "ABS",
+  "genero": "Femenino",
+  "cuantos": 172,
+  "descargadoEl": "2026-08-20T10:09:41.949Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-M13-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "M13",
+  "genero": "Masculino",
+  "cuantos": 58,
+  "descargadoEl": "2026-08-20T10:09:29.126Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-M13-W.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "M13",
+  "genero": "Femenino",
+  "cuantos": 42,
+  "descargadoEl": "2026-08-20T10:09:30.504Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-M15-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "M15",
+  "genero": "Masculino",
+  "cuantos": 110,
+  "descargadoEl": "2026-08-20T10:09:31.917Z"
+ },
+ {
   "fichero": "ranking-2025-2026-E-M15-W.json",
   "temporada": "2025-2026",
   "arma": "Espada",
@@ -7,5 +52,122 @@
   "genero": "Femenino",
   "cuantos": 82,
   "descargadoEl": "2026-08-20T09:43:41.463Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-M17-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "M17",
+  "genero": "Masculino",
+  "cuantos": 164,
+  "descargadoEl": "2026-08-20T10:09:34.740Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-M17-W.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "M17",
+  "genero": "Femenino",
+  "cuantos": 89,
+  "descargadoEl": "2026-08-20T10:09:36.180Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-M20-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "M20",
+  "genero": "Masculino",
+  "cuantos": 200,
+  "descargadoEl": "2026-08-20T10:09:37.640Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-M20-W.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "M20",
+  "genero": "Femenino",
+  "cuantos": 108,
+  "descargadoEl": "2026-08-20T10:09:39.044Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-VET30-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "VET30",
+  "genero": "Masculino",
+  "cuantos": 18,
+  "descargadoEl": "2026-08-20T10:09:43.345Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-VET30-W.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "VET30",
+  "genero": "Femenino",
+  "cuantos": 9,
+  "descargadoEl": "2026-08-20T10:09:44.714Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-VET40-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "VET40",
+  "genero": "Masculino",
+  "cuantos": 28,
+  "descargadoEl": "2026-08-20T10:09:46.059Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-VET40-W.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "VET40",
+  "genero": "Femenino",
+  "cuantos": 16,
+  "descargadoEl": "2026-08-20T10:09:47.443Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-VET50-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "VET50",
+  "genero": "Masculino",
+  "cuantos": 44,
+  "descargadoEl": "2026-08-20T10:09:48.819Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-VET50-W.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "VET50",
+  "genero": "Femenino",
+  "cuantos": 13,
+  "descargadoEl": "2026-08-20T10:09:50.203Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-VET60-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "VET60",
+  "genero": "Masculino",
+  "cuantos": 28,
+  "descargadoEl": "2026-08-20T10:09:51.564Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-VET60-W.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "VET60",
+  "genero": "Femenino",
+  "cuantos": 7,
+  "descargadoEl": "2026-08-20T10:09:52.921Z"
+ },
+ {
+  "fichero": "ranking-2025-2026-E-VET70-M.json",
+  "temporada": "2025-2026",
+  "arma": "Espada",
+  "categoria": "VET70",
+  "genero": "Masculino",
+  "cuantos": 7,
+  "descargadoEl": "2026-08-20T10:09:54.301Z"
  }
 ]

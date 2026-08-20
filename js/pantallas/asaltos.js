@@ -4,11 +4,11 @@
 // suele ser uno; en directas, dos o tres), y cada tiempo tiene su vídeo.
 
 import {
-  crear, rellenar, cabecera, ir, campo, campoLargo, bloque, grupoOpciones,
+  crear, rellenar, cabecera, ir, campo, campoLargo, bloque, grupoOpciones, desplegable,
   formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  TIPOS_DE_SESION, FASES, MANOS, etiquetaDe, nombreCompleto, normalizar,
+  TIPOS_DE_SESION, FASES, MANOS, EMPUNADURAS, etiquetaDe, nombreCompleto, normalizar,
 } from '../constantes.js';
 import {
   ALMACENES, guardar, obtener, listar, listarPor, listarRivales,
@@ -168,15 +168,16 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     // las estadísticas, y sin ella ese asalto quedaría fuera. Si la ficha no
     // la tiene, se pide aquí mismo antes de poder guardar.
     if (!rival.mano) {
-      partes.push(bloque(`Mano de ${nombreCompleto(rival)} (obligatorio)`,
-        grupoOpciones(MANOS, manoElegida, (valor) => {
+      partes.push(desplegable(`Mano de ${nombreCompleto(rival)} (obligatorio)`,
+        MANOS, manoElegida, (valor) => {
           manoElegida = valor;
           avisoMano.hidden = true;
-        }, { clase: 'dos-columnas' })));
+        }, { vacio: '— Elige —' }).bloque);
       partes.push(crear('p', {
         class: 'ayuda',
-        texto: 'Su ficha no dice si es diestro o zurdo. Hace falta para las ' +
-               'estadísticas, y se guardará en su ficha.',
+        texto: 'Su ficha no dice con qué mano tira. Hace falta para las ' +
+               'estadísticas, y se guardará en su ficha. Si no lo sabes, marca ' +
+               '"Desconocido": ese asalto no aparecerá al filtrar por mano.',
       }));
     }
 
@@ -185,7 +186,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
 
   const avisoMano = crear('p', {
     class: 'aviso', hidden: true,
-    texto: 'Falta indicar si el rival es diestro o zurdo.',
+    texto: 'Falta indicar con qué mano tira el rival.',
   });
 
   const numero = campo('Número de asalto de la sesión', {
@@ -359,6 +360,7 @@ function rivalEnUnaLinea(rival) {
   if (!rival) return null;
   const partes = [
     etiquetaDe(MANOS, rival.mano),
+    rival.empunadura ? etiquetaDe(EMPUNADURAS, rival.empunadura) : null,
     rival.club,
     rival.altura ? `${rival.altura} cm` : '',
   ].filter(Boolean);

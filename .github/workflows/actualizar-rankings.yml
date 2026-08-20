@@ -1,0 +1,66 @@
+# Actualiza solos los rankings de la federación, todos los días a las 18:00.
+#
+# Descarga las dos últimas temporadas, espada, todas las categorías y ambos
+# géneros, y sólo hace un commit si algo ha cambiado de verdad.
+
+name: Actualizar rankings de la RFEE
+
+on:
+  schedule:
+    # GitHub programa en horario UTC y no entiende de cambios de hora. Con
+    # estos dos disparos y la comprobación del primer paso, la tarea se
+    # ejecuta a las 18:00 de Madrid todo el año: en verano sirve el de las
+    # 16:00 UTC y en invierno el de las 17:00.
+    - cron: '0 16 * * *'
+    - cron: '0 17 * * *'
+  # Y para poder lanzarla a mano desde la pestaña Actions.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comprobar que son las 18:00 en Madrid
+        id: hora
+        run: |
+          HORA=$(TZ=Europe/Madrid date +%H)
+          echo "En Madrid son las $HORA."
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$HORA" != "18" ]; then
+            echo "No toca todavía."
+            echo "seguir=no" >> $GITHUB_OUTPUT
+          else
+            echo "seguir=si" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Descargar el proyecto
+        if: steps.hora.outputs.seguir == 'si'
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        if: steps.hora.outputs.seguir == 'si'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Traer los rankings
+        if: steps.hora.outputs.seguir == 'si'
+        run: node herramientas/traer-ranking.js --todo --ultimas 2
+
+      - name: Guardar sólo si ha cambiado algo
+        if: steps.hora.outputs.seguir == 'si'
+        run: |
+          git config user.name "Actualizador de rankings"
+          git config user.email "actions@users.noreply.github.com"
+
+          if git diff --quiet -- datos/; then
+            echo "Los rankings están igual que ayer. No se toca nada."
+            exit 0
+          fi
+
+          git add datos/
+          git commit -m "Rankings de la RFEE al $(TZ=Europe/Madrid date +%d/%m/%Y)"
+          git push
+          echo "Rankings actualizados."

@@ -221,6 +221,7 @@ textarea.entrada {
 }
 
 .grupo-opciones.dos-columnas { grid-template-columns: repeat(2, 1fr); }
+.grupo-opciones.tres-columnas { grid-template-columns: repeat(3, 1fr); }
 .grupo-opciones.cinco-columnas { grid-template-columns: repeat(5, 1fr); }
 .grupo-opciones.compacto { grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); }
 

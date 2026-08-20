@@ -1,0 +1,122 @@
+{
+ "temporada": "2025-2026",
+ "arma": "Espada",
+ "categoria": "VET40",
+ "genero": "Femenino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=14&gender=W",
+ "descargadoEl": "2026-08-20T10:09:47.443Z",
+ "tiradores": [
+  {
+   "idRfee": 3477,
+   "nombre": "ANA",
+   "apellidos": "GRAU TORRES",
+   "fechaNacimiento": "1984-06-25",
+   "club": "CEV-MU"
+  },
+  {
+   "idRfee": 1468,
+   "nombre": "LETICIA",
+   "apellidos": "PALACIOS BEREZO",
+   "fechaNacimiento": "1978-01-24",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 3419,
+   "nombre": "MARÍA PÍA",
+   "apellidos": "ZURITA SILVESTRO",
+   "fechaNacimiento": "1984-09-29",
+   "club": "CE-M"
+  },
+  {
+   "idRfee": 488,
+   "nombre": "KATERINA",
+   "apellidos": "LABANICOVA",
+   "fechaNacimiento": "1984-04-16",
+   "club": "CE-TO"
+  },
+  {
+   "idRfee": 3446,
+   "nombre": "CRISTINA",
+   "apellidos": "ALONSO ESCOBAR",
+   "fechaNacimiento": "1984-08-20",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 5029,
+   "nombre": "KRISTINA",
+   "apellidos": "IONITSKAIA",
+   "fechaNacimiento": "1977-12-24",
+   "club": "SAG-B"
+  },
+  {
+   "idRfee": 3398,
+   "nombre": "ESTIBALIZ",
+   "apellidos": "TOSCANO GARCIA",
+   "fechaNacimiento": "1978-03-19",
+   "club": "SUÑE-BI"
+  },
+  {
+   "idRfee": 4855,
+   "nombre": "ROCIO",
+   "apellidos": "GUTIERREZ SUMILLERA",
+   "fechaNacimiento": "1985-11-14",
+   "club": "SA-GR"
+  },
+  {
+   "idRfee": 3448,
+   "nombre": "LOURDES",
+   "apellidos": "MAYOR",
+   "fechaNacimiento": "1980-02-04",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 5217,
+   "nombre": "IRINA",
+   "apellidos": "KOTOVA",
+   "fechaNacimiento": "1985-05-23",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 3484,
+   "nombre": "EVA M.",
+   "apellidos": "DÍAZ MESA",
+   "fechaNacimiento": "1980-04-29",
+   "club": "FED-AS-C"
+  },
+  {
+   "idRfee": 5051,
+   "nombre": "YAN",
+   "apellidos": "HUANG",
+   "fechaNacimiento": "1977-11-17",
+   "club": "SAM-B"
+  },
+  {
+   "idRfee": 2403,
+   "nombre": "LIDIA REBECA",
+   "apellidos": "OLMOS LINARES",
+   "fechaNacimiento": "1978-07-29",
+   "club": "CEA-VA"
+  },
+  {
+   "idRfee": 803,
+   "nombre": "ANA",
+   "apellidos": "FRANCO PEREZ",
+   "fechaNacimiento": "1981-01-29",
+   "club": "CETC-M"
+  },
+  {
+   "idRfee": 4378,
+   "nombre": "MARÍA ELENA",
+   "apellidos": "FERNÁNDEZ IGLESIAS",
+   "fechaNacimiento": "1977-08-19",
+   "club": "FED-G-C"
+  },
+  {
+   "idRfee": 5114,
+   "nombre": "JADE LOUISE",
+   "apellidos": "ITO",
+   "fechaNacimiento": "1977-08-27",
+   "club": "FED-AND-C"
+  }
+ ]
+}
