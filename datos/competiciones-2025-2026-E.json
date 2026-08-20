@@ -2,8 +2,8 @@
  "temporada": "2025-2026",
  "arma": "Espada",
  "modalidad": "Individual",
- "origen": "https://app.skermo.org/calendar/public/rfee/results?season=16&weapon%5B%5D=E&modality%5B%5D=1",
- "descargadoEl": "2026-08-20T11:40:00.540Z",
+ "origen": "https://app.skermo.org/calendar/public/rfee/results?season=16&weapon%5B%5D=E&modality%5B%5D=1&owa=1",
+ "descargadoEl": "2026-08-20T12:25:09.912Z",
  "competiciones": [
   {
    "idRfee": 9476,
@@ -631,6 +631,1222 @@
   },
   {
    "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-09-20",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "BELGRADO (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-09-21",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "BELGRADO (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-09-27",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "GANTE (BEL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-09-28",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "GANTE (BEL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-10-04",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "GINEBRA (SUI)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-10-05",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "GINEBRA (SUI)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-10-11",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "NÁPOLES (ITA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-10-11",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "NÁPOLES (ITA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-10-11",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "SPLIT (CRO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-10-12",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "SPLIT (CRO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-10-17",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "ZESTAPONI (GEO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-10-17",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "ZESTAPONI (GEO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-10-18",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "KLAGENFURT (AUS)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-10-18",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "KLAGENFURT (AUS)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-10-18",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "DUBLÍN (IRL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-10-19",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "DUBLÍN (IRL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CONCENTRACIÓN PFCAR EF",
+   "fecha": "2025-10-25",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "SANT CUGAT DEL VALLÉS"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CONCENTRACIÓN PFCAR EM",
+   "fecha": "2025-10-25",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "SANT CUGAT DEL VALLÉS"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2025-10-25",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "COLMAR (FRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2025-10-25",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "COLMAR (FRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-10-25",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "BARCELONA (ESP)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TORNEO SATÉLITE",
+   "fecha": "2025-10-26",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "BARCELONA (ESP)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA EUROPA CLUBES",
+   "fecha": "2025-10-31",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "HEIDENHEIM (GER)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA EUROPA CLUBES",
+   "fecha": "2025-10-31",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "HEIDENHEIM (GER)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2025-10-31",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "SAN SALVADOR (ESA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2025-10-31",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "SAN SALVADOR (ESA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-11-01",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "SHILTIGHEIM (FRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-11-01",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "SHILTIGHEIM (FRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-11-08",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "BUDAPEST (HUN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-11-08",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "BUDAPEST (HUN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-11-08",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "LETONIA (LAT)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-11-08",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "LETONIA (LAT)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-11-08",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "BRINDISI (ITA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-11-08",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "BRINDISI (ITA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CTO MUNDO VETERANOS",
+   "fecha": "2025-11-10",
+   "genero": "F",
+   "categoria": "VET50",
+   "poblacion": "MANAMA (BRN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO CADETE",
+   "fecha": "2025-11-14",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "SAN JOSÉ (CRC)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO CADETE",
+   "fecha": "2025-11-14",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "SAN JOSÉ (CRC)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2025-11-14",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "SAN JOSÉ (CRC)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2025-11-14",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "SAN JOSÉ (CRC)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-11-15",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "LAUSANNE (SUI)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-11-15",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "LAUSANNE (SUI)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-11-22",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "GRENOBLE (FRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-11-22",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "GRENOBLE (FRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-11-22",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "BELGRADO (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-11-22",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "BELGRADO (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2025-11-22",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "KAMNIK (SLO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2025-11-22",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "KAMNIK (SLO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2025-11-28",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "HONG KONG (HKG)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2025-11-28",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "HONG KONG (HKG)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-11-29",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "COPENHAGUE (DEN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2025-11-29",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "COPENHAGUE (DEN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-11-29",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "LIUBLIANA (SLO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-11-29",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "LIUBLIANA (SLO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-11-29",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "OSLO (NOR)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-11-29",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "OSLO (NOR)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "PRUEBA CTO ESPAÑA SILLA RUEDAS (1/4)",
+   "fecha": "2025-11-29",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "SR1"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2025-12-04",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "VANCOUVER (CAN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2025-12-04",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "VANCOUVER (CAN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-12-06",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "VARNA (BUL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-12-06",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "VARNA (BUL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-12-06",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "LAUPHEIM (GER)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-12-06",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "LAUPHEIM (GER)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-12-13",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "THESSALONIKI (GRE)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2025-12-13",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "THESSALONIKI (GRE)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-12-13",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "THESSALONIKI (GRE)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2025-12-13",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "THESSALONIKI (GRE)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2025-12-13",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "LAGOS (NGR)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2025-12-13",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "BURGOS (ESP)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TLM (1/3)",
+   "fecha": "2025-12-13",
+   "genero": "F",
+   "categoria": "VET70",
+   "poblacion": "MADRID"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CONCENTRACIÓN PFCAR NAVIDAD ESPADA FEM",
+   "fecha": "2025-12-27",
+   "genero": "F",
+   "categoria": "M15",
+   "poblacion": "ALMERÍA"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CONCENTRACIÓN PFCAR NAVIDAD ESPADA FEM",
+   "fecha": "2025-12-27",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "ALMERÍA"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CONCENTRACIÓN PFCAR NAVIDAD ESPADA MASC",
+   "fecha": "2025-12-27",
+   "genero": "M",
+   "categoria": "M15",
+   "poblacion": "ALMERÍA"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CONCENTRACIÓN PFCAR NAVIDAD ESPADA MASC",
+   "fecha": "2025-12-27",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "ALMERÍA"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2026-01-03",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "BASILEA (SUI)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2026-01-05",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "UDINE (ITA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2026-01-08",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "FUJAIRAH (UAE)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2026-01-08",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "FUJAIRAH (UAE)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2026-01-09",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "SAMORIN (SVK)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2026-01-09",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "SAMORIN (SVK)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2026-01-10",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "BERLÍN (GER)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2026-01-10",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "BERLÍN (GER)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2026-01-16",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "MANAMA (BRN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2026-01-16",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "MANAMA (BRN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2026-01-17",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "SOFÍA (BUL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2026-01-17",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "SOFÍA (BUL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "GRAND PRIX",
+   "fecha": "2026-01-23",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "DOHA (QAT)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "GRAND PRIX",
+   "fecha": "2026-01-23",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "DOHA (QAT)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2026-01-24",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "BELGRADO (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2026-01-24",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "BELGRADO (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2026-01-30",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "EL CAIRO (EGY)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2026-01-30",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "EL CAIRO (EGY)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CAMPEONATO MEDITERRANEO 2026",
+   "fecha": "2026-01-31",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "LJUBLJANA"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CAMPEONATO MEDITERRÁNEO 2026",
+   "fecha": "2026-01-31",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "LJUBLJANA"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-01-31",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "ESPOO (FIN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-01-31",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "UB (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-01-31",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "ESPOO (FIN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-01-31",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "UB (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TLM (2/3)",
+   "fecha": "2026-01-31",
+   "genero": "F",
+   "categoria": "VET70",
+   "poblacion": "SANTIAGO DE COMPOSTELA"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2026-02-05",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "HEIDENHEIM (GER)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2026-02-06",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "WUXI (CHN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2026-02-07",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "CRACOVIA (POL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO CADETE",
+   "fecha": "2026-02-07",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "CRACOVIA (POL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2026-02-14",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "VRSAC (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO JÚNIOR",
+   "fecha": "2026-02-14",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "HANGZHOU (CHN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO EUROPA CADETE",
+   "fecha": "2026-02-20",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "TBILISI (GEO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO EUROPA CADETE",
+   "fecha": "2026-02-20",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "TBILISI (GEO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO EUROPA JÚNIOR",
+   "fecha": "2026-02-24",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "TBILISI (GEO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO EUROPA JÚNIOR",
+   "fecha": "2026-02-24",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "TBILISI (GEO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2026-03-07",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "DIFFERDANGE (LUX)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2026-03-07",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "DIFFERDANGE (LUX)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "GRAND PRIX",
+   "fecha": "2026-03-13",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "BUDAPEST (HUN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "GRAND PRIX",
+   "fecha": "2026-03-13",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "BUDAPEST (HUN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-03-14",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "FLORINA (GRE)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-03-14",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "FLORINA (GRE)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2026-03-14",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "DAUGAVPILS (LAT)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2026-03-14",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "DAUGAVPILS (LAT)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2026-03-21",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "DAUGAVPILS (LAT)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2026-03-21",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "DAUGAVPILS (LAT)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2026-03-26",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "ASTANÁ (KAZ)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2026-03-26",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "ASTANÁ (KAZ)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "TLM (3/3)",
+   "fecha": "2026-03-28",
+   "genero": "F",
+   "categoria": "VET70",
+   "poblacion": "CORDOBA"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-03-29",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "CIUDAD REAL (ESP)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-03-29",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "CIUDAD REAL (ESP)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO MUNDO CADETE",
+   "fecha": "2026-04-01",
+   "genero": "M",
+   "categoria": "M17",
+   "poblacion": "RÍO DE JANEIRO (BRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO MUNDO CADETE",
+   "fecha": "2026-04-01",
+   "genero": "F",
+   "categoria": "M17",
+   "poblacion": "RÍO DE JANEIRO (BRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO MUNDO JÚNIOR",
+   "fecha": "2026-04-01",
+   "genero": "M",
+   "categoria": "M20",
+   "poblacion": "RÍO DE JANEIRO (BRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO MUNDO JÚNIOR",
+   "fecha": "2026-04-01",
+   "genero": "F",
+   "categoria": "M20",
+   "poblacion": "RÍO DE JANEIRO (BRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2026-04-11",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "ZAGREB (CRO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "EUROFENCE LEAGUE",
+   "fecha": "2026-04-11",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "ZAGREB (CRO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "GRAND PRIX",
+   "fecha": "2026-04-17",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "BUDAPEST (HUN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "GRAND PRIX",
+   "fecha": "2026-04-17",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "BUDAPEST (HUN)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-04-18",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "OSIJEK (CRO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-04-18",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "OSIJEK (CRO)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-04-25",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "ZRENJANIN (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-04-25",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "ZRENJANIN (SRB)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO EUROPA SUB23",
+   "fecha": "2026-04-25",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "CAGLIARI (ITA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO EUROPA SUB23",
+   "fecha": "2026-04-25",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "CAGLIARI (ITA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "GRAND PRIX",
+   "fecha": "2026-05-08",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "MEDELLÍN (COL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "GRAND PRIX",
+   "fecha": "2026-05-08",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "MEDELLÍN (COL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2026-05-09",
+   "genero": "M",
+   "categoria": "M23",
+   "poblacion": "SOFÍA (BUL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO SUB23",
+   "fecha": "2026-05-09",
+   "genero": "F",
+   "categoria": "M23",
+   "poblacion": "SOFÍA (BUL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-05-16",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "SOFÍA (BUL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-05-16",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "SOFÍA (BUL)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2026-05-22",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "BERNA (SUI)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "COPA MUNDO",
+   "fecha": "2026-05-22",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "SAINT-MAUR (FRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-05-30",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "LAUSANNE (SUI)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CIRCUITO EUROPEO M-14",
+   "fecha": "2026-05-30",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "LAUSANNE (SUI)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO EUROPA SÉNIOR",
+   "fecha": "2026-06-16",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "ANTONY (FRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO EUROPA SÉNIOR",
+   "fecha": "2026-06-16",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "ANTONY (FRA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "PRUEBA CTO ESPAÑA SILLA RUEDAS (4/4)",
+   "fecha": "2026-06-20",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "SAN SEBASTIAN"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CONCENTRACIÓN CAMPUS RUMBO ESPADA FEMENINA Y MASCULINA",
+   "fecha": "2026-06-21",
+   "genero": "M",
+   "categoria": "M15",
+   "poblacion": "LOS ÁNGELES DE VEGAS DE MATUTE - SEGOVIA"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CONCENTRACIÓN CAMPUS RUMBO ESPADA FEMENINA Y MASCULINA",
+   "fecha": "2026-06-21",
+   "genero": "M",
+   "categoria": "M11",
+   "poblacion": "LOS ÁNGELES DE VEGAS DE MATUTE - SEGOVIA"
+  },
+  {
+   "idRfee": null,
    "nombre": "CRITERIUM NACIONAL",
    "fecha": "2026-06-21",
    "genero": "M",
@@ -660,6 +1876,22 @@
    "genero": "F",
    "categoria": "M9",
    "poblacion": "VEGA DE MATUTE"
+  },
+  {
+   "idRfee": null,
+   "nombre": "U14 EFC FESTIVAL",
+   "fecha": "2026-06-26",
+   "genero": "M",
+   "categoria": "M14",
+   "poblacion": "CIVIDALE DEL FRIULI (ITA)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "U14 EFC FESTIVAL",
+   "fecha": "2026-06-26",
+   "genero": "F",
+   "categoria": "M14",
+   "poblacion": "CIVIDALE DEL FRIULI (ITA)"
   },
   {
    "idRfee": null,
@@ -668,6 +1900,22 @@
    "genero": "F",
    "categoria": "VET70",
    "poblacion": "SANT CUGAT"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO MUNDO",
+   "fecha": "2026-07-01",
+   "genero": "M",
+   "categoria": "ABS",
+   "poblacion": "HONG KONG (HKG)"
+  },
+  {
+   "idRfee": null,
+   "nombre": "CPTO MUNDO",
+   "fecha": "2026-07-01",
+   "genero": "F",
+   "categoria": "ABS",
+   "poblacion": "HONG KONG (HKG)"
   }
  ]
 }

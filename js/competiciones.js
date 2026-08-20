@@ -19,8 +19,13 @@ function vacio(valor) {
 
 /**
  * Clave para reconocer la misma competición cuando no hay identificador.
+ *
  * Un mismo torneo se reparte en varias competiciones, una por categoría y
- * género, así que hacen falta los cuatro datos.
+ * género, así que hacen falta esos dos datos además del nombre y la fecha.
+ *
+ * Y también la población: el circuito europeo celebra el mismo día pruebas
+ * con el mismo nombre y la misma categoría en ciudades distintas —Espoo y UB,
+ * por ejemplo—, y sin la población se fundirían en una sola.
  */
 function clave(competicion) {
   return [
@@ -28,6 +33,7 @@ function clave(competicion) {
     competicion.fecha || '',
     competicion.categoria || '',
     competicion.genero || '',
+    normalizar(competicion.poblacion),
   ].join('|');
 }
 

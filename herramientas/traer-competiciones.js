@@ -26,6 +26,15 @@ const RAIZ = path.resolve(__dirname, '..');
 const ARMA = 'E';
 const MODALIDAD_INDIVIDUAL = '1';
 
+// La casilla "Con resultado" de la web es engañosa: se envía siempre, y lo
+// que cambia es su valor. 2 significa "sólo las que tienen resultados" y 1
+// "todas". Y si no se envía, el servidor hace como si fuera 2.
+//
+// Queremos todas: hay competiciones internacionales de las que la federación
+// no publica resultados pero en las que sí se compite, y esas también
+// interesan. Con 1 pasamos de 83 a 239 competiciones por temporada.
+const TODAS_CON_Y_SIN_RESULTADO = '1';
+
 /**
  * Las columnas de la tabla, por orden:
  * fecha, nombre, arma, género, categoría, modalidad, etiqueta corta,
@@ -59,7 +68,8 @@ function extraerCompeticiones(html) {
 async function traerUna(temporada) {
   const url = BASE + '?season=' + TEMPORADAS[temporada] +
               '&weapon%5B%5D=' + ARMA +
-              '&modality%5B%5D=' + MODALIDAD_INDIVIDUAL;
+              '&modality%5B%5D=' + MODALIDAD_INDIVIDUAL +
+              '&owa=' + TODAS_CON_Y_SIN_RESULTADO;
 
   const respuesta = await fetch(url);
   if (!respuesta.ok) throw new Error('La federación respondió ' + respuesta.status);
