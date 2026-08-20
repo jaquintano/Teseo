@@ -649,7 +649,7 @@ video::-webkit-media-controls-panel {
   display: block;
   margin-top: 0.15rem;
   color: var(--texto-suave);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 /* Cabecera de grupo en la lista de asaltos: la fecha, la competición o el
@@ -658,7 +658,9 @@ video::-webkit-media-controls-panel {
   padding: 0.55rem 0.5rem;
   background: #232b36;
   border-bottom: 1px solid var(--borde);
-  font-size: 0.85rem;
+  /* Los nombres de los torneos son largos y aquí llevan además la fecha: con
+     el cuerpo de las filas se parten en dos líneas. */
+  font-size: 0.8rem;
   font-weight: 600;
 }
 

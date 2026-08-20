@@ -36,11 +36,14 @@ function etiquetaDeCompeticion(competicion) {
     .filter(Boolean).join(' · ');
 }
 
-/** Y en ese mismo orden se colocan: por categoría, torneo y fecha. */
+/**
+ * Aunque se lean empezando por la categoría, se colocan por fecha: la última
+ * arriba, que es la que estás apuntando.
+ */
 function compararCompeticiones(a, b) {
-  return (a.categoria || '').localeCompare(b.categoria || '', 'es')
-      || (a.nombre || '').localeCompare(b.nombre || '', 'es')
-      || (b.fecha || '').localeCompare(a.fecha || '');
+  return (b.fecha || '').localeCompare(a.fecha || '')
+      || (a.categoria || '').localeCompare(b.categoria || '', 'es')
+      || (a.nombre || '').localeCompare(b.nombre || '', 'es');
 }
 
 /** Cuándo se tiró un asalto: lo dice su competición. */
@@ -136,8 +139,8 @@ export async function pantallaInicio(contenedor) {
       .map((id) => ({ id: String(id), etiqueta: nombreDeRival(rivalPorId.get(id)) }))
       .sort((a, b) => a.etiqueta.localeCompare(b.etiqueta, 'es'));
 
-    // Por categoría, torneo y fecha, igual que al elegirla en el asalto. Los
-    // que no son de ninguna competición, al final.
+    // De la más reciente a la más antigua, igual que al elegirla en el
+    // asalto. Los que no son de ninguna competición, al final.
     const deCompeticion = [...new Set(asaltos.map((a) => claveDeCompeticion(a)))]
       .map((clave) => ({ clave, ...tituloDeCompeticion(clave) }))
       .sort((a, b) => {
