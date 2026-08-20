@@ -4,7 +4,8 @@
 // sabe nada de pantallas ni de base de datos y se puede llevar aparte.
 
 import { crear, rellenar, cabecera, ir, bloque, grupoOpciones } from '../ui.js';
-import { MANOS, nombreCompleto } from '../constantes.js';
+import { MANOS, nombreCompleto, opcionesPara } from '../constantes.js';
+import { generoDelUsuario } from '../genero.js';
 import { ALMACENES, listar, listarRivales } from '../db.js';
 import { prepararIntercambios, filtrar, calcular } from '../calculo-estadisticas.js';
 
@@ -85,7 +86,7 @@ export async function pantallaEstadisticas(contenedor) {
     crear('details', { class: 'filtros' }, [
       crear('summary', { texto: 'Filtros' }),
       bloque('Rival', selectorRival),
-      bloque('Mano del rival', grupoOpciones(MANOS, null,
+      bloque('Mano del rival', grupoOpciones(opcionesPara(MANOS, generoDelUsuario()), null,
         (valor) => { filtros.manoRival = valor; pintar(); }, { clase: 'tres-columnas' })),
       bloque('Número de asalto', selectorNumero),
     ]),

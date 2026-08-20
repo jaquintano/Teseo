@@ -13,7 +13,7 @@
 
 // Al cambiar este número, el navegador tira la copia vieja y guarda la nueva.
 // Hay que subirlo en cada despliegue, y el mismo en js/app.js.
-const VERSION = 'teseo-v15';
+const VERSION = 'teseo-v16';
 
 // Los ficheros que forman la aplicación.
 const FICHEROS = [
@@ -25,12 +25,15 @@ const FICHEROS = [
   './js/calculo-estadisticas.js',
   './js/constantes.js',
   './js/db.js',
+  './js/genero.js',
   './js/instalacion.js',
   './js/rfee.js',
   './js/registro.js',
+  './js/version.js',
   './js/ui.js',
   './js/video.js',
   './js/pantallas/asaltos.js',
+  './js/pantallas/ayuda.js',
   './js/pantallas/estadisticas.js',
   './js/pantallas/etiquetado.js',
   './js/pantallas/ficha-tirador.js',

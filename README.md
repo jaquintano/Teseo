@@ -92,7 +92,10 @@ sirve el sitio dentro de una subcarpeta, y las rutas absolutas darían 404.
 Sube el número de versión en **dos** sitios, que tienen que coincidir:
 
 - `VERSION` en `sw.js`
-- `VERSION` en `js/app.js`
+- `VERSION` en `js/version.js`
+
+Y repasa **Menú → Ayuda** (`js/pantallas/ayuda.js`): tiene que contar lo que
+la aplicación hace de verdad en esa versión.
 
 Si no se sube, los móviles que ya tengan la aplicación guardada pueden seguir
 viendo la versión vieja. La versión aparece junto al título.
@@ -177,6 +180,11 @@ Reglas de la importación:
   al filtrar por diestro o por zurdo, pero sí en el resto de estadísticas.
 - **La empuñadura** (francesa, pistola o desconocida) se rellena a mano: la
   federación tampoco la publica.
+- **El género sale del ranking**, y sólo se ofrecen los de tu mismo género:
+  en esgrima no hay asaltos entre hombres y mujeres, así que importar el
+  otro sería llenar la lista de gente contra la que nunca vas a tirar.
+- **La estatura no se pide en centímetros**, que no hay forma de saberlos,
+  sino comparada contigo: similar, más alta o más baja.
 - **El club viene como código** (`ECC-BU`, `CETC-M`), que es lo que publica la
   federación. Se puede corregir a mano.
 
@@ -184,6 +192,28 @@ Una advertencia: estos rankings incluyen nombre, apellidos, fecha de
 nacimiento y club de **menores de edad**. Todo se queda en el dispositivo y no
 sale de él, pero conviene importar sólo las categorías en las que realmente
 competís, no el catálogo entero.
+
+## Detalles que conviene conocer
+
+**El género del tirador manda en toda la aplicación.** Se pide al crear tu
+perfil y es obligatorio. De él dependen dos cosas: las palabras que se ven
+("Diestra" o "Diestro", "Más alta" o "Más alto") y qué rankings se pueden
+importar.
+
+**El botón de retroceso de Android** hace lo mismo que "Volver" en todas las
+pantallas. Sólo sale de la aplicación desde "Mis asaltos". Volver a esa
+pantalla deshace todo el camino andado, para que desde ella el siguiente
+atrás salga de verdad.
+
+**Empezar de cero.** En Menú → Diagnóstico hay un botón que borra todo:
+perfil, rivales, asaltos, vídeos y marcas. Pide confirmación dos veces
+porque no se puede deshacer. Existe porque desde los ajustes de Android no
+siempre es evidente cómo vaciar los datos de una aplicación instalada desde
+el navegador.
+
+**La ayuda** (Menú → Ayuda) está escrita para alguien que abre Teseo por
+primera vez. **Hay que actualizarla en cada versión que cambie algo que el
+usuario vea**: vive en .
 
 ## Las estadísticas
 

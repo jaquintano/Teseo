@@ -5,13 +5,23 @@
 
 import { crear, rellenar, cabecera, ir, bloque, formatearFecha } from '../ui.js';
 import { nombreCompleto } from '../constantes.js';
+import { generoDelUsuario } from '../genero.js';
 import { ALMACENES, guardar, listarRivales } from '../db.js';
 import {
   listarRankings, cargarRanking, planificarImportacion, rellenarHuecos,
 } from '../rfee.js';
 
 export async function pantallaImportarRfee(contenedor) {
-  const rankings = await listarRankings();
+  const todos = await listarRankings();
+
+  // En esgrima no hay asaltos entre hombres y mujeres, asi que no tiene
+  // sentido ofrecer el ranking del otro genero: seria llenar la lista de
+  // rivales con gente contra la que nunca vas a tirar.
+  const miGenero = generoDelUsuario();
+  const etiquetaGenero = miGenero === 'F' ? 'Femenino' : 'Masculino';
+  const rankings = miGenero
+    ? todos.filter((r) => r.genero === etiquetaGenero)
+    : todos;
 
   contenedor.append(cabecera('Traer de la RFEE', () => ir('rivales')));
 
@@ -30,7 +40,7 @@ export async function pantallaImportarRfee(contenedor) {
 
   let temporada = unicos('temporada')[0];
   let categoria = unicos('categoria')[0];
-  let genero = unicos('genero')[0];
+  const genero = etiquetaGenero;
 
   const resultado = crear('div');
 
@@ -54,7 +64,8 @@ export async function pantallaImportarRfee(contenedor) {
     bloque('Temporada', selector('temporada', temporada, (v) => { temporada = v; })),
     bloque('Arma', crear('p', { class: 'valor-fijo', texto: 'Espada' })),
     bloque('Categoría', selector('categoria', categoria, (v) => { categoria = v; })),
-    bloque('Género', selector('genero', genero, (v) => { genero = v; })),
+    // El género no se elige: es el tuyo, y no hay asaltos mixtos.
+    bloque('Género', crear('p', { class: 'valor-fijo', texto: etiquetaGenero })),
 
     resultado,
   );
@@ -114,7 +125,7 @@ export async function pantallaImportarRfee(contenedor) {
         ? crear('p', {
             class: 'ayuda',
             texto: 'Se rellenarán huecos de: ' + muestra(plan.completables) +
-                   '. Nunca se toca la mano, la altura ni tus notas.',
+                   '. Nunca se toca la mano, la estatura ni tus notas.',
           })
         : null,
 

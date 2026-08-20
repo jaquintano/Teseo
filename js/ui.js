@@ -136,6 +136,27 @@ export function bloque(etiqueta, contenido) {
 const pantallas = new Map();
 let pantallaActual = null;
 
+// Para que el botón de retroceso de Android funcione como el de "Volver".
+//
+// Cada vez que se cambia de pantalla se añade una entrada al historial del
+// navegador. Al pulsar atrás, el navegador retrocede y nosotros repintamos
+// la pantalla anterior. En la pantalla de inicio no hay nada detrás, así que
+// el botón hace lo suyo de siempre: salir de la aplicación.
+//
+// Los datos de cada pantalla no caben en el historial (a veces llevan
+// funciones dentro), así que ahí sólo va un número y lo demás se guarda aquí.
+const memoria = new Map();
+let contador = 0;
+// Cuántas pantallas llevamos apiladas por encima de la de inicio.
+let profundidad = 0;
+
+/** Qué se pinta cuando el usuario retrocede hasta el principio. */
+let pantallaDeInicio = 'inicio';
+
+export function fijarPantallaDeInicio(nombre) {
+  pantallaDeInicio = nombre;
+}
+
 /**
  * Da de alta una pantalla.
  * @param {string} nombre
@@ -149,6 +170,23 @@ export function registrarPantalla(nombre, dibujar) {
 // null reventarían.
 /** Muestra una pantalla, pasándole datos si hacen falta. */
 export async function ir(nombre, datos = {}) {
+  // Volver a la pantalla de inicio deshace todo el camino andado. Si no, al
+  // llegar a ella quedarían entradas debajo y el botón de atrás de Android
+  // volvería a meterse por donde veníamos en vez de salir de la aplicación.
+  if (nombre === pantallaDeInicio && profundidad > 0) {
+    history.go(-profundidad);
+    return;   // de pintar se encarga el manejador de "atrás"
+  }
+
+  contador++;
+  profundidad++;
+  memoria.set(contador, { nombre, datos });
+  history.pushState({ teseo: contador, prof: profundidad }, '');
+  await pintar(nombre, datos);
+}
+
+/** Pinta una pantalla sin tocar el historial. */
+async function pintar(nombre, datos) {
   const dibujar = pantallas.get(nombre);
   if (!dibujar) throw new Error(`No existe la pantalla "${nombre}"`);
 
@@ -157,6 +195,37 @@ export async function ir(nombre, datos = {}) {
   pantallaActual = nombre;
   await dibujar(contenedor, datos);
   window.scrollTo(0, 0);
+}
+
+/** Arranca la navegación en una pantalla, sin dejar nada detrás. */
+export async function empezarEn(nombre, datos = {}) {
+  pantallaDeInicio = nombre;
+  profundidad = 0;
+  history.replaceState({ teseo: 0, prof: 0 }, '');
+  await pintar(nombre, datos);
+}
+
+export function iniciarBotonAtras() {
+  window.addEventListener('popstate', (evento) => {
+    const estado = evento.state;
+
+    // Si la entrada no es nuestra, no nos metemos: será lo que hubiera antes
+    // de abrir Teseo, y el navegador hará lo suyo.
+    if (!estado || estado.teseo === undefined) return;
+
+    profundidad = estado.prof || 0;
+
+    if (estado.teseo === 0) {
+      // Estamos en el fondo: la pantalla de inicio. Desde aquí, el siguiente
+      // "atrás" sale de la aplicación.
+      pintar(pantallaDeInicio, {});
+      return;
+    }
+
+    const recordada = memoria.get(estado.teseo);
+    if (recordada) pintar(recordada.nombre, recordada.datos);
+    else pintar(pantallaDeInicio, {});
+  });
 }
 
 export function pantallaEnPantalla() {

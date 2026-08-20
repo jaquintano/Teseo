@@ -10,6 +10,7 @@
 import { crear, rellenar, cabecera, ir, campo } from '../ui.js';
 import { fichaTirador } from './ficha-tirador.js';
 import { etiquetaDe, MANOS, nombreCompleto, normalizar } from '../constantes.js';
+import { generoDelUsuario } from '../genero.js';
 import {
   ALMACENES, listarRivales, listar, guardar, obtener, borrar, listarPor,
 } from '../db.js';
@@ -34,9 +35,22 @@ export async function pantallaRivales(contenedor, datos = {}) {
     return nombreCompleto(a).localeCompare(nombreCompleto(b), 'es');
   });
 
+  const sinUsar = ordenados.filter((rival) => !cuenta.get(rival.id));
+
   const cuerpo = crear('tbody');
   const buscador = campo('Buscar', { placeholder: 'Nombre o club', oninput: pintarFilas });
   const contador = crear('p', { class: 'ayuda' });
+
+  async function vaciarSinUsar() {
+    if (!confirm(`¿Borrar ${sinUsar.length} rivales contra los que no has ` +
+                 'registrado ningún asalto?\n\nLos que sí tienen asaltos se ' +
+                 'quedan. Siempre puedes volver a traerlos del ranking.')) return;
+
+    for (const rival of sinUsar) {
+      await borrar(ALMACENES.tiradores, rival.id);
+    }
+    ir('rivales', { volverA });
+  }
 
   contenedor.append(
     cabecera('Rivales', () => ir(volverA)),
@@ -49,6 +63,14 @@ export async function pantallaRivales(contenedor, datos = {}) {
       type: 'button', class: 'boton', texto: 'Traer de la RFEE',
       onclick: () => ir('importar-rfee'),
     }),
+
+    // Traer un ranking entero deja cientos de fichas, y la mayoría no se
+    // usarán nunca. Esto quita las que no aparecen en ningún asalto.
+    sinUsar.length > 0 ? crear('button', {
+      type: 'button', class: 'boton boton-peligro',
+      texto: `Vaciar los ${sinUsar.length} rivales sin asaltos`,
+      onclick: vaciarSinUsar,
+    }) : null,
 
     rivales.length === 0 ? crear('p', {
       class: 'ayuda',
@@ -98,7 +120,7 @@ export async function pantallaRivales(contenedor, datos = {}) {
       // La mano es la que falta cuando el rival viene de la federación, y
       // hace falta para las estadísticas. Por eso se señala.
       rival.mano
-        ? crear('td', { texto: etiquetaDe(MANOS, rival.mano) })
+        ? crear('td', { texto: etiquetaDe(MANOS, rival.mano, generoDelUsuario()) })
         : crear('td', { class: 'falta', texto: 'falta' }),
     ])));
 

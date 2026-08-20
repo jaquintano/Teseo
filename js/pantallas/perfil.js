@@ -3,15 +3,16 @@
 // Se muestra sola la primera vez que se abre Teseo. Después se llega a ella
 // desde el menú, para corregir algo.
 
-import { crear, cabecera, ir } from '../ui.js';
+import { crear, cabecera, ir, empezarEn } from '../ui.js';
 import { fichaTirador } from './ficha-tirador.js';
 import { obtenerPerfilPropio, guardarPerfilPropio } from '../db.js';
+import { fijarGenero } from '../genero.js';
 
 export async function pantallaPerfil(contenedor, datos = {}) {
   const perfil = await obtenerPerfilPropio();
   const esPrimeraVez = !perfil;
 
-  const { formulario, leer } = fichaTirador(perfil || {});
+  const { formulario, leer } = fichaTirador(perfil || {}, { esPropio: true });
 
   const guardar = crear('button', {
     type: 'button',
@@ -21,7 +22,15 @@ export async function pantallaPerfil(contenedor, datos = {}) {
       const ficha = leer();
       if (!ficha) return;
       await guardarPerfilPropio(ficha);
-      ir('inicio');
+      // Las palabras de toda la aplicacion dependen de esto.
+      fijarGenero(ficha.genero);
+      if (esPrimeraVez) {
+        // Recien creado el perfil, la pantalla de inicio pasa a ser el fondo
+        // del historial: desde ella, atras sale de la aplicacion.
+        empezarEn('inicio');
+      } else {
+        ir(datos.volverA || 'inicio');
+      }
     },
   });
 

@@ -268,6 +268,29 @@ export async function borrarAsalto(asaltoId) {
   await borrar(ALMACENES.asaltos, asaltoId);
 }
 
+/**
+ * Borra TODO: perfil, rivales, asaltos, vídeos y etiquetas. No se puede
+ * deshacer y no hay copia en ninguna parte.
+ *
+ * Existe porque desde los ajustes de Android no siempre es evidente cómo
+ * vaciar los datos de una aplicación instalada desde el navegador.
+ */
+export async function borrarTodo() {
+  if (conexion) {
+    conexion.close();
+    conexion = null;
+  }
+
+  await new Promise((resolver, rechazar) => {
+    const peticion = indexedDB.deleteDatabase(NOMBRE_BD);
+    peticion.onsuccess = () => resolver();
+    peticion.onerror = () => rechazar(peticion.error);
+    // Si otra pestaña tiene la base abierta, el borrado se queda esperando.
+    // Seguimos igualmente: se completará al cerrarla.
+    peticion.onblocked = () => resolver();
+  });
+}
+
 // --- Espacio ----------------------------------------------------------
 
 export async function estimarEspacio() {

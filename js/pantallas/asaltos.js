@@ -8,8 +8,10 @@ import {
   formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  TIPOS_DE_SESION, FASES, MANOS, EMPUNADURAS, etiquetaDe, nombreCompleto, normalizar,
+  TIPOS_DE_SESION, FASES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe,
+  nombreCompleto, normalizar, opcionesPara,
 } from '../constantes.js';
+import { generoDelUsuario } from '../genero.js';
 import {
   ALMACENES, guardar, obtener, listar, listarPor, listarRivales,
   guardarVideo, borrarAsalto, borrarTiempo, comprobarLegible,
@@ -132,7 +134,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           crear('span', { class: 'ficha-titulo', texto: nombreCompleto(r) }),
           crear('span', {
             class: 'ficha-detalle',
-            texto: [r.club, r.mano ? etiquetaDe(MANOS, r.mano) : 'sin mano'].filter(Boolean).join(' · '),
+            texto: [r.club, r.mano ? etiquetaDe(MANOS, r.mano, generoDelUsuario()) : 'sin mano'].filter(Boolean).join(' · '),
           }),
         ])));
   }
@@ -169,7 +171,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     // la tiene, se pide aquí mismo antes de poder guardar.
     if (!rival.mano) {
       partes.push(desplegable(`Mano de ${nombreCompleto(rival)} (obligatorio)`,
-        MANOS, manoElegida, (valor) => {
+        opcionesPara(MANOS, generoDelUsuario()), manoElegida, (valor) => {
           manoElegida = valor;
           avisoMano.hidden = true;
         }, { vacio: '— Elige —' }).bloque);
@@ -358,11 +360,12 @@ export async function pantallaAsalto(contenedor, datos = {}) {
 /** Resume al rival en una línea: mano, club y altura, lo que haya. */
 function rivalEnUnaLinea(rival) {
   if (!rival) return null;
+  const genero = generoDelUsuario();
   const partes = [
-    etiquetaDe(MANOS, rival.mano),
+    etiquetaDe(MANOS, rival.mano, genero),
     rival.empunadura ? etiquetaDe(EMPUNADURAS, rival.empunadura) : null,
     rival.club,
-    rival.altura ? `${rival.altura} cm` : '',
+    etiquetaDe(ESTATURAS, rival.estatura, genero),
   ].filter(Boolean);
   if (partes.length === 0) return null;
   return crear('p', { class: 'ayuda', texto: partes.join(' · ') });

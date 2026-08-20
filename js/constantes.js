@@ -48,18 +48,39 @@ export const ZONAS_PISTA = [
   { id: 'extremo-rival', etiqueta: 'Extremo del rival' },
 ];
 
-// Los identificadores 'diestro' y 'zurdo' se quedan como estaban aunque las
-// etiquetas hayan cambiado: hay asaltos guardados que dependen de ellos.
+// Los identificadores no cambian nunca aunque cambien las etiquetas: hay
+// asaltos guardados que dependen de ellos.
+//
+// Algunas opciones cambian de palabra según el género de la persona. Se
+// guardan las dos formas y etiquetaDe() elige. Como no hay asaltos entre
+// hombres y mujeres, el género de todos los rivales es el del propio
+// tirador, así que basta con saber el suyo.
 export const MANOS = [
-  { id: 'diestro', etiqueta: 'Diestro/a' },
-  { id: 'zurdo', etiqueta: 'Zurdo/a' },
-  { id: 'desconocido', etiqueta: 'Desconocido' },
+  { id: 'diestro', etiqueta: 'Diestro/a', M: 'Diestro', F: 'Diestra' },
+  { id: 'zurdo', etiqueta: 'Zurdo/a', M: 'Zurdo', F: 'Zurda' },
+  { id: 'desconocido', etiqueta: 'Desconocido', M: 'Desconocido', F: 'Desconocida' },
 ];
 
+// La empuñadura es femenina en sí misma, así que no depende de la persona.
 export const EMPUNADURAS = [
   { id: 'francesa', etiqueta: 'Francesa' },
   { id: 'pistola', etiqueta: 'Pistola' },
-  { id: 'desconocido', etiqueta: 'Desconocido' },
+  { id: 'desconocida', etiqueta: 'Desconocida' },
+];
+
+// La altura del rival no se puede saber con exactitud, así que se compara a
+// ojo con la propia.
+export const ESTATURAS = [
+  { id: 'similar', etiqueta: 'Similar' },
+  { id: 'mas-alta', etiqueta: 'Más alto/a', M: 'Más alto', F: 'Más alta' },
+  { id: 'mas-baja', etiqueta: 'Más bajo/a', M: 'Más bajo', F: 'Más baja' },
+];
+
+export const ESTATURA_POR_DEFECTO = 'similar';
+
+export const GENEROS = [
+  { id: 'M', etiqueta: 'Masculino' },
+  { id: 'F', etiqueta: 'Femenino' },
 ];
 
 export const TIPOS_DE_SESION = [
@@ -91,11 +112,28 @@ export const TRAMOS = [
   { id: 'final', etiqueta: 'Final' },
 ];
 
-/** Busca la etiqueta legible de un id dentro de un catálogo. */
-export function etiquetaDe(catalogo, id) {
+/**
+ * Busca la etiqueta legible de un id dentro de un catálogo.
+ * Si se le pasa el género ('M' o 'F') y la opción tiene forma masculina y
+ * femenina, devuelve la que toca: "Diestra" en vez de "Diestro/a".
+ */
+export function etiquetaDe(catalogo, id, genero = null) {
   if (!id) return '';
   const encontrado = catalogo.find((opcion) => opcion.id === id);
-  return encontrado ? encontrado.etiqueta : id;
+  if (!encontrado) return id;
+  if (genero && encontrado[genero]) return encontrado[genero];
+  return encontrado.etiqueta;
+}
+
+/**
+ * Devuelve el catálogo con las etiquetas ya resueltas para un género, listo
+ * para pasárselo a un desplegable o a una fila de botones.
+ */
+export function opcionesPara(catalogo, genero = null) {
+  return catalogo.map((opcion) => ({
+    id: opcion.id,
+    etiqueta: genero && opcion[genero] ? opcion[genero] : opcion.etiqueta,
+  }));
 }
 
 /**

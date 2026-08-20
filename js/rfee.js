@@ -9,11 +9,12 @@
 // añadir o completar. La parte de decidir es pura —recibe listas, devuelve un
 // plan— y no toca ni la pantalla ni la base de datos.
 
-import { normalizar } from './constantes.js';
+import { normalizar, ESTATURA_POR_DEFECTO } from './constantes.js';
 
-/** Los campos que la federación puede rellenar. Ni mano, ni altura, ni notas. */
+/** Los campos que la federación puede rellenar. Ni mano, ni estatura, ni notas. */
 const CAMPOS_DE_LA_FEDERACION = [
   'apellidos', 'fechaNacimiento', 'club', 'idRfee', 'categoriaRfee', 'temporadaRfee',
+  'genero',
 ];
 
 /** ¿Está este campo vacío? Un 0 o un false contarían como puestos. */
@@ -62,9 +63,11 @@ export function fichaDesdeRfee(fila, ranking) {
     // El club llega como código de la federación (CETC-M, ECC-BU...). Se
     // guarda tal cual y se puede corregir a mano.
     club: fila.club,
+    // El genero sale del propio ranking.
+    genero: ranking.genero === 'Femenino' ? 'F' : 'M',
     // La federación no publica la mano. Se pide al usuario.
     mano: null,
-    altura: null,
+    estatura: ESTATURA_POR_DEFECTO,
     notas: '',
     idRfee: fila.idRfee,
     categoriaRfee: ranking.categoria,
@@ -137,7 +140,7 @@ export function planificarImportacion(ranking, locales) {
 
 /**
  * Devuelve la ficha local con los huecos rellenos. No modifica la original y
- * no toca nunca mano, altura ni notas.
+ * no toca nunca mano, estatura ni notas.
  */
 export function rellenarHuecos(local, ficha, cambios) {
   const resultado = { ...local };

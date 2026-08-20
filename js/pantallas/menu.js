@@ -1,9 +1,13 @@
 // Menú y pantalla de diagnóstico.
 
 import { crear, cabecera, ir, formatearBytes } from '../ui.js';
-import { estimarEspacio, pedirPersistencia, obtenerPerfilPropio } from '../db.js';
+import {
+  estimarEspacio, pedirPersistencia, obtenerPerfilPropio, borrarTodo,
+} from '../db.js';
 import { textoDelRegistro } from '../registro.js';
 import { sePuedeInstalar, instalar } from '../instalacion.js';
+import { concordar } from '../genero.js';
+import { nombreCompleto } from '../constantes.js';
 
 export async function pantallaMenu(contenedor) {
   const perfil = await obtenerPerfilPropio();
@@ -11,7 +15,10 @@ export async function pantallaMenu(contenedor) {
   contenedor.append(
     cabecera('Menú', () => ir('inicio')),
 
-    perfil ? crear('p', { class: 'ayuda', texto: `Conectado como ${perfil.nombre}.` }) : null,
+    perfil ? crear('p', {
+      class: 'ayuda',
+      texto: `${concordar('Conectad', 'o', 'a')} como ${nombreCompleto(perfil)}.`,
+    }) : null,
 
     crear('button', {
       type: 'button', class: 'boton boton-principal', texto: 'Estadísticas',
@@ -24,6 +31,10 @@ export async function pantallaMenu(contenedor) {
     crear('button', {
       type: 'button', class: 'boton', texto: 'Rivales',
       onclick: () => ir('rivales', { volverA: 'menu' }),
+    }),
+    crear('button', {
+      type: 'button', class: 'boton', texto: 'Ayuda',
+      onclick: () => ir('ayuda'),
     }),
     crear('button', {
       type: 'button', class: 'boton', texto: 'Diagnóstico',
@@ -83,6 +94,19 @@ export async function pantallaDiagnostico(contenedor) {
       },
     }),
 
+    // --- Empezar de cero ---
+    crear('h3', { class: 'subtitulo-seccion', texto: 'Empezar de cero' }),
+    crear('p', {
+      class: 'ayuda',
+      texto: 'Borra tu perfil, tus rivales, tus asaltos, tus vídeos y todas tus ' +
+             'marcas. No se puede deshacer y no hay copia en ninguna parte. ' +
+             'Teseo se quedará como recién instalada.',
+    }),
+    crear('button', {
+      type: 'button', class: 'boton boton-peligro', texto: 'Borrar todos mis datos',
+      onclick: borrarTodoConDobleAviso,
+    }),
+
     crear('h3', { class: 'subtitulo-seccion', texto: 'Registro' }),
     crear('p', {
       class: 'ayuda',
@@ -108,4 +132,17 @@ export async function pantallaDiagnostico(contenedor) {
   );
 
   await refrescarEspacio();
+}
+
+/** Dos confirmaciones, porque esto no tiene vuelta atrás. */
+async function borrarTodoConDobleAviso() {
+  if (!confirm('¿Seguro que quieres borrar TODO?\n\n' +
+               'Se irán tu perfil, tus rivales, tus asaltos, los vídeos y todas ' +
+               'tus marcas. No hay copia en ningún sitio.')) return;
+
+  if (!confirm('Última oportunidad.\n\nEsto no se puede deshacer. ¿Borro todo?')) return;
+
+  await borrarTodo();
+  // Recargamos para que la aplicación arranque como la primera vez.
+  location.reload();
 }

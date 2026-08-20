@@ -5,9 +5,11 @@
 // lista de asaltos a partir de entonces.
 
 import { registrar, capturarErroresGlobales } from './registro.js';
-import { registrarPantalla, ir } from './ui.js';
+import { registrarPantalla, ir, empezarEn, iniciarBotonAtras } from './ui.js';
 import { obtenerPerfilPropio, pedirPersistencia } from './db.js';
 import { iniciarInstalacion } from './instalacion.js';
+import { fijarGenero } from './genero.js';
+import { VERSION } from './version.js';
 
 import { pantallaPerfil } from './pantallas/perfil.js';
 import { pantallaRivales, pantallaRival } from './pantallas/rivales.js';
@@ -16,9 +18,8 @@ import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js
 import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 import { pantallaEstadisticas } from './pantallas/estadisticas.js';
 import { pantallaImportarRfee } from './pantallas/importar-rfee.js';
+import { pantallaAyuda } from './pantallas/ayuda.js';
 
-// Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v15';
 
 // No hay pantalla de arranque propia: la que pinta Android al abrir la
 // aplicación, hecha con el icono y el background_color del manifiesto, ya
@@ -39,6 +40,7 @@ registrarPantalla('inicio', conLimpieza(pantallaInicio));
 registrarPantalla('menu', conLimpieza(pantallaMenu));
 registrarPantalla('diagnostico', conLimpieza(pantallaDiagnostico));
 registrarPantalla('estadisticas', conLimpieza(pantallaEstadisticas));
+registrarPantalla('ayuda', conLimpieza(pantallaAyuda));
 registrarPantalla('rivales', conLimpieza(pantallaRivales));
 registrarPantalla('rival', conLimpieza(pantallaRival));
 registrarPantalla('importar-rfee', conLimpieza(pantallaImportarRfee));
@@ -62,7 +64,15 @@ async function arrancar() {
   registrar(`Datos protegidos frente a borrado automático: ${protegido}.`);
 
   const perfil = await obtenerPerfilPropio();
-  await ir(perfil ? 'inicio' : 'perfil');
+
+  // De aqui salen las palabras que cambian (Diestra o Diestro) y los
+  // rankings que se pueden importar.
+  fijarGenero(perfil ? perfil.genero : null);
+
+  // El boton de retroceso de Android hace de "Volver" en todas las
+  // pantallas, y solo sale de la aplicacion desde la de inicio.
+  iniciarBotonAtras();
+  await empezarEn(perfil ? 'inicio' : 'perfil');
 }
 
 arrancar().catch((error) => {

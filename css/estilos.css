@@ -466,6 +466,23 @@ video::-webkit-media-controls-panel {
 
 .progreso:empty { display: none; }
 
+/* --- Ayuda ------------------------------------------------------------- */
+
+.texto-ayuda {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.texto-ayuda.destacado {
+  margin-bottom: 1.5rem;
+  padding: 0.9rem 1rem;
+  background: var(--fondo-caja);
+  border-left: 3px solid var(--acento);
+  border-radius: var(--radio);
+  font-size: 1.05rem;
+}
+
 /* --- Tabla de rivales -------------------------------------------------- */
 
 /* Con un ranking entero importado hay cientos de fichas, así que la tabla
