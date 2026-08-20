@@ -2,6 +2,10 @@
 //
 // Tú y tus rivales tenéis exactamente los mismos campos, así que el
 // formulario se escribe una sola vez y lo usan las dos pantallas.
+//
+// Nombre y apellidos van separados porque así los publica la federación y
+// así se ordenan bien. Para los que das de alta a mano basta con rellenar el
+// nombre: si dejas los apellidos vacíos, se muestra tal cual lo escribas.
 
 import { crear, campo, campoLargo, bloque, grupoOpciones } from '../ui.js';
 import { MANOS } from '../constantes.js';
@@ -13,11 +17,21 @@ import { MANOS } from '../constantes.js';
  *          `leer` devuelve la ficha rellena, o null si falta el nombre.
  */
 export function fichaTirador(tirador = {}) {
-  const nombre = campo('Nombre', { value: tirador.nombre || '', placeholder: 'Nombre y apellidos' });
+  const nombre = campo('Nombre', {
+    value: tirador.nombre || '', placeholder: 'Nombre',
+  });
+  const apellidos = campo('Apellidos', {
+    value: tirador.apellidos || '', placeholder: 'Opcional',
+  });
+  const fechaNacimiento = campo('Fecha de nacimiento', {
+    value: tirador.fechaNacimiento || '', type: 'date',
+  });
   const altura = campo('Altura (cm)', {
     value: tirador.altura || '', type: 'number', inputmode: 'numeric', placeholder: '175',
   });
-  const club = campo('Club', { value: tirador.club || '', placeholder: 'Club al que pertenece' });
+  const club = campo('Club', {
+    value: tirador.club || '', placeholder: 'Club al que pertenece',
+  });
   const notas = campoLargo('Notas', {
     value: tirador.notas || '', placeholder: 'Lo que quieras recordar de este tirador',
   });
@@ -28,7 +42,9 @@ export function fichaTirador(tirador = {}) {
 
   const formulario = crear('div', {}, [
     nombre.bloque,
+    apellidos.bloque,
     bloque('Mano', grupoOpciones(MANOS, mano, (valor) => { mano = valor; }, { clase: 'dos-columnas' })),
+    fechaNacimiento.bloque,
     altura.bloque,
     club.bloque,
     notas.bloque,
@@ -48,10 +64,12 @@ export function fichaTirador(tirador = {}) {
 
     return {
       // Si la ficha ya existía, conservamos su id para actualizarla en vez
-      // de crear una nueva.
-      ...(tirador.id !== undefined ? { id: tirador.id } : {}),
+      // de crear una nueva, y también su procedencia.
+      ...tirador,
       nombre: valorNombre,
+      apellidos: apellidos.entrada.value.trim(),
       mano,
+      fechaNacimiento: fechaNacimiento.entrada.value || null,
       altura: alturaTexto ? Number(alturaTexto) : null,
       club: club.entrada.value.trim(),
       notas: notas.entrada.value.trim(),

@@ -4,11 +4,11 @@
 // suele ser uno; en directas, dos o tres), y cada tiempo tiene su vídeo.
 
 import {
-  crear, cabecera, ir, campo, campoLargo, bloque, grupoOpciones,
+  crear, rellenar, cabecera, ir, campo, campoLargo, bloque, grupoOpciones,
   formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  TIPOS_DE_SESION, FASES, MANOS, etiquetaDe,
+  TIPOS_DE_SESION, FASES, MANOS, etiquetaDe, nombreCompleto, normalizar,
 } from '../constantes.js';
 import {
   ALMACENES, guardar, obtener, listar, listarPor, listarRivales,
@@ -58,7 +58,7 @@ export async function pantallaInicio(contenedor) {
       class: 'ficha-lista',
       onclick: () => ir('asalto', { id: asalto.id }),
     }, [
-      crear('span', { class: 'ficha-titulo', texto: rival ? rival.nombre : 'Rival borrado' }),
+      crear('span', { class: 'ficha-titulo', texto: rival ? nombreCompleto(rival) : 'Rival borrado' }),
       crear('span', { class: 'ficha-detalle', texto: detalles }),
     ]));
   }
@@ -92,16 +92,101 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   let fase = asalto.fase || null;
   let fatiga = asalto.fatiga ? String(asalto.fatiga) : null;
 
-  const selector = crear('select', {
-    class: 'entrada',
-    onchange: (evento) => { rivalId = Number(evento.target.value) || null; },
+  // --- Elección del rival ---
+  // Con rankings enteros importados puede haber cientos de fichas, así que
+  // no vale un desplegable: se busca escribiendo y se eligen de una lista
+  // corta.
+  const porId = new Map(rivales.map((r) => [r.id, r]));
+  let manoElegida = null;
+
+  const buscador = campo('Buscar rival', {
+    placeholder: 'Escribe parte del nombre o del club', oninput: pintarCandidatos,
   });
-  selector.append(crear('option', { value: '', texto: '— Elige rival —' }));
-  for (const rival of rivales) {
-    const opcion = crear('option', { value: rival.id, texto: rival.nombre });
-    if (rival.id === rivalId) opcion.selected = true;
-    selector.append(opcion);
+  const candidatos = crear('div', { class: 'lista candidatos' });
+  const elegido = crear('div');
+
+  function rivalActual() {
+    return rivalId != null ? porId.get(rivalId) : null;
   }
+
+  function pintarCandidatos() {
+    const busqueda = normalizar(buscador.entrada.value);
+    if (!busqueda) { rellenar(candidatos, []); return; }
+
+    const encontrados = rivales
+      .filter((r) => normalizar(nombreCompleto(r) + ' ' + (r.club || '')).includes(busqueda))
+      .slice(0, 8);
+
+    rellenar(candidatos, encontrados.length === 0
+      ? crear('p', { class: 'ayuda', texto: 'Nadie coincide. Puedes darlo de alta abajo.' })
+      : encontrados.map((r) => crear('button', {
+          type: 'button', class: 'ficha-lista',
+          onclick: () => {
+            rivalId = r.id;
+            manoElegida = null;
+            buscador.entrada.value = '';
+            rellenar(candidatos, []);
+            pintarElegido();
+          },
+        }, [
+          crear('span', { class: 'ficha-titulo', texto: nombreCompleto(r) }),
+          crear('span', {
+            class: 'ficha-detalle',
+            texto: [r.club, r.mano ? etiquetaDe(MANOS, r.mano) : 'sin mano'].filter(Boolean).join(' · '),
+          }),
+        ])));
+  }
+
+  function pintarElegido() {
+    const rival = rivalActual();
+
+    if (!rival) {
+      rellenar(elegido, crear('p', { class: 'ayuda', texto: 'Ningún rival elegido todavía.' }));
+      return;
+    }
+
+    const partes = [
+      crear('div', { class: 'ficha-lista' }, [
+        crear('span', { class: 'ficha-titulo', texto: nombreCompleto(rival) }),
+        crear('span', {
+          class: 'ficha-detalle',
+          texto: [rival.club, rival.fechaNacimiento ? `n. ${formatearFecha(rival.fechaNacimiento)}` : '']
+            .filter(Boolean).join(' · '),
+        }),
+      ]),
+      crear('button', {
+        type: 'button', class: 'boton', texto: 'Editar ficha del rival',
+        onclick: () => ir('rival', {
+          id: rival.id,
+          volverA: 'asalto-nuevo',
+          datosVuelta: { ...datos, rivalIdElegido: rival.id },
+        }),
+      }),
+    ];
+
+    // La mano del rival no puede quedarse vacía: es uno de los filtros de
+    // las estadísticas, y sin ella ese asalto quedaría fuera. Si la ficha no
+    // la tiene, se pide aquí mismo antes de poder guardar.
+    if (!rival.mano) {
+      partes.push(bloque(`Mano de ${nombreCompleto(rival)} (obligatorio)`,
+        grupoOpciones(MANOS, manoElegida, (valor) => {
+          manoElegida = valor;
+          avisoMano.hidden = true;
+        }, { clase: 'dos-columnas' })));
+      partes.push(crear('p', {
+        class: 'ayuda',
+        texto: 'Su ficha no dice si es diestro o zurdo. Hace falta para las ' +
+               'estadísticas, y se guardará en su ficha.',
+      }));
+    }
+
+    rellenar(elegido, partes);
+  }
+
+  const avisoMano = crear('p', {
+    class: 'aviso', hidden: true,
+    texto: 'Falta indicar si el rival es diestro o zurdo.',
+  });
 
   const numero = campo('Número de asalto de la sesión', {
     value: asalto.numero || '', type: 'number', inputmode: 'numeric', placeholder: '1',
@@ -117,7 +202,10 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
              () => ir(esNuevo ? 'inicio' : 'asalto', { id: datos.id })),
 
     bloque('Rival', crear('div', {}, [
-      selector,
+      elegido,
+      buscador.bloque,
+      candidatos,
+      avisoMano,
       crear('button', {
         type: 'button', class: 'boton', texto: 'Dar de alta un rival nuevo',
         onclick: () => ir('rival', {
@@ -147,6 +235,18 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
         if (!rivalId) { aviso.hidden = false; return; }
         aviso.hidden = true;
 
+        // Sin la mano del rival no se guarda: las estadísticas se filtran por
+        // ella y un asalto sin ese dato quedaría cojo.
+        const rival = rivalActual();
+        if (rival && !rival.mano) {
+          if (!manoElegida) {
+            avisoMano.hidden = false;
+            avisoMano.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+          await guardar(ALMACENES.tiradores, { ...rival, mano: manoElegida });
+        }
+
         const ficha = {
           ...(asalto.id !== undefined ? { id: asalto.id } : {}),
           rivalId,
@@ -165,6 +265,10 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
       },
     }),
   );
+
+  // Si ya venía un rival elegido —porque estás editando el asalto o acabas
+  // de darlo de alta— hay que pintarlo ahora.
+  pintarElegido();
 }
 
 // --- Detalle de un asalto: sus tiempos --------------------------------
@@ -209,11 +313,20 @@ export async function pantallaAsalto(contenedor, datos = {}) {
   });
 
   contenedor.append(
-    cabecera(rival ? rival.nombre : 'Rival borrado', () => ir('inicio')),
+    cabecera(rival ? nombreCompleto(rival) : 'Rival borrado', () => ir('inicio')),
 
     crear('p', { class: 'ayuda', texto: contexto }),
     // El club del rival sale de su ficha, no se vuelve a preguntar en cada asalto.
     rivalEnUnaLinea(rival),
+
+    rival ? crear('button', {
+      type: 'button', class: 'boton', texto: 'Editar ficha del rival',
+      onclick: () => ir('rival', {
+        id: rival.id,
+        volverA: 'asalto',
+        datosVuelta: { id: asalto.id },
+      }),
+    }) : null,
 
     crear('h3', { class: 'subtitulo-seccion', texto: 'Tiempos' }),
     crear('p', {

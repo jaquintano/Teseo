@@ -88,3 +88,33 @@ export function etiquetaDe(catalogo, id) {
   const encontrado = catalogo.find((opcion) => opcion.id === id);
   return encontrado ? encontrado.etiqueta : id;
 }
+
+/**
+ * Cómo se muestra el nombre de un tirador.
+ *
+ * Los que vienen de la federación traen nombre y apellidos por separado, y se
+ * leen mejor con los apellidos delante. Los que diste de alta a mano tienen
+ * sólo el nombre, y se dejan tal cual.
+ */
+export function nombreCompleto(tirador) {
+  if (!tirador) return '';
+  const nombre = (tirador.nombre || '').trim();
+  const apellidos = (tirador.apellidos || '').trim();
+  if (!apellidos) return nombre;
+  if (!nombre) return apellidos;
+  return `${apellidos}, ${nombre}`;
+}
+
+/**
+ * Deja un texto en una forma comparable: sin acentos, sin mayúsculas y sin
+ * espacios de más. Sirve para saber si "José Pérez" y "JOSE PEREZ" son la
+ * misma persona.
+ */
+export function normalizar(texto) {
+  return (texto || '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}

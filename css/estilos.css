@@ -465,6 +465,73 @@ video::-webkit-media-controls-panel {
 
 .progreso:empty { display: none; }
 
+/* --- Tabla de rivales -------------------------------------------------- */
+
+/* Con un ranking entero importado hay cientos de fichas, así que la tabla
+   tiene su propio scroll y la cabecera se queda fija arriba. */
+.tabla-scroll {
+  max-height: 60vh;
+  margin-bottom: 1.25rem;
+  overflow: auto;
+  background: var(--fondo-caja);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabla-rivales {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tabla-rivales th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.6rem 0.5rem;
+  background: #232b36;
+  border-bottom: 1px solid var(--borde);
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tabla-rivales td {
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid #232b36;
+  vertical-align: top;
+}
+
+.fila-rival { cursor: pointer; }
+.fila-rival:active { background: #232b36; }
+
+.tabla-rivales .derecha { text-align: right; }
+.tabla-rivales .apagado { color: var(--texto-suave); }
+
+/* La mano es lo que falta cuando el rival viene de la federación, y sin ella
+   ese rival no cuenta en los filtros de las estadísticas. */
+.tabla-rivales .falta {
+  color: #e2a13a;
+  font-size: 0.8rem;
+}
+
+/* Resultados del buscador de rival al crear un asalto. */
+.candidatos:empty { display: none; }
+.candidatos { margin-top: 0.5rem; }
+
+.valor-fijo {
+  margin: 0 0 0.5rem;
+  padding: 0.6rem 0.8rem;
+  background: var(--fondo-caja);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  font-weight: 600;
+}
+
 /* --- Estadísticas ------------------------------------------------------ */
 
 .filtros {

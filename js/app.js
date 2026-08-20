@@ -15,9 +15,10 @@ import { pantallaInicio, pantallaAsaltoNuevo, pantallaAsalto } from './pantallas
 import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js';
 import { pantallaMenu, pantallaDiagnostico } from './pantallas/menu.js';
 import { pantallaEstadisticas } from './pantallas/estadisticas.js';
+import { pantallaImportarRfee } from './pantallas/importar-rfee.js';
 
 // Sube este número en cada despliegue, y el mismo en sw.js.
-const VERSION = 'v13';
+const VERSION = 'v14';
 
 // No hay pantalla de arranque propia: la que pinta Android al abrir la
 // aplicación, hecha con el icono y el background_color del manifiesto, ya
@@ -40,6 +41,7 @@ registrarPantalla('diagnostico', conLimpieza(pantallaDiagnostico));
 registrarPantalla('estadisticas', conLimpieza(pantallaEstadisticas));
 registrarPantalla('rivales', conLimpieza(pantallaRivales));
 registrarPantalla('rival', conLimpieza(pantallaRival));
+registrarPantalla('importar-rfee', conLimpieza(pantallaImportarRfee));
 registrarPantalla('asalto-nuevo', conLimpieza(pantallaAsaltoNuevo));
 registrarPantalla('asalto', conLimpieza(pantallaAsalto));
 registrarPantalla('etiquetado', pantallaEtiquetado);

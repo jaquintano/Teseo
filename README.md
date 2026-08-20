@@ -58,6 +58,13 @@ sw.js                          service worker: instalación y uso sin cobertura
 css/estilos.css                estilos (botones grandes, uso a una mano)
 js/app.js                      arranque, alta de pantallas, service worker
 js/constantes.js               los catálogos: acciones, zonas, fases…
+herramientas/traer-ranking.js  descarga rankings de la RFEE. Se ejecuta en el
+                               ordenador, NO forma parte de la aplicación
+datos/ranking-*.json           los rankings ya descargados, que Teseo lee
+datos/rankings.json            índice de los rankings disponibles
+js/rfee.js                     lee los rankings y decide qué importar; la
+                               parte de decidir es pura
+js/pantallas/importar-rfee.js  el formulario de importación
 js/calculo-estadisticas.js     LAS CUENTAS. Módulo independiente: no toca ni
                                la pantalla ni la base de datos. Junto con
                                constantes.js se puede llevar a otro sitio
@@ -111,6 +118,46 @@ o borrarla. Tocando la línea en cualquier otro sitio saltas a ese momento.
 4. Cambia el resultado a *Nada*: las zonas deben desaparecer.
 5. Borra un intercambio.
 6. Cierra Teseo del todo y vuelve: debe estar todo.
+
+## Traer rivales del ranking de la RFEE
+
+Desde **Rivales → Traer de la RFEE** se puede rellenar la lista con una
+categoría entera del ranking federativo, en vez de escribirlos uno a uno.
+
+Los rankings **no se piden a la federación en ese momento**: viajan dentro de
+Teseo. La razón es que el navegador prohíbe que una página lea la respuesta
+de otro sitio web salvo que ese sitio lo autorice, y `app.skermo.org` no lo
+autoriza. Comprobado: la petición llega, pero la respuesta vuelve ilegible.
+Como efecto secundario bueno, la importación funciona sin cobertura.
+
+Para añadir o actualizar un ranking, desde el ordenador:
+
+```bash
+node herramientas/traer-ranking.js --temporada 2025-2026 --categoria M15 --genero F
+```
+
+Eso deja el fichero en `datos/` y rehace el índice. Luego hay que subirlo al
+repositorio como cualquier otro cambio, **y añadirlo a la lista de `sw.js`**
+para que se guarde junto con la aplicación.
+
+Reglas de la importación:
+
+- **No se duplica nadie.** Se reconoce a cada tirador por su identificador de
+  la federación, y si no lo tiene, por el nombre sin acentos ni mayúsculas y
+  en cualquier orden. Si en tu lista hay dos con el mismo nombre, no adivina.
+- **Sólo se rellenan huecos.** La mano, la altura y tus notas no se tocan
+  nunca. Tampoco se sobrescribe un club que hayas escrito tú.
+- **La mano llega siempre vacía**, porque la federación no la publica. En la
+  tabla de rivales se señala en ámbar, y se pide de forma obligatoria la
+  primera vez que creas un asalto contra esa persona: sin ella, ese asalto
+  quedaría fuera de los filtros de las estadísticas.
+- **El club viene como código** (`ECC-BU`, `CETC-M`), que es lo que publica la
+  federación. Se puede corregir a mano.
+
+Una advertencia: estos rankings incluyen nombre, apellidos, fecha de
+nacimiento y club de **menores de edad**. Todo se queda en el dispositivo y no
+sale de él, pero conviene importar sólo las categorías en las que realmente
+competís, no el catálogo entero.
 
 ## Las estadísticas
 
