@@ -647,6 +647,42 @@ video::-webkit-media-controls-panel {
   font-size: 0.8rem;
 }
 
+/* Cabecera de grupo en la lista de asaltos: la fecha, la competición o el
+   rival por el que se está agrupando, con cuántos hay. */
+.fila-grupo td {
+  padding: 0.55rem 0.5rem;
+  background: #232b36;
+  border-bottom: 1px solid var(--borde);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.cuenta-grupo {
+  float: right;
+  min-width: 22px;
+  margin-left: 0.5rem;
+  padding: 0 0.4rem;
+  background: var(--fondo);
+  border-radius: 999px;
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+  font-weight: 400;
+  text-align: center;
+}
+
+/* La fatiga del asalto, con la misma escala de color que la barra del
+   formulario. El color lo pone el JavaScript. */
+.punto-fatiga {
+  display: inline-block;
+  min-width: 26px;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  color: #0b1220;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
 .tabla-rivales .derecha { text-align: right; }
 .tabla-rivales .apagado { color: var(--texto-suave); }
 

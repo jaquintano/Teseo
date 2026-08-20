@@ -5,7 +5,7 @@
 
 import {
   anadir, crear, rellenar, cabecera, ir, campo, campoLargo, bloque, desplegable,
-  deslizador, formatearFecha, formatearBytes, formatearSegundos,
+  deslizador, colorDeEscala, formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
   TIPOS_DE_SESION, TIPO_DE_SESION_POR_DEFECTO, FASES, MANOS, EMPUNADURAS,
@@ -31,6 +31,14 @@ function hoy() {
 
 // --- Lista de asaltos (pantalla de inicio) ----------------------------
 
+// Cómo se agrupan los asaltos. Lo que agrupa desaparece de las filas: es lo
+// que permite que la tabla quepa en un móvil sin desplazarla de lado.
+const AGRUPACIONES = [
+  { id: 'fecha', etiqueta: 'Fecha' },
+  { id: 'competicion', etiqueta: 'Competición' },
+  { id: 'rival', etiqueta: 'Rival' },
+];
+
 export async function pantallaInicio(contenedor) {
   const [asaltos, tiradores, competiciones, perfil] = await Promise.all([
     listar(ALMACENES.asaltos),
@@ -46,37 +54,15 @@ export async function pantallaInicio(contenedor) {
   const vacia = rivales.length === 0 && competiciones.length === 0;
 
   const competicionPorId = new Map(competiciones.map((c) => [c.id, c]));
+  const rivalPorId = new Map(tiradores.map((t) => [t.id, t]));
 
-  const porId = new Map(tiradores.map((t) => [t.id, t]));
   asaltos.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '') || b.id - a.id);
 
-  const lista = crear('div', { class: 'lista' });
+  const filtros = { rival: null, competicion: null, tipoSesion: null };
+  let agrupacion = 'fecha';
 
-  if (asaltos.length === 0) {
-    lista.append(crear('p', {
-      class: 'ayuda',
-      texto: 'Todavía no has registrado ningún asalto. Empieza por crear uno.',
-    }));
-  }
-
-  for (const asalto of asaltos) {
-    const rival = porId.get(asalto.rivalId);
-    const detalles = [
-      formatearFecha(asalto.fecha),
-      asalto.numero ? `Asalto ${asalto.numero}` : '',
-      etiquetaDe(TIPOS_DE_SESION, asalto.tipoSesion),
-      nombreDeCompeticion(competicionPorId.get(asalto.competicionId), asalto),
-    ].filter(Boolean).join(' · ');
-
-    lista.append(crear('button', {
-      type: 'button',
-      class: 'ficha-lista',
-      onclick: () => ir('asalto', { id: asalto.id }),
-    }, [
-      crear('span', { class: 'ficha-titulo', texto: rival ? nombreCompleto(rival) : 'Rival borrado' }),
-      crear('span', { class: 'ficha-detalle', texto: detalles }),
-    ]));
-  }
+  const tabla = crear('div');
+  const contador = crear('p', { class: 'ayuda' });
 
   anadir(contenedor,
     crear('div', { class: 'cabecera' }, [
@@ -101,8 +87,216 @@ export async function pantallaInicio(contenedor) {
       type: 'button', class: vacia ? 'boton' : 'boton boton-principal', texto: 'Nuevo asalto',
       onclick: () => ir('asalto-nuevo'),
     }),
-    lista,
+
+    asaltos.length === 0 ? crear('p', {
+      class: 'ayuda',
+      texto: 'Todavía no has registrado ningún asalto. Empieza por crear uno.',
+    }) : null,
+
+    // Una temporada entera son cientos de asaltos: sin filtrar ni agrupar,
+    // la lista no hay quien la lea.
+    asaltos.length > 0 ? crear('details', { class: 'filtros' }, [
+      crear('summary', { texto: 'Filtros y agrupación' }),
+
+      desplegable('Agrupar por', AGRUPACIONES, agrupacion,
+        (valor) => { agrupacion = valor || 'fecha'; pintar(); }).bloque,
+
+      ...selectoresDeFiltro(),
+    ]) : null,
+
+    asaltos.length > 0 ? contador : null,
+    tabla,
   );
+
+  if (asaltos.length > 0) pintar();
+
+  // ------------------------------------------------------------------
+
+  /** Sólo se ofrece filtrar por lo que de verdad aparece en tus asaltos. */
+  function selectoresDeFiltro() {
+    const deRival = [...new Set(asaltos.map((a) => a.rivalId))]
+      .map((id) => ({ id: String(id), etiqueta: nombreDeRival(rivalPorId.get(id)) }))
+      .sort((a, b) => a.etiqueta.localeCompare(b.etiqueta, 'es'));
+
+    // Las competiciones, de la más reciente a la más antigua, y los asaltos
+    // que no son de ninguna al final.
+    const deCompeticion = [...new Set(asaltos.map((a) => claveDeCompeticion(a)))]
+      .map((clave) => ({ clave, ...tituloDeCompeticion(clave) }))
+      .sort((a, b) => (b.orden || '').localeCompare(a.orden || ''))
+      .map(({ clave, titulo }) => ({ id: clave, etiqueta: titulo }));
+
+    const deTipo = TIPOS_DE_SESION.filter((t) => asaltos.some((a) => a.tipoSesion === t.id));
+
+    return [
+      deRival.length > 1 ? desplegable('Rival', deRival, null,
+        (valor) => { filtros.rival = valor; pintar(); },
+        { vacio: 'Todos los rivales' }).bloque : null,
+
+      deCompeticion.length > 1 ? desplegable('Competición', deCompeticion, null,
+        (valor) => { filtros.competicion = valor; pintar(); },
+        { vacio: 'Todas las competiciones' }).bloque : null,
+
+      deTipo.length > 1 ? desplegable('Tipo de sesión', deTipo, null,
+        (valor) => { filtros.tipoSesion = valor; pintar(); },
+        { vacio: 'Todos los tipos' }).bloque : null,
+    ];
+  }
+
+  /**
+   * Con qué competición va un asalto. Los de antes de que existieran las
+   * competiciones guardaban el torneo como texto suelto, y ésos se agrupan
+   * por ese texto.
+   */
+  function claveDeCompeticion(asalto) {
+    if (asalto.competicionId != null && competicionPorId.has(asalto.competicionId)) {
+      return `c${asalto.competicionId}`;
+    }
+    return asalto.torneo ? `t${asalto.torneo}` : 'sin';
+  }
+
+  function tituloDeCompeticion(clave) {
+    if (clave === 'sin') return { titulo: 'Sin competición', orden: '' };
+    if (clave.startsWith('t')) return { titulo: clave.slice(1), orden: '' };
+
+    const competicion = competicionPorId.get(Number(clave.slice(1)));
+    return {
+      titulo: competicion.nombre,
+      detalle: formatearFecha(competicion.fecha),
+      orden: competicion.fecha || '',
+    };
+  }
+
+  function pasaFiltros(asalto) {
+    if (filtros.rival && String(asalto.rivalId) !== filtros.rival) return false;
+    if (filtros.competicion && claveDeCompeticion(asalto) !== filtros.competicion) return false;
+    if (filtros.tipoSesion && asalto.tipoSesion !== filtros.tipoSesion) return false;
+    return true;
+  }
+
+  function grupoDe(asalto) {
+    if (agrupacion === 'competicion') {
+      const clave = claveDeCompeticion(asalto);
+      return { clave, ...tituloDeCompeticion(clave) };
+    }
+    if (agrupacion === 'rival') {
+      return {
+        clave: `r${asalto.rivalId}`,
+        titulo: nombreDeRival(rivalPorId.get(asalto.rivalId)),
+        orden: '',
+      };
+    }
+    return {
+      clave: asalto.fecha || 'sin',
+      titulo: formatearFecha(asalto.fecha) || 'Sin fecha',
+      orden: asalto.fecha || '',
+    };
+  }
+
+  function agrupar(lista) {
+    const grupos = new Map();
+    for (const asalto of lista) {
+      const grupo = grupoDe(asalto);
+      if (!grupos.has(grupo.clave)) grupos.set(grupo.clave, { ...grupo, asaltos: [] });
+      grupos.get(grupo.clave).asaltos.push(asalto);
+    }
+
+    const salida = [...grupos.values()];
+    // Por rival mandan aquéllos con los que más te has cruzado. Si no, arriba
+    // lo más reciente: manda la fecha del asalto más nuevo del grupo y no la
+    // de la competición, que puede estar mal puesta en el calendario.
+    if (agrupacion === 'rival') {
+      salida.sort((a, b) => b.asaltos.length - a.asaltos.length
+                         || a.titulo.localeCompare(b.titulo, 'es'));
+    } else {
+      const masReciente = (grupo) => grupo.asaltos[0].fecha || '';
+      salida.sort((a, b) => masReciente(b).localeCompare(masReciente(a)));
+    }
+    return salida;
+  }
+
+  function filaDe(asalto) {
+    const competicion = competicionPorId.get(asalto.competicionId);
+    const enCompeticion = nombreDeCompeticion(competicion, asalto);
+    const tipo = etiquetaDe(TIPOS_DE_SESION, asalto.tipoSesion);
+
+    // La columna principal dice lo que no está ya en la cabecera del grupo.
+    const principal = agrupacion === 'rival'
+      ? (enCompeticion || tipo || 'Sin competición')
+      : nombreDeRival(rivalPorId.get(asalto.rivalId));
+
+    const secundaria = agrupacion === 'fecha'
+      ? (enCompeticion || tipo)
+      : formatearFecha(asalto.fecha);
+
+    return crear('tr', {
+      class: 'fila-rival',
+      onclick: () => ir('asalto', { id: asalto.id }),
+    }, [
+      crear('td', {}, [
+        crear('span', { texto: principal }),
+        secundaria ? crear('span', { class: 'segunda-linea', texto: secundaria }) : null,
+      ]),
+      crear('td', { class: 'apagado', texto: etiquetaDe(FASES, asalto.fase) || '—' }),
+      crear('td', { class: 'derecha' }, [puntoDeFatiga(asalto.fatiga)]),
+    ]);
+  }
+
+  function pintar() {
+    const visibles = asaltos.filter(pasaFiltros);
+
+    contador.textContent = visibles.length === asaltos.length
+      ? `${asaltos.length} asalto${asaltos.length === 1 ? '' : 's'}.`
+      : `${visibles.length} de ${asaltos.length} asaltos.`;
+
+    if (visibles.length === 0) {
+      rellenar(tabla, crear('p', {
+        class: 'ayuda', texto: 'Ningún asalto cumple estos filtros.',
+      }));
+      return;
+    }
+
+    const cuerpo = crear('tbody');
+    for (const grupo of agrupar(visibles)) {
+      cuerpo.append(crear('tr', { class: 'fila-grupo' }, [
+        crear('td', { colspan: '3' }, [
+          crear('span', { texto: grupo.titulo }),
+          grupo.detalle ? crear('span', { class: 'apagado', texto: ` · ${grupo.detalle}` }) : null,
+          crear('span', { class: 'cuenta-grupo', texto: String(grupo.asaltos.length) }),
+        ]),
+      ]));
+      for (const asalto of grupo.asaltos) cuerpo.append(filaDe(asalto));
+    }
+
+    rellenar(tabla, crear('div', { class: 'tabla-scroll' }, [
+      crear('table', { class: 'tabla-rivales' }, [
+        crear('thead', {}, [
+          crear('tr', {}, [
+            crear('th', { texto: agrupacion === 'rival' ? 'Competición' : 'Tirador' }),
+            crear('th', { texto: 'Fase' }),
+            crear('th', { class: 'derecha', texto: 'Fatiga' }),
+          ]),
+        ]),
+        cuerpo,
+      ]),
+    ]));
+  }
+}
+
+function nombreDeRival(rival) {
+  return rival ? nombreCompleto(rival) : 'Rival borrado';
+}
+
+/** La fatiga, con la misma escala de color que la barra del formulario. */
+function puntoDeFatiga(fatiga) {
+  if (!fatiga) return crear('span', { class: 'apagado', texto: '—' });
+
+  const punto = crear('span', {
+    class: 'punto-fatiga',
+    texto: String(fatiga),
+    title: `Fatiga ${fatiga} de 5`,
+  });
+  punto.style.background = colorDeEscala((fatiga - 1) / 4);
+  return punto;
 }
 
 // --- Alta y edición de un asalto --------------------------------------
@@ -167,6 +361,9 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
 
   function pintarElegido() {
     const rival = rivalActual();
+
+    // Con uno ya elegido, el buscador de abajo sirve para cambiarlo.
+    buscador.rotulo.textContent = rival ? 'Cambiar rival' : 'Buscar rival';
 
     if (!rival) {
       rellenar(elegido, crear('p', { class: 'ayuda', texto: 'Ningún rival elegido todavía.' }));

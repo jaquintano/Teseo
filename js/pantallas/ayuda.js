@@ -51,6 +51,15 @@ export async function pantallaAyuda(contenedor) {
       'Y la fatiga que sentiste, con una barra del 1 al 5 que va del azul al ' +
       'rojo.'),
 
+    apartado('La lista de asaltos',
+      'La pantalla de inicio es una tabla: cada fila es un asalto y se abre ' +
+      'tocándola. A la derecha va la fatiga que apuntaste, con su color.',
+      'En "Filtros y agrupación" eliges si quieres verlos por fecha, por ' +
+      'competición o por rival. Lo que agrupa desaparece de las filas, así que ' +
+      'agrupando por competición ves de un tirón contra quién tiraste en ella.',
+      'Y puedes quedarte sólo con un rival, una competición o un tipo de ' +
+      'sesión. Arriba te dice cuántos asaltos estás viendo de cuántos.'),
+
     apartado('Marcar un intercambio',
       'Reproduce el vídeo y pausa justo donde pasa algo. Con los botones de ' +
       '−0,1 s y +0,1 s afinas hasta el momento exacto.',

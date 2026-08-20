@@ -141,15 +141,17 @@ export function grupoOpcionesMultiple(catalogo, valores, alCambiar, opciones = {
   return contenedor;
 }
 
-/** Campo de texto con su etiqueta encima. */
+/**
+ * Campo de texto con su etiqueta encima.
+ * Se devuelve también la etiqueta: hay campos que cambian de nombre según lo
+ * que haya pasado en la pantalla.
+ */
 export function campo(etiqueta, propiedades = {}) {
   const id = `campo-${Math.random().toString(36).slice(2, 9)}`;
   const entrada = crear('input', { id, class: 'entrada', type: 'text', ...propiedades });
-  const bloque = crear('div', { class: 'bloque-campo' }, [
-    crear('label', { class: 'etiqueta-campo', for: id, texto: etiqueta }),
-    entrada,
-  ]);
-  return { bloque, entrada };
+  const rotulo = crear('label', { class: 'etiqueta-campo', for: id, texto: etiqueta });
+  const bloque = crear('div', { class: 'bloque-campo' }, [rotulo, entrada]);
+  return { bloque, entrada, rotulo };
 }
 
 /** Área de texto de varias líneas. */
@@ -196,8 +198,7 @@ export function deslizador(etiqueta, opciones = {}) {
   function pintar() {
     const valor = Number(entrada.value);
     const fraccion = max > min ? (valor - min) / (max - min) : 0;
-    // 210 grados es azul y 0 es rojo; por el camino pasa por verde y amarillo.
-    entrada.style.setProperty('--color-actual', `hsl(${Math.round(210 - 210 * fraccion)} 75% 55%)`);
+    entrada.style.setProperty('--color-actual', colorDeEscala(fraccion));
     entrada.style.setProperty('--relleno', `${fraccion * 100}%`);
     marca.textContent = String(valor);
   }
@@ -205,6 +206,17 @@ export function deslizador(etiqueta, opciones = {}) {
   pintar();
 
   return { bloque, entrada };
+}
+
+/**
+ * El color de una escala que va del azul (0) al rojo (1), pasando por el
+ * verde y el amarillo. Lo usan la barra de fatiga y la lista de asaltos, que
+ * tienen que hablar el mismo idioma de colores.
+ */
+export function colorDeEscala(fraccion) {
+  const acotada = Math.min(1, Math.max(0, fraccion));
+  // 210 grados es azul y 0 es rojo.
+  return `hsl(${Math.round(210 - 210 * acotada)} 75% 55%)`;
 }
 
 /** Bloque con título para agrupar unos cuantos botones de opción. */
