@@ -99,11 +99,6 @@ export function fichaTirador(tirador = {}, opciones = {}) {
     apellidos.bloque,
     selectorGenero ? selectorGenero.bloque : null,
     bloqueCategorias,
-    esPropio ? crear('p', {
-      class: 'ayuda',
-      texto: 'En esgrima no se compite entre hombres y mujeres, así que esto ' +
-             'vale también para todos tus rivales.',
-    }) : null,
     selectorMano.bloque,
     selectorEmpunadura.bloque,
     // Tu propia estatura comparada contigo no significa nada.

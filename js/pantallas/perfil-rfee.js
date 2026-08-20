@@ -8,7 +8,10 @@
 // eso se rellena después.
 
 import { anadir, crear, rellenar, cabecera, ir, bloque, campo } from '../ui.js';
-import { nombreCompleto, normalizar, ESTATURA_POR_DEFECTO } from '../constantes.js';
+import {
+  nombreCompleto, normalizar, etiquetaDe, GENEROS, ESTATURA_POR_DEFECTO,
+  GENERO_POR_DEFECTO, CATEGORIA_POR_DEFECTO,
+} from '../constantes.js';
 import { listarRankings, cargarRanking } from '../rfee.js';
 
 export async function pantallaPerfilRfee(contenedor) {
@@ -33,9 +36,17 @@ export async function pantallaPerfilRfee(contenedor) {
 
   const unicos = (campo) => [...new Set(rankings.map((r) => r[campo]))];
 
+  // De partida, lo mismo que trae rellena la ficha propia; si ese ranking no
+  // se ha descargado, el primero que haya.
+  const dePartida = (campo, preferido) => {
+    const valores = unicos(campo);
+    return valores.includes(preferido) ? preferido : valores[0];
+  };
+
   let temporada = unicos('temporada')[0];
-  let categoria = unicos('categoria')[0];
-  let genero = unicos('genero')[0];
+  let categoria = dePartida('categoria', CATEGORIA_POR_DEFECTO);
+  // Los rankings dicen "Femenino", no "F".
+  let genero = dePartida('genero', etiquetaDe(GENEROS, GENERO_POR_DEFECTO));
 
   const resultados = crear('div');
   const buscador = campo('Buscar por nombre', {

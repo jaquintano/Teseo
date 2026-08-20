@@ -279,11 +279,11 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
       avisoMano,
     ])),
 
+    fecha.bloque,
     desplegable('Tipo de sesión', TIPOS_DE_SESION, tipoSesion, (valor) => {
       tipoSesion = valor;
       refrescarPorTipo();
     }).bloque,
-    fecha.bloque,
     bloqueCompeticion,
     bloqueFase,
     fatiga.bloque,

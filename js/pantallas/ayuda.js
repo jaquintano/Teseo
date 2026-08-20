@@ -35,8 +35,8 @@ export async function pantallaAyuda(contenedor) {
       'Marca también las categorías en las que compites, normalmente la tuya y ' +
       'la de arriba. Con eso Teseo ya sabe qué rivales y qué competiciones ' +
       'traerte, y no vuelve a preguntártelo.',
-      'El formulario llega con el género en "Femenino" y la categoría M17 ya ' +
-      'marcados, que es lo más habitual. Si no es tu caso, cámbialos.'),
+      'Tanto la búsqueda en el ranking como el formulario empiezan en ' +
+      'Femenino y M17, que es lo más habitual. Si no es tu caso, cámbialos.'),
 
     apartado('Cómo se usa, de principio a fin',
       '1. Graba el asalto con el móvil, como cualquier vídeo.',
