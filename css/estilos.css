@@ -225,6 +225,17 @@ textarea.entrada {
 .grupo-opciones.cinco-columnas { grid-template-columns: repeat(5, 1fr); }
 .grupo-opciones.compacto { grid-template-columns: repeat(auto-fit, minmax(105px, 1fr)); }
 
+/* Las categorias son etiquetas cortas (M15, VET30) y son catorce, asi que
+   se aprietan mas que el resto: con 88 px entran tres por fila incluso en
+   un movil de 360 px, y no ocupan media pantalla a lo alto. */
+.grupo-opciones.categorias { grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); }
+
+.grupo-opciones.categorias .boton-opcion {
+  min-height: 48px;
+  padding: 0.6rem 0.3rem;
+  font-size: 0.9rem;
+}
+
 .boton-opcion {
   margin-bottom: 0;
   padding: 0.75rem 0.5rem;

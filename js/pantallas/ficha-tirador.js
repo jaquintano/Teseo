@@ -83,7 +83,7 @@ export function fichaTirador(tirador = {}, opciones = {}) {
         grupoOpcionesMultiple(CATEGORIAS, categorias, (valores) => {
           categorias = valores;
           avisoCategorias.hidden = true;
-        }, { clase: 'compacto' }))
+        }, { clase: 'categorias' }))
     : null;
   const avisoGenero = crear('p', {
     class: 'aviso', hidden: true,
