@@ -44,14 +44,16 @@ export async function pantallaAyuda(contenedor) {
       '3. Añade el vídeo. Si el asalto tuvo varios tiempos, añade uno por tiempo.',
       '4. Abre el vídeo y ve marcando lo que pasa en cada intercambio.',
       '5. Cuando quieras, entra en Estadísticas y mira qué te sale.',
-      'Del asalto se apunta también la fase —poule, tablón de 32, final…— y la ' +
-      'fatiga que sentiste, con una barra del 1 al 5 que va del azul al rojo. ' +
-      'La fecha no se pregunta: la pone la competición.'),
+      'Del asalto se apunta también la fase —poule, tablón de 32, final…—, cómo ' +
+      'acabó y la fatiga que sentiste, con una barra del 1 al 5 que va del azul ' +
+      'al rojo. La fecha no se pregunta: la pone la competición.',
+      'En el resultado, tus tocados van a la izquierda y los del rival a la ' +
+      'derecha, como se cantan: un 14-15 es que perdiste por uno.'),
 
     apartado('La lista de asaltos',
       'La pantalla de inicio es una tabla: cada fila es un asalto y se abre ' +
-      'tocándola. A la derecha va la fatiga que apuntaste, con su color. De ' +
-      'partida sale el último que apuntaste arriba.',
+      'tocándola. A la derecha, cómo acabó: en verde si ganaste y en rojo si ' +
+      'no. De partida sale el último que apuntaste arriba.',
       'En "Filtros y agrupación" puedes juntarlos por competición o por rival. ' +
       'Lo que agrupa desaparece de las filas, así que agrupando por competición ' +
       'ves de un tirón contra quién tiraste en ella.',

@@ -5,7 +5,7 @@
 
 import {
   anadir, crear, rellenar, cabecera, ir, campo, campoLargo, bloque, desplegable,
-  deslizador, colorDeEscala, formatearFecha, formatearBytes, formatearSegundos,
+  deslizador, formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
   FASES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe, nombreCompleto, coincide,
@@ -282,7 +282,7 @@ export async function pantallaInicio(contenedor) {
         secundaria ? crear('span', { class: 'segunda-linea', texto: secundaria }) : null,
       ]),
       crear('td', { class: 'apagado', texto: etiquetaDe(FASES, asalto.fase) || '—' }),
-      crear('td', { class: 'derecha' }, [puntoDeFatiga(asalto.fatiga)]),
+      crear('td', { class: 'derecha' }, [resultadoDelAsalto(asalto)]),
     ]);
   }
 
@@ -324,7 +324,7 @@ export async function pantallaInicio(contenedor) {
           crear('tr', {}, [
             crear('th', { texto: agrupacion === 'rival' ? 'Competición' : 'Tirador' }),
             crear('th', { texto: 'Fase' }),
-            crear('th', { class: 'derecha', texto: 'Fatiga' }),
+            crear('th', { class: 'derecha', texto: 'Resultado' }),
           ]),
         ]),
         cuerpo,
@@ -337,17 +337,24 @@ function nombreDeRival(rival) {
   return rival ? nombreCompleto(rival) : 'Rival borrado';
 }
 
-/** La fatiga, con la misma escala de color que la barra del formulario. */
-function puntoDeFatiga(fatiga) {
-  if (!fatiga) return crear('span', { class: 'apagado', texto: '—' });
+/**
+ * Cómo acabó el asalto: tus tocados a la izquierda, los del rival a la
+ * derecha. Verde si ganaste y rojo si perdiste, que es lo primero que se
+ * busca al mirar la lista.
+ */
+function resultadoDelAsalto(asalto) {
+  const final = asalto.tanteoFinal;
+  if (!final) return crear('span', { class: 'apagado', texto: '—' });
 
-  const punto = crear('span', {
-    class: 'punto-fatiga',
-    texto: String(fatiga),
-    title: `Fatiga ${fatiga} de 5`,
+  // En poule un asalto puede acabar en tablas si se agota el tiempo, y
+  // entonces no es ni una cosa ni la otra.
+  const como = final.favor > final.contra ? ' victoria'
+             : final.favor < final.contra ? ' derrota' : '';
+
+  return crear('span', {
+    class: 'resultado-asalto' + como,
+    texto: `${final.favor}–${final.contra}`,
   });
-  punto.style.background = colorDeEscala((fatiga - 1) / 4);
-  return punto;
 }
 
 // --- Alta y edición de un asalto --------------------------------------
@@ -477,6 +484,41 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   const fatiga = deslizador('Fatiga percibida', {
     min: 1, max: 5, valor: asalto.fatiga || FATIGA_POR_DEFECTO,
   });
+
+  // El resultado del asalto. Se pregunta aparte de las etiquetas porque el
+  // vídeo puede no tenerlo todo: lo que se apunta aquí es cómo acabó de
+  // verdad, lo diga o no la grabación.
+  const tocadosFavor = crear('input', {
+    class: 'entrada corta', type: 'number', min: 0, inputmode: 'numeric',
+    'aria-label': 'Tus tocados',
+    value: asalto.tanteoFinal ? asalto.tanteoFinal.favor : '',
+  });
+  const tocadosContra = crear('input', {
+    class: 'entrada corta', type: 'number', min: 0, inputmode: 'numeric',
+    'aria-label': 'Tocados del rival',
+    value: asalto.tanteoFinal ? asalto.tanteoFinal.contra : '',
+  });
+
+  const bloqueResultado = crear('div', { class: 'bloque-campo' }, [
+    crear('span', { class: 'etiqueta-campo', texto: 'Resultado final' }),
+    crear('div', { class: 'resultado-final' }, [
+      tocadosFavor,
+      crear('span', { class: 'separador-resultado', texto: '–' }),
+      tocadosContra,
+    ]),
+    crear('p', { class: 'ayuda', texto: 'Los tuyos a la izquierda, los del rival a la derecha.' }),
+  ]);
+
+  /** Lo que se guarda del resultado: nada si no has puesto ninguno. */
+  function leerResultado() {
+    const mios = tocadosFavor.value.trim();
+    const suyos = tocadosContra.value.trim();
+    if (mios === '' && suyos === '') return null;
+    return {
+      favor: Math.max(0, Number(mios) || 0),
+      contra: Math.max(0, Number(suyos) || 0),
+    };
+  }
   const nota = campoLargo('Nota', { value: asalto.nota || '' });
 
   // --- Competición ---
@@ -534,6 +576,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     avisoCompeticion,
     desplegable('Fase', FASES, fase, (valor) => { fase = valor; },
                 { vacio: '— Sin indicar —' }).bloque,
+    bloqueResultado,
     fatiga.bloque,
     nota.bloque,
     aviso,
@@ -575,6 +618,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           fecha: asalto.fecha ?? null,
           competicionId,
           fase,
+          tanteoFinal: leerResultado(),
           // El club no se pregunta aquí: ya está en la ficha del rival.
           fatiga: Number(fatiga.entrada.value),
           nota: nota.entrada.value.trim(),
@@ -607,6 +651,7 @@ export async function pantallaAsalto(contenedor, datos = {}) {
   tiempos.sort((a, b) => a.orden - b.orden);
 
   const contexto = [
+    asalto.tanteoFinal ? `${asalto.tanteoFinal.favor}–${asalto.tanteoFinal.contra}` : '',
     nombreDeCompeticion(competicion, asalto),
     formatearFecha(fechaDeAsalto(asalto, competicion)),
     asalto.numero ? `Asalto ${asalto.numero}` : '',

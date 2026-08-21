@@ -598,10 +598,22 @@ video::-webkit-media-controls-panel {
 .marcador-campo { margin: 0.5rem 0; }
 .marcador-campo .etiqueta-campo { margin-bottom: 0.2rem; }
 
-/* Para los dos números del marcador, que no necesitan todo el ancho. */
+/* Para los dos números de un marcador, que no necesitan todo el ancho. */
 .entrada.corta {
   width: 5rem;
   margin-bottom: 0;
+}
+
+/* Tus tocados a la izquierda y los del rival a la derecha, como se cantan. */
+.resultado-final {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.separador-resultado {
+  color: var(--texto-suave);
+  font-size: 1.2rem;
 }
 
 /* La ficha de un intercambio. Se abre encima de todo porque en la pantalla
@@ -794,17 +806,28 @@ video::-webkit-media-controls-panel {
   text-align: center;
 }
 
-/* La fatiga del asalto, con la misma escala de color que la barra del
-   formulario. El color lo pone el JavaScript. */
-.punto-fatiga {
+/* Cómo acabó el asalto, en la lista. El fondo es un tinte del mismo verde y
+   del mismo rojo de los tocados: se busca de un vistazo si se ganó o no.
+   Donde color-mix no llegue se queda sin fondo, y el color de la letra sigue
+   diciendo lo mismo. */
+.resultado-asalto {
   display: inline-block;
-  min-width: 26px;
-  padding: 0.1rem 0.35rem;
-  border-radius: 999px;
-  color: #0b1220;
-  font-size: 0.85rem;
+  min-width: 46px;
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
   font-weight: 600;
   text-align: center;
+}
+
+.resultado-asalto.victoria {
+  background: color-mix(in srgb, var(--favor) 20%, transparent);
+  color: var(--favor);
+}
+
+.resultado-asalto.derrota {
+  background: color-mix(in srgb, var(--contra) 20%, transparent);
+  color: var(--contra);
 }
 
 .tabla-rivales .derecha { text-align: right; }
