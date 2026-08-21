@@ -489,11 +489,11 @@ video::-webkit-media-controls-panel {
 }
 
 .tiempo {
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.5rem;
   /* Tabular para que los dígitos no bailen al avanzar el tiempo. */
   font-variant-numeric: tabular-nums;
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 0.95rem;
+  font-weight: 600;
   text-align: center;
 }
 
@@ -501,12 +501,20 @@ video::-webkit-media-controls-panel {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+/* La excepción a los 56 px de alto de todo lo que se toca: en esta pantalla
+   se pelean por el sitio el vídeo, la barra y la tabla, y estos botones se
+   dan sentado mirando el vídeo, no de pie en la sala. */
+.reproductor .boton {
+  min-height: 0;
+  padding: 0.45rem 0.8rem;
 }
 
 .rejilla-saltos .boton {
   margin-bottom: 0;
-  padding: 0.75rem 0.25rem;
+  padding: 0.45rem 0.25rem;
   font-size: 1rem;
 }
 
@@ -514,7 +522,7 @@ video::-webkit-media-controls-panel {
 
 .linea-tiempo {
   position: relative;
-  height: 52px;
+  height: 39px;
   margin-bottom: 0.5rem;
   background: var(--fondo-caja);
   border: 1px solid var(--borde);
@@ -535,12 +543,12 @@ video::-webkit-media-controls-panel {
   pointer-events: none;
 }
 
-/* Cada intercambio etiquetado. Estrecho para que quepan muchos, pero alto
-   para que se pueda dar con el dedo. */
+/* Cada intercambio etiquetado. Estrecho para que quepan muchos, pero tan
+   alto como deje la barra para que se pueda dar con el dedo. */
 .marca {
   position: absolute;
-  top: 4px;
-  bottom: 4px;
+  top: 3px;
+  bottom: 3px;
   width: 14px;
   margin-left: -7px;
   padding: 0;
