@@ -11,8 +11,8 @@
   --acento: #4c8dff;
   --peligro: #c0392b;
 
-  /* Cómo acabó un intercambio. Lo dicen la marca de la línea de tiempo y la
-     pastilla de la tabla, así que el color vive en un solo sitio. */
+  /* Cómo acabó un intercambio. Lo dicen la marca de la línea de tiempo y el
+     punto de la tabla, así que el color vive en un solo sitio. */
   --favor: #35c46b;
   --contra: #e05a4a;
   --doble: #e2a13a;
@@ -415,8 +415,11 @@ textarea.entrada {
 /* Dentro de una tabla, ni tan alto ni de color de peligro: no borra nada. */
 .boton-icono.en-tabla {
   width: auto;
-  min-height: 44px;
-  padding: 0 0.6rem;
+  /* Sin alto mínimo: el que mandaba antes estiraba todas las filas. Se gana
+     dedo a lo ancho, que a lo alto no hay sitio; y fallar por arriba o por
+     abajo no rompe nada, que ahí está la fila y sólo salta al instante. */
+  min-height: 0;
+  padding: 0.25rem 0.9rem;
   border-left: 0;
   color: var(--acento);
   font-size: 1rem;
@@ -610,22 +613,22 @@ video::-webkit-media-controls-panel {
 
 .contador { margin-bottom: 0.75rem; }
 
-/* El resultado de un intercambio en la tabla, del color de su marca. */
-.pastilla {
+/* El resultado de un intercambio en la tabla: sólo el color de su marca. El
+   nombre no hace falta —verde, rojo o ámbar se leen de un vistazo— y quitarlo
+   deja las filas a la mitad de alto. */
+.punto-resultado {
   display: inline-block;
-  padding: 0.15rem 0.55rem;
-  border-radius: 999px;
+  width: 18px;
+  height: 18px;
   background: var(--sin-etiquetar);
-  color: #0b1220;
-  font-size: 0.8rem;
-  font-weight: 600;
+  border-radius: 5px;
+  vertical-align: middle;
 }
 
-.pastilla-favor { background: var(--favor); }
-.pastilla-contra { background: var(--contra); }
-.pastilla-doble { background: var(--doble); }
-.pastilla-nada { background: var(--nada); }
-.pastilla-vacio { color: var(--texto); }
+.punto-favor { background: var(--favor); }
+.punto-contra { background: var(--contra); }
+.punto-doble { background: var(--doble); }
+.punto-nada { background: var(--nada); }
 
 .tanteo {
   font-variant-numeric: tabular-nums;
@@ -737,6 +740,14 @@ video::-webkit-media-controls-panel {
   padding: 0.65rem 0.5rem;
   border-bottom: 1px solid #232b36;
   vertical-align: top;
+}
+
+/* Un asalto son decenas de intercambios y cada fila dice tres cosas cortas:
+   apretadas caben muchas más de un vistazo. La fila entera sigue siendo el
+   sitio donde tocar para saltar, así que no se pierde tamaño de dedo. */
+.tabla-intercambios td {
+  padding: 0.3rem 0.5rem;
+  vertical-align: middle;
 }
 
 .fila-rival { cursor: pointer; }

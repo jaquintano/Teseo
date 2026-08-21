@@ -324,9 +324,12 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       }, [
         crear('td', { class: 'apagado', texto: formatearSegundos(intercambio.instante) }),
         crear('td', {}, [
+          // Sin texto: el color ya lo dice, y es el mismo de su marca. El
+          // nombre queda en el título, para quien no distinga los colores.
           crear('span', {
-            class: 'pastilla pastilla-' + (intercambio.resultado || 'vacio'),
-            texto: etiquetaDe(RESULTADOS, intercambio.resultado) || 'Sin etiquetar',
+            class: 'punto-resultado punto-' + (intercambio.resultado || 'vacio'),
+            title: etiquetaDe(RESULTADOS, intercambio.resultado) || 'Sin etiquetar',
+            'aria-label': etiquetaDe(RESULTADOS, intercambio.resultado) || 'Sin etiquetar',
           }),
         ]),
         crear('td', { class: 'derecha tanteo', texto: `${favor}–${contra}` }),
@@ -344,7 +347,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       ]));
 
     rellenar(tabla, crear('div', { class: 'tabla-scroll' }, [
-      crear('table', { class: 'tabla-rivales' }, [
+      crear('table', { class: 'tabla-rivales tabla-intercambios' }, [
         crear('thead', {}, [
           crear('tr', {}, [
             crear('th', { texto: 'Instante' }),
