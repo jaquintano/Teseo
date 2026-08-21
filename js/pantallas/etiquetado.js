@@ -143,8 +143,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   ficha.addEventListener('close', pintarIntercambios);
 
   const btnNuevo = hayVideo ? crear('button', {
-    type: 'button', class: 'boton boton-principal',
-    texto: 'Nuevo intercambio aquí',
+    type: 'button', class: 'boton boton-principal boton-compacto',
+    texto: 'Nuevo intercambio',
     onclick: crearIntercambio,
   }) : crear('p', {
     class: 'aviso',

@@ -121,6 +121,14 @@ export const CATEGORIA_POR_DEFECTO = 'M17';
 
 // La fase es secundaria y opcional. Se ofrece como lista para no tener que
 // escribirla a mano, que es incómodo de pie en la sala.
+// En espada no hay empates. Si al acabar el tiempo van iguales se tira un
+// minuto más —la prioridad— y se sortea a quién se le da: si ese minuto pasa
+// sin tocados, el punto y el asalto son suyos.
+export const PRIORIDADES = [
+  { id: 'yo', etiqueta: 'Yo' },
+  { id: 'rival', etiqueta: 'Mi rival' },
+];
+
 export const FASES = [
   { id: 'poule', etiqueta: 'Poule' },
   { id: 't256', etiqueta: 'Tablón de 256' },

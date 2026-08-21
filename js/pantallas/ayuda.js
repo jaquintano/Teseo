@@ -48,7 +48,9 @@ export async function pantallaAyuda(contenedor) {
       'acabó y la fatiga que sentiste, con una barra del 1 al 5 que va del azul ' +
       'al rojo. La fecha no se pregunta: la pone la competición.',
       'En el resultado, tus tocados van a la izquierda y los del rival a la ' +
-      'derecha, como se cantan: un 14-15 es que perdiste por uno.'),
+      'derecha, como se cantan: un 14-15 es que perdiste por uno.',
+      'Y si el asalto se fue al minuto de prioridad, di de quién era. Sirve ' +
+      'para saber después cómo se te dan esos minutos.'),
 
     apartado('La lista de asaltos',
       'La pantalla de inicio es una tabla: cada fila es un asalto y se abre ' +
@@ -84,7 +86,7 @@ export async function pantallaAyuda(contenedor) {
     apartado('Marcar un intercambio',
       'Reproduce el vídeo y pausa justo donde pasa algo. Con los botones de ' +
       '−0,1 s y +0,1 s afinas hasta el momento exacto.',
-      'Pulsa "Nuevo intercambio aquí" y se abre su ficha. Lo primero es cómo ' +
+      'Pulsa "Nuevo intercambio" y se abre su ficha. Lo primero es cómo ' +
       'acabó, que es lo que siempre se sabe; debajo, lo que hiciste TÚ, no el ' +
       'rival: tu acción ofensiva si atacaste, la defensiva si defendiste.',
       'No hace falta rellenarlo todo. Si sólo sabes que fue tocado en contra, ' +
@@ -107,7 +109,8 @@ export async function pantallaAyuda(contenedor) {
 
     apartado('Rivales',
       'Los rivales se guardan aparte, porque te los cruzas muchas veces. Los ' +
-      'das de alta una vez y luego los eliges de la lista.',
+      'das de alta una vez y luego los eliges de la lista. Corregir una ficha ' +
+      'se hace siempre aquí, no desde el asalto.',
       'Al buscar da igual el orden, los acentos y las mayúsculas: la ' +
       'federación los publica como "USEROS MARTÍN, MARÍA" pero puedes escribir ' +
       '"maria useros" y sale igual.',

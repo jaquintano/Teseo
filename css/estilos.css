@@ -507,7 +507,8 @@ video::-webkit-media-controls-panel {
 /* La excepción a los 56 px de alto de todo lo que se toca: en esta pantalla
    se pelean por el sitio el vídeo, la barra y la tabla, y estos botones se
    dan sentado mirando el vídeo, no de pie en la sala. */
-.reproductor .boton {
+.reproductor .boton,
+.boton-compacto {
   min-height: 0;
   padding: 0.45rem 0.8rem;
 }

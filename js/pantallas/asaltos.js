@@ -8,8 +8,8 @@ import {
   deslizador, formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  FASES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe, nombreCompleto, coincide,
-  opcionesPara,
+  FASES, PRIORIDADES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe, nombreCompleto,
+  coincide, opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 import { resumirCompeticion } from '../competiciones.js';
@@ -364,9 +364,9 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   const esNuevo = datos.id === undefined;
   const rivales = await listarRivales();
 
-  // Si venimos de corregir la ficha del rival, ya llega elegido.
-  let rivalId = datos.rivalIdElegido ?? asalto.rivalId ?? null;
+  let rivalId = asalto.rivalId ?? null;
   let fase = asalto.fase || null;
+  let prioridad = asalto.prioridad || null;
 
   // --- Elección del rival ---
   // Con rankings enteros importados puede haber cientos de fichas, así que
@@ -437,6 +437,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
       return;
     }
 
+    // Sólo se enseña quién es. Corregir su ficha es cosa de Menú → Rivales.
     const partes = [
       crear('div', { class: 'ficha-lista' }, [
         crear('span', { class: 'ficha-titulo', texto: nombreCompleto(rival) }),
@@ -446,14 +447,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
             .filter(Boolean).join(' · '),
         }),
       ]),
-      crear('button', {
-        type: 'button', class: 'boton', texto: 'Editar ficha del rival',
-        onclick: () => ir('rival', {
-          id: rival.id,
-          volverA: 'asalto-nuevo',
-          datosVuelta: { ...datos, rivalIdElegido: rival.id },
-        }),
-      }),
     ];
 
     // La mano del rival no puede quedarse vacía: es uno de los filtros de
@@ -577,6 +570,8 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     desplegable('Fase', FASES, fase, (valor) => { fase = valor; },
                 { vacio: '— Sin indicar —' }).bloque,
     bloqueResultado,
+    desplegable('Prioridad', PRIORIDADES, prioridad, (valor) => { prioridad = valor; },
+                { vacio: '— No hubo —' }).bloque,
     fatiga.bloque,
     nota.bloque,
     aviso,
@@ -619,6 +614,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           competicionId,
           fase,
           tanteoFinal: leerResultado(),
+          prioridad,
           // El club no se pregunta aquí: ya está en la ficha del rival.
           fatiga: Number(fatiga.entrada.value),
           nota: nota.entrada.value.trim(),
@@ -685,15 +681,6 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     crear('p', { class: 'ayuda', texto: contexto }),
     // El club del rival sale de su ficha, no se vuelve a preguntar en cada asalto.
     rivalEnUnaLinea(rival),
-
-    rival ? crear('button', {
-      type: 'button', class: 'boton', texto: 'Editar ficha del rival',
-      onclick: () => ir('rival', {
-        id: rival.id,
-        volverA: 'asalto',
-        datosVuelta: { id: asalto.id },
-      }),
-    }) : null,
 
     crear('h3', { class: 'subtitulo-seccion', texto: 'Tiempos' }),
     crear('p', {
