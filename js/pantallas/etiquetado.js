@@ -16,6 +16,11 @@
 // coloreada según el resultado. Tocarla te lleva a ese instante y abre su
 // ficha para corregirla o borrarla. Tocando la línea en cualquier otro sitio
 // saltas a ese momento del vídeo.
+//
+// Y debajo va lo mismo en forma de tabla, que con el dedo es más fácil de
+// acertar que una marca de catorce píxeles: cada fila lleva su instante, su
+// resultado con el color de la marca y cómo iba el marcador. Tocarla hace lo
+// mismo que tocar la marca.
 
 import {
   anadir, crear, rellenar, cabecera, ir, bloque, grupoOpciones,
@@ -23,12 +28,13 @@ import {
 } from '../ui.js';
 import {
   ACCIONES_OFENSIVAS, ACCIONES_DEFENSIVAS, RESULTADOS,
-  RESULTADOS_CON_TOCADO, ZONAS_CUERPO, ZONAS_PISTA,
+  RESULTADOS_CON_TOCADO, ZONAS_CUERPO, ZONAS_PISTA, etiquetaDe,
 } from '../constantes.js';
 import {
   ALMACENES, obtener, guardar, borrar, listarPor, leerVideo,
 } from '../db.js';
 import { crearReproductor } from '../video.js';
+import { contarTocados, tanteoCorrido } from '../tanteo.js';
 
 // El reproductor de la pantalla, para soltarlo al salir y no dejar cientos
 // de megas ocupando memoria.
@@ -39,6 +45,31 @@ export function soltarReproductor() {
     reproductorActivo.destruir();
     reproductorActivo = null;
   }
+}
+
+/**
+ * Con qué marcador se llega a un tiempo: el que dejaron los anteriores del
+ * mismo asalto.
+ *
+ * Se cuenta tiempo a tiempo y no de un tirón por el asalto, porque los
+ * intercambios más viejos pueden no llevar guardado de qué asalto son y se
+ * quedarían fuera del índice.
+ */
+async function tanteoAlEmpezar(tiempo) {
+  const tiempos = await listarPor(ALMACENES.tiempos, 'por-asalto', tiempo.asaltoId);
+  const anteriores = tiempos.filter((otro) => (otro.orden || 0) < (tiempo.orden || 0));
+
+  let favor = 0;
+  let contra = 0;
+
+  for (const anterior of anteriores) {
+    const suyos = await listarPor(ALMACENES.intercambios, 'por-tiempo', anterior.id);
+    const cuenta = contarTocados(suyos);
+    favor += cuenta.favor;
+    contra += cuenta.contra;
+  }
+
+  return { favor, contra };
 }
 
 export async function pantallaEtiquetado(contenedor, datos = {}) {
@@ -52,6 +83,10 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   let intercambios = await listarPor(ALMACENES.intercambios, 'por-tiempo', tiempo.id);
   ordenar(intercambios);
+
+  // El marcador viene de atrás: en una directa, el segundo tiempo empieza
+  // donde acabó el primero.
+  const tanteoInicial = await tanteoAlEmpezar(tiempo);
 
   // El intercambio que se está editando ahora mismo, o null.
   let activo = null;
@@ -96,6 +131,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   const contador = crear('p', { class: 'ayuda contador' });
   const editor = crear('div', { class: 'editor' });
+  const tabla = crear('div');
 
   const btnNuevo = crear('button', {
     type: 'button', class: 'boton boton-principal',
@@ -110,6 +146,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     contador,
     btnNuevo,
     editor,
+    tabla,
     crear('p', {
       class: 'ayuda pie',
       texto: [
@@ -120,9 +157,9 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   );
 
   reproductor.cargar(fichero);
-  reproductor.video.addEventListener('loadedmetadata', pintarMarcas);
+  reproductor.video.addEventListener('loadedmetadata', pintarIntercambios);
 
-  pintarMarcas();
+  pintarIntercambios();
   pintarEditor();
 
   // ------------------------------------------------------------------
@@ -142,8 +179,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     cursor.style.left = `${Math.min(100, (segundos / duracion()) * 100)}%`;
   }
 
-  /** Repinta todas las marcas de la línea de tiempo. */
-  function pintarMarcas() {
+  /** Repinta las marcas de la línea de tiempo y la tabla de debajo. */
+  function pintarIntercambios() {
     for (const vieja of barra.querySelectorAll('.marca')) vieja.remove();
 
     for (const intercambio of intercambios) {
@@ -169,6 +206,45 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     contador.textContent = cuantos === 0
       ? 'Todavía no has etiquetado ningún intercambio.'
       : `${cuantos} intercambio${cuantos === 1 ? '' : 's'} etiquetado${cuantos === 1 ? '' : 's'}.`;
+
+    pintarTabla();
+  }
+
+  /**
+   * La lista de intercambios: cuándo, cómo acabó y cómo iba el marcador.
+   * Es la forma cómoda de saltar por el vídeo — una marca de la línea mide
+   * catorce píxeles y con el dedo se falla.
+   */
+  function pintarTabla() {
+    if (intercambios.length === 0) { rellenar(tabla, []); return; }
+
+    const filas = tanteoCorrido(intercambios, tanteoInicial).map(({ intercambio, favor, contra }) =>
+      crear('tr', {
+        class: 'fila-rival' + (activo && activo.id === intercambio.id ? ' fila-activa' : ''),
+        onclick: () => abrir(intercambio),
+      }, [
+        crear('td', { class: 'apagado', texto: formatearSegundos(intercambio.instante) }),
+        crear('td', {}, [
+          crear('span', {
+            class: 'pastilla pastilla-' + (intercambio.resultado || 'vacio'),
+            texto: etiquetaDe(RESULTADOS, intercambio.resultado) || 'Sin etiquetar',
+          }),
+        ]),
+        crear('td', { class: 'derecha tanteo', texto: `${favor}–${contra}` }),
+      ]));
+
+    rellenar(tabla, crear('div', { class: 'tabla-scroll' }, [
+      crear('table', { class: 'tabla-rivales' }, [
+        crear('thead', {}, [
+          crear('tr', {}, [
+            crear('th', { texto: 'Instante' }),
+            crear('th', { texto: 'Resultado' }),
+            crear('th', { class: 'derecha', texto: 'Tanteo' }),
+          ]),
+        ]),
+        crear('tbody', {}, filas),
+      ]),
+    ]));
   }
 
   /** Crea un intercambio en el instante en el que está parado el vídeo. */
@@ -200,14 +276,14 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   function abrir(intercambio) {
     activo = intercambio;
     reproductor.irA(intercambio.instante);
-    pintarMarcas();
+    pintarIntercambios();
     pintarEditor();
     editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function cerrar() {
     activo = null;
-    pintarMarcas();
+    pintarIntercambios();
     pintarEditor();
   }
 
@@ -223,7 +299,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     }
 
     await guardar(ALMACENES.intercambios, activo);
-    pintarMarcas();
+    pintarIntercambios();
 
     // Al cambiar el resultado aparecen o desaparecen las zonas.
     if (campo === 'resultado') pintarEditor();

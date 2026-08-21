@@ -10,6 +10,14 @@
   --texto-suave: #9aa7b8;
   --acento: #4c8dff;
   --peligro: #c0392b;
+
+  /* Cómo acabó un intercambio. Lo dicen la marca de la línea de tiempo y la
+     pastilla de la tabla, así que el color vive en un solo sitio. */
+  --favor: #35c46b;
+  --contra: #e05a4a;
+  --doble: #e2a13a;
+  --nada: #6b7889;
+  --sin-etiquetar: #4c5c70;
   --radio: 12px;
 }
 
@@ -530,11 +538,11 @@ video::-webkit-media-controls-panel {
   touch-action: pan-x pan-y;
 }
 
-.marca-favor { background: #35c46b; }
-.marca-contra { background: #e05a4a; }
-.marca-doble { background: #e2a13a; }
-.marca-nada { background: #6b7889; }
-.marca-vacio { background: #4c5c70; }
+.marca-favor { background: var(--favor); }
+.marca-contra { background: var(--contra); }
+.marca-doble { background: var(--doble); }
+.marca-nada { background: var(--nada); }
+.marca-vacio { background: var(--sin-etiquetar); }
 
 .marca-activa {
   border-color: var(--texto);
@@ -542,6 +550,37 @@ video::-webkit-media-controls-panel {
 }
 
 .contador { margin-bottom: 0.75rem; }
+
+/* El resultado de un intercambio en la tabla, del color de su marca. */
+.pastilla {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--sin-etiquetar);
+  color: #0b1220;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.pastilla-favor { background: var(--favor); }
+.pastilla-contra { background: var(--contra); }
+.pastilla-doble { background: var(--doble); }
+.pastilla-nada { background: var(--nada); }
+.pastilla-vacio { color: var(--texto); }
+
+.tanteo {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* El intercambio que se está editando, señalado también en la tabla. */
+.fila-activa td {
+  background: #232b36;
+}
+
+.fila-activa td:first-child {
+  box-shadow: inset 3px 0 0 var(--acento);
+}
 
 /* --- Ficha del intercambio -------------------------------------------- */
 

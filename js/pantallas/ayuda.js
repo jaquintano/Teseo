@@ -60,6 +60,15 @@ export async function pantallaAyuda(contenedor) {
       'Dentro de cada competición, arriba lo último que tiraste: la final es ' +
       'más tarde que la poule.'),
 
+    apartado('La tabla de intercambios',
+      'Debajo del vídeo tienes la lista de lo que llevas etiquetado: cuándo ' +
+      'fue, cómo acabó —con el mismo color que su marca— y cómo iba el ' +
+      'marcador. Toca una fila y el vídeo salta ahí.',
+      'El tanteo cuenta el doble para los dos, así que tres tocados a favor, ' +
+      'uno en contra y dos dobles son un 5-3.',
+      'Y no se reinicia con cada vídeo: si el asalto tiene varios tiempos, el ' +
+      'segundo empieza donde lo dejó el primero.'),
+
     apartado('Marcar un intercambio',
       'Reproduce el vídeo y pausa justo donde pasa algo. Con los botones de ' +
       '−0,1 s y +0,1 s afinas hasta el momento exacto.',
@@ -74,7 +83,8 @@ export async function pantallaAyuda(contenedor) {
       'Cada marca de colores es un intercambio que ya has etiquetado. Verde es ' +
       'tocado a favor, rojo en contra, ámbar doble.',
       'Tócala en cualquier punto para saltar a ese momento. Toca una marca ' +
-      'para volver a ella y corregirla o borrarla.',
+      'para volver a ella y corregirla o borrarla. Si con el dedo se te ' +
+      'resisten, usa la tabla de más abajo: hace lo mismo y se acierta mejor.',
       'Puedes ampliar el vídeo con dos dedos, y el botón "Ajustar" lo devuelve ' +
       'a su tamaño.'),
 
