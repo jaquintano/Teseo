@@ -22,33 +22,33 @@ export async function pantallaMenu(contenedor) {
     }) : null,
 
     crear('button', {
-      type: 'button', class: 'boton boton-principal', texto: 'Estadísticas',
+      type: 'button', class: 'boton boton-principal boton-compacto', texto: 'Estadísticas',
       onclick: () => ir('estadisticas'),
     }),
     crear('button', {
-      type: 'button', class: 'boton', texto: 'Mi perfil',
+      type: 'button', class: 'boton boton-compacto', texto: 'Mi perfil',
       onclick: () => ir('perfil', { volverA: 'menu' }),
     }),
     crear('button', {
-      type: 'button', class: 'boton', texto: 'Rivales',
+      type: 'button', class: 'boton boton-compacto', texto: 'Rivales',
       onclick: () => ir('rivales', { volverA: 'menu' }),
     }),
     crear('button', {
-      type: 'button', class: 'boton', texto: 'Competiciones',
+      type: 'button', class: 'boton boton-compacto', texto: 'Competiciones',
       onclick: () => ir('competiciones', { volverA: 'menu' }),
     }),
     crear('button', {
-      type: 'button', class: 'boton', texto: 'Ayuda',
+      type: 'button', class: 'boton boton-compacto', texto: 'Ayuda',
       onclick: () => ir('ayuda'),
     }),
     crear('button', {
-      type: 'button', class: 'boton', texto: 'Configuración',
+      type: 'button', class: 'boton boton-compacto', texto: 'Configuración',
       onclick: () => ir('configuracion'),
     }),
 
     // Sólo aparece si el navegador ofrece instalar y no lo está ya.
     sePuedeInstalar() ? crear('button', {
-      type: 'button', class: 'boton', texto: 'Instalar en la pantalla de inicio',
+      type: 'button', class: 'boton boton-compacto', texto: 'Instalar en la pantalla de inicio',
       onclick: async () => { await instalar(); ir('menu'); },
     }) : null,
 

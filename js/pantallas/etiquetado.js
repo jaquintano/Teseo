@@ -40,6 +40,12 @@ import {
 import { crearReproductor } from '../video.js';
 import { tanteosDeLosTiempos, tanteoCorrido } from '../tanteo.js';
 
+// Cuánto se ve de un intercambio al tocarlo: un par de segundos de carrerilla
+// para entender de dónde viene la acción, y medio segundo detrás para ver cómo
+// acaba. Se para solo.
+const SEGUNDOS_ANTES = 2;
+const SEGUNDOS_DESPUES = 0.5;
+
 // El reproductor de la pantalla, para soltarlo al salir y no dejar cientos
 // de megas ocupando memoria.
 let reproductorActivo = null;
@@ -386,10 +392,13 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     editar(nuevo);
   }
 
-  /** Lleva el vídeo al instante de un intercambio y lo señala. Nada más. */
+  /** Enseña el trozo de vídeo de un intercambio y lo señala en la lista. */
   function abrir(intercambio) {
     activo = intercambio;
-    if (hayVideo) reproductor.irA(intercambio.instante);
+    if (hayVideo) {
+      reproductor.verTramo(intercambio.instante - SEGUNDOS_ANTES,
+                           intercambio.instante + SEGUNDOS_DESPUES);
+    }
     pintarIntercambios();
   }
 

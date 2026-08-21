@@ -47,6 +47,10 @@ export function crearReproductor(opciones = {}) {
 
   let urlActual = null;
 
+  // Hasta dónde hay que dejar correr el vídeo antes de pararlo solo, o null
+  // si va suelto. Se usa al tocar un intercambio: se ve el trozo y para.
+  let paradaAutomatica = null;
+
   function refrescar() {
     const duracion = isFinite(video.duration) ? video.duration.toFixed(2) : '—';
     marcador.textContent = `${video.currentTime.toFixed(2)} s / ${duracion} s`;
@@ -59,6 +63,34 @@ export function crearReproductor(opciones = {}) {
     if (video.paused || video.ended) return;
     refrescar();
     requestAnimationFrame(bucle);
+  }
+
+  /** ¿Toca ya parar el tramo? */
+  function comprobarParada() {
+    if (paradaAutomatica === null) return true;
+
+    if (video.paused || video.ended || video.currentTime >= paradaAutomatica) {
+      paradaAutomatica = null;
+      pausarConSeguridad();
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Para el vídeo al llegar al final del tramo.
+   *
+   * Se mira en cada fotograma porque timeupdate sólo avisa cuatro veces por
+   * segundo, y para un tramo que acaba medio segundo después de la marca, un
+   * cuarto de segundo de más se nota.
+   *
+   * Pero requestAnimationFrame no corre si la página no se está pintando —con
+   * la pantalla apagada, o con Teseo de fondo—, así que timeupdate queda de
+   * red: menos fino, pero ahí sigue.
+   */
+  function vigilarParada() {
+    if (comprobarParada()) return;
+    requestAnimationFrame(vigilarParada);
   }
 
   async function pausarConSeguridad() {
@@ -77,6 +109,7 @@ export function crearReproductor(opciones = {}) {
 
   async function saltar(segundos) {
     if (!video.src) return;
+    paradaAutomatica = null;
     await pausarConSeguridad();
 
     const maximo = isFinite(video.duration) ? video.duration : Infinity;
@@ -92,6 +125,8 @@ export function crearReproductor(opciones = {}) {
 
   async function alternar() {
     if (!video.src) return;
+    // Si lo arranca el usuario, que corra hasta donde él quiera.
+    paradaAutomatica = null;
     if (video.paused) {
       try {
         promesaDeReproduccion = video.play();
@@ -108,7 +143,7 @@ export function crearReproductor(opciones = {}) {
 
   video.addEventListener('loadedmetadata', refrescar);
   video.addEventListener('seeked', () => { refrescar(); aplicarSalto(); });
-  video.addEventListener('timeupdate', refrescar);
+  video.addEventListener('timeupdate', () => { refrescar(); comprobarParada(); });
   video.addEventListener('play', () => { btnPlay.textContent = 'Pausa'; bucle(); });
   video.addEventListener('pause', () => { btnPlay.textContent = 'Reproducir'; refrescar(); });
   // Una pulsación larga sacaba el menú de "descargar vídeo".
@@ -234,10 +269,38 @@ export function crearReproductor(opciones = {}) {
 
     /** Coloca el vídeo en un instante concreto, en segundos. */
     irA(segundos) {
+      paradaAutomatica = null;
       pausarConSeguridad().then(() => {
         destinoPendiente = segundos;
         aplicarSalto();
       });
+    },
+
+    /**
+     * Reproduce un trozo del vídeo y para al llegar al final.
+     * Es lo que se hace al tocar un intercambio: se ve lo justo y para solo,
+     * sin tener que buscar el botón de pausa.
+     */
+    async verTramo(desde, hasta) {
+      if (!video.src) return;
+
+      await pausarConSeguridad();
+
+      const maximo = isFinite(video.duration) ? video.duration : Infinity;
+      video.currentTime = Math.min(Math.max(0, desde), maximo);
+      paradaAutomatica = Math.min(hasta, maximo);
+
+      try {
+        promesaDeReproduccion = video.play();
+        await promesaDeReproduccion;
+      } catch (error) {
+        console.error('El navegador rechazó reproducir:', error);
+        paradaAutomatica = null;
+      } finally {
+        promesaDeReproduccion = null;
+      }
+
+      requestAnimationFrame(vigilarParada);
     },
 
     tiempoActual() {

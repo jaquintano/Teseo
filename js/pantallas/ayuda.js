@@ -67,8 +67,10 @@ export async function pantallaAyuda(contenedor) {
     apartado('La tabla de intercambios',
       'Debajo del vídeo tienes la lista de lo que llevas etiquetado: cuándo ' +
       'fue, cómo acabó —con el mismo color que su marca— y cómo iba el ' +
-      'marcador. Toca una fila y el vídeo salta ahí, sin abrirte nada: repasar ' +
-      'el asalto no tiene por qué interrumpirse.',
+      'marcador. Toca una fila y se reproduce ese intercambio: arranca dos ' +
+      'segundos antes de la marca, para que veas de dónde viene la acción, y ' +
+      'para medio segundo después. No te abre nada: repasar el asalto no tiene ' +
+      'por qué interrumpirse.',
       'Para corregir una etiqueta, el lápiz de su fila. Ahí sí se abre la ' +
       'ficha, encima de todo, y al cerrarla vuelves donde estabas.',
       'El tanteo cuenta el doble para los dos, así que tres tocados a favor, ' +
@@ -96,9 +98,10 @@ export async function pantallaAyuda(contenedor) {
     apartado('La barra de debajo del vídeo',
       'Cada marca de colores es un intercambio que ya has etiquetado. Verde es ' +
       'tocado a favor, rojo en contra, ámbar doble.',
-      'Tócala en cualquier punto —o toca una marca— para saltar a ese momento. ' +
-      'Si con el dedo se te resisten, usa la tabla de más abajo, que se acierta ' +
-      'mejor.',
+      'Tocar una marca reproduce ese intercambio, igual que desde la tabla. Y ' +
+      'tocar la barra en cualquier otro punto salta a ese momento y se queda ' +
+      'ahí parado. Si las marcas se te resisten con el dedo, usa la tabla de ' +
+      'más abajo, que se acierta mejor.',
       'Puedes ampliar el vídeo con dos dedos, y el botón "Ajustar" lo devuelve ' +
       'a su tamaño.'),
 

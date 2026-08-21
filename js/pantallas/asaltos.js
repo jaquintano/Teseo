@@ -701,7 +701,7 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     // Al final del todo y con su color: borrar un asalto se lleva por delante
     // los vídeos y las etiquetas, y no hay copia en ninguna parte.
     crear('button', {
-      type: 'button', class: 'boton boton-peligro', texto: 'Borrar asalto',
+      type: 'button', class: 'boton boton-peligro boton-compacto', texto: 'Borrar asalto',
       onclick: async () => {
         if (!confirm('¿Borrar este asalto con sus vídeos y sus etiquetas?')) return;
         await borrarAsalto(asalto.id);
