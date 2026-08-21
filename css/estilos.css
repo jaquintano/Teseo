@@ -442,6 +442,20 @@ textarea.entrada {
 /* El marco recorta la imagen cuando está ampliada, para que no se salga.
    touch-action: none porque los gestos de aquí dentro los manejamos
    nosotros: si no, el navegador se los quedaría. */
+/* Etiquetar es mirar el vídeo y la lista a la vez, así que al bajar por la
+   tabla el reproductor se queda pegado al borde de arriba en vez de irse.
+   Se pega entero y no sólo la imagen: si no, al llegar abajo estarías viendo
+   el vídeo sin poder pausarlo ni afinar con los saltos.
+
+   El fondo es imprescindible: sin él, la tabla se leería por debajo. */
+.reproductor {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-bottom: 0.5rem;
+  background: var(--fondo);
+}
+
 .marco-video {
   position: relative;
   margin-bottom: 0.75rem;
