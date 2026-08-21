@@ -412,15 +412,6 @@ textarea.entrada {
   cursor: pointer;
 }
 
-/* El aspa de borrar un asalto: en la esquina de su ficha, debajo del
-   resultado y a la altura de la línea de la competición. */
-.tabla-rivales .derecha .boton-icono {
-  display: block;
-  margin-left: auto;
-}
-
-.boton-icono.en-tabla.borrar { color: #ff8a7a; }
-
 /* Dentro de una tabla, ni tan alto ni de color de peligro: no borra nada. */
 .boton-icono.en-tabla {
   width: auto;

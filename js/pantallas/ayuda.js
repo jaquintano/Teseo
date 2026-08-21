@@ -61,8 +61,6 @@ export async function pantallaAyuda(contenedor) {
       'ves de un tirón contra quién tiraste en ella.',
       'Y puedes quedarte sólo con un rival o una competición. Arriba te dice ' +
       'cuántos asaltos estás viendo de cuántos.',
-      'La cruz roja de la esquina de cada asalto lo borra, con sus vídeos y ' +
-      'sus etiquetas. Pregunta antes.',
       'Dentro de cada competición, arriba lo último que tiraste: la final es ' +
       'más tarde que la poule.'),
 
