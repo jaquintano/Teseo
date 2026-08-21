@@ -549,6 +549,36 @@ video::-webkit-media-controls-panel {
   box-shadow: 0 0 0 2px var(--acento);
 }
 
+/* El marcador con el que empieza un tiempo, y su corrección a mano. */
+.marcador {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.8rem;
+  background: var(--fondo-caja);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.marcador-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.marcador-fila .etiqueta-campo { margin-bottom: 0; }
+.marcador .boton-volver { margin-left: auto; }
+
+.tanteo-grande {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Para los dos números del marcador, que no necesitan todo el ancho. */
+.entrada.corta {
+  width: 5rem;
+  margin-bottom: 0;
+}
+
 .contador { margin-bottom: 0.75rem; }
 
 /* El resultado de un intercambio en la tabla, del color de su marca. */

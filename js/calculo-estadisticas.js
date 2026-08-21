@@ -20,6 +20,7 @@
 import {
   ACCIONES_OFENSIVAS, ZONAS_CUERPO, ZONAS_PISTA, TRAMOS,
 } from './constantes.js';
+import { tanteosDeLosTiempos, tanteoCorrido, situacionDe } from './tanteo.js';
 
 /**
  * Añade a cada intercambio el contexto que hace falta para las cuentas:
@@ -32,6 +33,15 @@ export function prepararIntercambios({ asaltos = [], tiempos = [], intercambios 
   const tiradorPorId = new Map(tiradores.map((t) => [t.id, t]));
   const asaltoPorId = new Map(asaltos.map((a) => [a.id, a]));
   const tiempoPorId = new Map(tiempos.map((t) => [t.id, t]));
+
+  const porTiempo = new Map();
+  for (const intercambio of intercambios) {
+    if (!porTiempo.has(intercambio.tiempoId)) porTiempo.set(intercambio.tiempoId, []);
+    porTiempo.get(intercambio.tiempoId).push(intercambio);
+  }
+
+  // Cómo iba el marcador al empezar cada intercambio, por id.
+  const marcadorDe = new Map();
 
   // Si un vídeo no dejó leer su duración, usamos como duración el instante
   // del último intercambio etiquetado en él. Es una aproximación, pero mejor
@@ -63,9 +73,20 @@ export function prepararIntercambios({ asaltos = [], tiempos = [], intercambios 
       acumulado += duracionDe(tiempo);
     }
     lineaDeAsalto.set(asalto.id, { desplazamiento, total: acumulado });
+
+    // Y el marcador con el que se llegó a cada intercambio, que para eso se
+    // guarda con qué empieza cada tiempo.
+    const inicialesDeTiempo = tanteosDeLosTiempos(suyos, (t) => porTiempo.get(t.id) || []);
+    for (const tiempo of suyos) {
+      const enOrden = [...(porTiempo.get(tiempo.id) || [])].sort((a, b) => a.instante - b.instante);
+      for (const paso of tanteoCorrido(enOrden, inicialesDeTiempo.get(tiempo.id))) {
+        marcadorDe.set(paso.intercambio.id, paso.antes);
+      }
+    }
   }
 
   return intercambios.map((intercambio) => {
+    const marcador = marcadorDe.get(intercambio.id) || { favor: 0, contra: 0 };
     const tiempo = tiempoPorId.get(intercambio.tiempoId);
     const asaltoId = intercambio.asaltoId ?? (tiempo ? tiempo.asaltoId : undefined);
     const asalto = asaltoPorId.get(asaltoId);
@@ -89,6 +110,11 @@ export function prepararIntercambios({ asaltos = [], tiempos = [], intercambios 
       fecha: asalto ? asalto.fecha : null,
       posicion,
       tramo,
+      // Cómo iba el marcador ANTES de este intercambio: es el estado con el
+      // que se decidió cómo tirarlo.
+      favorAntes: marcador.favor,
+      contraAntes: marcador.contra,
+      situacion: situacionDe(marcador),
     };
   });
 }
@@ -98,13 +124,15 @@ export function prepararIntercambios({ asaltos = [], tiempos = [], intercambios 
  * (null o undefined) no filtra nada.
  *
  * @param {Array} preparados
- * @param {{rivalId?: number, manoRival?: string, numeroAsalto?: number}} filtros
+ * @param {{rivalId?: number, manoRival?: string, numeroAsalto?: number,
+ *          situacion?: string}} filtros
  */
 export function filtrar(preparados, filtros = {}) {
   return preparados.filter((i) => {
     if (filtros.rivalId != null && i.rivalId !== filtros.rivalId) return false;
     if (filtros.manoRival != null && i.manoRival !== filtros.manoRival) return false;
     if (filtros.numeroAsalto != null && i.numeroAsalto !== filtros.numeroAsalto) return false;
+    if (filtros.situacion != null && i.situacion !== filtros.situacion) return false;
     return true;
   });
 }

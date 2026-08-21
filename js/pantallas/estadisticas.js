@@ -4,7 +4,7 @@
 // sabe nada de pantallas ni de base de datos y se puede llevar aparte.
 
 import { anadir, crear, rellenar, cabecera, ir, bloque, grupoOpciones } from '../ui.js';
-import { MANOS, nombreCompleto, opcionesPara } from '../constantes.js';
+import { MANOS, SITUACIONES, nombreCompleto, opcionesPara } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 import { ALMACENES, listar, listarRivales } from '../db.js';
 import { prepararIntercambios, filtrar, calcular } from '../calculo-estadisticas.js';
@@ -60,7 +60,7 @@ export async function pantallaEstadisticas(contenedor) {
   const numeros = [...new Set(asaltos.map((a) => a.numero).filter((n) => n != null))]
     .sort((a, b) => a - b);
 
-  const filtros = { rivalId: null, manoRival: null, numeroAsalto: null };
+  const filtros = { rivalId: null, manoRival: null, numeroAsalto: null, situacion: null };
   const resultados = crear('div');
 
   // --- Filtros ---
@@ -90,6 +90,10 @@ export async function pantallaEstadisticas(contenedor) {
       bloque('Rival', selectorRival),
       bloque('Mano del rival', grupoOpciones(opcionesPara(MANOS, generoDelUsuario()), null,
         (valor) => { filtros.manoRival = valor; pintar(); }, { clase: 'tres-columnas' })),
+
+      // No se juega igual ganando que perdiendo.
+      bloque('Cómo iba el marcador', grupoOpciones(SITUACIONES, null,
+        (valor) => { filtros.situacion = valor; pintar(); }, { clase: 'tres-columnas' })),
       numeros.length > 0 ? bloque('Número de asalto', selectorNumero) : null,
     ]),
 

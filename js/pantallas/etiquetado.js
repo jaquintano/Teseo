@@ -34,7 +34,7 @@ import {
   ALMACENES, obtener, guardar, borrar, listarPor, leerVideo,
 } from '../db.js';
 import { crearReproductor } from '../video.js';
-import { contarTocados, tanteoCorrido } from '../tanteo.js';
+import { tanteosDeLosTiempos, tanteoCorrido } from '../tanteo.js';
 
 // El reproductor de la pantalla, para soltarlo al salir y no dejar cientos
 // de megas ocupando memoria.
@@ -57,19 +57,14 @@ export function soltarReproductor() {
  */
 async function tanteoAlEmpezar(tiempo) {
   const tiempos = await listarPor(ALMACENES.tiempos, 'por-asalto', tiempo.asaltoId);
-  const anteriores = tiempos.filter((otro) => (otro.orden || 0) < (tiempo.orden || 0));
 
-  let favor = 0;
-  let contra = 0;
-
-  for (const anterior of anteriores) {
-    const suyos = await listarPor(ALMACENES.intercambios, 'por-tiempo', anterior.id);
-    const cuenta = contarTocados(suyos);
-    favor += cuenta.favor;
-    contra += cuenta.contra;
+  const porTiempo = new Map();
+  for (const otro of tiempos) {
+    porTiempo.set(otro.id, await listarPor(ALMACENES.intercambios, 'por-tiempo', otro.id));
   }
 
-  return { favor, contra };
+  const tanteos = tanteosDeLosTiempos(tiempos, (otro) => porTiempo.get(otro.id) || []);
+  return tanteos.get(tiempo.id) || { favor: 0, contra: 0 };
 }
 
 export async function pantallaEtiquetado(contenedor, datos = {}) {
@@ -86,10 +81,11 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   // El marcador viene de atrás: en una directa, el segundo tiempo empieza
   // donde acabó el primero.
-  const tanteoInicial = await tanteoAlEmpezar(tiempo);
+  let tanteoInicial = await tanteoAlEmpezar(tiempo);
 
   // El intercambio que se está editando ahora mismo, o null.
   let activo = null;
+  let corrigiendoMarcador = false;
 
   const estado = crear('p', { class: 'ayuda', texto: 'Recuperando el vídeo…' });
 
@@ -100,26 +96,30 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   );
 
   // --- Recuperar el vídeo de la copia guardada ---
-  let fichero;
-  try {
-    fichero = await leerVideo(tiempo);
-  } catch (error) {
-    estado.textContent = '';
-    anadir(contenedor, crear('p', {
-      class: 'aviso',
-      texto: `No se pudo recuperar el vídeo: ${error.message}`,
-    }));
-    return;
+  //
+  // Que no esté no es el final: se puede haber borrado a propósito para hacer
+  // sitio, y las etiquetas siguen ahí. Sin vídeo se pierde el reproductor y
+  // la línea de tiempo, pero la tabla se puede seguir leyendo y corrigiendo.
+  let fichero = null;
+  let falloDelVideo = null;
+  if (tiempo.totalTrozos > 0) {
+    try {
+      fichero = await leerVideo(tiempo);
+    } catch (error) {
+      falloDelVideo = error;
+    }
   }
 
-  const reproductor = crearReproductor({
-    alCambiarTiempo: (segundos) => moverCursor(segundos),
-  });
+  const hayVideo = fichero !== null;
+
+  const reproductor = hayVideo
+    ? crearReproductor({ alCambiarTiempo: (segundos) => moverCursor(segundos) })
+    : null;
   reproductorActivo = reproductor;
 
   // --- Línea de tiempo con las marcas ---
   const cursor = crear('div', { class: 'cursor-tiempo' });
-  const barra = crear('div', {
+  const barra = hayVideo ? crear('div', {
     class: 'linea-tiempo',
     onclick: (evento) => {
       // Un toque en la línea salta a ese momento del vídeo.
@@ -127,22 +127,30 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       const proporcion = (evento.clientX - caja.left) / caja.width;
       reproductor.irA(Math.min(Math.max(0, proporcion), 1) * duracion());
     },
-  }, [cursor]);
+  }, [cursor]) : null;
 
+  const marcador = crear('div', { class: 'marcador' });
   const contador = crear('p', { class: 'ayuda contador' });
   const editor = crear('div', { class: 'editor' });
   const tabla = crear('div');
 
-  const btnNuevo = crear('button', {
+  const btnNuevo = hayVideo ? crear('button', {
     type: 'button', class: 'boton boton-principal',
     texto: 'Nuevo intercambio aquí',
     onclick: crearIntercambio,
+  }) : crear('p', {
+    class: 'aviso',
+    texto: tiempo.totalTrozos > 0
+      ? `No se pudo recuperar el vídeo: ${falloDelVideo.message}`
+      : 'Este tiempo ya no tiene vídeo. Sus etiquetas siguen aquí y se pueden ' +
+        'corregir, pero no se pueden añadir intercambios nuevos.',
   });
 
   estado.remove();
   anadir(contenedor,
-    reproductor.elemento,
+    hayVideo ? reproductor.elemento : null,
     barra,
+    marcador,
     contador,
     btnNuevo,
     editor,
@@ -156,8 +164,10 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     }),
   );
 
-  reproductor.cargar(fichero);
-  reproductor.video.addEventListener('loadedmetadata', pintarIntercambios);
+  if (hayVideo) {
+    reproductor.cargar(fichero);
+    reproductor.video.addEventListener('loadedmetadata', pintarIntercambios);
+  }
 
   pintarIntercambios();
   pintarEditor();
@@ -166,6 +176,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   /** Duración de referencia: la del vídeo si ya se conoce, si no la guardada. */
   function duracion() {
+    if (!hayVideo) return tiempo.duracion || 0;
     const delVideo = reproductor.video.duration;
     if (isFinite(delVideo) && delVideo > 0) return delVideo;
     return tiempo.duracion || 1;
@@ -176,11 +187,91 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   }
 
   function moverCursor(segundos) {
+    if (!hayVideo) return;
     cursor.style.left = `${Math.min(100, (segundos / duracion()) * 100)}%`;
+  }
+
+  /**
+   * Con qué marcador empieza este tiempo, y el botón para corregirlo.
+   *
+   * Hace falta porque el vídeo tiene agujeros: puede no haberse grabado el
+   * primer tiempo, o puede haberse cortado antes de acabar y perderse varios
+   * tocados. Lo de dentro se sigue derivando de las etiquetas.
+   */
+  function pintarMarcador() {
+    const corregido = tiempo.tanteoInicial != null;
+
+    if (!corrigiendoMarcador) {
+      rellenar(marcador, crear('div', { class: 'marcador-fila' }, [
+        crear('span', { class: 'etiqueta-campo', texto: 'Marcador al empezar' }),
+        crear('span', {
+          class: 'tanteo tanteo-grande',
+          texto: `${tanteoInicial.favor}–${tanteoInicial.contra}`,
+        }),
+        crear('span', {
+          class: 'ayuda',
+          texto: corregido ? 'a mano' : 'de los tiempos anteriores',
+        }),
+        crear('button', {
+          type: 'button', class: 'boton-volver', texto: 'Corregir',
+          onclick: () => { corrigiendoMarcador = true; pintarMarcador(); },
+        }),
+      ]));
+      return;
+    }
+
+    const aFavor = crear('input', {
+      class: 'entrada corta', type: 'number', min: 0, inputmode: 'numeric',
+      value: tanteoInicial.favor,
+    });
+    const enContra = crear('input', {
+      class: 'entrada corta', type: 'number', min: 0, inputmode: 'numeric',
+      value: tanteoInicial.contra,
+    });
+
+    async function fijar(valor) {
+      await guardar(ALMACENES.tiempos, { ...tiempo, tanteoInicial: valor });
+      tiempo.tanteoInicial = valor;
+      tanteoInicial = valor || await tanteoAlEmpezar(tiempo);
+      corrigiendoMarcador = false;
+      pintarIntercambios();
+    }
+
+    rellenar(marcador, [
+      crear('p', {
+        class: 'ayuda',
+        texto: 'Con cuántos tocados se llega a este tiempo. Súbelos si hubo ' +
+               'puntos que no se grabaron.',
+      }),
+      crear('div', { class: 'marcador-fila' }, [
+        crear('label', { class: 'etiqueta-campo', texto: 'A favor' }),
+        aFavor,
+        crear('label', { class: 'etiqueta-campo', texto: 'En contra' }),
+        enContra,
+      ]),
+      crear('button', {
+        type: 'button', class: 'boton boton-principal', texto: 'Guardar el marcador',
+        onclick: () => fijar({
+          favor: Math.max(0, Number(aFavor.value) || 0),
+          contra: Math.max(0, Number(enContra.value) || 0),
+        }),
+      }),
+      corregido ? crear('button', {
+        type: 'button', class: 'boton', texto: 'Volver a calcularlo solo',
+        onclick: () => fijar(null),
+      }) : null,
+      crear('button', {
+        type: 'button', class: 'boton', texto: 'Dejarlo como está',
+        onclick: () => { corrigiendoMarcador = false; pintarMarcador(); },
+      }),
+    ]);
   }
 
   /** Repinta las marcas de la línea de tiempo y la tabla de debajo. */
   function pintarIntercambios() {
+    pintarMarcador();
+    if (!hayVideo) { pintarTabla(); pintarContador(); return; }
+
     for (const vieja of barra.querySelectorAll('.marca')) vieja.remove();
 
     for (const intercambio of intercambios) {
@@ -201,13 +292,15 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     }
 
     moverCursor(reproductor.tiempoActual());
+    pintarContador();
+    pintarTabla();
+  }
 
+  function pintarContador() {
     const cuantos = intercambios.length;
     contador.textContent = cuantos === 0
       ? 'Todavía no has etiquetado ningún intercambio.'
       : `${cuantos} intercambio${cuantos === 1 ? '' : 's'} etiquetado${cuantos === 1 ? '' : 's'}.`;
-
-    pintarTabla();
   }
 
   /**
@@ -275,7 +368,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   /** Abre la ficha de un intercambio y lleva el vídeo a su instante. */
   function abrir(intercambio) {
     activo = intercambio;
-    reproductor.irA(intercambio.instante);
+    if (hayVideo) reproductor.irA(intercambio.instante);
     pintarIntercambios();
     pintarEditor();
     editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -324,10 +417,10 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
           class: 'instante',
           texto: `${activo.instante.toFixed(2)} s`,
         }),
-        crear('button', {
+        hayVideo ? crear('button', {
           type: 'button', class: 'boton-volver', texto: 'Ir al instante',
           onclick: () => reproductor.irA(activo.instante),
-        }),
+        }) : null,
       ]),
 
       bloque('Mi acción ofensiva',

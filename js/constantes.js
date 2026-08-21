@@ -22,6 +22,14 @@ export const ACCIONES_DEFENSIVAS = [
   { id: 'contraataque', etiqueta: 'Contraataque' },
 ];
 
+// Cómo iba el marcador al empezar un intercambio. No se juega igual ganando
+// que perdiendo, así que las estadísticas se pueden mirar por separado.
+export const SITUACIONES = [
+  { id: 'ganando', etiqueta: 'Ganando' },
+  { id: 'empate', etiqueta: 'Empate' },
+  { id: 'perdiendo', etiqueta: 'Perdiendo' },
+];
+
 export const RESULTADOS = [
   { id: 'favor', etiqueta: 'Tocado a favor' },
   { id: 'contra', etiqueta: 'Tocado en contra' },

@@ -250,6 +250,10 @@ export async function guardarVideo(tiempoId, fichero, alProgresar = () => {}) {
 
 /** Recompone el vídeo de un tiempo a partir de sus trozos. */
 export async function leerVideo(tiempo) {
+  // Sin trozos no hay vídeo que recomponer: se borró para hacer sitio.
+  // Devolver un fichero vacío sería peor, que el reproductor se lo tragaría.
+  if (!tiempo.totalTrozos) throw new Error('Este tiempo ya no tiene vídeo guardado.');
+
   const trozos = [];
   for (let i = 0; i < tiempo.totalTrozos; i++) {
     const trozo = await obtener(ALMACENES.videoTrozos, `${tiempo.id}#${i}`);
@@ -259,10 +263,21 @@ export async function leerVideo(tiempo) {
   return new File(trozos, tiempo.nombreVideo, { type: tiempo.tipoVideo });
 }
 
-/** Borra los trozos del vídeo de un tiempo, conservando sus etiquetas. */
+/**
+ * Borra los trozos del vídeo de un tiempo, conservando sus etiquetas.
+ *
+ * Y deja dicho en la ficha que ya no hay vídeo. Si no, al abrirlo saldría un
+ * "falta el trozo 0, la copia está incompleta", que suena a que algo se ha
+ * roto cuando en realidad lo has borrado tú. El tamaño y la duración se
+ * conservan: la duración la necesitan las estadísticas.
+ */
 export async function borrarVideo(tiempo) {
   for (let i = 0; i < tiempo.totalTrozos; i++) {
     await borrar(ALMACENES.videoTrozos, `${tiempo.id}#${i}`);
+  }
+
+  if (tiempo.totalTrozos > 0) {
+    await guardar(ALMACENES.tiempos, { ...tiempo, totalTrozos: 0 });
   }
 }
 

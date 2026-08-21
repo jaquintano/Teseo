@@ -67,7 +67,14 @@ export async function pantallaAyuda(contenedor) {
       'El tanteo cuenta el doble para los dos, así que tres tocados a favor, ' +
       'uno en contra y dos dobles son un 5-3.',
       'Y no se reinicia con cada vídeo: si el asalto tiene varios tiempos, el ' +
-      'segundo empieza donde lo dejó el primero.'),
+      'segundo empieza donde lo dejó el primero.',
+      'Arriba te dice con qué marcador empieza el tiempo, y lo puedes ' +
+      'corregir. Es para cuando el vídeo tiene agujeros: no grabaste el primer ' +
+      'tiempo, o se cortó antes de acabar y se perdieron varios tocados. Súbelo ' +
+      'y a partir de ahí vuelve a contar solo.',
+      'Si un tiempo se queda sin vídeo, sus etiquetas siguen ahí: puedes ' +
+      'abrirlo, leer la tabla y corregir lo que esté mal. Lo único que no se ' +
+      'puede es añadir intercambios nuevos, que para eso hace falta el vídeo.'),
 
     apartado('Marcar un intercambio',
       'Reproduce el vídeo y pausa justo donde pasa algo. Con los botones de ' +
@@ -123,8 +130,9 @@ export async function pantallaAyuda(contenedor) {
       'Con qué acciones sueles tocar y con cuáles no. Si atacas más de lo que ' +
       'defiendes. En qué parte del asalto tocas más. Dónde te tocan a ti. Y ' +
       'cuántos dobles haces.',
-      'Arriba, en "Filtros", puedes mirar sólo contra un rival o sólo contra ' +
-      'zurdos.'),
+      'Arriba, en "Filtros", puedes mirar sólo contra un rival, sólo contra ' +
+      'zurdos, o sólo lo que hiciste yendo por delante o por detrás en el ' +
+      'marcador: no se tira igual ganando que perdiendo.'),
 
     apartado('Tus datos no salen del móvil',
       'No hay que registrarse ni hay contraseñas. Los vídeos, tus asaltos y ' +
