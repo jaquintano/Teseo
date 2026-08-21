@@ -4,203 +4,259 @@
  "categoria": "VET60",
  "genero": "Masculino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=18&gender=M",
- "descargadoEl": "2026-08-20T10:26:56.811Z",
+ "descargadoEl": "2026-08-21T19:26:53.292Z",
  "tiradores": [
   {
-   "idRfee": 420,
-   "nombre": "EDUARDO",
-   "apellidos": "EZAMA TOLEDO",
-   "fechaNacimiento": "1965-08-01",
-   "club": "CELC-M"
-  },
-  {
-   "idRfee": 498,
-   "nombre": "JUAN",
-   "apellidos": "PINTO NOLLA",
-   "fechaNacimiento": "1959-04-17",
-   "club": "CCC-M"
-  },
-  {
-   "idRfee": 697,
-   "nombre": "ANTONIO",
-   "apellidos": "DEL BUSTO FANO",
-   "fechaNacimiento": "1960-10-15",
-   "club": "FED-AS-C"
-  },
-  {
-   "idRfee": 861,
-   "nombre": "IGNACIO",
-   "apellidos": "HERRERO SEGOVIA",
-   "fechaNacimiento": "1961-07-19",
-   "club": "CBC-CA"
-  },
-  {
-   "idRfee": 871,
-   "nombre": "JOSE ANTONIO",
-   "apellidos": "PELLUZ QUIRANTE",
-   "fechaNacimiento": "1966-07-06",
-   "club": "CEV-MU"
-  },
-  {
-   "idRfee": 908,
-   "nombre": "ALBERTO",
-   "apellidos": "GURI LOPEZ",
-   "fechaNacimiento": "1964-06-22",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 914,
-   "nombre": "JOSE",
-   "apellidos": "OLIVARES VILLEGAS",
-   "fechaNacimiento": "1966-11-01",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 954,
-   "nombre": "JESUS",
-   "apellidos": "ARTEAGA QUINTANA",
-   "fechaNacimiento": "1964-12-24",
-   "club": "CESAN"
-  },
-  {
-   "idRfee": 1064,
-   "nombre": "CARLOS",
-   "apellidos": "TOLEDO ISAAC",
-   "fechaNacimiento": "1964-12-01",
-   "club": "CE-TO"
-  },
-  {
-   "idRfee": 1309,
-   "nombre": "ROLANDO",
-   "apellidos": "LEDEA VÁZQUEZ",
-   "fechaNacimiento": "1966-11-29",
-   "club": "CEEC-M"
-  },
-  {
-   "idRfee": 1349,
-   "nombre": "RICARDO",
-   "apellidos": "LLOVO OTERO",
-   "fechaNacimiento": "1965-11-17",
-   "club": "FED-G-C"
-  },
-  {
-   "idRfee": 1365,
-   "nombre": "PAUL",
-   "apellidos": "HOLDER",
-   "fechaNacimiento": "1965-03-20",
-   "club": "CBC-CA"
-  },
-  {
-   "idRfee": 1436,
-   "nombre": "JAVIER",
-   "apellidos": "CASTRILLO MESEGUER",
-   "fechaNacimiento": "1962-12-15",
-   "club": "CECR-CR"
-  },
-  {
-   "idRfee": 1472,
-   "nombre": "TOMAS",
-   "apellidos": "TESTOR SCHNELL",
-   "fechaNacimiento": "1966-10-12",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 1473,
-   "nombre": "JOSE LUIS",
-   "apellidos": "BALCAZAR NAVARRO",
-   "fechaNacimiento": "1959-08-26",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 1574,
-   "nombre": "EMILIO RAFAEL",
-   "apellidos": "QUINTELA RAMOS",
-   "fechaNacimiento": "1966-07-22",
-   "club": "SEAC-CO"
-  },
-  {
-   "idRfee": 1875,
-   "nombre": "MANUEL",
-   "apellidos": "VILLAR ORTEGA",
-   "fechaNacimiento": "1959-03-17",
-   "club": "CBC-CA"
-  },
-  {
-   "idRfee": 1893,
-   "nombre": "MANUEL",
-   "apellidos": "DEL HIERRO",
-   "fechaNacimiento": "1963-03-20",
-   "club": "SAV-V"
-  },
-  {
-   "idRfee": 2313,
-   "nombre": "JAIME",
-   "apellidos": "RIBALAYGUA BATALLA",
-   "fechaNacimiento": "1965-11-06",
-   "club": "CCE-M"
-  },
-  {
    "idRfee": 2358,
+   "posicion": 1,
    "nombre": "MARCO",
    "apellidos": "DI LORETO DI PAOLANTONIO",
    "fechaNacimiento": "1962-08-25",
-   "club": "CBE-BA"
+   "club": "CBE-BA",
+   "puntos": 7873.95
   },
   {
-   "idRfee": 4047,
-   "nombre": "VICENTE",
-   "apellidos": "SORIA GENOVES",
-   "fechaNacimiento": "1959-10-01",
-   "club": "SAV-V"
+   "idRfee": 1064,
+   "posicion": 2,
+   "nombre": "CARLOS",
+   "apellidos": "TOLEDO ISAAC",
+   "fechaNacimiento": "1964-12-01",
+   "club": "CE-TO",
+   "puntos": 7122.89
   },
   {
-   "idRfee": 4066,
-   "nombre": "MARK HENRY",
-   "apellidos": "SADLER",
-   "fechaNacimiento": "1964-06-02",
-   "club": "SA-GR"
+   "idRfee": 871,
+   "posicion": 3,
+   "nombre": "JOSE ANTONIO",
+   "apellidos": "PELLUZ QUIRANTE",
+   "fechaNacimiento": "1966-07-06",
+   "club": "CEV-MU",
+   "puntos": 6158.85
+  },
+  {
+   "idRfee": 1309,
+   "posicion": 4,
+   "nombre": "ROLANDO",
+   "apellidos": "LEDEA VÁZQUEZ",
+   "fechaNacimiento": "1966-11-29",
+   "club": "CEEC-M",
+   "puntos": 5520.4
+  },
+  {
+   "idRfee": 1472,
+   "posicion": 5,
+   "nombre": "TOMAS",
+   "apellidos": "TESTOR SCHNELL",
+   "fechaNacimiento": "1966-10-12",
+   "club": "SAM-B",
+   "puntos": 4903.91
   },
   {
    "idRfee": 4104,
+   "posicion": 6,
    "nombre": "CARLOS ENRIQUE",
    "apellidos": "CODINA VELEZ",
    "fechaNacimiento": "1959-11-28",
-   "club": "CE-TO"
+   "club": "CE-TO",
+   "puntos": 4842.45
   },
   {
    "idRfee": 4317,
+   "posicion": 7,
    "nombre": "LINO",
    "apellidos": "ZAGO",
    "fechaNacimiento": "1958-06-26",
-   "club": "SAM-B"
+   "club": "SAM-B",
+   "puntos": 4836.32
   },
   {
-   "idRfee": 4888,
-   "nombre": "JOAQUÍN",
-   "apellidos": "NAVARRO CAÑADA",
-   "fechaNacimiento": "1964-11-11",
-   "club": "CCC-M"
+   "idRfee": 1473,
+   "posicion": 8,
+   "nombre": "JOSE LUIS",
+   "apellidos": "BALCAZAR NAVARRO",
+   "fechaNacimiento": "1959-08-26",
+   "club": "SAM-B",
+   "puntos": 3876.12
+  },
+  {
+   "idRfee": 914,
+   "posicion": 9,
+   "nombre": "JOSE",
+   "apellidos": "OLIVARES VILLEGAS",
+   "fechaNacimiento": "1966-11-01",
+   "club": "CREA-M",
+   "puntos": 3636
+  },
+  {
+   "idRfee": 2313,
+   "posicion": 10,
+   "nombre": "JAIME",
+   "apellidos": "RIBALAYGUA BATALLA",
+   "fechaNacimiento": "1965-11-06",
+   "club": "CCE-M",
+   "puntos": 3074.57
+  },
+  {
+   "idRfee": 1893,
+   "posicion": 11,
+   "nombre": "MANUEL",
+   "apellidos": "DEL HIERRO",
+   "fechaNacimiento": "1963-03-20",
+   "club": "SAV-V",
+   "puntos": 2735.58
+  },
+  {
+   "idRfee": 4066,
+   "posicion": 12,
+   "nombre": "MARK HENRY",
+   "apellidos": "SADLER",
+   "fechaNacimiento": "1964-06-02",
+   "club": "SA-GR",
+   "puntos": 2659.59
+  },
+  {
+   "idRfee": 498,
+   "posicion": 13,
+   "nombre": "JUAN",
+   "apellidos": "PINTO NOLLA",
+   "fechaNacimiento": "1959-04-17",
+   "club": "CCC-M",
+   "puntos": 2233.24
+  },
+  {
+   "idRfee": 1875,
+   "posicion": 14,
+   "nombre": "MANUEL",
+   "apellidos": "VILLAR ORTEGA",
+   "fechaNacimiento": "1959-03-17",
+   "club": "CBC-CA",
+   "puntos": 2033.11
   },
   {
    "idRfee": 5033,
+   "posicion": 15,
    "nombre": "JESUS",
    "apellidos": "RODRIGUEZ-TABOADELA",
    "fechaNacimiento": "1966-06-16",
-   "club": "SAG-B"
+   "club": "SAG-B",
+   "puntos": 1847.14
   },
   {
    "idRfee": 5110,
+   "posicion": 16,
    "nombre": "CARLES",
    "apellidos": "MERINO ALBERNI",
    "fechaNacimiento": "1966-11-04",
-   "club": "SAM-B"
+   "club": "SAM-B",
+   "puntos": 1821.26
+  },
+  {
+   "idRfee": 420,
+   "posicion": 17,
+   "nombre": "EDUARDO",
+   "apellidos": "EZAMA TOLEDO",
+   "fechaNacimiento": "1965-08-01",
+   "club": "CELC-M",
+   "puntos": 1763.71
+  },
+  {
+   "idRfee": 908,
+   "posicion": 18,
+   "nombre": "ALBERTO",
+   "apellidos": "GURI LOPEZ",
+   "fechaNacimiento": "1964-06-22",
+   "club": "CREA-M",
+   "puntos": 1573.9
+  },
+  {
+   "idRfee": 954,
+   "posicion": 19,
+   "nombre": "JESUS",
+   "apellidos": "ARTEAGA QUINTANA",
+   "fechaNacimiento": "1964-12-24",
+   "club": "CESAN",
+   "puntos": 1518.61
+  },
+  {
+   "idRfee": 4888,
+   "posicion": 20,
+   "nombre": "JOAQUÍN",
+   "apellidos": "NAVARRO CAÑADA",
+   "fechaNacimiento": "1964-11-11",
+   "club": "CCC-M",
+   "puntos": 1477.28
+  },
+  {
+   "idRfee": 861,
+   "posicion": 21,
+   "nombre": "IGNACIO",
+   "apellidos": "HERRERO SEGOVIA",
+   "fechaNacimiento": "1961-07-19",
+   "club": "CBC-CA",
+   "puntos": 1332.42
+  },
+  {
+   "idRfee": 1349,
+   "posicion": 22,
+   "nombre": "RICARDO",
+   "apellidos": "LLOVO OTERO",
+   "fechaNacimiento": "1965-11-17",
+   "club": "FED-G-C",
+   "puntos": 1299.23
+  },
+  {
+   "idRfee": 1365,
+   "posicion": 23,
+   "nombre": "PAUL",
+   "apellidos": "HOLDER",
+   "fechaNacimiento": "1965-03-20",
+   "club": "CBC-CA",
+   "puntos": 1237.52
+  },
+  {
+   "idRfee": 697,
+   "posicion": 24,
+   "nombre": "ANTONIO",
+   "apellidos": "DEL BUSTO FANO",
+   "fechaNacimiento": "1960-10-15",
+   "club": "FED-AS-C",
+   "puntos": 1198.09
+  },
+  {
+   "idRfee": 1436,
+   "posicion": 25,
+   "nombre": "JAVIER",
+   "apellidos": "CASTRILLO MESEGUER",
+   "fechaNacimiento": "1962-12-15",
+   "club": "CECR-CR",
+   "puntos": 954.78
+  },
+  {
+   "idRfee": 4047,
+   "posicion": 26,
+   "nombre": "VICENTE",
+   "apellidos": "SORIA GENOVES",
+   "fechaNacimiento": "1959-10-01",
+   "club": "SAV-V",
+   "puntos": 707.22
   },
   {
    "idRfee": 5223,
+   "posicion": 27,
    "nombre": "JOAN",
    "apellidos": "MORROS VALLS",
    "fechaNacimiento": "1959-06-10",
-   "club": "SAG-B"
+   "club": "SAG-B",
+   "puntos": 646.68
+  },
+  {
+   "idRfee": 1574,
+   "posicion": 9999,
+   "nombre": "EMILIO RAFAEL",
+   "apellidos": "QUINTELA RAMOS",
+   "fechaNacimiento": "1966-07-22",
+   "club": "SEAC-CO",
+   "puntos": 0
   }
  ]
 }

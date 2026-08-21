@@ -22,10 +22,6 @@ export async function pantallaMenu(contenedor) {
     }) : null,
 
     crear('button', {
-      type: 'button', class: 'boton boton-principal boton-compacto', texto: 'Estadísticas',
-      onclick: () => ir('estadisticas'),
-    }),
-    crear('button', {
       type: 'button', class: 'boton boton-compacto', texto: 'Mi perfil',
       onclick: () => ir('perfil', { volverA: 'menu' }),
     }),
@@ -34,8 +30,16 @@ export async function pantallaMenu(contenedor) {
       onclick: () => ir('rivales', { volverA: 'menu' }),
     }),
     crear('button', {
+      type: 'button', class: 'boton boton-compacto', texto: 'Ranking',
+      onclick: () => ir('ranking'),
+    }),
+    crear('button', {
       type: 'button', class: 'boton boton-compacto', texto: 'Competiciones',
       onclick: () => ir('competiciones', { volverA: 'menu' }),
+    }),
+    crear('button', {
+      type: 'button', class: 'boton boton-principal boton-compacto', texto: 'Estadísticas',
+      onclick: () => ir('estadisticas'),
     }),
     crear('button', {
       type: 'button', class: 'boton boton-compacto', texto: 'Ayuda',

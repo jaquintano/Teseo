@@ -4,56 +4,70 @@
  "categoria": "VET60",
  "genero": "Femenino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=18&gender=W",
- "descargadoEl": "2026-08-20T10:26:58.197Z",
+ "descargadoEl": "2026-08-21T19:26:54.636Z",
  "tiradores": [
   {
-   "idRfee": 444,
-   "nombre": "ISABEL MARIA",
-   "apellidos": "VAZQUEZ CORBACHO",
-   "fechaNacimiento": "1966-05-02",
-   "club": "SA-GR"
-  },
-  {
    "idRfee": 452,
+   "posicion": 1,
    "nombre": "ROSA MARIA",
    "apellidos": "CANO DIOSA",
    "fechaNacimiento": "1965-10-07",
-   "club": "CECVi-PO"
-  },
-  {
-   "idRfee": 983,
-   "nombre": "ARACELI",
-   "apellidos": "BUGALLO OTERO",
-   "fechaNacimiento": "1966-01-19",
-   "club": "COMES-C"
+   "club": "CECVi-PO",
+   "puntos": 9672.56
   },
   {
    "idRfee": 1398,
+   "posicion": 2,
    "nombre": "PAULIEN",
    "apellidos": "CLOSE VERBRUGGEN",
    "fechaNacimiento": "1962-01-20",
-   "club": "CBE-BA"
+   "club": "CBE-BA",
+   "puntos": 5517.76
+  },
+  {
+   "idRfee": 983,
+   "posicion": 3,
+   "nombre": "ARACELI",
+   "apellidos": "BUGALLO OTERO",
+   "fechaNacimiento": "1966-01-19",
+   "club": "COMES-C",
+   "puntos": 3768.09
   },
   {
    "idRfee": 1421,
+   "posicion": 4,
    "nombre": "ANA CLARA",
    "apellidos": "RUIZ DIAZ",
    "fechaNacimiento": "1963-04-19",
-   "club": "CE-TO"
+   "club": "CE-TO",
+   "puntos": 2584.67
   },
   {
-   "idRfee": 1869,
-   "nombre": "FRANCISCA JESÚS",
-   "apellidos": "ROMAN LÓPEZ",
-   "fechaNacimiento": "1959-01-03",
-   "club": "FED-AND-C"
+   "idRfee": 444,
+   "posicion": 5,
+   "nombre": "ISABEL MARIA",
+   "apellidos": "VAZQUEZ CORBACHO",
+   "fechaNacimiento": "1966-05-02",
+   "club": "SA-GR",
+   "puntos": 2477.63
   },
   {
    "idRfee": 2435,
+   "posicion": 6,
    "nombre": "MERCEDES",
    "apellidos": "ORBEA SALAZAR",
    "fechaNacimiento": "1961-05-18",
-   "club": "SUÑE-BI"
+   "club": "SUÑE-BI",
+   "puntos": 1232.96
+  },
+  {
+   "idRfee": 1869,
+   "posicion": 7,
+   "nombre": "FRANCISCA JESÚS",
+   "apellidos": "ROMAN LÓPEZ",
+   "fechaNacimiento": "1959-01-03",
+   "club": "FED-AND-C",
+   "puntos": 941.39
   }
  ]
 }

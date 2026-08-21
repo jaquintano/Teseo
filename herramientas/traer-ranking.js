@@ -62,6 +62,18 @@ function soloTexto(html) {
   return decodificar(html.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
 }
 
+/** "11.268,79" -> 11268.79. La federación puntúa a la española. */
+function numeroES(texto) {
+  const limpio = (texto || '')
+    .replace(/[^\d.,]/g, '')   // fuera espacios y cualquier adorno
+    .replace(/\./g, '')        // el punto separa los miles
+    .replace(',', '.');        // y la coma es el decimal
+  if (limpio === '') return null;
+
+  const valor = Number(limpio);
+  return Number.isFinite(valor) ? valor : null;
+}
+
 /** 04/07/2011 -> 2011-07-04, que es como se ordena y se guarda bien. */
 function fechaISO(texto) {
   const partes = texto.match(/(\d{2})\/(\d{2})\/(\d{4})/);
@@ -96,10 +108,14 @@ function extraerTiradores(html) {
 
     tiradores.push({
       idRfee: enlace ? Number(enlace[1]) : null,
+      // La posición y los puntos son la razón de ser de un ranking: sin
+      // ellos la lista es sólo un listín de nombres.
+      posicion: numeroES(soloTexto(celdas[0])),
       nombre,
       apellidos,
       fechaNacimiento: fechaISO(soloTexto(celdas[3])),
       club: soloTexto(celdas[4]),
+      puntos: celdas.length > 5 ? numeroES(soloTexto(celdas[5])) : null,
     });
   }
 
@@ -144,14 +160,15 @@ async function traerUno(temporada, categoria, codigoGenero) {
   // un error: sencillamente no se guarda nada.
   if (tiradores.length === 0) return 'vacio';
 
-  // Ordenación propia y estable, siempre la misma.
+  // Por posición, que es el orden del ranking y ahora sí se guarda.
   //
-  // La federación devuelve la lista por puntuación, y entre tiradores
-  // empatados el orden baila de una descarga a otra. Como aquí no guardamos
-  // ni la posición ni los puntos, ese baile no aporta nada y en cambio hacía
-  // que el fichero pareciera distinto cada día. Ordenando por identificador
-  // el fichero sólo cambia cuando cambia alguien de verdad.
+  // Entre empatados a puntos la federación los baila de una descarga a otra,
+  // así que a igual posición manda el identificador: el fichero sólo cambia
+  // cuando cambia algo de verdad.
   tiradores.sort((a, b) => {
+    const suya = a.posicion ?? Infinity;
+    const otra = b.posicion ?? Infinity;
+    if (suya !== otra) return suya - otra;
     if (a.idRfee != null && b.idRfee != null) return a.idRfee - b.idRfee;
     if (a.idRfee != null) return -1;
     if (b.idRfee != null) return 1;

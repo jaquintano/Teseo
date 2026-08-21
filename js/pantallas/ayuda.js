@@ -126,6 +126,15 @@ export async function pantallaAyuda(contenedor) {
       'La mano hace falta de verdad, porque las estadísticas te dejan comparar ' +
       'cómo te va contra diestros y contra zurdos.'),
 
+    apartado('El ranking',
+      'En Menú → Ranking tienes el ranking de la federación tal cual lo ' +
+      'publica: puesto, tirador, club y puntos. Sólo eliges la categoría; el ' +
+      'arma, el género y la temporada salen de tu perfil.',
+      'Si te has buscado en el ranking al crear tu perfil, tu fila viene ' +
+      'señalada.',
+      'Va dentro de Teseo, así que se ve sin cobertura. Se pone al día cuando ' +
+      'se actualiza la aplicación, no solo.'),
+
     apartado('Competiciones',
       'Igual que los rivales, los torneos se guardan aparte y luego se eligen ' +
       'al crear el asalto, en vez de teclear el nombre cada vez. Hace falta ' +

@@ -4,119 +4,151 @@
  "categoria": "VET40",
  "genero": "Femenino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=14&gender=W",
- "descargadoEl": "2026-08-20T10:26:52.727Z",
+ "descargadoEl": "2026-08-21T19:26:49.119Z",
  "tiradores": [
   {
-   "idRfee": 488,
-   "nombre": "KATERINA",
-   "apellidos": "LABANICOVA",
-   "fechaNacimiento": "1984-04-16",
-   "club": "CE-TO"
-  },
-  {
-   "idRfee": 803,
-   "nombre": "ANA",
-   "apellidos": "FRANCO PEREZ",
-   "fechaNacimiento": "1981-01-29",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 1468,
-   "nombre": "LETICIA",
-   "apellidos": "PALACIOS BEREZO",
-   "fechaNacimiento": "1978-01-24",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 2403,
-   "nombre": "LIDIA REBECA",
-   "apellidos": "OLMOS LINARES",
-   "fechaNacimiento": "1978-07-29",
-   "club": "CEA-VA"
-  },
-  {
-   "idRfee": 3398,
-   "nombre": "ESTIBALIZ",
-   "apellidos": "TOSCANO GARCIA",
-   "fechaNacimiento": "1978-03-19",
-   "club": "SUÑE-BI"
-  },
-  {
-   "idRfee": 3419,
-   "nombre": "MARÍA PÍA",
-   "apellidos": "ZURITA SILVESTRO",
-   "fechaNacimiento": "1984-09-29",
-   "club": "CE-M"
-  },
-  {
-   "idRfee": 3446,
-   "nombre": "CRISTINA",
-   "apellidos": "ALONSO ESCOBAR",
-   "fechaNacimiento": "1984-08-20",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 3448,
-   "nombre": "LOURDES",
-   "apellidos": "MAYOR",
-   "fechaNacimiento": "1980-02-04",
-   "club": "CETC-M"
-  },
-  {
    "idRfee": 3477,
+   "posicion": 1,
    "nombre": "ANA",
    "apellidos": "GRAU TORRES",
    "fechaNacimiento": "1984-06-25",
-   "club": "CEV-MU"
+   "club": "CEV-MU",
+   "puntos": 8580.04
   },
   {
-   "idRfee": 3484,
-   "nombre": "EVA M.",
-   "apellidos": "DÍAZ MESA",
-   "fechaNacimiento": "1980-04-29",
-   "club": "FED-AS-C"
+   "idRfee": 1468,
+   "posicion": 2,
+   "nombre": "LETICIA",
+   "apellidos": "PALACIOS BEREZO",
+   "fechaNacimiento": "1978-01-24",
+   "club": "SAM-B",
+   "puntos": 5972.95
   },
   {
-   "idRfee": 4378,
-   "nombre": "MARÍA ELENA",
-   "apellidos": "FERNÁNDEZ IGLESIAS",
-   "fechaNacimiento": "1977-08-19",
-   "club": "FED-G-C"
+   "idRfee": 3419,
+   "posicion": 3,
+   "nombre": "MARÍA PÍA",
+   "apellidos": "ZURITA SILVESTRO",
+   "fechaNacimiento": "1984-09-29",
+   "club": "CE-M",
+   "puntos": 5589.43
   },
   {
-   "idRfee": 4855,
-   "nombre": "ROCIO",
-   "apellidos": "GUTIERREZ SUMILLERA",
-   "fechaNacimiento": "1985-11-14",
-   "club": "SA-GR"
+   "idRfee": 488,
+   "posicion": 4,
+   "nombre": "KATERINA",
+   "apellidos": "LABANICOVA",
+   "fechaNacimiento": "1984-04-16",
+   "club": "CE-TO",
+   "puntos": 3783.44
+  },
+  {
+   "idRfee": 3446,
+   "posicion": 5,
+   "nombre": "CRISTINA",
+   "apellidos": "ALONSO ESCOBAR",
+   "fechaNacimiento": "1984-08-20",
+   "club": "CETC-M",
+   "puntos": 3636
   },
   {
    "idRfee": 5029,
+   "posicion": 6,
    "nombre": "KRISTINA",
    "apellidos": "IONITSKAIA",
    "fechaNacimiento": "1977-12-24",
-   "club": "SAG-B"
+   "club": "SAG-B",
+   "puntos": 3500.97
   },
   {
-   "idRfee": 5051,
-   "nombre": "YAN",
-   "apellidos": "HUANG",
-   "fechaNacimiento": "1977-11-17",
-   "club": "SAM-B"
+   "idRfee": 3398,
+   "posicion": 7,
+   "nombre": "ESTIBALIZ",
+   "apellidos": "TOSCANO GARCIA",
+   "fechaNacimiento": "1978-03-19",
+   "club": "SUÑE-BI",
+   "puntos": 3296.5
   },
   {
-   "idRfee": 5114,
-   "nombre": "JADE LOUISE",
-   "apellidos": "ITO",
-   "fechaNacimiento": "1977-08-27",
-   "club": "FED-AND-C"
+   "idRfee": 4855,
+   "posicion": 8,
+   "nombre": "ROCIO",
+   "apellidos": "GUTIERREZ SUMILLERA",
+   "fechaNacimiento": "1985-11-14",
+   "club": "SA-GR",
+   "puntos": 2994.11
+  },
+  {
+   "idRfee": 3448,
+   "posicion": 9,
+   "nombre": "LOURDES",
+   "apellidos": "MAYOR",
+   "fechaNacimiento": "1980-02-04",
+   "club": "CETC-M",
+   "puntos": 2712.42
   },
   {
    "idRfee": 5217,
+   "posicion": 10,
    "nombre": "IRINA",
    "apellidos": "KOTOVA",
    "fechaNacimiento": "1985-05-23",
-   "club": "SAM-B"
+   "club": "SAM-B",
+   "puntos": 2314.32
+  },
+  {
+   "idRfee": 3484,
+   "posicion": 11,
+   "nombre": "EVA M.",
+   "apellidos": "DÍAZ MESA",
+   "fechaNacimiento": "1980-04-29",
+   "club": "FED-AS-C",
+   "puntos": 1932.94
+  },
+  {
+   "idRfee": 5051,
+   "posicion": 12,
+   "nombre": "YAN",
+   "apellidos": "HUANG",
+   "fechaNacimiento": "1977-11-17",
+   "club": "SAM-B",
+   "puntos": 1561.84
+  },
+  {
+   "idRfee": 2403,
+   "posicion": 13,
+   "nombre": "LIDIA REBECA",
+   "apellidos": "OLMOS LINARES",
+   "fechaNacimiento": "1978-07-29",
+   "club": "CEA-VA",
+   "puntos": 1288.52
+  },
+  {
+   "idRfee": 803,
+   "posicion": 14,
+   "nombre": "ANA",
+   "apellidos": "FRANCO PEREZ",
+   "fechaNacimiento": "1981-01-29",
+   "club": "CETC-M",
+   "puntos": 1170.31
+  },
+  {
+   "idRfee": 4378,
+   "posicion": 15,
+   "nombre": "MARÍA ELENA",
+   "apellidos": "FERNÁNDEZ IGLESIAS",
+   "fechaNacimiento": "1977-08-19",
+   "club": "FED-G-C",
+   "puntos": 978.13
+  },
+  {
+   "idRfee": 5114,
+   "posicion": 16,
+   "nombre": "JADE LOUISE",
+   "apellidos": "ITO",
+   "fechaNacimiento": "1977-08-27",
+   "club": "FED-AND-C",
+   "puntos": 616
   }
  ]
 }

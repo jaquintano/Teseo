@@ -4,98 +4,124 @@
  "categoria": "VET50",
  "genero": "Femenino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=17&gender=W",
- "descargadoEl": "2026-08-20T10:26:55.452Z",
+ "descargadoEl": "2026-08-21T19:26:51.916Z",
  "tiradores": [
   {
-   "idRfee": 586,
-   "nombre": "SONIA",
-   "apellidos": "LANAS MARTIN ROMO",
-   "fechaNacimiento": "1972-02-21",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 589,
-   "nombre": "MACARENA",
-   "apellidos": "VALERA SANCHEZ",
-   "fechaNacimiento": "1973-06-16",
-   "club": "CETC-M"
-  },
-  {
-   "idRfee": 993,
-   "nombre": "NURIA",
-   "apellidos": "TEBAR MARTINEZ",
-   "fechaNacimiento": "1970-04-22",
-   "club": "CE-TO"
-  },
-  {
-   "idRfee": 1037,
-   "nombre": "SUSANA MARTA",
-   "apellidos": "DE MIGUEL GARCIA",
-   "fechaNacimiento": "1971-12-15",
-   "club": "SUÑE-BI"
-  },
-  {
    "idRfee": 1080,
+   "posicion": 1,
    "nombre": "CRISTINA DE LOURDES",
    "apellidos": "VARGAS HILLA",
    "fechaNacimiento": "1969-09-01",
-   "club": "VCE-VA"
+   "club": "VCE-VA",
+   "puntos": 9845.54
   },
   {
-   "idRfee": 1422,
-   "nombre": "GRACIELA",
-   "apellidos": "GOMEZ NICOLA",
-   "fechaNacimiento": "1970-11-27",
-   "club": "CE-TO"
+   "idRfee": 993,
+   "posicion": 2,
+   "nombre": "NURIA",
+   "apellidos": "TEBAR MARTINEZ",
+   "fechaNacimiento": "1970-04-22",
+   "club": "CE-TO",
+   "puntos": 6362.1
+  },
+  {
+   "idRfee": 589,
+   "posicion": 3,
+   "nombre": "MACARENA",
+   "apellidos": "VALERA SANCHEZ",
+   "fechaNacimiento": "1973-06-16",
+   "club": "CETC-M",
+   "puntos": 5895.35
+  },
+  {
+   "idRfee": 1037,
+   "posicion": 4,
+   "nombre": "SUSANA MARTA",
+   "apellidos": "DE MIGUEL GARCIA",
+   "fechaNacimiento": "1971-12-15",
+   "club": "SUÑE-BI",
+   "puntos": 5522.24
   },
   {
    "idRfee": 1450,
+   "posicion": 5,
    "nombre": "MARTA",
    "apellidos": "TORRE-ENCISO HERNANZ",
    "fechaNacimiento": "1971-07-13",
-   "club": "CREA-M"
-  },
-  {
-   "idRfee": 1454,
-   "nombre": "PATRICIA",
-   "apellidos": "BOIXET CORTIJO",
-   "fechaNacimiento": "1974-11-28",
-   "club": "SAM-B"
-  },
-  {
-   "idRfee": 1777,
-   "nombre": "REBECA",
-   "apellidos": "GOMEZ MARTIN",
-   "fechaNacimiento": "1975-09-02",
-   "club": "CEP-M"
-  },
-  {
-   "idRfee": 1778,
-   "nombre": "MARTA",
-   "apellidos": "VARELA PELEGRÍ",
-   "fechaNacimiento": "1970-12-07",
-   "club": "SAM-B"
+   "club": "CREA-M",
+   "puntos": 5355.65
   },
   {
    "idRfee": 3198,
+   "posicion": 6,
    "nombre": "EVA M&ordf;",
    "apellidos": "MORILLA ARCOS",
    "fechaNacimiento": "1971-07-13",
-   "club": "SEAC-CO"
+   "club": "SEAC-CO",
+   "puntos": 4719.37
+  },
+  {
+   "idRfee": 1777,
+   "posicion": 7,
+   "nombre": "REBECA",
+   "apellidos": "GOMEZ MARTIN",
+   "fechaNacimiento": "1975-09-02",
+   "club": "CEP-M",
+   "puntos": 4272.09
+  },
+  {
+   "idRfee": 1422,
+   "posicion": 8,
+   "nombre": "GRACIELA",
+   "apellidos": "GOMEZ NICOLA",
+   "fechaNacimiento": "1970-11-27",
+   "club": "CE-TO",
+   "puntos": 3832.58
+  },
+  {
+   "idRfee": 586,
+   "posicion": 9,
+   "nombre": "SONIA",
+   "apellidos": "LANAS MARTIN ROMO",
+   "fechaNacimiento": "1972-02-21",
+   "club": "CETC-M",
+   "puntos": 2971.5
+  },
+  {
+   "idRfee": 1778,
+   "posicion": 10,
+   "nombre": "MARTA",
+   "apellidos": "VARELA PELEGRÍ",
+   "fechaNacimiento": "1970-12-07",
+   "club": "SAM-B",
+   "puntos": 2237.87
   },
   {
    "idRfee": 4502,
+   "posicion": 11,
    "nombre": "M&ordf; ÁNGELES",
    "apellidos": "USANO MARCO",
    "fechaNacimiento": "1967-12-01",
-   "club": "SEAC-CO"
+   "club": "SEAC-CO",
+   "puntos": 1402.45
+  },
+  {
+   "idRfee": 1454,
+   "posicion": 12,
+   "nombre": "PATRICIA",
+   "apellidos": "BOIXET CORTIJO",
+   "fechaNacimiento": "1974-11-28",
+   "club": "SAM-B",
+   "puntos": 1175.13
   },
   {
    "idRfee": 5047,
+   "posicion": 13,
    "nombre": "MARÍA DEL CARMEN",
    "apellidos": "LÓPEZ UNANUA",
    "fechaNacimiento": "1967-04-02",
-   "club": "COMES-C"
+   "club": "COMES-C",
+   "puntos": 871.61
   }
  ]
 }

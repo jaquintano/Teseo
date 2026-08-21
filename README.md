@@ -65,6 +65,7 @@ datos/rankings.json            índice de los rankings disponibles
 js/rfee.js                     lee los rankings y decide qué importar; la
                                parte de decidir es pura
 js/pantallas/importar-rfee.js  el formulario de importación
+js/pantallas/ranking.js        el ranking de la federación, tal cual lo publica
 js/calculo-estadisticas.js     LAS CUENTAS. Módulo independiente: no toca ni
                                la pantalla ni la base de datos. Junto con
                                constantes.js se puede llevar a otro sitio
@@ -78,7 +79,7 @@ js/pantallas/ficha-tirador.js  el formulario que comparten perfil y rivales
 js/pantallas/rivales.js        lista y ficha de rivales
 js/pantallas/asaltos.js        lista, alta y detalle de asaltos con sus tiempos
 js/pantallas/etiquetado.js     por ahora sólo reproduce; la fase 4 va aquí
-js/pantallas/menu.js           menú y diagnóstico
+js/pantallas/menu.js           menú y configuración
 iconos/logo-teseo.jpg          el logotipo original, y la pantalla de arranque
 iconos/icon-*.png              recortes del escudo, generados desde el logotipo
 servidor-local.js              herramienta de desarrollo; GitHub Pages no la usa

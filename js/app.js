@@ -19,6 +19,7 @@ import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js
 import { pantallaMenu, pantallaConfiguracion } from './pantallas/menu.js';
 import { pantallaEstadisticas } from './pantallas/estadisticas.js';
 import { pantallaImportarRfee } from './pantallas/importar-rfee.js';
+import { pantallaRanking } from './pantallas/ranking.js';
 import { pantallaAyuda } from './pantallas/ayuda.js';
 import { pantallaPreparar } from './pantallas/preparar.js';
 import {
@@ -51,6 +52,7 @@ registrarPantalla('preparar', conLimpieza(pantallaPreparar));
 registrarPantalla('rivales', conLimpieza(pantallaRivales));
 registrarPantalla('rival', conLimpieza(pantallaRival));
 registrarPantalla('importar-rfee', conLimpieza(pantallaImportarRfee));
+registrarPantalla('ranking', conLimpieza(pantallaRanking));
 registrarPantalla('competiciones', conLimpieza(pantallaCompeticiones));
 registrarPantalla('competicion', conLimpieza(pantallaCompeticion));
 registrarPantalla('importar-competiciones', conLimpieza(pantallaImportarCompeticiones));
