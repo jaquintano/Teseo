@@ -19,11 +19,15 @@
 //
 // Y debajo va lo mismo en forma de tabla, que con el dedo es más fácil de
 // acertar que una marca de catorce píxeles: cada fila lleva su instante, su
-// resultado con el color de la marca y cómo iba el marcador. Tocarla hace lo
-// mismo que tocar la marca.
+// resultado con el color de la marca y cómo iba el marcador.
+//
+// Navegar y editar están separados a propósito. Tocar una fila —o una marca,
+// o la línea— sólo lleva el vídeo a ese instante: repasar el asalto no tiene
+// por qué abrir nada. Para corregir una etiqueta está el lápiz de su fila, y
+// entonces sí se abre la ficha, que es una ventana encima de todo.
 
 import {
-  anadir, crear, rellenar, cabecera, ir, bloque, grupoOpciones,
+  anadir, crear, rellenar, cabecera, ir, desplegable,
   formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
@@ -131,8 +135,12 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   const marcador = crear('div', { class: 'marcador' });
   const contador = crear('p', { class: 'ayuda contador' });
-  const editor = crear('div', { class: 'editor' });
   const tabla = crear('div');
+
+  // La ficha del intercambio va en una ventana encima de todo: en la pantalla
+  // no cabe todo a la vez, y mientras se repasa el asalto estorba.
+  const ficha = crear('dialog', { class: 'ficha-intercambio' });
+  ficha.addEventListener('close', pintarIntercambios);
 
   const btnNuevo = hayVideo ? crear('button', {
     type: 'button', class: 'boton boton-principal',
@@ -148,13 +156,13 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   estado.remove();
   anadir(contenedor,
+    marcador,
     hayVideo ? reproductor.elemento : null,
     barra,
-    marcador,
     contador,
     btnNuevo,
-    editor,
     tabla,
+    ficha,
     crear('p', {
       class: 'ayuda pie',
       texto: [
@@ -170,7 +178,6 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   }
 
   pintarIntercambios();
-  pintarEditor();
 
   // ------------------------------------------------------------------
 
@@ -203,15 +210,12 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
     if (!corrigiendoMarcador) {
       rellenar(marcador, crear('div', { class: 'marcador-fila' }, [
-        crear('span', { class: 'etiqueta-campo', texto: 'Marcador al empezar' }),
+        crear('span', { class: 'etiqueta-campo', texto: 'Empieza' }),
         crear('span', {
           class: 'tanteo tanteo-grande',
           texto: `${tanteoInicial.favor}–${tanteoInicial.contra}`,
         }),
-        crear('span', {
-          class: 'ayuda',
-          texto: corregido ? 'a mano' : 'de los tiempos anteriores',
-        }),
+        corregido ? crear('span', { class: 'ayuda', texto: 'a mano' }) : null,
         crear('button', {
           type: 'button', class: 'boton-volver', texto: 'Corregir',
           onclick: () => { corrigiendoMarcador = true; pintarMarcador(); },
@@ -243,9 +247,11 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
         texto: 'Con cuántos tocados se llega a este tiempo. Súbelos si hubo ' +
                'puntos que no se grabaron.',
       }),
-      crear('div', { class: 'marcador-fila' }, [
+      crear('div', { class: 'marcador-campo' }, [
         crear('label', { class: 'etiqueta-campo', texto: 'A favor' }),
         aFavor,
+      ]),
+      crear('div', { class: 'marcador-campo' }, [
         crear('label', { class: 'etiqueta-campo', texto: 'En contra' }),
         enContra,
       ]),
@@ -324,6 +330,17 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
           }),
         ]),
         crear('td', { class: 'derecha tanteo', texto: `${favor}–${contra}` }),
+        crear('td', { class: 'derecha' }, [
+          crear('button', {
+            type: 'button', class: 'boton-icono en-tabla', texto: '✎',
+            'aria-label': `Corregir el intercambio de ${formatearSegundos(intercambio.instante)}`,
+            onclick: (evento) => {
+              // Si no, el toque llegaría también a la fila.
+              evento.stopPropagation();
+              editar(intercambio);
+            },
+          }),
+        ]),
       ]));
 
     rellenar(tabla, crear('div', { class: 'tabla-scroll' }, [
@@ -333,6 +350,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
             crear('th', { texto: 'Instante' }),
             crear('th', { texto: 'Resultado' }),
             crear('th', { class: 'derecha', texto: 'Tanteo' }),
+            crear('th', { 'aria-label': 'Corregir' }),
           ]),
         ]),
         crear('tbody', {}, filas),
@@ -362,22 +380,21 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     intercambios.push(nuevo);
     ordenar(intercambios);
 
-    abrir(nuevo);
+    editar(nuevo);
   }
 
-  /** Abre la ficha de un intercambio y lleva el vídeo a su instante. */
+  /** Lleva el vídeo al instante de un intercambio y lo señala. Nada más. */
   function abrir(intercambio) {
     activo = intercambio;
     if (hayVideo) reproductor.irA(intercambio.instante);
     pintarIntercambios();
-    pintarEditor();
-    editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  function cerrar() {
-    activo = null;
-    pintarIntercambios();
+  /** Eso, y además abre su ficha para corregirla. */
+  function editar(intercambio) {
+    abrir(intercambio);
     pintarEditor();
+    ficha.showModal();
   }
 
   /** Guarda un cambio de una de las capas. */
@@ -398,55 +415,44 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     if (campo === 'resultado') pintarEditor();
   }
 
-  /** Pinta la ficha del intercambio activo, o nada si no hay ninguno. */
+  /**
+   * Pinta la ficha del intercambio abierto.
+   *
+   * Todo con desplegables: son ocho catálogos y con botones no cabían en la
+   * pantalla. Y el resultado el primero, que es lo único que se sabe siempre
+   * —lo demás puede quedarse en blanco— y lo que mueve el marcador.
+   */
   function pintarEditor() {
-    if (!activo) {
-      rellenar(editor, crear('p', {
-        class: 'ayuda',
-        texto: 'Pausa el vídeo donde haya pasado algo, afina con los saltos y ' +
-               'pulsa "Nuevo intercambio aquí". O toca una marca para corregirla.',
-      }));
-      return;
-    }
+    if (!activo) { rellenar(ficha, []); return; }
 
     const huboTocado = RESULTADOS_CON_TOCADO.includes(activo.resultado);
+    const sinIndicar = { vacio: '— Sin indicar —' };
 
-    rellenar(editor, [
+    rellenar(ficha, [
       crear('div', { class: 'cabecera-editor' }, [
-        crear('span', {
-          class: 'instante',
-          texto: `${activo.instante.toFixed(2)} s`,
-        }),
-        hayVideo ? crear('button', {
-          type: 'button', class: 'boton-volver', texto: 'Ir al instante',
-          onclick: () => reproductor.irA(activo.instante),
-        }) : null,
+        crear('span', { class: 'instante', texto: formatearSegundos(activo.instante) }),
+        crear('span', { class: 'ayuda', texto: `${activo.instante.toFixed(2)} s` }),
       ]),
 
-      bloque('Mi acción ofensiva',
-        grupoOpciones(ACCIONES_OFENSIVAS, activo.ofensiva,
-          (valor) => cambiar('ofensiva', valor))),
+      desplegable('Resultado', RESULTADOS, activo.resultado,
+        (valor) => cambiar('resultado', valor), sinIndicar).bloque,
 
-      bloque('Mi acción defensiva',
-        grupoOpciones(ACCIONES_DEFENSIVAS, activo.defensiva,
-          (valor) => cambiar('defensiva', valor))),
+      desplegable('Mi acción ofensiva', ACCIONES_OFENSIVAS, activo.ofensiva,
+        (valor) => cambiar('ofensiva', valor), sinIndicar).bloque,
 
-      bloque('Resultado',
-        grupoOpciones(RESULTADOS, activo.resultado,
-          (valor) => cambiar('resultado', valor), { clase: 'dos-columnas' })),
+      desplegable('Mi acción defensiva', ACCIONES_DEFENSIVAS, activo.defensiva,
+        (valor) => cambiar('defensiva', valor), sinIndicar).bloque,
 
       // Estas dos sólo salen cuando hubo tocado, como pediste.
-      huboTocado ? bloque('Zona del cuerpo',
-        grupoOpciones(ZONAS_CUERPO, activo.zonaCuerpo,
-          (valor) => cambiar('zonaCuerpo', valor))) : null,
+      huboTocado ? desplegable('Zona del cuerpo', ZONAS_CUERPO, activo.zonaCuerpo,
+        (valor) => cambiar('zonaCuerpo', valor), sinIndicar).bloque : null,
 
-      huboTocado ? bloque('Zona de la pista',
-        grupoOpciones(ZONAS_PISTA, activo.zonaPista,
-          (valor) => cambiar('zonaPista', valor))) : null,
+      huboTocado ? desplegable('Zona de la pista', ZONAS_PISTA, activo.zonaPista,
+        (valor) => cambiar('zonaPista', valor), sinIndicar).bloque : null,
 
       crear('button', {
         type: 'button', class: 'boton boton-principal', texto: 'Listo',
-        onclick: cerrar,
+        onclick: () => ficha.close(),
       }),
 
       crear('button', {
@@ -455,7 +461,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
           if (!confirm('¿Borrar este intercambio?')) return;
           await borrar(ALMACENES.intercambios, activo.id);
           intercambios = intercambios.filter((i) => i.id !== activo.id);
-          cerrar();
+          activo = null;
+          ficha.close();
         },
       }),
     ]);

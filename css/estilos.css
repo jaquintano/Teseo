@@ -412,6 +412,16 @@ textarea.entrada {
   cursor: pointer;
 }
 
+/* Dentro de una tabla, ni tan alto ni de color de peligro: no borra nada. */
+.boton-icono.en-tabla {
+  width: auto;
+  min-height: 44px;
+  padding: 0 0.6rem;
+  border-left: 0;
+  color: var(--acento);
+  font-size: 1rem;
+}
+
 .boton-icono {
   width: 56px;
   min-height: 64px;
@@ -551,8 +561,8 @@ video::-webkit-media-controls-panel {
 
 /* El marcador con el que empieza un tiempo, y su corrección a mano. */
 .marcador {
-  margin-bottom: 0.75rem;
-  padding: 0.5rem 0.8rem;
+  margin-bottom: 0.6rem;
+  padding: 0.25rem 0.7rem;
   background: var(--fondo-caja);
   border: 1px solid var(--borde);
   border-radius: var(--radio);
@@ -569,15 +579,34 @@ video::-webkit-media-controls-panel {
 .marcador .boton-volver { margin-left: auto; }
 
 .tanteo-grande {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
+
+/* Al corregirlo, cada número en su línea. */
+.marcador-campo { margin: 0.5rem 0; }
+.marcador-campo .etiqueta-campo { margin-bottom: 0.2rem; }
 
 /* Para los dos números del marcador, que no necesitan todo el ancho. */
 .entrada.corta {
   width: 5rem;
   margin-bottom: 0;
 }
+
+/* La ficha de un intercambio. Se abre encima de todo porque en la pantalla
+   no cabe a la vez que el vídeo y la tabla, y mientras se repasa estorba. */
+.ficha-intercambio {
+  width: min(92vw, 460px);
+  max-height: 85vh;
+  padding: 1rem;
+  overflow-y: auto;
+  background: var(--fondo-caja);
+  color: var(--texto);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.ficha-intercambio::backdrop { background: rgba(0, 0, 0, 0.65); }
 
 .contador { margin-bottom: 0.75rem; }
 

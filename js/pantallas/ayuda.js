@@ -63,7 +63,10 @@ export async function pantallaAyuda(contenedor) {
     apartado('La tabla de intercambios',
       'Debajo del vídeo tienes la lista de lo que llevas etiquetado: cuándo ' +
       'fue, cómo acabó —con el mismo color que su marca— y cómo iba el ' +
-      'marcador. Toca una fila y el vídeo salta ahí.',
+      'marcador. Toca una fila y el vídeo salta ahí, sin abrirte nada: repasar ' +
+      'el asalto no tiene por qué interrumpirse.',
+      'Para corregir una etiqueta, el lápiz de su fila. Ahí sí se abre la ' +
+      'ficha, encima de todo, y al cerrarla vuelves donde estabas.',
       'El tanteo cuenta el doble para los dos, así que tres tocados a favor, ' +
       'uno en contra y dos dobles son un 5-3.',
       'Y no se reinicia con cada vídeo: si el asalto tiene varios tiempos, el ' +
@@ -79,19 +82,19 @@ export async function pantallaAyuda(contenedor) {
     apartado('Marcar un intercambio',
       'Reproduce el vídeo y pausa justo donde pasa algo. Con los botones de ' +
       '−0,1 s y +0,1 s afinas hasta el momento exacto.',
-      'Pulsa "Nuevo intercambio aquí" y aparecen tres filas de botones. Marca ' +
-      'lo que hiciste TÚ: si atacaste, la primera fila; si defendiste, la ' +
-      'segunda; y en la tercera, cómo acabó.',
-      'No hace falta rellenar las tres. Si sólo sabes que fue tocado en contra, ' +
-      'marca eso y ya está.',
+      'Pulsa "Nuevo intercambio aquí" y se abre su ficha. Lo primero es cómo ' +
+      'acabó, que es lo que siempre se sabe; debajo, lo que hiciste TÚ, no el ' +
+      'rival: tu acción ofensiva si atacaste, la defensiva si defendiste.',
+      'No hace falta rellenarlo todo. Si sólo sabes que fue tocado en contra, ' +
+      'marca eso y dale a "Listo".',
       'Todo se guarda solo. No hay botón de guardar que se pueda olvidar.'),
 
     apartado('La barra de debajo del vídeo',
       'Cada marca de colores es un intercambio que ya has etiquetado. Verde es ' +
       'tocado a favor, rojo en contra, ámbar doble.',
-      'Tócala en cualquier punto para saltar a ese momento. Toca una marca ' +
-      'para volver a ella y corregirla o borrarla. Si con el dedo se te ' +
-      'resisten, usa la tabla de más abajo: hace lo mismo y se acierta mejor.',
+      'Tócala en cualquier punto —o toca una marca— para saltar a ese momento. ' +
+      'Si con el dedo se te resisten, usa la tabla de más abajo, que se acierta ' +
+      'mejor.',
       'Puedes ampliar el vídeo con dos dedos, y el botón "Ajustar" lo devuelve ' +
       'a su tamaño.'),
 
