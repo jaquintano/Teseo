@@ -4,8 +4,8 @@
 // suele ser uno; en directas, dos o tres), y cada tiempo tiene su vídeo.
 
 import {
-  anadir, crear, rellenar, cabecera, ir, campo, campoLargo, bloque, desplegable,
-  deslizador, formatearFecha, formatearBytes, formatearSegundos,
+  anadir, crear, rellenar, cabecera, ir, empezarEn, campo, campoLargo, bloque,
+  desplegable, deslizador, formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
   FASES, PRIORIDADES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe, nombreCompleto,
@@ -282,7 +282,25 @@ export async function pantallaInicio(contenedor) {
         secundaria ? crear('span', { class: 'segunda-linea', texto: secundaria }) : null,
       ]),
       crear('td', { class: 'apagado', texto: etiquetaDe(FASES, asalto.fase) || '—' }),
-      crear('td', { class: 'derecha' }, [resultadoDelAsalto(asalto)]),
+      // El aspa va debajo del resultado, en la esquina de la ficha, a la
+      // altura de la línea de la competición.
+      crear('td', { class: 'derecha' }, [
+        resultadoDelAsalto(asalto),
+        crear('button', {
+          type: 'button', class: 'boton-icono en-tabla borrar', texto: '✕',
+          'aria-label': `Borrar el asalto contra ${nombreDeRival(rivalPorId.get(asalto.rivalId))}`,
+          onclick: async (evento) => {
+            // Si no, el toque llegaría también a la fila y saltaría al asalto.
+            evento.stopPropagation();
+            const contra = nombreDeRival(rivalPorId.get(asalto.rivalId));
+            if (!confirm(`¿Borrar el asalto contra ${contra}, con sus vídeos y sus etiquetas?`)) return;
+            await borrarAsalto(asalto.id);
+            // Se repinta la pantalla de inicio sin apilar una entrada más en
+            // el historial: desde ella, atrás tiene que salir de Teseo.
+            empezarEn('inicio');
+          },
+        }),
+      ]),
     ]);
   }
 
@@ -665,7 +683,7 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     id: 'selector-tiempo',
   });
   const etiquetaBoton = crear('label', {
-    class: 'boton boton-principal', for: 'selector-tiempo',
+    class: 'boton boton-principal boton-compacto', for: 'selector-tiempo',
     texto: tiempos.length === 0 ? 'Añadir el vídeo del primer tiempo' : 'Añadir otro tiempo',
   });
 
@@ -682,6 +700,11 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     // El club del rival sale de su ficha, no se vuelve a preguntar en cada asalto.
     rivalEnUnaLinea(rival),
 
+    crear('button', {
+      type: 'button', class: 'boton boton-compacto', texto: 'Editar datos del asalto',
+      onclick: () => ir('asalto-nuevo', { id: asalto.id }),
+    }),
+
     crear('h3', { class: 'subtitulo-seccion', texto: 'Tiempos' }),
     crear('p', {
       class: 'ayuda',
@@ -693,18 +716,6 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     etiquetaBoton,
     progreso,
 
-    crear('button', {
-      type: 'button', class: 'boton', texto: 'Editar datos del asalto',
-      onclick: () => ir('asalto-nuevo', { id: asalto.id }),
-    }),
-    crear('button', {
-      type: 'button', class: 'boton boton-peligro', texto: 'Borrar asalto',
-      onclick: async () => {
-        if (!confirm('¿Borrar este asalto con sus vídeos y sus etiquetas?')) return;
-        await borrarAsalto(asalto.id);
-        ir('inicio');
-      },
-    }),
   );
 }
 
