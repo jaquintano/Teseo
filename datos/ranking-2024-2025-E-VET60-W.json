@@ -1,0 +1,55 @@
+{
+ "temporada": "2024-2025",
+ "arma": "Espada",
+ "categoria": "VET60",
+ "genero": "Femenino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=15&weapon=E&category=18&gender=W",
+ "descargadoEl": "2026-08-21T22:00:58.968Z",
+ "tiradores": [
+  {
+   "idRfee": 452,
+   "posicion": 1,
+   "nombre": "ROSA MARIA",
+   "apellidos": "CANO DIOSA",
+   "fechaNacimiento": "1965-10-07",
+   "club": "CECVi-PO",
+   "puntos": 5942.8
+  },
+  {
+   "idRfee": 1398,
+   "posicion": 2,
+   "nombre": "PAULIEN",
+   "apellidos": "CLOSE VERBRUGGEN",
+   "fechaNacimiento": "1962-01-20",
+   "club": "CBE-BA",
+   "puntos": 4809.56
+  },
+  {
+   "idRfee": 1421,
+   "posicion": 3,
+   "nombre": "ANA CLARA",
+   "apellidos": "RUIZ DIAZ",
+   "fechaNacimiento": "1963-04-19",
+   "club": "CE-TO",
+   "puntos": 3257.08
+  },
+  {
+   "idRfee": 1869,
+   "posicion": 4,
+   "nombre": "FRANCISCA JESÚS",
+   "apellidos": "ROMAN LÓPEZ",
+   "fechaNacimiento": "1959-01-03",
+   "club": "FED-AND-C",
+   "puntos": 1626.95
+  },
+  {
+   "idRfee": 2435,
+   "posicion": 5,
+   "nombre": "MERCEDES",
+   "apellidos": "ORBEA SALAZAR",
+   "fechaNacimiento": "1961-05-18",
+   "club": "SUÑE-BI",
+   "puntos": 1565.98
+  }
+ ]
+}

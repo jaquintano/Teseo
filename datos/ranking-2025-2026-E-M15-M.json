@@ -4,7 +4,7 @@
  "categoria": "M15",
  "genero": "Masculino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=4&gender=M",
- "descargadoEl": "2026-08-21T19:26:33.726Z",
+ "descargadoEl": "2026-08-21T22:01:06.046Z",
  "tiradores": [
   {
    "idRfee": 2064,
@@ -979,21 +979,21 @@
    "puntos": 114.01
   },
   {
-   "idRfee": 4916,
-   "posicion": 109,
-   "nombre": "PERE",
-   "apellidos": "FITÓ CAMPS",
-   "fechaNacimiento": "2012-12-29",
-   "club": "CEMAR-B",
-   "puntos": 111
-  },
-  {
    "idRfee": 2983,
-   "posicion": 110,
+   "posicion": 109,
    "nombre": "ÍKTAN",
    "apellidos": "GRANJE AYALA",
    "fechaNacimiento": "2013-08-28",
    "club": "SAM-B",
+   "puntos": 111
+  },
+  {
+   "idRfee": 4916,
+   "posicion": 110,
+   "nombre": "PERE",
+   "apellidos": "FITÓ CAMPS",
+   "fechaNacimiento": "2012-12-29",
+   "club": "CEMAR-B",
    "puntos": 111
   }
  ]

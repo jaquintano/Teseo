@@ -1,0 +1,55 @@
+{
+ "temporada": "2024-2025",
+ "arma": "Espada",
+ "categoria": "VET70",
+ "genero": "Masculino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=15&weapon=E&category=19&gender=M",
+ "descargadoEl": "2026-08-21T22:01:00.318Z",
+ "tiradores": [
+  {
+   "idRfee": 1466,
+   "posicion": 1,
+   "nombre": "JUAN FERNANDO",
+   "apellidos": "DAMAS FLORES",
+   "fechaNacimiento": "1949-04-18",
+   "club": "CELC-M",
+   "puntos": 4294.89
+  },
+  {
+   "idRfee": 4497,
+   "posicion": 2,
+   "nombre": "JAN GEORGE ALBIN",
+   "apellidos": "BADE",
+   "fechaNacimiento": "1955-06-10",
+   "club": "FED-AND-C",
+   "puntos": 2424
+  },
+  {
+   "idRfee": 4463,
+   "posicion": 3,
+   "nombre": "MARCOS",
+   "apellidos": "GUTIERREZ DAVILA",
+   "fechaNacimiento": "1953-04-25",
+   "club": "CBC-CA",
+   "puntos": 2069.52
+  },
+  {
+   "idRfee": 3080,
+   "posicion": 4,
+   "nombre": "PEDRO",
+   "apellidos": "CALDERON MILLSTEIN",
+   "fechaNacimiento": "1943-08-18",
+   "club": "SAV-V",
+   "puntos": 1902.54
+  },
+  {
+   "idRfee": 2436,
+   "posicion": 5,
+   "nombre": "JORGE",
+   "apellidos": "URIARTE BALLARENA",
+   "fechaNacimiento": "1950-07-27",
+   "club": "SUÑE-BI",
+   "puntos": 1487.69
+  }
+ ]
+}

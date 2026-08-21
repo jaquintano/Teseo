@@ -1,0 +1,244 @@
+{
+ "temporada": "2024-2025",
+ "arma": "Espada",
+ "categoria": "VET40",
+ "genero": "Masculino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=15&weapon=E&category=14&gender=M",
+ "descargadoEl": "2026-08-21T22:00:51.821Z",
+ "tiradores": [
+  {
+   "idRfee": 893,
+   "posicion": 1,
+   "nombre": "MANUEL",
+   "apellidos": "ABALOS FELIPE",
+   "fechaNacimiento": "1977-07-03",
+   "club": "CREA-M",
+   "puntos": 8865.5
+  },
+  {
+   "idRfee": 372,
+   "posicion": 2,
+   "nombre": "JAVIER",
+   "apellidos": "ALONSO ESCOBAR",
+   "fechaNacimiento": "1981-10-04",
+   "club": "CREA-M",
+   "puntos": 8032.46
+  },
+  {
+   "idRfee": 587,
+   "posicion": 3,
+   "nombre": "ROMAN ERNESTO",
+   "apellidos": "REYNOSO RAFAEL",
+   "fechaNacimiento": "1980-03-18",
+   "club": "CEOYM-M",
+   "puntos": 7179.44
+  },
+  {
+   "idRfee": 2738,
+   "posicion": 4,
+   "nombre": "VICENTE",
+   "apellidos": "GARDE LA CASA",
+   "fechaNacimiento": "1977-09-01",
+   "club": "CE-TO",
+   "puntos": 6779.29
+  },
+  {
+   "idRfee": 874,
+   "posicion": 5,
+   "nombre": "RUBEN",
+   "apellidos": "SERNA MUÑOZ",
+   "fechaNacimiento": "1978-02-03",
+   "club": "CEV-MU",
+   "puntos": 4948.43
+  },
+  {
+   "idRfee": 2369,
+   "posicion": 6,
+   "nombre": "DAVID",
+   "apellidos": "RAMILA GUTIERREZ",
+   "fechaNacimiento": "1978-02-02",
+   "club": "CREA-M",
+   "puntos": 4651.58
+  },
+  {
+   "idRfee": 490,
+   "posicion": 7,
+   "nombre": "JOSE MANUEL",
+   "apellidos": "MACIAS PEREZ",
+   "fechaNacimiento": "1982-04-01",
+   "club": "CCC-M",
+   "puntos": 3592.66
+  },
+  {
+   "idRfee": 1859,
+   "posicion": 8,
+   "nombre": "ROBERTO",
+   "apellidos": "MORENO GARCÍA",
+   "fechaNacimiento": "1977-09-19",
+   "club": "SEAC-CO",
+   "puntos": 3532.47
+  },
+  {
+   "idRfee": 1891,
+   "posicion": 9,
+   "nombre": "ROBERTO",
+   "apellidos": "ALVAREZ ABRIL",
+   "fechaNacimiento": "1978-08-04",
+   "club": "SAV-V",
+   "puntos": 3311.33
+  },
+  {
+   "idRfee": 1390,
+   "posicion": 10,
+   "nombre": "CARLOS",
+   "apellidos": "HERRERA AYLLÓN",
+   "fechaNacimiento": "1980-06-06",
+   "club": "CETC-M",
+   "puntos": 2945.06
+  },
+  {
+   "idRfee": 3829,
+   "posicion": 11,
+   "nombre": "SERGIO ALBERTO",
+   "apellidos": "NORDELO OTALORA",
+   "fechaNacimiento": "1984-01-03",
+   "club": "CNM-GC",
+   "puntos": 2761.4
+  },
+  {
+   "idRfee": 1753,
+   "posicion": 12,
+   "nombre": "RAFAEL",
+   "apellidos": "BARAÑANO ALCAIDE",
+   "fechaNacimiento": "1976-12-17",
+   "club": "SEAC-CO",
+   "puntos": 2592.4
+  },
+  {
+   "idRfee": 1748,
+   "posicion": 13,
+   "nombre": "JOSE LUIS",
+   "apellidos": "HERRANZ FERREROS",
+   "fechaNacimiento": "1976-10-23",
+   "club": "CEME-V",
+   "puntos": 2467.5
+  },
+  {
+   "idRfee": 2406,
+   "posicion": 14,
+   "nombre": "EDUARDO",
+   "apellidos": "FERNÁNDEZ DE BETOÑO RELAÑO",
+   "fechaNacimiento": "1977-11-13",
+   "club": "SAARVI-VI",
+   "puntos": 2361.37
+  },
+  {
+   "idRfee": 1375,
+   "posicion": 15,
+   "nombre": "NÉSTOR",
+   "apellidos": "LÓPEZ DEL MORAL",
+   "fechaNacimiento": "1983-11-16",
+   "club": "ELGATO-M",
+   "puntos": 2297.72
+  },
+  {
+   "idRfee": 2401,
+   "posicion": 16,
+   "nombre": "DAVID",
+   "apellidos": "LAICH RUIZ",
+   "fechaNacimiento": "1983-12-26",
+   "club": "SAARVI-VI",
+   "puntos": 1943.42
+  },
+  {
+   "idRfee": 1255,
+   "posicion": 17,
+   "nombre": "EDWIN GERARDO",
+   "apellidos": "ROMERO VASQUEZ",
+   "fechaNacimiento": "1980-05-14",
+   "club": "CEAA-GU",
+   "puntos": 1553.46
+  },
+  {
+   "idRfee": 4589,
+   "posicion": 18,
+   "nombre": "MIKEL",
+   "apellidos": "AREVALILLO HERNANDO",
+   "fechaNacimiento": "1983-12-11",
+   "club": "CDF-SS",
+   "puntos": 1079.64
+  },
+  {
+   "idRfee": 1404,
+   "posicion": 19,
+   "nombre": "PEDRO",
+   "apellidos": "MUNAR JAUME",
+   "fechaNacimiento": "1981-05-04",
+   "club": "CBE-BA",
+   "puntos": 1074.1
+  },
+  {
+   "idRfee": 3833,
+   "posicion": 20,
+   "nombre": "NAUDY ALEJANDRO",
+   "apellidos": "MENDOZA FREITEZ",
+   "fechaNacimiento": "1983-06-05",
+   "club": "CNM-GC",
+   "puntos": 924
+  },
+  {
+   "idRfee": 3963,
+   "posicion": 21,
+   "nombre": "ANDRZEJ",
+   "apellidos": "KARPUSZONAK",
+   "fechaNacimiento": "1981-07-16",
+   "club": "FED-AND-C",
+   "puntos": 681.13
+  },
+  {
+   "idRfee": 4339,
+   "posicion": 22,
+   "nombre": "RAÚL",
+   "apellidos": "DOMINGO",
+   "fechaNacimiento": "1976-01-16",
+   "club": "CEMAJ-M",
+   "puntos": 647.21
+  },
+  {
+   "idRfee": 4501,
+   "posicion": 23,
+   "nombre": "CARLOS",
+   "apellidos": "AZNAR SANCHEZ",
+   "fechaNacimiento": "1985-07-11",
+   "club": "FED-AND-C",
+   "puntos": 647.21
+  },
+  {
+   "idRfee": 3492,
+   "posicion": 24,
+   "nombre": "JOSE PEDRO",
+   "apellidos": "GONZALEZ CEREZALES",
+   "fechaNacimiento": "1981-05-03",
+   "club": "CEMAJ-M",
+   "puntos": 145.72
+  },
+  {
+   "idRfee": 1905,
+   "posicion": 25,
+   "nombre": "JUAN PABLO",
+   "apellidos": "ALVEAR ZAPATA",
+   "fechaNacimiento": "1979-11-13",
+   "club": "CEEC-M",
+   "puntos": 92.23
+  },
+  {
+   "idRfee": 4588,
+   "posicion": 9999,
+   "nombre": "ARKAITZ",
+   "apellidos": "CRUZ CAMPOS",
+   "fechaNacimiento": "1978-07-16",
+   "club": "CDF-SS",
+   "puntos": 0
+  }
+ ]
+}

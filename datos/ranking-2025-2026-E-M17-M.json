@@ -4,7 +4,7 @@
  "categoria": "M17",
  "genero": "Masculino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=5&gender=M",
- "descargadoEl": "2026-08-21T19:26:36.561Z",
+ "descargadoEl": "2026-08-21T22:01:08.950Z",
  "tiradores": [
   {
    "idRfee": 899,
@@ -1447,20 +1447,20 @@
    "puntos": 21.31
   },
   {
-   "idRfee": 4474,
+   "idRfee": 4837,
    "posicion": 161,
-   "nombre": "BERNAT",
-   "apellidos": "ITURBE FORNS",
-   "fechaNacimiento": "2010-09-21",
+   "nombre": "HUGO",
+   "apellidos": "SANZ LOPEZ",
+   "fechaNacimiento": "2009-12-02",
    "club": "SAM-B",
    "puntos": 15.57
   },
   {
-   "idRfee": 4837,
+   "idRfee": 4474,
    "posicion": 162,
-   "nombre": "HUGO",
-   "apellidos": "SANZ LOPEZ",
-   "fechaNacimiento": "2009-12-02",
+   "nombre": "BERNAT",
+   "apellidos": "ITURBE FORNS",
+   "fechaNacimiento": "2010-09-21",
    "club": "SAM-B",
    "puntos": 15.57
   },

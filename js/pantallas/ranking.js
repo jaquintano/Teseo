@@ -1,8 +1,8 @@
 // El ranking de la federación, tal cual lo publica.
 //
-// No pregunta ni el arma ni el género ni la temporada: espada, el tuyo y la
-// más reciente que Teseo traiga. Sólo se elige la categoría, que es lo único
-// en lo que se duda cuando compites en dos.
+// No pregunta ni el arma ni el género: espada y el tuyo. Se eligen la
+// temporada y la categoría, que es en lo único que se duda —compites en dos
+// categorías, y a veces quieres mirar cómo acabó el año pasado—.
 //
 // Los rankings viajan dentro de Teseo (carpeta datos/), así que esto también
 // funciona sin cobertura.
@@ -20,6 +20,8 @@ export async function pantallaRanking(contenedor) {
   const [indice, perfil] = await Promise.all([listarRankings(), obtenerPerfilPropio()]);
   const etiquetaGenero = generoDelUsuario() === 'F' ? 'Femenino' : 'Masculino';
 
+  // Los que no traen a nadie no se ofrecen: una temporada que aún no ha
+  // empezado está descargada pero vacía.
   const mios = indice.filter((r) => r.genero === etiquetaGenero && r.cuantos > 0);
 
   anadir(contenedor, cabecera('Ranking', () => ir('menu')));
@@ -33,48 +35,73 @@ export async function pantallaRanking(contenedor) {
     return;
   }
 
-  // De cada categoría, la temporada más reciente que haya.
-  const porCategoria = new Map();
-  for (const ranking of mios) {
-    const previo = porCategoria.get(ranking.categoria);
-    if (!previo || ranking.temporada > previo.temporada) {
-      porCategoria.set(ranking.categoria, ranking);
-    }
-  }
+  const temporadas = [...new Set(mios.map((r) => r.temporada))].sort().reverse();
+  let temporada = temporadas[0];
+  let categoria = null;
 
-  const categorias = [...porCategoria.keys()].sort();
-  let categoria = categorias.includes(CATEGORIA_POR_DEFECTO)
-    ? CATEGORIA_POR_DEFECTO
-    : categorias[0];
+  // Para no pintar el ranking que llega tarde encima del que se pidió después.
+  let peticion = 0;
 
+  const filtros = crear('div');
   const resultado = crear('div');
 
-  anadir(contenedor,
-    desplegable('Categoría', categorias.map((c) => ({ id: c, etiqueta: c })), categoria,
-      (valor) => { categoria = valor || categorias[0]; pintar(); }).bloque,
-    resultado,
-  );
+  anadir(contenedor, filtros, resultado);
 
+  pintarFiltros();
   pintar();
 
   // ------------------------------------------------------------------
 
+  /** Las categorías que tienen ranking en una temporada. */
+  function categoriasDe(cual) {
+    return [...new Set(mios.filter((r) => r.temporada === cual).map((r) => r.categoria))].sort();
+  }
+
+  /**
+   * Los dos desplegables. Se rehacen al cambiar de temporada, porque no todas
+   * traen las mismas categorías.
+   */
+  function pintarFiltros() {
+    const categorias = categoriasDe(temporada);
+    if (!categorias.includes(categoria)) {
+      categoria = categorias.includes(CATEGORIA_POR_DEFECTO)
+        ? CATEGORIA_POR_DEFECTO
+        : categorias[0];
+    }
+
+    rellenar(filtros, [
+      desplegable('Temporada', temporadas.map((t) => ({ id: t, etiqueta: t })), temporada,
+        (valor) => {
+          temporada = valor || temporadas[0];
+          pintarFiltros();
+          pintar();
+        }).bloque,
+
+      desplegable('Categoría', categorias.map((c) => ({ id: c, etiqueta: c })), categoria,
+        (valor) => { categoria = valor || categorias[0]; pintar(); }).bloque,
+    ]);
+  }
+
   async function pintar() {
-    const ranking = porCategoria.get(categoria);
+    const ranking = mios.find((r) => r.temporada === temporada && r.categoria === categoria);
+    if (!ranking) { rellenar(resultado, []); return; }
+
+    const mia = ++peticion;
     rellenar(resultado, crear('p', { class: 'ayuda', texto: 'Cargando…' }));
 
     let datos;
     try {
       datos = await cargarRanking(ranking.fichero);
     } catch (error) {
+      if (mia !== peticion) return;
       rellenar(resultado, crear('p', {
         class: 'aviso', texto: `No se pudo leer el ranking: ${error.message}`,
       }));
       return;
     }
 
-    // Puede haber cambiado de categoría mientras se leía el fichero.
-    if (ranking !== porCategoria.get(categoria)) return;
+    // Puede haberse pedido otro mientras se leía el fichero.
+    if (mia !== peticion) return;
 
     const cuerpo = crear('tbody', {}, datos.tiradores.map((fila) => {
       const esMio = perfil && perfil.idRfee != null && fila.idRfee === perfil.idRfee;
@@ -92,8 +119,7 @@ export async function pantallaRanking(contenedor) {
     rellenar(resultado, [
       crear('p', {
         class: 'ayuda',
-        texto: `${datos.tiradores.length} en ${datos.categoria} ${datos.genero.toLowerCase()}, ` +
-               `temporada ${datos.temporada}.`,
+        texto: `${datos.tiradores.length} en ${datos.categoria} ${datos.genero.toLowerCase()}.`,
       }),
       crear('div', { class: 'tabla-scroll' }, [
         crear('table', { class: 'tabla-rivales' }, [

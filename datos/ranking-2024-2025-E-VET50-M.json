@@ -1,0 +1,460 @@
+{
+ "temporada": "2024-2025",
+ "arma": "Espada",
+ "categoria": "VET50",
+ "genero": "Masculino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=15&weapon=E&category=17&gender=M",
+ "descargadoEl": "2026-08-21T22:00:54.605Z",
+ "tiradores": [
+  {
+   "idRfee": 988,
+   "posicion": 1,
+   "nombre": "GREGORIO",
+   "apellidos": "ALCAZAR ROLDAN",
+   "fechaNacimiento": "1972-01-25",
+   "club": "CVA-CR",
+   "puntos": 8754.32
+  },
+  {
+   "idRfee": 583,
+   "posicion": 2,
+   "nombre": "RAUL",
+   "apellidos": "GOMEZ PAZ",
+   "fechaNacimiento": "1973-07-14",
+   "club": "CETC-M",
+   "puntos": 6100.9
+  },
+  {
+   "idRfee": 1095,
+   "posicion": 3,
+   "nombre": "JESUS",
+   "apellidos": "RAMOS MUÑOZ",
+   "fechaNacimiento": "1973-02-11",
+   "club": "CNM-GC",
+   "puntos": 5951.48
+  },
+  {
+   "idRfee": 494,
+   "posicion": 4,
+   "nombre": "ALBERTO",
+   "apellidos": "MIRANDA GARCIA",
+   "fechaNacimiento": "1972-04-03",
+   "club": "CCC-M",
+   "puntos": 5504.19
+  },
+  {
+   "idRfee": 914,
+   "posicion": 5,
+   "nombre": "JOSE",
+   "apellidos": "OLIVARES VILLEGAS",
+   "fechaNacimiento": "1966-11-01",
+   "club": "CREA-M",
+   "puntos": 5123.93
+  },
+  {
+   "idRfee": 1389,
+   "posicion": 6,
+   "nombre": "JOSE MARIA",
+   "apellidos": "REYES SARMIENTO",
+   "fechaNacimiento": "1969-10-13",
+   "club": "SAG-B",
+   "puntos": 4454.94
+  },
+  {
+   "idRfee": 4285,
+   "posicion": 7,
+   "nombre": "ANTONIO IVAN",
+   "apellidos": "SANCHEZ LUCAS",
+   "fechaNacimiento": "1973-11-10",
+   "club": "CREA-M",
+   "puntos": 4210.89
+  },
+  {
+   "idRfee": 871,
+   "posicion": 8,
+   "nombre": "JOSE ANTONIO",
+   "apellidos": "PELLUZ QUIRANTE",
+   "fechaNacimiento": "1966-07-06",
+   "club": "CEV-MU",
+   "puntos": 3987.97
+  },
+  {
+   "idRfee": 1073,
+   "posicion": 9,
+   "nombre": "JACOBO",
+   "apellidos": "MARTOS GARCIA",
+   "fechaNacimiento": "1973-07-17",
+   "club": "CEEC-M",
+   "puntos": 3579.37
+  },
+  {
+   "idRfee": 1309,
+   "posicion": 10,
+   "nombre": "ROLANDO",
+   "apellidos": "LEDEA VÁZQUEZ",
+   "fechaNacimiento": "1966-11-29",
+   "club": "CEEC-M",
+   "puntos": 3577.48
+  },
+  {
+   "idRfee": 864,
+   "posicion": 11,
+   "nombre": "FRANCISCO JAVER",
+   "apellidos": "VELA GARRIDO",
+   "fechaNacimiento": "1968-12-26",
+   "club": "CBC-CA",
+   "puntos": 3255.1
+  },
+  {
+   "idRfee": 328,
+   "posicion": 12,
+   "nombre": "VÍCTOR",
+   "apellidos": "CASTRO SÁNCHEZ",
+   "fechaNacimiento": "1974-11-01",
+   "club": "COMES-C",
+   "puntos": 3128.84
+  },
+  {
+   "idRfee": 503,
+   "posicion": 13,
+   "nombre": "JUAN",
+   "apellidos": "RUIZ ALCONERO",
+   "fechaNacimiento": "1972-11-01",
+   "club": "ATENEO-M",
+   "puntos": 3013.88
+  },
+  {
+   "idRfee": 1024,
+   "posicion": 14,
+   "nombre": "MANUEL",
+   "apellidos": "DOMÍNGUEZ GIL",
+   "fechaNacimiento": "1971-01-26",
+   "club": "FED-CL-C",
+   "puntos": 3007.91
+  },
+  {
+   "idRfee": 1348,
+   "posicion": 15,
+   "nombre": "FRANCISCO",
+   "apellidos": "IGLESIAS PÉREZ",
+   "fechaNacimiento": "1974-12-12",
+   "club": "COMES-C",
+   "puntos": 2804.26
+  },
+  {
+   "idRfee": 862,
+   "posicion": 16,
+   "nombre": "ALFREDO",
+   "apellidos": "RUIZ FRECHILLA",
+   "fechaNacimiento": "1970-11-20",
+   "club": "CBC-CA",
+   "puntos": 2796.24
+  },
+  {
+   "idRfee": 1774,
+   "posicion": 17,
+   "nombre": "JUAN RAMON",
+   "apellidos": "MERINO BOCOS",
+   "fechaNacimiento": "1966-03-06",
+   "club": "VCE-VA",
+   "puntos": 2586.62
+  },
+  {
+   "idRfee": 331,
+   "posicion": 18,
+   "nombre": "JOSÉ LUIS",
+   "apellidos": "PIÑEIRO FUENTES",
+   "fechaNacimiento": "1968-06-04",
+   "club": "COMES-C",
+   "puntos": 2399.84
+  },
+  {
+   "idRfee": 937,
+   "posicion": 19,
+   "nombre": "CRISTÓBAL",
+   "apellidos": "PÉREZ VILÁ",
+   "fechaNacimiento": "1971-03-14",
+   "club": "SAM-B",
+   "puntos": 2392.2
+  },
+  {
+   "idRfee": 3700,
+   "posicion": 20,
+   "nombre": "FRANCISCO JAVIER",
+   "apellidos": "ABAD ALONSO",
+   "fechaNacimiento": "1969-09-13",
+   "club": "SAV-V",
+   "puntos": 2166.93
+  },
+  {
+   "idRfee": 2312,
+   "posicion": 21,
+   "nombre": "FELIX",
+   "apellidos": "BARDON GOMEZ",
+   "fechaNacimiento": "1967-12-11",
+   "club": "CEVI-M",
+   "puntos": 1986.03
+  },
+  {
+   "idRfee": 4377,
+   "posicion": 22,
+   "nombre": "JORGE",
+   "apellidos": "RODRÍGUEZ BORRAJO",
+   "fechaNacimiento": "1974-12-29",
+   "club": "FED-G-C",
+   "puntos": 1895.85
+  },
+  {
+   "idRfee": 4427,
+   "posicion": 23,
+   "nombre": "FERNANDO",
+   "apellidos": "GONZÁLEZ DÍAZ",
+   "fechaNacimiento": "1967-07-14",
+   "club": "FED-AS-C",
+   "puntos": 1831.13
+  },
+  {
+   "idRfee": 981,
+   "posicion": 24,
+   "nombre": "ANTONIO",
+   "apellidos": "PASTOR SATORRE",
+   "fechaNacimiento": "1968-12-17",
+   "club": "CE-M",
+   "puntos": 1729.36
+  },
+  {
+   "idRfee": 1574,
+   "posicion": 25,
+   "nombre": "EMILIO RAFAEL",
+   "apellidos": "QUINTELA RAMOS",
+   "fechaNacimiento": "1966-07-22",
+   "club": "SEAC-CO",
+   "puntos": 1715.79
+  },
+  {
+   "idRfee": 670,
+   "posicion": 26,
+   "nombre": "ARTURO",
+   "apellidos": "MOYA FERNANDEZ",
+   "fechaNacimiento": "1968-10-29",
+   "club": "CELP-MA",
+   "puntos": 1591.68
+  },
+  {
+   "idRfee": 2577,
+   "posicion": 27,
+   "nombre": "JOSE ANTONIO",
+   "apellidos": "RODRIGUEZ GONZALEZ",
+   "fechaNacimiento": "1970-01-07",
+   "club": "CREA-M",
+   "puntos": 1552.47
+  },
+  {
+   "idRfee": 3816,
+   "posicion": 28,
+   "nombre": "FRANCISCO JAVIER",
+   "apellidos": "ASENSIO MARÍN",
+   "fechaNacimiento": "1975-05-16",
+   "club": "CCC-M",
+   "puntos": 1489.38
+  },
+  {
+   "idRfee": 2457,
+   "posicion": 29,
+   "nombre": "EUSEBIO",
+   "apellidos": "TERRADILLOS CORTAZAR",
+   "fechaNacimiento": "1966-02-28",
+   "club": "SUÑE-BI",
+   "puntos": 1412.41
+  },
+  {
+   "idRfee": 1472,
+   "posicion": 30,
+   "nombre": "TOMAS",
+   "apellidos": "TESTOR SCHNELL",
+   "fechaNacimiento": "1966-10-12",
+   "club": "SAM-B",
+   "puntos": 1229.48
+  },
+  {
+   "idRfee": 1475,
+   "posicion": 31,
+   "nombre": "JOSE DOMINGO",
+   "apellidos": "FERNANDEZ RAMOS",
+   "fechaNacimiento": "1973-05-26",
+   "club": "CE-M",
+   "puntos": 1215.03
+  },
+  {
+   "idRfee": 1354,
+   "posicion": 32,
+   "nombre": "IGNACIO",
+   "apellidos": "CAMPOY CERVERA",
+   "fechaNacimiento": "1967-09-01",
+   "club": "CEVI-M",
+   "puntos": 1187.07
+  },
+  {
+   "idRfee": 3354,
+   "posicion": 33,
+   "nombre": "JOSE",
+   "apellidos": "GARCÍA PARDO",
+   "fechaNacimiento": "1973-03-17",
+   "club": "ELGATO-M",
+   "puntos": 1131.07
+  },
+  {
+   "idRfee": 4081,
+   "posicion": 34,
+   "nombre": "FRANCISCO JAVIER",
+   "apellidos": "FERNANDEZ ACERO",
+   "fechaNacimiento": "1973-08-28",
+   "club": "CBC-CA",
+   "puntos": 1119.44
+  },
+  {
+   "idRfee": 4274,
+   "posicion": 35,
+   "nombre": "FRANCISCO JAVIER",
+   "apellidos": "MOYA SANZ",
+   "fechaNacimiento": "1970-05-30",
+   "club": "CVA-CR",
+   "puntos": 949.33
+  },
+  {
+   "idRfee": 973,
+   "posicion": 36,
+   "nombre": "MIGUEL ANGEL",
+   "apellidos": "GALAN ROCILLO",
+   "fechaNacimiento": "1967-12-23",
+   "club": "CESAN",
+   "puntos": 937.75
+  },
+  {
+   "idRfee": 2574,
+   "posicion": 37,
+   "nombre": "ANDRES",
+   "apellidos": "MARTINEZ JAEN",
+   "fechaNacimiento": "1969-12-03",
+   "club": "CEEC-M",
+   "puntos": 920.76
+  },
+  {
+   "idRfee": 4335,
+   "posicion": 38,
+   "nombre": "PABLO",
+   "apellidos": "ALONSO TORRES",
+   "fechaNacimiento": "1975-09-17",
+   "club": "CEEC-M",
+   "puntos": 917.37
+  },
+  {
+   "idRfee": 2774,
+   "posicion": 39,
+   "nombre": "LUCA",
+   "apellidos": "LEONARDI",
+   "fechaNacimiento": "1974-01-19",
+   "club": "COMES-C",
+   "puntos": 907.55
+  },
+  {
+   "idRfee": 4064,
+   "posicion": 40,
+   "nombre": "ADOLFO",
+   "apellidos": "SEGLAR RODRIGUEZ",
+   "fechaNacimiento": "1975-08-12",
+   "club": "SA-GR",
+   "puntos": 890.08
+  },
+  {
+   "idRfee": 2402,
+   "posicion": 41,
+   "nombre": "ROBERTO",
+   "apellidos": "MONFORTE DUPRET",
+   "fechaNacimiento": "1975-01-30",
+   "club": "SAARVI-VI",
+   "puntos": 862.05
+  },
+  {
+   "idRfee": 2464,
+   "posicion": 42,
+   "nombre": "CARLOS",
+   "apellidos": "MORAZA LÓPEZ DE LAPUENTE",
+   "fechaNacimiento": "1970-11-08",
+   "club": "SAARVI-VI",
+   "puntos": 794.34
+  },
+  {
+   "idRfee": 3476,
+   "posicion": 43,
+   "nombre": "PELAYO",
+   "apellidos": "MALLADA MUÑIZ",
+   "fechaNacimiento": "1973-09-24",
+   "club": "ATENEO-M",
+   "puntos": 741.79
+  },
+  {
+   "idRfee": 1241,
+   "posicion": 44,
+   "nombre": "EDUARDO",
+   "apellidos": "COMAS VALLS",
+   "fechaNacimiento": "1966-11-23",
+   "club": "CDF-SS",
+   "puntos": 677.45
+  },
+  {
+   "idRfee": 1752,
+   "posicion": 45,
+   "nombre": "JOSÉ MARÍA",
+   "apellidos": "RUIZ MATEO",
+   "fechaNacimiento": "1968-02-28",
+   "club": "SEAC-CO",
+   "puntos": 647.21
+  },
+  {
+   "idRfee": 1459,
+   "posicion": 46,
+   "nombre": "ORSON",
+   "apellidos": "ALCOCER RODRÍGUEZ",
+   "fechaNacimiento": "1974-07-17",
+   "club": "CREA-M",
+   "puntos": 537.02
+  },
+  {
+   "idRfee": 4266,
+   "posicion": 47,
+   "nombre": "EDUARDO",
+   "apellidos": "PASCUAL TORRES",
+   "fechaNacimiento": "1968-06-29",
+   "club": "CREA-M",
+   "puntos": 490.25
+  },
+  {
+   "idRfee": 4307,
+   "posicion": 48,
+   "nombre": "FRANCO",
+   "apellidos": "SEIJAS COLMENARES",
+   "fechaNacimiento": "1968-07-20",
+   "club": "SA-GR",
+   "puntos": 414
+  },
+  {
+   "idRfee": 1355,
+   "posicion": 49,
+   "nombre": "PEDRO",
+   "apellidos": "SANCHEZ CANOSA",
+   "fechaNacimiento": "1973-04-29",
+   "club": "CETC-M",
+   "puntos": 142.01
+  },
+  {
+   "idRfee": 2446,
+   "posicion": 9999,
+   "nombre": "SERGIO",
+   "apellidos": "SALVADOR MOMPARLER",
+   "fechaNacimiento": "1972-06-22",
+   "club": "CELS-V",
+   "puntos": 0
+  }
+ ]
+}

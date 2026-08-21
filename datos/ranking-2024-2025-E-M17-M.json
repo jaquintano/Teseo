@@ -1,0 +1,1513 @@
+{
+ "temporada": "2024-2025",
+ "arma": "Espada",
+ "categoria": "M17",
+ "genero": "Masculino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=15&weapon=E&category=5&gender=M",
+ "descargadoEl": "2026-08-21T22:00:40.342Z",
+ "tiradores": [
+  {
+   "idRfee": 781,
+   "posicion": 1,
+   "nombre": "LUCAS",
+   "apellidos": "ENRIQUEZ RODRIGUEZ",
+   "fechaNacimiento": "2008-09-04",
+   "club": "CELC-M",
+   "puntos": 11202.15
+  },
+  {
+   "idRfee": 899,
+   "posicion": 2,
+   "nombre": "JORGE",
+   "apellidos": "CORDOBA ALVAREZ",
+   "fechaNacimiento": "2009-01-14",
+   "club": "CREA-M",
+   "puntos": 8845.64
+  },
+  {
+   "idRfee": 439,
+   "posicion": 3,
+   "nombre": "MARCOS",
+   "apellidos": "ALVAREZ APARICIO",
+   "fechaNacimiento": "2008-08-15",
+   "club": "SA-GR",
+   "puntos": 5466.25
+  },
+  {
+   "idRfee": 358,
+   "posicion": 4,
+   "nombre": "NICOLÁS",
+   "apellidos": "FERRER BARATA",
+   "fechaNacimiento": "2009-01-13",
+   "club": "SEM-V",
+   "puntos": 5370.31
+  },
+  {
+   "idRfee": 1114,
+   "posicion": 5,
+   "nombre": "EDUARD MIHAI",
+   "apellidos": "CEBUC",
+   "fechaNacimiento": "2008-02-11",
+   "club": "EDMC-VA",
+   "puntos": 5018.59
+  },
+  {
+   "idRfee": 542,
+   "posicion": 6,
+   "nombre": "RUBEN",
+   "apellidos": "GARCIA MIGUEL",
+   "fechaNacimiento": "2008-06-12",
+   "club": "CELC-M",
+   "puntos": 4809.37
+  },
+  {
+   "idRfee": 902,
+   "posicion": 7,
+   "nombre": "PABLO",
+   "apellidos": "DE LA CAL GUIJARRO",
+   "fechaNacimiento": "2008-08-20",
+   "club": "CREA-M",
+   "puntos": 4513.26
+  },
+  {
+   "idRfee": 1830,
+   "posicion": 8,
+   "nombre": "POL",
+   "apellidos": "ROGER ESCALA",
+   "fechaNacimiento": "2010-11-02",
+   "club": "CEMAR-B",
+   "puntos": 4480.35
+  },
+  {
+   "idRfee": 1687,
+   "posicion": 9,
+   "nombre": "POL",
+   "apellidos": "PUJOL IBARBIA",
+   "fechaNacimiento": "2009-03-25",
+   "club": "CEMAR-B",
+   "puntos": 4298.51
+  },
+  {
+   "idRfee": 3287,
+   "posicion": 10,
+   "nombre": "DIEGO JOSE",
+   "apellidos": "DELMORAL COMUNIAN",
+   "fechaNacimiento": "2009-12-29",
+   "club": "SAV-V",
+   "puntos": 4280.03
+  },
+  {
+   "idRfee": 1482,
+   "posicion": 11,
+   "nombre": "AITOR",
+   "apellidos": "GOMEZ DORREGO",
+   "fechaNacimiento": "2008-06-21",
+   "club": "FED-M-C",
+   "puntos": 4070.46
+  },
+  {
+   "idRfee": 1504,
+   "posicion": 12,
+   "nombre": "BRUNO",
+   "apellidos": "VIOLA CILLEROS",
+   "fechaNacimiento": "2008-05-29",
+   "club": "SAM-B",
+   "puntos": 4011.47
+  },
+  {
+   "idRfee": 3568,
+   "posicion": 13,
+   "nombre": "MATEO",
+   "apellidos": "COMPAGNONI BLANCH",
+   "fechaNacimiento": "2009-08-25",
+   "club": "CETC-M",
+   "puntos": 3625.73
+  },
+  {
+   "idRfee": 554,
+   "posicion": 14,
+   "nombre": "PABLO",
+   "apellidos": "MARQUETA PEÑA",
+   "fechaNacimiento": "2008-05-06",
+   "club": "CELC-M",
+   "puntos": 3550.37
+  },
+  {
+   "idRfee": 1626,
+   "posicion": 15,
+   "nombre": "ALEJANDRO",
+   "apellidos": "SANCHIDRIAN GUTIERREZ",
+   "fechaNacimiento": "2009-04-16",
+   "club": "SAMA-M",
+   "puntos": 3517.31
+  },
+  {
+   "idRfee": 2900,
+   "posicion": 16,
+   "nombre": "ÁLVARO",
+   "apellidos": "GARCÍA MORENO",
+   "fechaNacimiento": "2009-08-23",
+   "club": "CVA-CR",
+   "puntos": 3366.18
+  },
+  {
+   "idRfee": 3583,
+   "posicion": 17,
+   "nombre": "ILIAN",
+   "apellidos": "RAMI ROZPIDE",
+   "fechaNacimiento": "2009-03-04",
+   "club": "SAMA-M",
+   "puntos": 3266.4
+  },
+  {
+   "idRfee": 3272,
+   "posicion": 18,
+   "nombre": "IAN",
+   "apellidos": "PORRES FERRE",
+   "fechaNacimiento": "2009-04-27",
+   "club": "SEA-T",
+   "puntos": 3244.23
+  },
+  {
+   "idRfee": 4125,
+   "posicion": 19,
+   "nombre": "XAVIER",
+   "apellidos": "MELO",
+   "fechaNacimiento": "2011-03-08",
+   "club": "CETC-M",
+   "puntos": 3208.51
+  },
+  {
+   "idRfee": 424,
+   "posicion": 20,
+   "nombre": "CARLOS",
+   "apellidos": "PEREZ GARCIA",
+   "fechaNacimiento": "2008-03-02",
+   "club": "CNE-NA",
+   "puntos": 3026.38
+  },
+  {
+   "idRfee": 2071,
+   "posicion": 21,
+   "nombre": "MARCOS",
+   "apellidos": "GARCIA MUÑOZ",
+   "fechaNacimiento": "2009-10-19",
+   "club": "FED-M-C",
+   "puntos": 2992.64
+  },
+  {
+   "idRfee": 445,
+   "posicion": 22,
+   "nombre": "GONZALO DE PABLO",
+   "apellidos": "SANCHEZ SALAS",
+   "fechaNacimiento": "2008-02-06",
+   "club": "SA-GR",
+   "puntos": 2787.37
+  },
+  {
+   "idRfee": 548,
+   "posicion": 23,
+   "nombre": "HÉCTOR",
+   "apellidos": "RIVAS JIMÉNEZ",
+   "fechaNacimiento": "2009-03-04",
+   "club": "CELC-M",
+   "puntos": 2759.17
+  },
+  {
+   "idRfee": 2762,
+   "posicion": 24,
+   "nombre": "JAIME",
+   "apellidos": "LOPEZ ATIENZAR",
+   "fechaNacimiento": "2008-06-08",
+   "club": "SADA-AB",
+   "puntos": 2731.31
+  },
+  {
+   "idRfee": 1668,
+   "posicion": 25,
+   "nombre": "PABLO",
+   "apellidos": "VAZQUEZ CAMBON",
+   "fechaNacimiento": "2009-06-30",
+   "club": "CEC-C",
+   "puntos": 2703.69
+  },
+  {
+   "idRfee": 287,
+   "posicion": 26,
+   "nombre": "RAUL",
+   "apellidos": "MARTINEZ CANTOS",
+   "fechaNacimiento": "2008-04-28",
+   "club": "SADA-AB",
+   "puntos": 2673.8
+  },
+  {
+   "idRfee": 1667,
+   "posicion": 27,
+   "nombre": "DIEGO",
+   "apellidos": "SEGOVIA",
+   "fechaNacimiento": "2009-04-19",
+   "club": "CEC-C",
+   "puntos": 2649.37
+  },
+  {
+   "idRfee": 1601,
+   "posicion": 28,
+   "nombre": "GABRIEL",
+   "apellidos": "ORRO TABOADA",
+   "fechaNacimiento": "2008-04-23",
+   "club": "100TO-C",
+   "puntos": 2631.49
+  },
+  {
+   "idRfee": 1565,
+   "posicion": 29,
+   "nombre": "VICTOR",
+   "apellidos": "RODRÍGUEZ LAGUNA",
+   "fechaNacimiento": "2008-06-02",
+   "club": "SA-LO",
+   "puntos": 2469.83
+  },
+  {
+   "idRfee": 1589,
+   "posicion": 30,
+   "nombre": "GABRIEL",
+   "apellidos": "SAEZ GARCIA",
+   "fechaNacimiento": "2008-11-23",
+   "club": "SADA-AB",
+   "puntos": 2458.09
+  },
+  {
+   "idRfee": 1503,
+   "posicion": 31,
+   "nombre": "BIEL",
+   "apellidos": "CAPÓN RODRÍGUEZ",
+   "fechaNacimiento": "2008-07-10",
+   "club": "SAM-B",
+   "puntos": 2442.55
+  },
+  {
+   "idRfee": 2008,
+   "posicion": 32,
+   "nombre": "ALBERTO",
+   "apellidos": "MARTIN GAMAZO",
+   "fechaNacimiento": "2011-04-29",
+   "club": "SAES-BU",
+   "puntos": 2405.14
+  },
+  {
+   "idRfee": 547,
+   "posicion": 33,
+   "nombre": "LEO",
+   "apellidos": "RIVAS JIMENEZ",
+   "fechaNacimiento": "2009-03-04",
+   "club": "CELC-M",
+   "puntos": 2328.04
+  },
+  {
+   "idRfee": 2904,
+   "posicion": 34,
+   "nombre": "IVAN",
+   "apellidos": "ALCAZAR TEBAR",
+   "fechaNacimiento": "2009-07-16",
+   "club": "CVA-CR",
+   "puntos": 2281.01
+  },
+  {
+   "idRfee": 1451,
+   "posicion": 35,
+   "nombre": "RAUL",
+   "apellidos": "ESTIRADO LORINCZ",
+   "fechaNacimiento": "2010-11-28",
+   "club": "CREA-M",
+   "puntos": 2261.08
+  },
+  {
+   "idRfee": 1849,
+   "posicion": 36,
+   "nombre": "DENIS",
+   "apellidos": "NAVARRO SANCHEZ",
+   "fechaNacimiento": "2008-03-28",
+   "club": "SAJI-V",
+   "puntos": 2115.79
+  },
+  {
+   "idRfee": 3273,
+   "posicion": 37,
+   "nombre": "JAN",
+   "apellidos": "PUJOL FORCADA",
+   "fechaNacimiento": "2010-01-10",
+   "club": "SEA-T",
+   "puntos": 2092.15
+  },
+  {
+   "idRfee": 2828,
+   "posicion": 38,
+   "nombre": "EDUARD",
+   "apellidos": "MORENO CARAPUIG",
+   "fechaNacimiento": "2010-01-25",
+   "club": "SEA-T",
+   "puntos": 2075.22
+  },
+  {
+   "idRfee": 2427,
+   "posicion": 39,
+   "nombre": "EDUARDO",
+   "apellidos": "HERRERO PASCUAL",
+   "fechaNacimiento": "2009-05-12",
+   "club": "SAES-BU",
+   "puntos": 2033.09
+  },
+  {
+   "idRfee": 2043,
+   "posicion": 40,
+   "nombre": "PABLO",
+   "apellidos": "DELSO CLEMENTE",
+   "fechaNacimiento": "2009-11-12",
+   "club": "CETC-M",
+   "puntos": 2032.64
+  },
+  {
+   "idRfee": 1418,
+   "posicion": 41,
+   "nombre": "DANIEL",
+   "apellidos": "ÁLVAREZ DOMÍNGUEZ",
+   "fechaNacimiento": "2009-05-25",
+   "club": "CEMAR-B",
+   "puntos": 1828.83
+  },
+  {
+   "idRfee": 423,
+   "posicion": 42,
+   "nombre": "RODRIGO",
+   "apellidos": "MORENO JIMENEZ",
+   "fechaNacimiento": "2008-05-26",
+   "club": "CNE-NA",
+   "puntos": 1814.91
+  },
+  {
+   "idRfee": 4215,
+   "posicion": 43,
+   "nombre": "LOIS",
+   "apellidos": "LONGUEIRA MUÑIZ",
+   "fechaNacimiento": "2009-09-06",
+   "club": "100TO-C",
+   "puntos": 1766.44
+  },
+  {
+   "idRfee": 1505,
+   "posicion": 44,
+   "nombre": "GUILLEM",
+   "apellidos": "VENDRELL FORTEZA-REY",
+   "fechaNacimiento": "2008-03-04",
+   "club": "SAM-B",
+   "puntos": 1626.21
+  },
+  {
+   "idRfee": 2827,
+   "posicion": 45,
+   "nombre": "JAN",
+   "apellidos": "MARTI STROGANOV",
+   "fechaNacimiento": "2010-03-17",
+   "club": "SEA-T",
+   "puntos": 1385.44
+  },
+  {
+   "idRfee": 1736,
+   "posicion": 46,
+   "nombre": "HECTOR",
+   "apellidos": "LOPEZ MENDEZ",
+   "fechaNacimiento": "2008-06-27",
+   "club": "VCE-VA",
+   "puntos": 1368.38
+  },
+  {
+   "idRfee": 234,
+   "posicion": 47,
+   "nombre": "ERIC",
+   "apellidos": "BROUARD MORENO",
+   "fechaNacimiento": "2009-10-08",
+   "club": "CEP-M",
+   "puntos": 1242.89
+  },
+  {
+   "idRfee": 3271,
+   "posicion": 48,
+   "nombre": "DIDAC",
+   "apellidos": "CIARDELLA TOMAS",
+   "fechaNacimiento": "2009-03-08",
+   "club": "SEA-T",
+   "puntos": 1217.28
+  },
+  {
+   "idRfee": 1250,
+   "posicion": 49,
+   "nombre": "ADRIANO",
+   "apellidos": "BRAVO LÓPEZ",
+   "fechaNacimiento": "2009-10-20",
+   "club": "CELP-MA",
+   "puntos": 1159.71
+  },
+  {
+   "idRfee": 4398,
+   "posicion": 50,
+   "nombre": "JUAN JOSE",
+   "apellidos": "GOMEZ NG",
+   "fechaNacimiento": "2009-04-02",
+   "club": "SAMA-M",
+   "puntos": 1135.04
+  },
+  {
+   "idRfee": 2882,
+   "posicion": 51,
+   "nombre": "ALBERTO",
+   "apellidos": "GARCIA-VALDECASAS FORNIELES",
+   "fechaNacimiento": "2011-06-14",
+   "club": "SA-GR",
+   "puntos": 1132.8
+  },
+  {
+   "idRfee": 1560,
+   "posicion": 52,
+   "nombre": "GABRIEL",
+   "apellidos": "BINDER ARROYO",
+   "fechaNacimiento": "2008-09-08",
+   "club": "FED-M-C",
+   "puntos": 1102.42
+  },
+  {
+   "idRfee": 2543,
+   "posicion": 53,
+   "nombre": "ANTONI",
+   "apellidos": "SABATER BARCELÓ",
+   "fechaNacimiento": "2008-04-15",
+   "club": "CBE-BA",
+   "puntos": 1102.01
+  },
+  {
+   "idRfee": 1313,
+   "posicion": 54,
+   "nombre": "ALEJANDRO",
+   "apellidos": "RAMOS MORENO",
+   "fechaNacimiento": "2009-05-06",
+   "club": "SAMA-M",
+   "puntos": 1098.33
+  },
+  {
+   "idRfee": 1699,
+   "posicion": 55,
+   "nombre": "SANTIAGO",
+   "apellidos": "MENDOZA ALMEIDA",
+   "fechaNacimiento": "2009-10-10",
+   "club": "CSA-GC",
+   "puntos": 1061.46
+  },
+  {
+   "idRfee": 3582,
+   "posicion": 56,
+   "nombre": "MIGUEL",
+   "apellidos": "FERRER GARCIA",
+   "fechaNacimiento": "2009-07-15",
+   "club": "SAMA-M",
+   "puntos": 1061.16
+  },
+  {
+   "idRfee": 3720,
+   "posicion": 57,
+   "nombre": "PABLO",
+   "apellidos": "NAVARRO GOMEZ",
+   "fechaNacimiento": "2010-03-30",
+   "club": "CEV-MU",
+   "puntos": 1050.35
+  },
+  {
+   "idRfee": 1829,
+   "posicion": 58,
+   "nombre": "JOEL",
+   "apellidos": "GILI LÓPEZ",
+   "fechaNacimiento": "2010-02-09",
+   "club": "CEMAR-B",
+   "puntos": 1020.15
+  },
+  {
+   "idRfee": 545,
+   "posicion": 59,
+   "nombre": "DIEGO",
+   "apellidos": "MARTIN POLO",
+   "fechaNacimiento": "2008-12-10",
+   "club": "CELC-M",
+   "puntos": 992.87
+  },
+  {
+   "idRfee": 2180,
+   "posicion": 60,
+   "nombre": "MARCOS",
+   "apellidos": "SÁNCHEZ GONZALEZ",
+   "fechaNacimiento": "2009-09-29",
+   "club": "CEA-V",
+   "puntos": 985.97
+  },
+  {
+   "idRfee": 2947,
+   "posicion": 61,
+   "nombre": "DANIEL",
+   "apellidos": "GARCIA TENA",
+   "fechaNacimiento": "2008-12-30",
+   "club": "CET-CS",
+   "puntos": 960.94
+  },
+  {
+   "idRfee": 3270,
+   "posicion": 62,
+   "nombre": "IAN",
+   "apellidos": "PUJOL GIL",
+   "fechaNacimiento": "2009-06-04",
+   "club": "SEA-T",
+   "puntos": 951.48
+  },
+  {
+   "idRfee": 4143,
+   "posicion": 63,
+   "nombre": "ROGER",
+   "apellidos": "BLASCO LLADÓ",
+   "fechaNacimiento": "2009-04-24",
+   "club": "CEMAR-B",
+   "puntos": 948.06
+  },
+  {
+   "idRfee": 3682,
+   "posicion": 64,
+   "nombre": "ABRAHAM",
+   "apellidos": "TEOMIRO BERMEJO",
+   "fechaNacimiento": "2010-02-18",
+   "club": "CESJ-CC",
+   "puntos": 925.82
+  },
+  {
+   "idRfee": 1254,
+   "posicion": 65,
+   "nombre": "ANTHONY JOEL",
+   "apellidos": "ROMERO VASQUEZ",
+   "fechaNacimiento": "2008-10-09",
+   "club": "CEAA-GU",
+   "puntos": 925.23
+  },
+  {
+   "idRfee": 2094,
+   "posicion": 66,
+   "nombre": "YAN XI",
+   "apellidos": "LI",
+   "fechaNacimiento": "2011-11-03",
+   "club": "SAMA-M",
+   "puntos": 890.65
+  },
+  {
+   "idRfee": 2076,
+   "posicion": 67,
+   "nombre": "HUGO",
+   "apellidos": "FERNANDEZ LOPEZ",
+   "fechaNacimiento": "2009-02-07",
+   "club": "CVA-CR",
+   "puntos": 854.64
+  },
+  {
+   "idRfee": 3577,
+   "posicion": 68,
+   "nombre": "VICTOR",
+   "apellidos": "BUENO VERDÚ",
+   "fechaNacimiento": "2009-10-16",
+   "club": "SAJI-V",
+   "puntos": 850.94
+  },
+  {
+   "idRfee": 1937,
+   "posicion": 69,
+   "nombre": "JAVIER",
+   "apellidos": "BENITEZ MORALES",
+   "fechaNacimiento": "2010-07-29",
+   "club": "CNE-NA",
+   "puntos": 818.44
+  },
+  {
+   "idRfee": 1797,
+   "posicion": 70,
+   "nombre": "DANIEL BARLEVI",
+   "apellidos": "POVEDA BLANCO",
+   "fechaNacimiento": "2009-01-31",
+   "club": "CSA-GC",
+   "puntos": 805.2
+  },
+  {
+   "idRfee": 4087,
+   "posicion": 71,
+   "nombre": "REINALDO",
+   "apellidos": "RIVERO VELAZCO",
+   "fechaNacimiento": "2008-06-21",
+   "club": "SAARVI-VI",
+   "puntos": 798.03
+  },
+  {
+   "idRfee": 3356,
+   "posicion": 72,
+   "nombre": "VICTOR",
+   "apellidos": "ROMAN .",
+   "fechaNacimiento": "2008-09-26",
+   "club": "CESAN",
+   "puntos": 780.13
+  },
+  {
+   "idRfee": 1796,
+   "posicion": 73,
+   "nombre": "MARIO",
+   "apellidos": "REGUEIRA ORIHUELA",
+   "fechaNacimiento": "2009-01-26",
+   "club": "CSA-GC",
+   "puntos": 759.93
+  },
+  {
+   "idRfee": 1690,
+   "posicion": 74,
+   "nombre": "RAMON",
+   "apellidos": "NUÑEZ MARTINEZ",
+   "fechaNacimiento": "2008-08-01",
+   "club": "SAES-BU",
+   "puntos": 740.2
+  },
+  {
+   "idRfee": 3722,
+   "posicion": 75,
+   "nombre": "DANIEL",
+   "apellidos": "PEREZ GARCIA",
+   "fechaNacimiento": "2010-03-06",
+   "club": "CEV-MU",
+   "puntos": 725.57
+  },
+  {
+   "idRfee": 2672,
+   "posicion": 76,
+   "nombre": "ADRIÁN",
+   "apellidos": "GARAY GOMAR",
+   "fechaNacimiento": "2009-07-10",
+   "club": "SAJI-V",
+   "puntos": 697.04
+  },
+  {
+   "idRfee": 3319,
+   "posicion": 77,
+   "nombre": "MARTIN",
+   "apellidos": "BUSTILLO",
+   "fechaNacimiento": "2008-12-19",
+   "club": "SA-LO",
+   "puntos": 682.11
+  },
+  {
+   "idRfee": 4258,
+   "posicion": 78,
+   "nombre": "RAMÓN",
+   "apellidos": "REY RIESCO",
+   "fechaNacimiento": "2009-01-03",
+   "club": "COMES-C",
+   "puntos": 673.55
+  },
+  {
+   "idRfee": 1832,
+   "posicion": 79,
+   "nombre": "ROGER",
+   "apellidos": "MARTIN MONTOZA",
+   "fechaNacimiento": "2010-07-16",
+   "club": "CEMAR-B",
+   "puntos": 654.87
+  },
+  {
+   "idRfee": 1838,
+   "posicion": 80,
+   "nombre": "MARIO",
+   "apellidos": "PANADERO NOCEDA",
+   "fechaNacimiento": "2008-06-23",
+   "club": "SAES-BU",
+   "puntos": 629.6
+  },
+  {
+   "idRfee": 2311,
+   "posicion": 81,
+   "nombre": "ALBERT",
+   "apellidos": "REES",
+   "fechaNacimiento": "2010-11-25",
+   "club": "CEP-M",
+   "puntos": 591.99
+  },
+  {
+   "idRfee": 1889,
+   "posicion": 82,
+   "nombre": "POL",
+   "apellidos": "CID PAGES",
+   "fechaNacimiento": "2011-07-30",
+   "club": "SEA-T",
+   "puntos": 587.49
+  },
+  {
+   "idRfee": 1969,
+   "posicion": 83,
+   "nombre": "JAVIER",
+   "apellidos": "GOMEZ VALERA",
+   "fechaNacimiento": "2010-10-26",
+   "club": "CETC-M",
+   "puntos": 581.07
+  },
+  {
+   "idRfee": 4224,
+   "posicion": 84,
+   "nombre": "ÁLVARO",
+   "apellidos": "RAMOS DIESTE",
+   "fechaNacimiento": "2009-06-29",
+   "club": "CET-TFE",
+   "puntos": 567.11
+  },
+  {
+   "idRfee": 4247,
+   "posicion": 85,
+   "nombre": "STEFAN",
+   "apellidos": "VAN RIET",
+   "fechaNacimiento": "2011-10-18",
+   "club": "CELC-M",
+   "puntos": 563.02
+  },
+  {
+   "idRfee": 2079,
+   "posicion": 86,
+   "nombre": "BRUNO",
+   "apellidos": "HERVAS SANCHEZ",
+   "fechaNacimiento": "2009-10-22",
+   "club": "CVA-CR",
+   "puntos": 553.35
+  },
+  {
+   "idRfee": 2670,
+   "posicion": 87,
+   "nombre": "EGOITZ",
+   "apellidos": "MARAÑON HERMOSILLA",
+   "fechaNacimiento": "2008-04-26",
+   "club": "CEGA-VI",
+   "puntos": 551.64
+  },
+  {
+   "idRfee": 3897,
+   "posicion": 88,
+   "nombre": "DIEGO",
+   "apellidos": "CABEZA ESTEVEZ",
+   "fechaNacimiento": "2009-09-16",
+   "club": "SEM-V",
+   "puntos": 537.2
+  },
+  {
+   "idRfee": 3315,
+   "posicion": 89,
+   "nombre": "DANEL",
+   "apellidos": "SEBASTIAN LOPEZ",
+   "fechaNacimiento": "2009-04-03",
+   "club": "SUÑE-BI",
+   "puntos": 508.14
+  },
+  {
+   "idRfee": 1627,
+   "posicion": 90,
+   "nombre": "ALVARO",
+   "apellidos": "GARCIA MATEO",
+   "fechaNacimiento": "2010-08-16",
+   "club": "SAMA-M",
+   "puntos": 491.06
+  },
+  {
+   "idRfee": 1602,
+   "posicion": 91,
+   "nombre": "ANTON",
+   "apellidos": "FRANCO ROBLES",
+   "fechaNacimiento": "2009-09-23",
+   "club": "100TO-C",
+   "puntos": 460.04
+  },
+  {
+   "idRfee": 2786,
+   "posicion": 92,
+   "nombre": "VICTOR",
+   "apellidos": "LOMAS MUÑOZ",
+   "fechaNacimiento": "2008-11-27",
+   "club": "CEP-M",
+   "puntos": 447.8
+  },
+  {
+   "idRfee": 4448,
+   "posicion": 93,
+   "nombre": "DANIEL",
+   "apellidos": "CANTÓN CAMPÁ",
+   "fechaNacimiento": "2008-05-02",
+   "club": "CETC-M",
+   "puntos": 426.37
+  },
+  {
+   "idRfee": 1371,
+   "posicion": 94,
+   "nombre": "DAVID",
+   "apellidos": "APARICIO GUTIERREZ",
+   "fechaNacimiento": "2009-07-02",
+   "club": "FED-M-C",
+   "puntos": 425.34
+  },
+  {
+   "idRfee": 2636,
+   "posicion": 95,
+   "nombre": "IÑIGO",
+   "apellidos": "BAU",
+   "fechaNacimiento": "2009-10-19",
+   "club": "SAM-B",
+   "puntos": 424.18
+  },
+  {
+   "idRfee": 3570,
+   "posicion": 96,
+   "nombre": "SAMUEL",
+   "apellidos": "SALGADO ROJO",
+   "fechaNacimiento": "2009-04-30",
+   "club": "CETC-M",
+   "puntos": 404.29
+  },
+  {
+   "idRfee": 4243,
+   "posicion": 97,
+   "nombre": "DANIEL",
+   "apellidos": "SALETE VALLEJO",
+   "fechaNacimiento": "2008-08-12",
+   "club": "CEP-M",
+   "puntos": 396.36
+  },
+  {
+   "idRfee": 3326,
+   "posicion": 98,
+   "nombre": "ELOY",
+   "apellidos": "GREGORI CARO",
+   "fechaNacimiento": "2008-02-29",
+   "club": "SAV-V",
+   "puntos": 376.73
+  },
+  {
+   "idRfee": 3157,
+   "posicion": 99,
+   "nombre": "ALVARO DEL",
+   "apellidos": "VAL ARROYO",
+   "fechaNacimiento": "2011-01-26",
+   "club": "VCE-VA",
+   "puntos": 365.43
+  },
+  {
+   "idRfee": 3719,
+   "posicion": 100,
+   "nombre": "ANTONIO",
+   "apellidos": "CAMPILLO CASTILLO",
+   "fechaNacimiento": "2009-11-11",
+   "club": "CEV-MU",
+   "puntos": 359.44
+  },
+  {
+   "idRfee": 4240,
+   "posicion": 101,
+   "nombre": "IVAN",
+   "apellidos": "BARBERO LACALLE",
+   "fechaNacimiento": "2009-03-05",
+   "club": "CEP-P",
+   "puntos": 349.72
+  },
+  {
+   "idRfee": 2126,
+   "posicion": 102,
+   "nombre": "MANUEL",
+   "apellidos": "VILLAMAR POCERO",
+   "fechaNacimiento": "2009-07-13",
+   "club": "EDMC-VA",
+   "puntos": 349.38
+  },
+  {
+   "idRfee": 4451,
+   "posicion": 103,
+   "nombre": "DARÍO",
+   "apellidos": "LÁNDERER MESTRE",
+   "fechaNacimiento": "2009-09-29",
+   "club": "CET-CS",
+   "puntos": 346.59
+  },
+  {
+   "idRfee": 3159,
+   "posicion": 104,
+   "nombre": "DANIEL LUIS",
+   "apellidos": "GARCIA GOMEZ",
+   "fechaNacimiento": "2010-06-03",
+   "club": "VCE-VA",
+   "puntos": 335.77
+  },
+  {
+   "idRfee": 3704,
+   "posicion": 105,
+   "nombre": "TELMO",
+   "apellidos": "MIRAZ GONZÁLEZ",
+   "fechaNacimiento": "2009-07-19",
+   "club": "100TO-C",
+   "puntos": 333.11
+  },
+  {
+   "idRfee": 1888,
+   "posicion": 106,
+   "nombre": "ARIO",
+   "apellidos": "ROSIQUE VALLDEPÉREZ",
+   "fechaNacimiento": "2011-12-12",
+   "club": "SEA-T",
+   "puntos": 331.17
+  },
+  {
+   "idRfee": 3327,
+   "posicion": 107,
+   "nombre": "TONY",
+   "apellidos": "BARRANCO SANAHUJA",
+   "fechaNacimiento": "2008-03-08",
+   "club": "SAV-V",
+   "puntos": 325.13
+  },
+  {
+   "idRfee": 1885,
+   "posicion": 108,
+   "nombre": "ALEX",
+   "apellidos": "CERVERA IGUALADA",
+   "fechaNacimiento": "2011-12-20",
+   "club": "SEA-T",
+   "puntos": 318.52
+  },
+  {
+   "idRfee": 2077,
+   "posicion": 109,
+   "nombre": "MARCOS",
+   "apellidos": "GARCIA DE LA FLOR",
+   "fechaNacimiento": "2009-04-15",
+   "club": "CVA-CR",
+   "puntos": 306.72
+  },
+  {
+   "idRfee": 3420,
+   "posicion": 110,
+   "nombre": "RODRIGO",
+   "apellidos": "GONZALEZ MARTINEZ",
+   "fechaNacimiento": "2009-12-16",
+   "club": "SAHA-LO",
+   "puntos": 305.67
+  },
+  {
+   "idRfee": 1970,
+   "posicion": 111,
+   "nombre": "IVAN",
+   "apellidos": "GRIFOL LANAS",
+   "fechaNacimiento": "2010-09-20",
+   "club": "CETC-M",
+   "puntos": 304.64
+  },
+  {
+   "idRfee": 3571,
+   "posicion": 112,
+   "nombre": "ÁDAM",
+   "apellidos": "SALGADO ROJO",
+   "fechaNacimiento": "2010-08-03",
+   "club": "CETC-M",
+   "puntos": 289.06
+  },
+  {
+   "idRfee": 910,
+   "posicion": 113,
+   "nombre": "DARIO",
+   "apellidos": "ILLANA MORENO",
+   "fechaNacimiento": "2008-12-06",
+   "club": "CREA-M",
+   "puntos": 288.51
+  },
+  {
+   "idRfee": 3850,
+   "posicion": 114,
+   "nombre": "LUCAS",
+   "apellidos": "MATEO GALET",
+   "fechaNacimiento": "2009-08-26",
+   "club": "CEV-MU",
+   "puntos": 287.32
+  },
+  {
+   "idRfee": 3409,
+   "posicion": 115,
+   "nombre": "IÑIGO",
+   "apellidos": "MARIN MARQUINA",
+   "fechaNacimiento": "2010-12-24",
+   "club": "UTB-Z",
+   "puntos": 261.5
+  },
+  {
+   "idRfee": 3410,
+   "posicion": 116,
+   "nombre": "MARIO",
+   "apellidos": "VIGARA CAMACHO",
+   "fechaNacimiento": "2010-06-20",
+   "club": "UTB-Z",
+   "puntos": 256.26
+  },
+  {
+   "idRfee": 3332,
+   "posicion": 117,
+   "nombre": "MARTIN",
+   "apellidos": "LAFUENTE ROJAS",
+   "fechaNacimiento": "2010-07-02",
+   "club": "CEA-Z",
+   "puntos": 255.21
+  },
+  {
+   "idRfee": 1938,
+   "posicion": 118,
+   "nombre": "MARTIN",
+   "apellidos": "DE LA IGLESIA PEREZ",
+   "fechaNacimiento": "2011-03-08",
+   "club": "CNE-NA",
+   "puntos": 252.09
+  },
+  {
+   "idRfee": 4155,
+   "posicion": 119,
+   "nombre": "IKER",
+   "apellidos": "GRANERO NAVAS",
+   "fechaNacimiento": "2008-08-26",
+   "club": "SUÑE-BI",
+   "puntos": 246.8
+  },
+  {
+   "idRfee": 1993,
+   "posicion": 120,
+   "nombre": "OIHAN",
+   "apellidos": "ASTORGANO MARTÍNEZ",
+   "fechaNacimiento": "2010-03-23",
+   "club": "CEGA-VI",
+   "puntos": 243.31
+  },
+  {
+   "idRfee": 2320,
+   "posicion": 121,
+   "nombre": "PABLO",
+   "apellidos": "AGUAYO AGUERO",
+   "fechaNacimiento": "2011-12-28",
+   "club": "CESAN",
+   "puntos": 234.68
+  },
+  {
+   "idRfee": 1666,
+   "posicion": 122,
+   "nombre": "CESAR",
+   "apellidos": "RODRIGUEZ VARELA",
+   "fechaNacimiento": "2009-04-16",
+   "club": "CEC-C",
+   "puntos": 219.01
+  },
+  {
+   "idRfee": 3744,
+   "posicion": 123,
+   "nombre": "BORJA",
+   "apellidos": "FERNANDEZ MASIAS",
+   "fechaNacimiento": "2009-07-28",
+   "club": "CVA-CR",
+   "puntos": 206.67
+  },
+  {
+   "idRfee": 1781,
+   "posicion": 124,
+   "nombre": "LUCA",
+   "apellidos": "DELPORTO",
+   "fechaNacimiento": "2011-03-27",
+   "club": "CBE-BA",
+   "puntos": 206.41
+  },
+  {
+   "idRfee": 4225,
+   "posicion": 125,
+   "nombre": "JUAN CARLOS",
+   "apellidos": "ORTIZ GARCIA",
+   "fechaNacimiento": "2009-09-30",
+   "club": "SADA-AB",
+   "puntos": 206.26
+  },
+  {
+   "idRfee": 3421,
+   "posicion": 126,
+   "nombre": "ERIK ROBERT",
+   "apellidos": "BARNA",
+   "fechaNacimiento": "2010-07-15",
+   "club": "SAHA-LO",
+   "puntos": 191.44
+  },
+  {
+   "idRfee": 1618,
+   "posicion": 127,
+   "nombre": "ARITZ",
+   "apellidos": "FERRERAS RODRIGUEZ",
+   "fechaNacimiento": "2008-04-24",
+   "club": "CEVI-M",
+   "puntos": 190.64
+  },
+  {
+   "idRfee": 2789,
+   "posicion": 128,
+   "nombre": "YAGO",
+   "apellidos": "RAPALLO DATSYUK",
+   "fechaNacimiento": "2008-12-28",
+   "club": "CEP-M",
+   "puntos": 190.22
+  },
+  {
+   "idRfee": 4242,
+   "posicion": 129,
+   "nombre": "IZAN",
+   "apellidos": "DE VICENTE BOTO",
+   "fechaNacimiento": "2008-02-28",
+   "club": "SUÑE-BI",
+   "puntos": 184.03
+  },
+  {
+   "idRfee": 3893,
+   "posicion": 130,
+   "nombre": "PABLO",
+   "apellidos": "DE FEDERICO ELIPE",
+   "fechaNacimiento": "2010-12-14",
+   "club": "SAMA-M",
+   "puntos": 180.59
+  },
+  {
+   "idRfee": 2858,
+   "posicion": 131,
+   "nombre": "MYLOS",
+   "apellidos": "PUIGARDEU MARTRET",
+   "fechaNacimiento": "2009-06-02",
+   "club": "SAM-B",
+   "puntos": 177.7
+  },
+  {
+   "idRfee": 4428,
+   "posicion": 132,
+   "nombre": "LUIS",
+   "apellidos": "GUTIÉRREZ VEGA",
+   "fechaNacimiento": "2008-10-11",
+   "club": "CEIAME-MA",
+   "puntos": 173.42
+  },
+  {
+   "idRfee": 4454,
+   "posicion": 133,
+   "nombre": "ADRIA",
+   "apellidos": "FUSTER SENDRA",
+   "fechaNacimiento": "2011-02-08",
+   "club": "SAV-V",
+   "puntos": 171.09
+  },
+  {
+   "idRfee": 3005,
+   "posicion": 134,
+   "nombre": "SERGIO",
+   "apellidos": "COLLADO MORALES",
+   "fechaNacimiento": "2010-05-31",
+   "club": "CREA-M",
+   "puntos": 166.95
+  },
+  {
+   "idRfee": 2143,
+   "posicion": 135,
+   "nombre": "ALVAR",
+   "apellidos": "FERNANDEZ SARMIENTO",
+   "fechaNacimiento": "2010-11-16",
+   "club": "SAES-BU",
+   "puntos": 163.66
+  },
+  {
+   "idRfee": 2857,
+   "posicion": 136,
+   "nombre": "IVÁN ISRAEL",
+   "apellidos": "DELGADO MORALES",
+   "fechaNacimiento": "2008-12-27",
+   "club": "CCC-M",
+   "puntos": 160.84
+  },
+  {
+   "idRfee": 2203,
+   "posicion": 137,
+   "nombre": "JULIÁN",
+   "apellidos": "BLANCO JORGE",
+   "fechaNacimiento": "2011-05-18",
+   "club": "CE-M",
+   "puntos": 156.05
+  },
+  {
+   "idRfee": 4439,
+   "posicion": 138,
+   "nombre": "MANUEL",
+   "apellidos": "FRESNO MATUSCH",
+   "fechaNacimiento": "2009-08-03",
+   "club": "SAHA-LO",
+   "puntos": 153.3
+  },
+  {
+   "idRfee": 2024,
+   "posicion": 139,
+   "nombre": "JUAN DE DIOS",
+   "apellidos": "DE LA FUENTE BELINCHON",
+   "fechaNacimiento": "2011-02-21",
+   "club": "FED-AND-C",
+   "puntos": 150.52
+  },
+  {
+   "idRfee": 3847,
+   "posicion": 140,
+   "nombre": "UNAI",
+   "apellidos": "GINES GIMENO",
+   "fechaNacimiento": "2010-03-15",
+   "club": "SAM-B",
+   "puntos": 144.95
+  },
+  {
+   "idRfee": 1951,
+   "posicion": 141,
+   "nombre": "ALEJANDRO KIEN",
+   "apellidos": "ROYO BLAZQUEZ",
+   "fechaNacimiento": "2010-08-27",
+   "club": "FED-M-C",
+   "puntos": 141.63
+  },
+  {
+   "idRfee": 2002,
+   "posicion": 142,
+   "nombre": "ASIER",
+   "apellidos": "DE CASO SANCHEZ",
+   "fechaNacimiento": "2012-06-07",
+   "club": "CREA-M",
+   "puntos": 139.9
+  },
+  {
+   "idRfee": 4214,
+   "posicion": 143,
+   "nombre": "EIDER MATEO",
+   "apellidos": "CORTES VIGO",
+   "fechaNacimiento": "2008-02-07",
+   "club": "SAHA-LO",
+   "puntos": 134.79
+  },
+  {
+   "idRfee": 2948,
+   "posicion": 144,
+   "nombre": "JAUME",
+   "apellidos": "AGUT ARROYO",
+   "fechaNacimiento": "2009-11-13",
+   "club": "CET-CS",
+   "puntos": 133.01
+  },
+  {
+   "idRfee": 4438,
+   "posicion": 145,
+   "nombre": "EMILIO NILO",
+   "apellidos": "PAREDES",
+   "fechaNacimiento": "2008-11-04",
+   "club": "SAM-B",
+   "puntos": 129.17
+  },
+  {
+   "idRfee": 4453,
+   "posicion": 146,
+   "nombre": "MARIO",
+   "apellidos": "COLLADO SEGURA",
+   "fechaNacimiento": "2009-06-02",
+   "club": "SAJI-V",
+   "puntos": 127.28
+  },
+  {
+   "idRfee": 2158,
+   "posicion": 147,
+   "nombre": "SAMUEL",
+   "apellidos": "ALVAREZ SANZ",
+   "fechaNacimiento": "2011-08-01",
+   "club": "VCE-VA",
+   "puntos": 124.94
+  },
+  {
+   "idRfee": 3865,
+   "posicion": 148,
+   "nombre": "NURI",
+   "apellidos": "HAMZA",
+   "fechaNacimiento": "2008-08-26",
+   "club": "CBE-BA",
+   "puntos": 123.55
+  },
+  {
+   "idRfee": 3445,
+   "posicion": 149,
+   "nombre": "PERE",
+   "apellidos": "PAYERAS PONS",
+   "fechaNacimiento": "2009-10-29",
+   "club": "CBE-BA",
+   "puntos": 119.89
+  },
+  {
+   "idRfee": 3567,
+   "posicion": 150,
+   "nombre": "KEVIN",
+   "apellidos": "BAUTISTA DA COSTA",
+   "fechaNacimiento": "2009-10-25",
+   "club": "CELP-MA",
+   "puntos": 116.29
+  },
+  {
+   "idRfee": 4300,
+   "posicion": 151,
+   "nombre": "DIDAC",
+   "apellidos": "POLO RAMOS",
+   "fechaNacimiento": "2011-12-12",
+   "club": "SEA-T",
+   "puntos": 114.51
+  },
+  {
+   "idRfee": 4447,
+   "posicion": 152,
+   "nombre": "ELOY",
+   "apellidos": "LABAJO PUCHE",
+   "fechaNacimiento": "2010-09-03",
+   "club": "SADA-AB",
+   "puntos": 114.51
+  },
+  {
+   "idRfee": 3462,
+   "posicion": 153,
+   "nombre": "JOAN MANUEL",
+   "apellidos": "ROVIRA GALVEZ",
+   "fechaNacimiento": "2009-09-27",
+   "club": "CBE-BA",
+   "puntos": 114.51
+  },
+  {
+   "idRfee": 3475,
+   "posicion": 154,
+   "nombre": "ENEKO",
+   "apellidos": "ARTOLA DE LA CRUZ",
+   "fechaNacimiento": "2009-04-25",
+   "club": "CNE-NA",
+   "puntos": 31.55
+  },
+  {
+   "idRfee": 3048,
+   "posicion": 155,
+   "nombre": "PABLO",
+   "apellidos": "REGUART KASHANI",
+   "fechaNacimiento": "2010-06-07",
+   "club": "CCC-M",
+   "puntos": 28.9
+  },
+  {
+   "idRfee": 2626,
+   "posicion": 156,
+   "nombre": "ADRIEL",
+   "apellidos": "MARTINEZ PALACIOS",
+   "fechaNacimiento": "2009-01-19",
+   "club": "SA-LO",
+   "puntos": 25.04
+  },
+  {
+   "idRfee": 2593,
+   "posicion": 157,
+   "nombre": "IGOR",
+   "apellidos": "GORIUNOV",
+   "fechaNacimiento": "2008-07-18",
+   "club": "CEA-V",
+   "puntos": 17.77
+  },
+  {
+   "idRfee": 2124,
+   "posicion": 158,
+   "nombre": "ALEJANDRO",
+   "apellidos": "CEPA BRAÑA",
+   "fechaNacimiento": "2010-04-05",
+   "club": "EDMC-VA",
+   "puntos": 17.62
+  },
+  {
+   "idRfee": 4237,
+   "posicion": 159,
+   "nombre": "JAIME",
+   "apellidos": "SAMPEDRO GAMERO",
+   "fechaNacimiento": "2009-10-18",
+   "club": "CE-M",
+   "puntos": 13.02
+  },
+  {
+   "idRfee": 4238,
+   "posicion": 160,
+   "nombre": "VICTOR",
+   "apellidos": "PREUS RAMIREZ",
+   "fechaNacimiento": "2010-12-11",
+   "club": "CE-M",
+   "puntos": 10
+  },
+  {
+   "idRfee": 2655,
+   "posicion": 9999,
+   "nombre": "NICOLAS",
+   "apellidos": "JIMENEZ BOGDANOV",
+   "fechaNacimiento": "2009-05-03",
+   "club": "CEVI-M",
+   "puntos": 0
+  },
+  {
+   "idRfee": 3579,
+   "posicion": 9999,
+   "nombre": "IMAD",
+   "apellidos": "JADAA PRIETO",
+   "fechaNacimiento": "2009-03-31",
+   "club": "SAJI-V",
+   "puntos": 0
+  },
+  {
+   "idRfee": 3763,
+   "posicion": 9999,
+   "nombre": "JUAN ANTONIO",
+   "apellidos": "MORA CACERES",
+   "fechaNacimiento": "2009-10-18",
+   "club": "SAJI-V",
+   "puntos": 0
+  },
+  {
+   "idRfee": 3909,
+   "posicion": 9999,
+   "nombre": "ANDRÉS MANUEL",
+   "apellidos": "PEREZ SIMÓ",
+   "fechaNacimiento": "2009-10-16",
+   "club": "SAJI-V",
+   "puntos": 0
+  },
+  {
+   "idRfee": 4230,
+   "posicion": 9999,
+   "nombre": "RAFAEL",
+   "apellidos": "GONZALEZ MARTINEZ",
+   "fechaNacimiento": "2011-11-18",
+   "club": "SAHA-LO",
+   "puntos": 0
+  },
+  {
+   "idRfee": 4241,
+   "posicion": 9999,
+   "nombre": "ALEX",
+   "apellidos": "LORO MORENO",
+   "fechaNacimiento": "2009-01-01",
+   "club": "SAV-V",
+   "puntos": 0
+  },
+  {
+   "idRfee": 4442,
+   "posicion": 9999,
+   "nombre": "LIANG",
+   "apellidos": "JINGBO",
+   "fechaNacimiento": "2010-10-07",
+   "club": "SAM-B",
+   "puntos": 0
+  }
+ ]
+}

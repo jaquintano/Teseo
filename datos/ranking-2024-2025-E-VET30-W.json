@@ -1,0 +1,46 @@
+{
+ "temporada": "2024-2025",
+ "arma": "Espada",
+ "categoria": "VET30",
+ "genero": "Femenino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=15&weapon=E&category=13&gender=W",
+ "descargadoEl": "2026-08-21T22:00:50.358Z",
+ "tiradores": [
+  {
+   "idRfee": 977,
+   "posicion": 1,
+   "nombre": "COVADONGA",
+   "apellidos": "ZAMORANO SALARDÓN",
+   "fechaNacimiento": "1991-12-17",
+   "club": "CE-M",
+   "puntos": 7599.03
+  },
+  {
+   "idRfee": 4268,
+   "posicion": 2,
+   "nombre": "PATRICIA CAROLINA",
+   "apellidos": "GONZÁLEZ PARABACUTO",
+   "fechaNacimiento": "1987-03-13",
+   "club": "CELC-M",
+   "puntos": 6060
+  },
+  {
+   "idRfee": 3393,
+   "posicion": 3,
+   "nombre": "ROSA ALBA",
+   "apellidos": "RUFFO",
+   "fechaNacimiento": "1989-07-18",
+   "club": "COE-M",
+   "puntos": 616
+  },
+  {
+   "idRfee": 2461,
+   "posicion": 4,
+   "nombre": "PATRICIA",
+   "apellidos": "QUILON DE LA HOZ",
+   "fechaNacimiento": "1989-07-21",
+   "club": "CEMAJ-M",
+   "puntos": 339.03
+  }
+ ]
+}

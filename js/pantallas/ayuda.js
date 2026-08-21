@@ -128,8 +128,10 @@ export async function pantallaAyuda(contenedor) {
 
     apartado('El ranking',
       'En Menú → Ranking tienes el ranking de la federación tal cual lo ' +
-      'publica: puesto, tirador, club y puntos. Sólo eliges la categoría; el ' +
-      'arma, el género y la temporada salen de tu perfil.',
+      'publica: puesto, tirador, club y puntos. Eliges la temporada y la ' +
+      'categoría; el arma y el género salen de tu perfil.',
+      'Teseo guarda las últimas temporadas, así que puedes mirar también cómo ' +
+      'acabó la anterior.',
       'Si te has buscado en el ranking al crear tu perfil, tu fila viene ' +
       'señalada.',
       'Va dentro de Teseo, así que se ve sin cobertura. Se pone al día cuando ' +

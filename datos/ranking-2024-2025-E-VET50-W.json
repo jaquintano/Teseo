@@ -1,0 +1,154 @@
+{
+ "temporada": "2024-2025",
+ "arma": "Espada",
+ "categoria": "VET50",
+ "genero": "Femenino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=15&weapon=E&category=17&gender=W",
+ "descargadoEl": "2026-08-21T22:00:56.220Z",
+ "tiradores": [
+  {
+   "idRfee": 1080,
+   "posicion": 1,
+   "nombre": "CRISTINA DE LOURDES",
+   "apellidos": "VARGAS HILLA",
+   "fechaNacimiento": "1969-09-01",
+   "club": "VCE-VA",
+   "puntos": 10292.62
+  },
+  {
+   "idRfee": 983,
+   "posicion": 2,
+   "nombre": "ARACELI",
+   "apellidos": "BUGALLO OTERO",
+   "fechaNacimiento": "1966-01-19",
+   "club": "COMES-C",
+   "puntos": 8315.62
+  },
+  {
+   "idRfee": 993,
+   "posicion": 3,
+   "nombre": "NURIA",
+   "apellidos": "TEBAR MARTINEZ",
+   "fechaNacimiento": "1970-04-22",
+   "club": "CVA-CR",
+   "puntos": 6448.58
+  },
+  {
+   "idRfee": 589,
+   "posicion": 4,
+   "nombre": "MACARENA",
+   "apellidos": "VALERA SANCHEZ",
+   "fechaNacimiento": "1973-06-16",
+   "club": "CETC-M",
+   "puntos": 6128.84
+  },
+  {
+   "idRfee": 1450,
+   "posicion": 5,
+   "nombre": "MARTA",
+   "apellidos": "TORRE-ENCISO HERNANZ",
+   "fechaNacimiento": "1971-07-13",
+   "club": "CREA-M",
+   "puntos": 4692.04
+  },
+  {
+   "idRfee": 1037,
+   "posicion": 6,
+   "nombre": "SUSANA MARTA",
+   "apellidos": "DE MIGUEL GARCIA",
+   "fechaNacimiento": "1971-12-15",
+   "club": "SUÑE-BI",
+   "puntos": 4484.94
+  },
+  {
+   "idRfee": 1422,
+   "posicion": 7,
+   "nombre": "GRACIELA",
+   "apellidos": "GOMEZ NICOLA",
+   "fechaNacimiento": "1970-11-27",
+   "club": "CE-TO",
+   "puntos": 4082.91
+  },
+  {
+   "idRfee": 444,
+   "posicion": 8,
+   "nombre": "ISABEL MARIA",
+   "apellidos": "VAZQUEZ CORBACHO",
+   "fechaNacimiento": "1966-05-02",
+   "club": "SA-GR",
+   "puntos": 3537.57
+  },
+  {
+   "idRfee": 1777,
+   "posicion": 9,
+   "nombre": "REBECA",
+   "apellidos": "GOMEZ MARTIN",
+   "fechaNacimiento": "1975-09-02",
+   "club": "CEMAJ-M",
+   "puntos": 3248.72
+  },
+  {
+   "idRfee": 3198,
+   "posicion": 10,
+   "nombre": "EVA M&ordf;",
+   "apellidos": "MORILLA ARCOS",
+   "fechaNacimiento": "1971-07-13",
+   "club": "SEAC-CO",
+   "puntos": 2920.38
+  },
+  {
+   "idRfee": 586,
+   "posicion": 11,
+   "nombre": "SONIA",
+   "apellidos": "LANAS MARTIN ROMO",
+   "fechaNacimiento": "1972-02-21",
+   "club": "CETC-M",
+   "puntos": 1998.55
+  },
+  {
+   "idRfee": 4275,
+   "posicion": 12,
+   "nombre": "ASUNCION",
+   "apellidos": "DIAZ COSTA",
+   "fechaNacimiento": "1973-05-30",
+   "club": "CVA-CR",
+   "puntos": 981.17
+  },
+  {
+   "idRfee": 655,
+   "posicion": 13,
+   "nombre": "NIEVES",
+   "apellidos": "EIRIZ MATA",
+   "fechaNacimiento": "1971-04-14",
+   "club": "100TO-C",
+   "puntos": 878.28
+  },
+  {
+   "idRfee": 4498,
+   "posicion": 14,
+   "nombre": "ANA",
+   "apellidos": "BELINCHON ROMAN",
+   "fechaNacimiento": "1974-02-15",
+   "club": "FED-AND-C",
+   "puntos": 679.08
+  },
+  {
+   "idRfee": 4502,
+   "posicion": 15,
+   "nombre": "M&ordf; ÁNGELES",
+   "apellidos": "USANO MARCO",
+   "fechaNacimiento": "1967-12-01",
+   "club": "SEAC-CO",
+   "puntos": 433.78
+  },
+  {
+   "idRfee": 1373,
+   "posicion": 16,
+   "nombre": "GEMA",
+   "apellidos": "MOLLÁ MARTINEZ",
+   "fechaNacimiento": "1971-05-11",
+   "club": "CELS-V",
+   "puntos": 414
+  }
+ ]
+}

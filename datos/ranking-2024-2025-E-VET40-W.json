@@ -1,0 +1,118 @@
+{
+ "temporada": "2024-2025",
+ "arma": "Espada",
+ "categoria": "VET40",
+ "genero": "Femenino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=15&weapon=E&category=14&gender=W",
+ "descargadoEl": "2026-08-21T22:00:53.232Z",
+ "tiradores": [
+  {
+   "idRfee": 3477,
+   "posicion": 1,
+   "nombre": "ANA",
+   "apellidos": "GRAU TORRES",
+   "fechaNacimiento": "1984-06-25",
+   "club": "CEV-MU",
+   "puntos": 8483.51
+  },
+  {
+   "idRfee": 3398,
+   "posicion": 2,
+   "nombre": "ESTIBALIZ",
+   "apellidos": "TOSCANO GARCIA",
+   "fechaNacimiento": "1978-03-19",
+   "club": "SUÑE-BI",
+   "puntos": 5643.88
+  },
+  {
+   "idRfee": 1468,
+   "posicion": 3,
+   "nombre": "LETICIA",
+   "apellidos": "PALACIOS BEREZO",
+   "fechaNacimiento": "1978-01-24",
+   "club": "SAM-B",
+   "puntos": 5226.12
+  },
+  {
+   "idRfee": 949,
+   "posicion": 4,
+   "nombre": "M&ordf;CRUZ",
+   "apellidos": "RODRIGUEZ GARCIA",
+   "fechaNacimiento": "1976-07-23",
+   "club": "SA-LO",
+   "puntos": 4909.08
+  },
+  {
+   "idRfee": 1391,
+   "posicion": 5,
+   "nombre": "MARIA FATIMA",
+   "apellidos": "PONGA GARCIA",
+   "fechaNacimiento": "1976-12-26",
+   "club": "CETC-M",
+   "puntos": 4431.49
+  },
+  {
+   "idRfee": 488,
+   "posicion": 6,
+   "nombre": "KATERINA",
+   "apellidos": "LABANICOVA",
+   "fechaNacimiento": "1984-04-16",
+   "club": "COE-M",
+   "puntos": 2830.79
+  },
+  {
+   "idRfee": 3419,
+   "posicion": 7,
+   "nombre": "MARÍA PÍA",
+   "apellidos": "ZURITA SILVESTRO",
+   "fechaNacimiento": "1984-09-29",
+   "club": "COE-M",
+   "puntos": 2752.06
+  },
+  {
+   "idRfee": 3448,
+   "posicion": 8,
+   "nombre": "LOURDES",
+   "apellidos": "MAYOR",
+   "fechaNacimiento": "1980-02-04",
+   "club": "CETC-M",
+   "puntos": 2303.27
+  },
+  {
+   "idRfee": 4378,
+   "posicion": 9,
+   "nombre": "MARÍA ELENA",
+   "apellidos": "FERNÁNDEZ IGLESIAS",
+   "fechaNacimiento": "1977-08-19",
+   "club": "FED-G-C",
+   "puntos": 1810.64
+  },
+  {
+   "idRfee": 4112,
+   "posicion": 10,
+   "nombre": "LIDIA REBECA",
+   "apellidos": "OLMOS LINARES",
+   "fechaNacimiento": "1978-07-29",
+   "club": "CEST-AV",
+   "puntos": 1536.77
+  },
+  {
+   "idRfee": 755,
+   "posicion": 11,
+   "nombre": "M CRUZ",
+   "apellidos": "MATEO GARRIDO",
+   "fechaNacimiento": "1978-05-02",
+   "club": "SAMA-M",
+   "puntos": 1311.55
+  },
+  {
+   "idRfee": 1898,
+   "posicion": 12,
+   "nombre": "ANA MARIA",
+   "apellidos": "OLAIYA SANCHEZ",
+   "fechaNacimiento": "1982-10-19",
+   "club": "CEMAJ-M",
+   "puntos": 783.42
+  }
+ ]
+}

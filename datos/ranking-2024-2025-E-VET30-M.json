@@ -1,0 +1,154 @@
+{
+ "temporada": "2024-2025",
+ "arma": "Espada",
+ "categoria": "VET30",
+ "genero": "Masculino",
+ "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=15&weapon=E&category=13&gender=M",
+ "descargadoEl": "2026-08-21T22:00:48.970Z",
+ "tiradores": [
+  {
+   "idRfee": 4040,
+   "posicion": 1,
+   "nombre": "VICTOR",
+   "apellidos": "CHINER RIDAURA",
+   "fechaNacimiento": "1989-10-21",
+   "club": "SAV-V",
+   "puntos": 5125.56
+  },
+  {
+   "idRfee": 176,
+   "posicion": 2,
+   "nombre": "EDUARDO MANUEL",
+   "apellidos": "GOMEZ SANCHEZ",
+   "fechaNacimiento": "1986-07-06",
+   "club": "FED-AND-C",
+   "puntos": 5012.24
+  },
+  {
+   "idRfee": 736,
+   "posicion": 3,
+   "nombre": "ADRIÁN",
+   "apellidos": "PENIDO NUÑEZ",
+   "fechaNacimiento": "1989-09-04",
+   "club": "COMES-C",
+   "puntos": 4603.21
+  },
+  {
+   "idRfee": 2416,
+   "posicion": 4,
+   "nombre": "ALEJANDRO",
+   "apellidos": "REAL GOMEZ",
+   "fechaNacimiento": "1993-02-23",
+   "club": "CESAN",
+   "puntos": 4069.41
+  },
+  {
+   "idRfee": 1408,
+   "posicion": 5,
+   "nombre": "JORDI",
+   "apellidos": "PRUNÉS MOY&Agrave;",
+   "fechaNacimiento": "1994-08-29",
+   "club": "CBE-BA",
+   "puntos": 4032.85
+  },
+  {
+   "idRfee": 580,
+   "posicion": 6,
+   "nombre": "DIEGO",
+   "apellidos": "BENEGAS JAYME",
+   "fechaNacimiento": "1994-07-08",
+   "club": "CEOYM-M",
+   "puntos": 3895.75
+  },
+  {
+   "idRfee": 933,
+   "posicion": 7,
+   "nombre": "ROBIN",
+   "apellidos": "HAON",
+   "fechaNacimiento": "1991-03-15",
+   "club": "CEA-V",
+   "puntos": 3641.79
+  },
+  {
+   "idRfee": 186,
+   "posicion": 8,
+   "nombre": "ANDRES",
+   "apellidos": "PUERTO VIVAR",
+   "fechaNacimiento": "1995-07-06",
+   "club": "CEP-M",
+   "puntos": 3636
+  },
+  {
+   "idRfee": 365,
+   "posicion": 9,
+   "nombre": "VICTOR",
+   "apellidos": "LILLO PELLICER",
+   "fechaNacimiento": "1993-07-08",
+   "club": "CEA-V",
+   "puntos": 2938.8
+  },
+  {
+   "idRfee": 4046,
+   "posicion": 10,
+   "nombre": "PABLO",
+   "apellidos": "SORIANO MAUDOS",
+   "fechaNacimiento": "1986-03-07",
+   "club": "SAV-V",
+   "puntos": 2877.63
+  },
+  {
+   "idRfee": 3341,
+   "posicion": 11,
+   "nombre": "ABRAHAM",
+   "apellidos": "CASTRO NEIRA",
+   "fechaNacimiento": "1986-08-04",
+   "club": "COMES-C",
+   "puntos": 1853.31
+  },
+  {
+   "idRfee": 4265,
+   "posicion": 12,
+   "nombre": "VITALII",
+   "apellidos": "MOSKALCHUK",
+   "fechaNacimiento": "1987-09-16",
+   "club": "SAM-B",
+   "puntos": 1755.47
+  },
+  {
+   "idRfee": 1759,
+   "posicion": 13,
+   "nombre": "ALBERTO",
+   "apellidos": "QUEROL MORATILLA",
+   "fechaNacimiento": "1991-04-29",
+   "club": "CEEC-M",
+   "puntos": 1750.38
+  },
+  {
+   "idRfee": 3328,
+   "posicion": 14,
+   "nombre": "JUAN CARLOS",
+   "apellidos": "COVANI",
+   "fechaNacimiento": "1989-01-28",
+   "club": "CCE-M",
+   "puntos": 1520
+  },
+  {
+   "idRfee": 3774,
+   "posicion": 15,
+   "nombre": "BORJA",
+   "apellidos": "FERNANDEZ MUÑOZ",
+   "fechaNacimiento": "1989-05-04",
+   "club": "CEVI-M",
+   "puntos": 1085.51
+  },
+  {
+   "idRfee": 4197,
+   "posicion": 16,
+   "nombre": "FRANCISCO",
+   "apellidos": "GALLEGO-PRECIADOS GARCIA-LAMSFUS",
+   "fechaNacimiento": "1993-02-08",
+   "club": "CESAN",
+   "puntos": 1034.05
+  }
+ ]
+}
