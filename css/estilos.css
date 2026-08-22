@@ -37,14 +37,18 @@
 html, body { touch-action: pan-x pan-y; }
 
 /* El logotipo al pie del menú. Ocupa todo el ancho disponible: no hay nada
-   debajo, así que puede crecer. */
+   debajo, así que puede crecer.
+
+   El dibujo es tinta negra sobre blanco, así que sobre el fondo oscuro de
+   Teseo queda como una lámina colgada. Las esquinas redondeadas son lo que
+   hace que se lea como algo puesto ahí a propósito y no como un hueco. */
 .logo-menu {
   display: block;
   width: 100%;
-  /* En el móvil llena el ancho, que es lo que se busca. El tope evita que en
-     una pantalla ancha se estire hasta verse borrosa: el original mide
-     286 px de ancho. */
-  max-width: 420px;
+  /* El tope evita que en una pantalla ancha se estire hasta verse borrosa: el
+     fichero mide 880 px, así que 440 es justo el doble y aguanta nítido en
+     pantallas de doble densidad. */
+  max-width: 440px;
   height: auto;
   margin: 1.5rem auto 0;
   border-radius: var(--radio);

@@ -108,8 +108,14 @@ js/pantallas/etiquetado.js     EL CORAZÓN: vídeo, marcas, tabla y tanteo
 js/pantallas/estadisticas.js   los filtros y la presentación de las cuentas
 js/pantallas/ayuda.js          la ayuda para quien abre Teseo por primera vez
 js/pantallas/menu.js           menú y configuración
-iconos/logo-teseo.jpg          el logotipo original, y la pantalla de arranque
-iconos/icon-*.png              recortes del escudo, generados desde el logotipo
+iconos/logo-teseo-original.jpg el dibujo tal cual lo entregó su autor: el
+                               maestro del que sale todo lo demás
+iconos/logo-teseo.jpg          el mismo dibujo a 880 px, que es el que se ve
+                               al pie del menú
+iconos/icon-*.png              los iconos de la aplicación, generados con
+                               herramientas/hacer-iconos.ps1
+herramientas/hacer-iconos.ps1  rehace el logotipo del menú y los cuatro iconos
+                               desde el dibujo maestro. Se ejecuta a mano
 servidor-local.js              herramienta de desarrollo; GitHub Pages no la usa
 ```
 
