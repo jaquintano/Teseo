@@ -36,6 +36,9 @@ export function contarTocados(intercambios) {
   let contra = 0;
 
   for (const intercambio of intercambios) {
+    // Una propuesta de la detección automática no mueve el marcador hasta
+    // que alguien la confirma.
+    if (intercambio.propuesto) continue;
     const suma = loQueSuma(intercambio.resultado);
     favor += suma.favor;
     contra += suma.contra;
@@ -79,21 +82,28 @@ export function tanteosDeLosTiempos(tiempos, intercambiosDe) {
  *
  * @param {Array<object>} intercambios en el orden en que se tiraron
  * @param {{favor: number, contra: number}} inicial con qué empieza el tiempo
- * @returns {Array<{intercambio:object, antes:object, favor:number, contra:number}>}
+ * @param {(intercambio:object) => boolean} [cuenta] cuáles mueven el marcador.
+ *        Los que propone la detección automática no lo mueven hasta que se
+ *        confirman, pero sí salen en la lista.
+ * @returns {Array<{intercambio:object, antes:object, favor:number, contra:number, cuenta:boolean}>}
  *          `antes` es cómo iba al empezar ese intercambio, que es lo que
  *          cuenta para las estadísticas: es el marcador con el que decidiste
  *          cómo tirarlo.
  */
-export function tanteoCorrido(intercambios, inicial = { favor: 0, contra: 0 }) {
+export function tanteoCorrido(intercambios, inicial = { favor: 0, contra: 0 }, cuenta = () => true) {
   let favor = inicial.favor;
   let contra = inicial.contra;
 
   return intercambios.map((intercambio) => {
     const antes = { favor, contra };
-    const suma = loQueSuma(intercambio.resultado);
-    favor += suma.favor;
-    contra += suma.contra;
-    return { intercambio, antes, favor, contra };
+    const cuentaEste = cuenta(intercambio);
+
+    if (cuentaEste) {
+      const suma = loQueSuma(intercambio.resultado);
+      favor += suma.favor;
+      contra += suma.contra;
+    }
+    return { intercambio, antes, favor, contra, cuenta: cuentaEste };
   });
 }
 
@@ -102,7 +112,8 @@ export function tanteoCorrido(intercambios, inicial = { favor: 0, contra: 0 }) {
  * tiempo más lo que se haya etiquetado hasta ahí.
  */
 export function tanteoEn(intercambios, inicial, segundos) {
-  const hasta = intercambios.filter((intercambio) => intercambio.instante <= segundos);
+  const hasta = intercambios.filter((intercambio) => intercambio.instante <= segundos
+                                                  && !intercambio.propuesto);
   const cuenta = contarTocados(hasta);
 
   return {

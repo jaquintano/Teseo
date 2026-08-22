@@ -16,6 +16,7 @@ import { pantallaPerfilRfee } from './pantallas/perfil-rfee.js';
 import { pantallaRivales, pantallaRival } from './pantallas/rivales.js';
 import { pantallaInicio, pantallaAsaltoNuevo, pantallaAsalto } from './pantallas/asaltos.js';
 import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js';
+import { pantallaCalibrado } from './pantallas/calibrado.js';
 import { pantallaMenu, pantallaConfiguracion } from './pantallas/menu.js';
 import { pantallaEstadisticas } from './pantallas/estadisticas.js';
 import { pantallaImportarRfee } from './pantallas/importar-rfee.js';
@@ -59,6 +60,7 @@ registrarPantalla('importar-competiciones', conLimpieza(pantallaImportarCompetic
 registrarPantalla('asalto-nuevo', conLimpieza(pantallaAsaltoNuevo));
 registrarPantalla('asalto', conLimpieza(pantallaAsalto));
 registrarPantalla('etiquetado', pantallaEtiquetado);
+registrarPantalla('calibrado', conLimpieza(pantallaCalibrado));
 
 // --- Arranque ---------------------------------------------------------
 

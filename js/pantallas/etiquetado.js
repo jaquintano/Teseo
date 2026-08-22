@@ -39,6 +39,10 @@ import {
 } from '../db.js';
 import { crearReproductor } from '../video.js';
 import { tanteosDeLosTiempos, tanteoCorrido, tanteoEn, situacionDe } from '../tanteo.js';
+import { analizar } from '../analisis.js';
+
+/** Una propuesta de la detección automática no mueve el marcador. */
+const cuentaParaElMarcador = (intercambio) => !intercambio.propuesto;
 
 // Cuánto se ve de un intercambio al tocarlo: un par de segundos de carrerilla
 // para entender de dónde viene la acción, y medio segundo detrás para ver cómo
@@ -50,7 +54,15 @@ const SEGUNDOS_DESPUES = 0.5;
 // de megas ocupando memoria.
 let reproductorActivo = null;
 
+// El análisis automático, si hay uno corriendo. Se para al salir: si no,
+// seguiría reproduciendo un vídeo invisible en otra pantalla.
+let analisisActivo = null;
+
 export function soltarReproductor() {
+  if (analisisActivo) {
+    analisisActivo.cancelar();
+    analisisActivo = null;
+  }
   if (reproductorActivo) {
     reproductorActivo.destruir();
     reproductorActivo = null;
@@ -162,6 +174,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   const marcador = crear('div', { class: 'marcador' });
   const contador = crear('p', { class: 'ayuda contador' });
   const tabla = crear('div');
+  const deteccion = crear('details', { class: 'filtros' });
 
   // La ficha del intercambio va en una ventana encima de todo: en la pantalla
   // no cabe todo a la vez, y mientras se repasa el asalto estorba.
@@ -188,6 +201,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     contador,
     btnNuevo,
     tabla,
+    hayVideo ? deteccion : null,
     ficha,
     crear('p', {
       class: 'ayuda pie',
@@ -204,6 +218,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   }
 
   pintarIntercambios();
+  if (hayVideo) pintarDeteccion();
 
   // ------------------------------------------------------------------
 
@@ -377,9 +392,12 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   function pintarTabla() {
     if (intercambios.length === 0) { rellenar(tabla, []); return; }
 
-    const filas = tanteoCorrido(intercambios, tanteoInicial).map(({ intercambio, favor, contra }) =>
+    const filas = tanteoCorrido(intercambios, tanteoInicial, cuentaParaElMarcador)
+      .map(({ intercambio, favor, contra }) =>
       crear('tr', {
-        class: 'fila-rival' + (activo && activo.id === intercambio.id ? ' fila-activa' : ''),
+        class: 'fila-rival'
+               + (activo && activo.id === intercambio.id ? ' fila-activa' : '')
+               + (intercambio.propuesto ? ' fila-propuesta' : ''),
         onclick: () => abrir(intercambio),
       }, [
         crear('td', { class: 'apagado', texto: formatearSegundos(intercambio.instante) }),
@@ -392,18 +410,31 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
             'aria-label': etiquetaDe(RESULTADOS, intercambio.resultado) || 'Sin etiquetar',
           }),
         ]),
-        crear('td', { class: 'derecha tanteo', texto: `${favor}–${contra}` }),
-        crear('td', { class: 'derecha' }, [
-          crear('button', {
-            type: 'button', class: 'boton-icono en-tabla', texto: '✎',
-            'aria-label': `Corregir el intercambio de ${formatearSegundos(intercambio.instante)}`,
-            onclick: (evento) => {
-              // Si no, el toque llegaría también a la fila.
-              evento.stopPropagation();
-              editar(intercambio);
-            },
-          }),
-        ]),
+        crear('td', { class: 'derecha tanteo apagado', texto: textoDelTanteo(intercambio, favor, contra) }),
+        crear('td', { class: 'derecha' }, intercambio.propuesto
+          ? [
+              crear('button', {
+                type: 'button', class: 'boton-icono en-tabla', texto: '✓',
+                'aria-label': `Confirmar el intercambio de ${formatearSegundos(intercambio.instante)}`,
+                onclick: (evento) => { evento.stopPropagation(); confirmar(intercambio); },
+              }),
+              crear('button', {
+                type: 'button', class: 'boton-icono en-tabla borrar', texto: '✕',
+                'aria-label': `Descartar el intercambio de ${formatearSegundos(intercambio.instante)}`,
+                onclick: (evento) => { evento.stopPropagation(); descartar(intercambio); },
+              }),
+            ]
+          : [
+              crear('button', {
+                type: 'button', class: 'boton-icono en-tabla', texto: '✎',
+                'aria-label': `Corregir el intercambio de ${formatearSegundos(intercambio.instante)}`,
+                onclick: (evento) => {
+                  // Si no, el toque llegaría también a la fila.
+                  evento.stopPropagation();
+                  editar(intercambio);
+                },
+              }),
+            ]),
       ]));
 
     rellenar(tabla, crear('div', { class: 'tabla-scroll' }, [
@@ -419,6 +450,171 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
         crear('tbody', {}, filas),
       ]),
     ]));
+  }
+
+  /**
+   * El bloque de la detección automática: calibrar y lanzar.
+   *
+   * Va plegado y al final a propósito. Esto es opcional: muchos vídeos se
+   * etiquetan a mano y la pantalla tiene que seguir siendo la de siempre para
+   * quien no lo use nunca.
+   */
+  function pintarDeteccion() {
+    const calibrado = tiempo.calibrado || null;
+
+    rellenar(deteccion, [
+      crear('summary', { texto: 'Detección automática' }),
+
+      crear('p', {
+        class: 'texto-ayuda',
+        texto: 'Si en el vídeo se ve el marcador del aparato, Teseo puede ' +
+               'buscar los tocados solo mirando cuándo se encienden las ' +
+               'lámparas. Lo que encuentre son propuestas: nada se etiqueta ' +
+               'sin que tú lo confirmes.',
+      }),
+
+      crear('button', {
+        type: 'button', class: 'boton boton-compacto',
+        texto: calibrado ? 'Repetir el calibrado' : 'Calibrado',
+        onclick: () => ir('calibrado', { tiempoId: tiempo.id, asaltoId: tiempo.asaltoId }),
+      }),
+
+      calibrado ? crear('p', {
+        class: 'ayuda',
+        texto: calibrado.encendido
+          ? `Calibrado y comprobado con una lámpara ${calibrado.encendido.color}.`
+          : 'Calibrado, pero sin comprobar con ninguna lámpara encendida: puede ' +
+            'que no encuentre nada.',
+      }) : crear('p', {
+        class: 'ayuda',
+        texto: 'Antes hay que calibrar: enmarcar el marcador en el vídeo y decir ' +
+               'de qué color eres. Sin eso, Teseo no sabe dónde mirar.',
+      }),
+
+      crear('button', {
+        type: 'button',
+        class: 'boton boton-principal boton-compacto' + (calibrado ? '' : ' desactivado'),
+        texto: 'Detección automática de intercambios',
+        onclick: () => { if (calibrado) lanzarAnalisis(calibrado); },
+      }),
+
+      calibrado ? crear('p', {
+        class: 'ayuda',
+        texto: 'Tarda alrededor de la mitad de lo que dure el vídeo. Deja Teseo ' +
+               'en pantalla y no apagues el móvil mientras corre.',
+      }) : null,
+    ]);
+  }
+
+  /** Reproduce el vídeo entero buscando encendidos. */
+  async function lanzarAnalisis(calibrado) {
+    const videoDelAnalisis = crear('video', {
+      class: 'video-analisis', playsinline: true, muted: true,
+    });
+    videoDelAnalisis.src = URL.createObjectURL(fichero);
+
+    const marca = crear('div', { class: 'recuadro-dibujado' });
+    marca.style.left = `${calibrado.recuadro.x * 100}%`;
+    marca.style.top = `${calibrado.recuadro.y * 100}%`;
+    marca.style.width = `${calibrado.recuadro.ancho * 100}%`;
+    marca.style.height = `${calibrado.recuadro.alto * 100}%`;
+
+    const barra = crear('progress', { class: 'progreso-analisis', max: 1, value: 0 });
+    const cuenta = crear('p', { class: 'ayuda', texto: '0 %' });
+    let encontrados = 0;
+
+    const botonCancelar = crear('button', {
+      type: 'button', class: 'boton boton-peligro boton-compacto', texto: 'Cancelar',
+      onclick: () => { if (analisisActivo) analisisActivo.cancelar(); },
+    });
+
+    rellenar(deteccion, [
+      crear('summary', { texto: 'Detección automática' }),
+      crear('p', {
+        class: 'ayuda',
+        texto: 'Analizando. Deja Teseo en pantalla: si el móvil se apaga, el ' +
+               'análisis se para hasta que vuelvas.',
+      }),
+      crear('div', { class: 'marco-calibrado marco-analisis' }, [videoDelAnalisis, marca]),
+      barra,
+      cuenta,
+      botonCancelar,
+    ]);
+    deteccion.open = true;
+
+    analisisActivo = analizar({
+      video: videoDelAnalisis,
+      calibrado,
+      alProgresar: (parte) => {
+        barra.value = parte;
+        cuenta.textContent = `${Math.round(parte * 100)} % · ${encontrados} propuesta${encontrados === 1 ? '' : 's'}`;
+      },
+      alPausar: (pausado) => {
+        cuenta.textContent = pausado
+          ? 'En pausa: vuelve a Teseo para seguir.'
+          : `${Math.round(barra.value * 100)} % · ${encontrados} propuesta${encontrados === 1 ? '' : 's'}`;
+      },
+      alDetectar: async (tocado) => {
+        encontrados++;
+        const propuesta = {
+          tiempoId: tiempo.id,
+          asaltoId: tiempo.asaltoId,
+          instante: tocado.instante,
+          resultado: tocado.resultado,
+          ofensiva: null,
+          defensiva: null,
+          zonaCuerpo: null,
+          zonaPista: null,
+          propuesto: true,
+        };
+        propuesta.id = await guardar(ALMACENES.intercambios, propuesta);
+        intercambios.push(propuesta);
+        ordenar(intercambios);
+        pintarIntercambios();
+      },
+    });
+
+    const comoAcaba = await analisisActivo.terminado;
+    analisisActivo = null;
+    URL.revokeObjectURL(videoDelAnalisis.src);
+
+    pintarDeteccion();
+    deteccion.open = true;
+    anadir(deteccion, crear('p', {
+      class: encontrados > 0 ? 'aviso-bueno' : 'aviso',
+      texto: comoAcaba === 'cancelado'
+        ? `Análisis cancelado. Se quedan ${encontrados} propuesta(s) de lo que dio tiempo a mirar.`
+        : encontrados > 0
+          ? `${encontrados} propuesta(s). Repásalas en la tabla: el ✓ las confirma y el ✕ las descarta.`
+          : 'No se ha encontrado ningún encendido. Si el marcador se ve bien en ' +
+            'el vídeo, prueba a repetir el calibrado enmarcándolo más ajustado ' +
+            'y midiendo con una lámpara encendida.',
+    }));
+  }
+
+  /**
+   * Qué pone en la columna del tanteo. Un nulo no mueve el marcador, así que
+   * repetir el número de antes sólo confundiría; y una propuesta todavía no
+   * cuenta para nada.
+   */
+  function textoDelTanteo(intercambio, favor, contra) {
+    if (intercambio.propuesto) return 'propuesto';
+    if (intercambio.resultado === 'nada') return 'Nulo';
+    return `${favor}–${contra}`;
+  }
+
+  /** La propuesta pasa a ser un intercambio como los demás. */
+  async function confirmar(intercambio) {
+    delete intercambio.propuesto;
+    await guardar(ALMACENES.intercambios, intercambio);
+    pintarIntercambios();
+  }
+
+  async function descartar(intercambio) {
+    await borrar(ALMACENES.intercambios, intercambio.id);
+    intercambios = intercambios.filter((otro) => otro.id !== intercambio.id);
+    if (activo && activo.id === intercambio.id) activo = null;
+    pintarIntercambios();
   }
 
   /** Crea un intercambio en el instante en el que está parado el vídeo. */

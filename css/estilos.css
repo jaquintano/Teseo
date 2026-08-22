@@ -574,6 +574,66 @@ video::-webkit-media-controls-panel {
   font-size: 1rem;
 }
 
+/* --- Calibrado y detección automática --------------------------------- */
+
+/* El vídeo del calibrado va a lo ancho y con su alto natural: así el
+   elemento mide exactamente lo que se ve, y las coordenadas del recuadro que
+   dibuja el dedo se traducen a las del vídeo sin más cuentas. */
+.marco-calibrado {
+  position: relative;
+  margin-bottom: 0.5rem;
+  background: #000;
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+
+.marco-calibrado video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Durante el análisis el vídeo se ve pequeño: no es para mirarlo, es para
+   saber por dónde va y ver si el recuadro está donde debe. */
+.marco-analisis {
+  max-width: 220px;
+  margin: 0 auto 0.5rem;
+}
+
+/* La capa que recoge el dedo. touch-action en none porque aquí el gesto es
+   dibujar, no desplazar la página. */
+.capa-recuadro {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.recuadro-dibujado {
+  position: absolute;
+  border: 2px solid var(--acento);
+  background: color-mix(in srgb, var(--acento) 15%, transparent);
+  pointer-events: none;
+}
+
+.progreso-analisis {
+  display: block;
+  width: 100%;
+  height: 14px;
+  margin-bottom: 0.4rem;
+}
+
+/* Una propuesta de la detección todavía no es un intercambio: se ve que está
+   a medias. */
+.fila-propuesta td {
+  background: color-mix(in srgb, var(--acento) 8%, transparent);
+  font-style: italic;
+}
+
+.fila-propuesta td:first-child {
+  box-shadow: inset 3px 0 0 var(--acento);
+}
+
 /* --- Línea de tiempo con las marcas ----------------------------------- */
 
 .linea-tiempo {

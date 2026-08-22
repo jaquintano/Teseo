@@ -34,7 +34,10 @@ export const RESULTADOS = [
   { id: 'favor', etiqueta: 'Tocado a favor' },
   { id: 'contra', etiqueta: 'Tocado en contra' },
   { id: 'doble', etiqueta: 'Doble' },
-  { id: 'nada', etiqueta: 'Nada' },
+  // El identificador sigue siendo 'nada': está guardado en los intercambios
+  // que ya existen y se usa por su id en las cuentas. Lo que cambia es cómo
+  // se llama, que "Nulo" es lo que se dice en la pista.
+  { id: 'nada', etiqueta: 'Nulo' },
 ];
 
 /** Resultados en los que tiene sentido preguntar dónde y en qué zona. */

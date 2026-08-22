@@ -30,6 +30,10 @@ import { tanteosDeLosTiempos, tanteoCorrido, situacionDe } from './tanteo.js';
  * @returns {Array} los intercambios, enriquecidos
  */
 export function prepararIntercambios({ asaltos = [], tiempos = [], intercambios = [], tiradores = [] }) {
+  // Lo que ha propuesto la detección automática y nadie ha confirmado todavía
+  // no son datos: son candidatos. Fuera de las cuentas hasta que se confirmen.
+  intercambios = intercambios.filter((intercambio) => !intercambio.propuesto);
+
   const tiradorPorId = new Map(tiradores.map((t) => [t.id, t]));
   const asaltoPorId = new Map(asaltos.map((a) => [a.id, a]));
   const tiempoPorId = new Map(tiempos.map((t) => [t.id, t]));

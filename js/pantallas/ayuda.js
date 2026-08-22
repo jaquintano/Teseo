@@ -129,6 +129,28 @@ export async function pantallaAyuda(contenedor) {
       'La mano hace falta de verdad, porque las estadísticas te dejan comparar ' +
       'cómo te va contra diestros y contra zurdos.'),
 
+    apartado('Que Teseo busque los tocados solo',
+      'Si en el vídeo se ve el marcador del aparato, Teseo puede encontrar los ' +
+      'tocados mirando cuándo se encienden las lámparas. Está debajo de la ' +
+      'tabla, en "Detección automática". Es opcional: si no lo usas nunca, ' +
+      'todo funciona igual.',
+      'Primero hay que calibrar: buscar un momento donde se vea el marcador, ' +
+      'enmarcarlo con el dedo —con holgura, que la cámara se mueve— y decir de ' +
+      'qué color eres tú. Se mide dos veces, con las lámparas apagadas y con ' +
+      'una encendida, y Teseo te dice si va a funcionar antes de que pierdas ' +
+      'dos minutos analizando.',
+      'El análisis tarda alrededor de la mitad de lo que dure el vídeo. Deja ' +
+      'Teseo en pantalla: si te vas a otra aplicación o se apaga el móvil, se ' +
+      'queda en pausa hasta que vuelvas.',
+      'Lo que encuentra son PROPUESTAS, que salen en la tabla en cursiva y no ' +
+      'tocan el marcador. El ✓ las confirma y el ✕ las descarta. Habrá algunas ' +
+      'de más: los tiradores prueban la punta en la guardia del contrario antes ' +
+      'de empezar, y eso enciende la lámpara igual que un tocado.',
+      'Un tocado anulado por el árbitro se marca como "Nulo": queda apuntado ' +
+      'pero no mueve el marcador.',
+      'Si en tu vídeo no se ve el marcador, esto no se puede usar. No pasa ' +
+      'nada: se etiqueta a mano, como siempre.'),
+
     apartado('El ranking',
       'En Menú → Ranking tienes el ranking de la federación tal cual lo ' +
       'publica: puesto, tirador, club y puntos. Eliges la temporada y la ' +

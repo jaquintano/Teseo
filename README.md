@@ -168,6 +168,48 @@ marcador en cada intercambio habría hecho lo contrario.
 El **resultado final del asalto** se pregunta aparte, en su ficha. Es cómo
 acabó de verdad, lo diga o no la grabación.
 
+## Detección automática de tocados (fase 1)
+
+Si en el encuadre se ve el marcador del aparato, Teseo puede proponer los
+tocados solo. **Es opcional**: hay grabaciones donde el marcador no se ve, y
+ésas se etiquetan a mano como siempre.
+
+`js/deteccion.js` es puro —píxeles a cuentas, cuentas a tocados— y
+`js/analisis.js` es el que reproduce y muestrea. La pantalla de calibrado es
+`js/pantallas/calibrado.js`.
+
+**Cómo detecta.** Se clasifica cada píxel del recuadro en HSV: hace falta tono
+rojo o verde, saturación y brillo. En HSV y no en RGB porque el móvil reajusta
+la exposición y un LED potente satura el sensor y sale blanco, conservando el
+tinte sólo en el halo. El rojo está partido en los dos extremos de la rueda de
+tonos, así que se miran los dos rangos.
+
+**Cuándo da por encendida una lámpara.** No con la muestra de ahora, sino con
+**dos de las tres últimas**. Esa regla hace dos cosas a la vez: aguanta que un
+LED salga apagado en un fotograma suelto, y descarta un destello de un
+fotograma. Mirar el máximo de la ventana —que fue la primera versión— se comía
+la persistencia y daba por bueno cualquier destello.
+
+Lo que se busca es el **flanco de subida**, y el instante que se apunta es el
+de la primera muestra que vio la luz, no el de la que lo confirmó. Si las dos
+lámparas suben con menos de medio segundo de diferencia, es un doble.
+
+**El calibrado se mide dos veces.** Apagado da la línea base —lo que hay ahí
+cuando no pasa nada, que descubre banderas y maillots dentro del recuadro— y
+encendido da la escala para poner el umbral. El segundo paso se puede saltar,
+pero entonces el umbral es una estimación y se avisa. Al guardar se barren
+veinte fotogramas repartidos por todo el vídeo: si en la mayoría "habría
+lámpara", el recuadro no vale.
+
+**Nada se etiqueta solo.** Lo que sale son propuestas (`intercambio.propuesto`),
+que aparecen en la tabla pero **no cuentan ni para el marcador ni para las
+estadísticas** hasta que alguien las confirma.
+
+**Limitaciones conocidas.** Los tiradores prueban la punta antes de empezar y
+eso enciende la lámpara: habrá propuestas de más en las pausas. Y si quien
+graba hace barridos y el marcador se sale del encuadre, no hay nada que hacer
+hasta que exista el seguimiento de la fase 2.
+
 ## El ranking
 
 **Menú → Ranking** enseña el ranking federativo tal cual lo publica la RFEE:
