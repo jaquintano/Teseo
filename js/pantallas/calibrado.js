@@ -15,14 +15,23 @@
 // Con eso se sabe dónde está cada una dentro del recuadro, y el análisis mira
 // ahí y no en el resto.
 //
-// Por eso el recuadro se dibuja GRANDE, alrededor de todo el aparato: da
-// holgura para que la cámara se mueva, y además es la PLANTILLA con la que se
-// reconoce el marcador después. De ahí que aquí mismo se use ya el
-// seguimiento: el tocado con el que se localizan las lámparas se busca por
-// todo el vídeo, y para cuando aparece la cámara está en otro sitio.
+// El recuadro es además la PLANTILLA con la que se reconoce el marcador
+// después, y por eso se dibuja AJUSTADO al aparato. La primera versión pedía
+// holgura para el temblor de la cámara; de eso se encarga ahora el
+// seguimiento, y todo lo que sobre —pista, gente, fondo— cambia a lo largo del
+// vídeo y estorba a las dos cosas: a la comparación con la referencia y al
+// propio seguimiento.
+//
+// De ahí también que aquí mismo se use ya el seguimiento: el tocado con el que
+// se localizan las lámparas se busca por todo el vídeo, y para cuando aparece,
+// la cámara está en otro sitio.
 
 import { anadir, crear, rellenar, cabecera, ir, desplegable, formatearSegundos } from '../ui.js';
-import { ALMACENES, obtener, guardar, borrar, leerVideo, listarPor } from '../db.js';
+import {
+  ALMACENES, obtener, guardar, borrar, leerVideo, listarPor,
+  colorDelAsalto, fijarColorDelAsalto,
+} from '../db.js';
+import { COLORES_LAMPARA, PREGUNTA_COLOR } from '../constantes.js';
 import { recortar, guardarReferencia, loQueHaAparecido, conHolgura } from '../deteccion.js';
 import { escenaDe, plantillaDesde, crearSeguidor, detalleDe, sePuedeSeguir } from '../seguimiento.js';
 import { buscarFalsosPositivos } from '../analisis.js';
@@ -49,16 +58,13 @@ const PARTE_PARA_ENCENDER = 0.4;
 // Con más de esto encendido a lo largo del vídeo, algo va mal.
 const DEMASIADO_ENCENDIDO = 0.7;
 
-const COLORES = [
-  { id: 'verde', etiqueta: 'Verde' },
-  { id: 'rojo', etiqueta: 'Rojo' },
-];
-
 const NUMERO = { rojo: 1, verde: 2 };
 
 export async function pantallaCalibrado(contenedor, datos = {}) {
   const tiempo = await obtener(ALMACENES.tiempos, datos.tiempoId);
   if (!tiempo) { ir('inicio'); return; }
+
+  const asalto = await obtener(ALMACENES.asaltos, tiempo.asaltoId);
 
   const volver = () => ir('etiquetado', { tiempoId: tiempo.id, asaltoId: tiempo.asaltoId });
   anadir(contenedor, cabecera('Calibrado', volver));
@@ -94,7 +100,10 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
   // elegido a conciencia para enmarcar.
   let plantilla = previo ? previo.plantilla || null : null;
   let lamparas = previo ? { ...previo.lamparas } : { rojo: null, verde: null };
-  let miColor = previo ? previo.miColor : null;
+  // Tu color no es cosa del calibrado: es del asalto entero, y lo normal es
+  // que ya se haya contestado en la pantalla del vídeo. Aquí sólo se enseña, y
+  // se puede corregir sin salir.
+  let miColor = await colorDelAsalto(asalto);
   // Lo que se le dice al usuario del último intento de localizar.
   let ultimoIntento = null;
   // Dónde estaba el marcador la última vez que se buscó una lámpara. Puede no
@@ -282,11 +291,12 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       'se hace en dos capturas: una con las lámparas apagadas y otra con una ' +
       'encendida. Lo que aparece entre las dos es la lámpara, y ahí es donde ' +
       'mirará Teseo. Los dígitos quedan fuera.',
-      'Enmarca el aparato ENTERO y con holgura, no las bombillas. El recuadro ' +
-      'no es sólo dónde mirar: es también la foto con la que Teseo va a ' +
-      'reconocer el marcador cuando la cámara se mueva. Cuanto más entre ahí ' +
-      '—el soporte, la mesa, lo que haya detrás—, mejor lo reconocerá. Lo que ' +
-      'no vale es un recuadro liso.',
+      'Ajusta el recuadro al aparato: que entre el marcador entero y poco más. ' +
+      'No hace falta dejar holgura para el temblor de la cámara —de eso se ' +
+      'encarga el seguimiento—, y todo lo que metas de más juega en contra: la ' +
+      'pista, la gente y el fondo cambian a lo largo del vídeo, y lo que cambia ' +
+      'estorba tanto a la comparación con la referencia como al seguimiento. Lo ' +
+      'único que no vale es un recuadro liso, sin dibujo que reconocer.',
       'De la resolución depende todo. Las lámparas del aparato son pequeñas, y ' +
       'en un vídeo de baja calidad acaban siendo cuatro píxeles que se ' +
       'confunden con cualquier reflejo. Graba a 720p o más, y si puedes, con ' +
@@ -320,7 +330,8 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
   /** Lo que falla del recuadro, o null si está bien. */
   function queLeFaltaAlRecuadro() {
     if (!recuadro || recuadro.ancho <= 0 || recuadro.alto <= 0) {
-      return 'Dibuja un recuadro alrededor del aparato arrastrando el dedo por el vídeo.';
+      return 'Arrastra el dedo por el vídeo para enmarcar el aparato, ajustado y ' +
+             'con la menor pista posible dentro.';
     }
 
     const { ancho, alto, parte } = tamanoDelRecuadro();
@@ -381,7 +392,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
         class: resolucion.bien ? 'ayuda' : 'aviso', texto: resolucion.texto,
       }) : null,
 
-      crear('h3', { class: 'subtitulo-seccion', texto: '1. Enmarca el aparato entero' }),
+      crear('h3', { class: 'subtitulo-seccion', texto: '1. Enmarca el aparato, ajustado' }),
       crear('p', {
         class: problema ? 'aviso' : 'ayuda',
         texto: problema || `Recuadro puesto: ${ancho}×${alto} píxeles del vídeo.`,
@@ -428,8 +439,16 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       }),
       ultimoIntento ? crear('p', { class: 'aviso', texto: ultimoIntento }) : null,
 
-      desplegable('4. ¿De qué color eres tú?', COLORES, miColor,
-        (valor) => { miColor = valor; }, { vacio: '— Elige —' }).bloque,
+      crear('h3', { class: 'subtitulo-seccion', texto: '4. Tu color' }),
+      crear('p', {
+        class: miColor ? 'ayuda' : 'aviso',
+        texto: miColor
+          ? 'Es el del asalto entero, así que vale para todos sus tiempos. ' +
+            'Cambiarlo aquí lo cambia en todas partes.'
+          : 'Sin esto se pueden detectar los tocados pero no saber de quién son.',
+      }),
+      desplegable(PREGUNTA_COLOR, COLORES_LAMPARA, miColor,
+        (valor) => { fijarColor(valor); }, { vacio: '— Elige —' }).bloque,
 
       crear('button', {
         type: 'button', class: 'boton boton-principal', texto: 'Guardar el calibrado',
@@ -442,6 +461,13 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
                'detectarán esos tocados. Se puede guardar así y completarlo luego.',
       }) : null,
     ]);
+  }
+
+  /** Tu color se guarda en el asalto en cuanto se elige, no al guardar. */
+  async function fijarColor(valor) {
+    miColor = valor || null;
+    if (valor && asalto) await fijarColorDelAsalto(asalto, valor);
+    pintarPasos();
   }
 
   function guardarLaReferencia() {
@@ -594,8 +620,8 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     if (!miColor) {
       rellenar(resultadoFinal, crear('p', {
         class: 'aviso',
-        texto: 'Falta decir de qué color eres tú (paso 4). Sin eso se pueden ' +
-               'detectar los tocados pero no saber de quién son.',
+        texto: 'Falta tu color en el asalto (paso 4). Sin eso se pueden detectar ' +
+               'los tocados pero no saber de quién son.',
       }));
       return;
     }

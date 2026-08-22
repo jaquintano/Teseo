@@ -9,13 +9,14 @@ import {
 } from '../ui.js';
 import {
   FASES, PRIORIDADES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe, nombreCompleto,
-  coincide, opcionesPara,
+  coincide, opcionesPara, COLORES_LAMPARA, PREGUNTA_COLOR,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 import { resumirCompeticion } from '../competiciones.js';
 import {
   ALMACENES, guardar, obtener, listar, listarPor, listarRivales, obtenerPerfilPropio,
   guardarVideo, borrarAsalto, borrarTiempo, comprobarLegible,
+  colorDelAsalto, fijarColorDelAsalto,
 } from '../db.js';
 
 // La fatiga se apunta con una barra del 1 al 5, y una barra siempre marca
@@ -657,6 +658,37 @@ export async function pantallaAsalto(contenedor, datos = {}) {
   const listaTiempos = crear('div', { class: 'lista' });
   await pintarTiempos(listaTiempos, asalto, tiempos);
 
+  // --- Tu color en el asalto ---
+  //
+  // No se pregunta al crear el asalto porque nadie se acuerda de qué lámpara
+  // le tocó hasta que ve el vídeo. Aparece en cuanto hay uno, y hasta que se
+  // conteste no se puede etiquetar: sin él, un tocado a favor no dice de qué
+  // lámpara fue.
+  let miColor = await colorDelAsalto(asalto);
+  const bloqueColor = crear('div');
+
+  function pintarColor() {
+    if (tiempos.length === 0) { rellenar(bloqueColor, []); return; }
+
+    rellenar(bloqueColor, [
+      desplegable(PREGUNTA_COLOR, COLORES_LAMPARA, miColor, async (valor) => {
+        miColor = valor || null;
+        if (valor) await fijarColorDelAsalto(asalto, valor);
+        pintarColor();
+      }, { vacio: '— Elige —' }).bloque,
+      crear('p', {
+        class: miColor ? 'ayuda' : 'aviso',
+        texto: miColor
+          ? 'Vale para todos los tiempos de este asalto. Es lo que dice de quién ' +
+            'es cada lámpara, y de qué color se pintan las marcas.'
+          : 'Hace falta para etiquetar: sin saber cuál era tu lámpara, un tocado ' +
+            'a favor no significa nada. Se ve en el vídeo.',
+      }),
+    ]);
+  }
+
+  pintarColor();
+
   // --- Añadir un tiempo con su vídeo ---
   const progreso = crear('p', { class: 'progreso' });
   const entrada = crear('input', {
@@ -680,6 +712,7 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     crear('p', { class: 'ayuda', texto: contexto }),
     // El club del rival sale de su ficha, no se vuelve a preguntar en cada asalto.
     rivalEnUnaLinea(rival),
+    bloqueColor,
 
     crear('button', {
       type: 'button', class: 'boton boton-compacto', texto: 'Editar datos del asalto',

@@ -98,9 +98,21 @@ export async function pantallaAyuda(contenedor) {
       'marca eso y dale a "Listo".',
       'Todo se guarda solo. No hay botón de guardar que se pueda olvidar.'),
 
+    apartado('Tu color en el asalto',
+      'Lo primero que Teseo te pregunta al abrir el vídeo es de qué color eras ' +
+      'tú: verde o rojo. Hasta que no lo contestes no deja etiquetar, porque ' +
+      'un tocado a favor no significa nada si no se sabe cuál era tu lámpara.',
+      'No se pregunta antes, al crear el asalto, porque hasta que no ves el ' +
+      'vídeo no hay quien se acuerde. Y vale para todo el asalto: te enchufas ' +
+      'a un lado de la pista y ahí te quedas.',
+      'Sirve para dos cosas: para que la detección automática sepa de quién es ' +
+      'cada encendido, y para que las marcas y los puntos de la tabla lleven ' +
+      'el color de la lámpara que se encendió de verdad.'),
+
     apartado('La barra de debajo del vídeo',
-      'Cada marca de colores es un intercambio que ya has etiquetado. Verde es ' +
-      'tocado a favor, rojo en contra, ámbar doble.',
+      'Cada marca de colores es un intercambio que ya has etiquetado, con el ' +
+      'color de la lámpara que se encendió: si tu lámpara era la roja, tus ' +
+      'tocados salen en rojo y los suyos en verde. El doble es ámbar.',
       'Tocar una marca reproduce ese intercambio, igual que desde la tabla. Y ' +
       'tocar la barra en cualquier otro punto salta a ese momento y se queda ' +
       'ahí parado. Si las marcas se te resisten con el dedo, usa la tabla de ' +
@@ -138,10 +150,11 @@ export async function pantallaAyuda(contenedor) {
       'del aparato es pequeña, y en un vídeo de poca calidad son cuatro píxeles ' +
       'que se confunden con cualquier reflejo. Teseo te avisa al calibrar si el ' +
       'vídeo se queda corto.',
-      'Primero hay que calibrar. Enmarca con el dedo el aparato ENTERO y con ' +
-      'holgura, no las bombillas. El recuadro no es sólo dónde mirar: es la ' +
-      'foto con la que Teseo reconoce el marcador cuando la cámara se mueve, ' +
-      'así que cuanto más entre ahí —el soporte, lo que haya detrás—, mejor.',
+      'Primero hay que calibrar. Enmarca con el dedo el aparato entero, pero ' +
+      'AJUSTADO: el marcador y poco más. No hace falta dejar sitio para el ' +
+      'temblor de la cámara, que Teseo persigue el marcador él solo, y todo lo ' +
+      'que metas de más —pista, gente, fondo— cambia durante el vídeo y sólo ' +
+      'sirve para despistarlo.',
       'Se mide dos veces. Una con las lámparas apagadas y otra en un tocado. ' +
       'Comparando las dos, Teseo encuentra las lámparas y no se confunde con el ' +
       'cronómetro ni con el tanteo, que están encendidos en las dos capturas. ' +

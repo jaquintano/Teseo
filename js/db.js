@@ -190,6 +190,40 @@ export async function listarRivales() {
     .sort((a, b) => nombreCompleto(a).localeCompare(nombreCompleto(b), 'es'));
 }
 
+// --- Tu color en el asalto --------------------------------------------
+
+/**
+ * De qué color eras tú en este asalto: 'verde', 'rojo' o null si no consta.
+ *
+ * Antes este dato vivía dentro del calibrado de cada tiempo, así que sólo lo
+ * tenían los asaltos en los que se usó la detección automática. Ahora cuelga
+ * del asalto, que es donde de verdad no cambia. Los asaltos de antes se
+ * migran solos la primera vez que se abren: si alguno de sus tiempos lo trae
+ * en su calibrado, se sube al asalto y no hay que volver a preguntarlo.
+ */
+export async function colorDelAsalto(asalto) {
+  if (!asalto) return null;
+  if (asalto.miColor) return asalto.miColor;
+
+  const tiempos = await listarPor(ALMACENES.tiempos, 'por-asalto', asalto.id);
+  const calibrado = tiempos.find((tiempo) => tiempo.calibrado && tiempo.calibrado.miColor);
+  if (!calibrado) return null;
+
+  await fijarColorDelAsalto(asalto, calibrado.calibrado.miColor);
+  return asalto.miColor;
+}
+
+/**
+ * Guarda tu color en el asalto. Se relee antes de escribir para no pisar lo
+ * que se haya editado en otra pantalla mientras tanto.
+ */
+export async function fijarColorDelAsalto(asalto, miColor) {
+  const guardado = await obtener(ALMACENES.asaltos, asalto.id);
+  if (!guardado) return;
+  await guardar(ALMACENES.asaltos, { ...guardado, miColor });
+  asalto.miColor = miColor;
+}
+
 // --- Vídeos -----------------------------------------------------------
 
 /**

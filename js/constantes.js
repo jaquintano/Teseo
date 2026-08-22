@@ -43,6 +43,45 @@ export const RESULTADOS = [
 /** Resultados en los que tiene sentido preguntar dónde y en qué zona. */
 export const RESULTADOS_CON_TOCADO = ['favor', 'contra', 'doble'];
 
+// Tu color en el asalto
+// ---------------------
+// En espada cada tirador tiene una lámpara, verde o roja, y en un asalto no
+// cambia: te enchufas a un lado de la pista y ahí te quedas. Por eso el dato
+// cuelga del asalto y no de cada tiempo.
+//
+// Sirve para dos cosas distintas. Una, para que la detección automática sepa
+// de quién es cada encendido. Y otra, para pintar: la marca de un intercambio
+// lleva el color de la LÁMPARA que se encendió, no el del resultado. Si tú
+// eres el rojo, tus tocados salen en rojo, que es lo que has visto en la
+// pista y lo que el ojo espera.
+
+export const COLORES_LAMPARA = [
+  { id: 'verde', etiqueta: 'Verde' },
+  { id: 'rojo', etiqueta: 'Rojo' },
+];
+
+/** La misma pregunta en todas las pantallas, que si no parecen dos cosas. */
+export const PREGUNTA_COLOR = '¿Tu color en el asalto?';
+
+/**
+ * De qué color fue la lámpara de un intercambio.
+ *
+ * Los que no son un tocado de nadie —el doble, el nulo, el que aún no está
+ * etiquetado— se devuelven tal cual: tienen su propio color y no son de
+ * ninguna lámpara.
+ *
+ * @param {string} resultado 'favor', 'contra', 'doble', 'nada' o nada
+ * @param {?string} miColor 'verde' o 'rojo'; sin él se supone verde, que es
+ *                          lo que hacía Teseo antes de preguntarlo
+ */
+export function colorDeLaLampara(resultado, miColor) {
+  const mia = miColor === 'rojo' ? 'rojo' : 'verde';
+  const suya = mia === 'rojo' ? 'verde' : 'rojo';
+  if (resultado === 'favor') return mia;
+  if (resultado === 'contra') return suya;
+  return resultado || 'vacio';
+}
+
 export const ZONAS_CUERPO = [
   { id: 'mano', etiqueta: 'Mano' },
   { id: 'brazo', etiqueta: 'Brazo' },

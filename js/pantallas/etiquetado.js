@@ -13,9 +13,11 @@
 // deselecciona.
 //
 // La línea de tiempo de debajo del vídeo lleva una marca por intercambio,
-// coloreada según el resultado. Tocarla te lleva a ese instante y abre su
-// ficha para corregirla o borrarla. Tocando la línea en cualquier otro sitio
-// saltas a ese momento del vídeo.
+// con el color de la LÁMPARA que se encendió: si tu lámpara es la roja, tus
+// tocados salen en rojo. Por eso lo primero que se pregunta es de qué color
+// eras tú, y sin contestarlo no se puede etiquetar. Tocar una marca te lleva
+// a ese instante; tocar la línea en cualquier otro sitio, a ese momento del
+// vídeo.
 //
 // Y debajo va lo mismo en forma de tabla, que con el dedo es más fácil de
 // acertar que una marca de catorce píxeles: cada fila lleva su instante, su
@@ -33,9 +35,11 @@ import {
 import {
   ACCIONES_OFENSIVAS, ACCIONES_DEFENSIVAS, RESULTADOS,
   RESULTADOS_CON_TOCADO, ZONAS_CUERPO, ZONAS_PISTA, etiquetaDe,
+  COLORES_LAMPARA, PREGUNTA_COLOR, colorDeLaLampara,
 } from '../constantes.js';
 import {
   ALMACENES, obtener, guardar, borrar, listarPor, leerVideo,
+  colorDelAsalto, fijarColorDelAsalto,
 } from '../db.js';
 import { crearReproductor } from '../video.js';
 import { tanteosDeLosTiempos, tanteoCorrido, tanteoEn, situacionDe } from '../tanteo.js';
@@ -97,6 +101,11 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   const asalto = await obtener(ALMACENES.asaltos, tiempo.asaltoId);
   const rival = asalto ? await obtener(ALMACENES.tiradores, asalto.rivalId) : null;
+
+  // De qué color eras tú. Sin esto no se puede etiquetar: un tocado a favor no
+  // significa nada si no se sabe qué lámpara es la tuya, y además es lo que
+  // decide de qué color se pinta cada marca.
+  let miColor = await colorDelAsalto(asalto);
 
   let intercambios = await listarPor(ALMACENES.intercambios, 'por-tiempo', tiempo.id);
   ordenar(intercambios);
@@ -172,6 +181,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   }, [cursor]) : null;
 
   const marcador = crear('div', { class: 'marcador' });
+  const preguntaColor = crear('div');
+  let cambiandoColor = false;
   const contador = crear('p', { class: 'ayuda contador' });
   const tabla = crear('div');
   const deteccion = crear('details', { class: 'filtros' });
@@ -195,6 +206,9 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   estado.remove();
   anadir(contenedor,
+    // Lo primero de la pantalla, y bloqueante mientras falte: de tu color
+    // dependen el sentido de cada etiqueta y el color de cada marca.
+    preguntaColor,
     marcador,
     hayVideo ? reproductor.elemento : null,
     barra,
@@ -217,10 +231,69 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     reproductor.video.addEventListener('loadedmetadata', pintarIntercambios);
   }
 
+  pintarColor();
+  aplicarBloqueo();
   pintarIntercambios();
   if (hayVideo) pintarDeteccion();
 
   // ------------------------------------------------------------------
+
+  /**
+   * Tu color en el asalto: se enseña si se sabe y se pide si no.
+   *
+   * No se pregunta al crear el asalto porque entonces no hay forma de
+   * acordarse; se pregunta aquí, con el vídeo delante, que es donde se ve.
+   * Y vale para todos los tiempos: la pista es la misma y el enchufe también.
+   */
+  function pintarColor() {
+    if (miColor && !cambiandoColor) {
+      rellenar(preguntaColor, crear('div', { class: 'marcador-fila' }, [
+        crear('span', { class: 'etiqueta-campo', texto: 'Tu color' }),
+        crear('span', { class: 'punto-resultado punto-' + miColor }),
+        crear('span', { texto: etiquetaDe(COLORES_LAMPARA, miColor) }),
+        crear('button', {
+          type: 'button', class: 'boton-volver', texto: 'Cambiar',
+          onclick: () => { cambiandoColor = true; pintarColor(); },
+        }),
+      ]));
+      return;
+    }
+
+    rellenar(preguntaColor, [
+      crear('p', {
+        class: miColor ? 'ayuda' : 'aviso',
+        texto: miColor
+          ? 'Vale para todos los tiempos de este asalto. Al cambiarlo, las marcas ' +
+            'cambian de color pero las etiquetas siguen diciendo lo mismo.'
+          : 'Antes de etiquetar hay que decir de qué color eras tú en este asalto. ' +
+            'Sin eso no se sabe de qué lámpara fue cada tocado.',
+      }),
+      desplegable(PREGUNTA_COLOR, COLORES_LAMPARA, miColor, elegirColor,
+                  { vacio: '— Elige —' }).bloque,
+      miColor ? crear('button', {
+        type: 'button', class: 'boton boton-compacto', texto: 'Dejarlo como está',
+        onclick: () => { cambiandoColor = false; pintarColor(); },
+      }) : null,
+    ]);
+  }
+
+  async function elegirColor(valor) {
+    if (!valor) return;
+    await fijarColorDelAsalto(asalto, valor);
+    miColor = valor;
+    cambiandoColor = false;
+    pintarColor();
+    aplicarBloqueo();
+    pintarIntercambios();
+    if (hayVideo) pintarDeteccion();
+  }
+
+  /** Sin color no se etiqueta ni se detecta: las dos cosas crean intercambios. */
+  function aplicarBloqueo() {
+    if (!hayVideo) return;
+    btnNuevo.classList.toggle('desactivado', !miColor);
+    deteccion.hidden = !miColor;
+  }
 
   /** Duración de referencia: la del vídeo si ya se conoce, si no la guardada. */
   function duracion() {
@@ -359,7 +432,10 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       const proporcion = Math.min(1, intercambio.instante / duracion());
       const marca = crear('button', {
         type: 'button',
-        class: 'marca marca-' + (intercambio.resultado || 'vacio')
+        // El color es el de la LÁMPARA que se encendió, no el del resultado:
+        // si tu lámpara es la roja, tus tocados salen en rojo. Es lo que se ha
+        // visto en la pista, y lo que el ojo busca al repasar el vídeo.
+        class: 'marca marca-' + colorDeLaLampara(intercambio.resultado, miColor)
                + (activo && activo.id === intercambio.id ? ' marca-activa' : ''),
         style: `left: ${proporcion * 100}%`,
         'aria-label': `Intercambio en ${intercambio.instante.toFixed(1)} segundos`,
@@ -413,7 +489,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
           // Sin texto: el color ya lo dice, y es el mismo de su marca. El
           // nombre queda en el título, para quien no distinga los colores.
           crear('span', {
-            class: 'punto-resultado punto-' + (intercambio.resultado || 'vacio'),
+            class: 'punto-resultado punto-' + colorDeLaLampara(intercambio.resultado, miColor),
             title: etiquetaDe(RESULTADOS, intercambio.resultado) || 'Sin etiquetar',
             'aria-label': etiquetaDe(RESULTADOS, intercambio.resultado) || 'Sin etiquetar',
           }),
@@ -561,7 +637,9 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
     analisisActivo = analizar({
       video: videoDelAnalisis,
-      calibrado,
+      // Tu color manda el del asalto, no el que se guardó en su día dentro del
+      // calibrado: si se cambia aquí, el análisis tiene que hacerle caso.
+      calibrado: { ...calibrado, miColor },
       alProgresar: (parte) => {
         barra.value = parte;
         cuenta.textContent = `${Math.round(parte * 100)} % · ${encontrados} propuesta${encontrados === 1 ? '' : 's'}`;
@@ -700,6 +778,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   /** Crea un intercambio en el instante en el que está parado el vídeo. */
   async function crearIntercambio() {
+    if (!miColor) return;
     await reproductor.pausar();
 
     const nuevo = {

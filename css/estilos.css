@@ -17,6 +17,12 @@
   --contra: #e05a4a;
   --doble: #e2a13a;
   --nada: #6b7889;
+
+  /* Y los dos colores del aparato. Son los mismos tonos, pero significan
+     otra cosa: la LÁMPARA que se encendió, no de quién fue el tocado. Si tu
+     lámpara es la roja, tus tocados se pintan en rojo. */
+  --lampara-verde: #35c46b;
+  --lampara-roja: #e05a4a;
   --sin-etiquetar: #4c5c70;
   --radio: 12px;
 }
@@ -698,8 +704,8 @@ video::-webkit-media-controls-panel {
   touch-action: pan-x pan-y;
 }
 
-.marca-favor { background: var(--favor); }
-.marca-contra { background: var(--contra); }
+.marca-verde { background: var(--lampara-verde); }
+.marca-rojo { background: var(--lampara-roja); }
 .marca-doble { background: var(--doble); }
 .marca-nada { background: var(--nada); }
 .marca-vacio { background: var(--sin-etiquetar); }
@@ -784,8 +790,8 @@ video::-webkit-media-controls-panel {
   vertical-align: middle;
 }
 
-.punto-favor { background: var(--favor); }
-.punto-contra { background: var(--contra); }
+.punto-verde { background: var(--lampara-verde); }
+.punto-rojo { background: var(--lampara-roja); }
 .punto-doble { background: var(--doble); }
 .punto-nada { background: var(--nada); }
 

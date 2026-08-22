@@ -142,8 +142,7 @@ tiene por qué interrumpirse. Para corregir una etiqueta está el lápiz de su
 fila.
 
 Debajo del vídeo hay una tabla con lo etiquetado: instante, resultado con el
-color de su marca —verde a favor, rojo en contra, ámbar doble— y cómo iba el
-marcador. Y junto al reloj del vídeo, el marcador del segundo que se está
+color de su marca y cómo iba el marcador. Y junto al reloj del vídeo, el marcador del segundo que se está
 viendo, que da un respingo cuando cambia.
 
 El reproductor se queda pegado al borde de arriba al bajar por la tabla:
@@ -160,6 +159,26 @@ etiquetar es mirar el vídeo y la lista a la vez.
 6. Corrige el marcador de partida: todo debe moverse con él.
 7. Borra un intercambio.
 8. Cierra Teseo del todo y vuelve: debe estar todo.
+
+### De qué color se pinta un intercambio
+
+Del color de la **lámpara que se encendió**, no del resultado. Si tu lámpara es
+la roja, tus tocados salen en rojo y los del rival en verde. Se probó al revés
+—verde a favor, rojo en contra— y confunde: en la pista has visto encenderse
+una lámpara concreta, y el ojo la busca. El doble sigue en ámbar y el nulo en
+gris, que no son de nadie.
+
+Para eso hace falta saber **de qué color eras tú**, y ése es un dato del
+asalto (`asalto.miColor`), no de cada tiempo: te enchufas a un lado de la pista
+y ahí te quedas. No se pregunta al crear el asalto, porque hasta que no ves el
+vídeo no te acuerdas; aparece **en cuanto hay un vídeo**, y **sin contestarlo no
+se puede etiquetar** —ni a mano ni con la detección automática—, porque un
+"tocado a favor" sin saber cuál era tu lámpara no se puede ni pintar ni
+verificar.
+
+Antes este dato vivía dentro del calibrado de cada tiempo. Los asaltos de
+entonces se migran solos al abrirlos: si alguno de sus tiempos lo trae en su
+calibrado, se sube al asalto (`colorDelAsalto()` en `js/db.js`).
 
 ## El tanteo
 
@@ -199,8 +218,14 @@ dos capturas y desaparecen en la comparación; la lámpara, no. Con eso se sabe
 **dónde** está cada lámpara dentro del recuadro, y durante el análisis se mira
 sólo ahí, con holgura alrededor para el temblor de la cámara.
 
-Por eso el recuadro se dibuja grande, alrededor de todo el aparato: da margen
-para el movimiento, y además es la plantilla con la que se sigue el marcador.
+**El recuadro, ajustado al aparato.** La primera versión pedía dibujarlo grande
+y con holgura, para que el temblor de la cámara no sacara el marcador; con el
+seguimiento eso ya no hace falta, y lo que sobra estorba. Todo lo que no es el
+aparato —la pista, la gente, el fondo— cambia a lo largo del vídeo: mete ruido
+en la comparación con la referencia y baja el parecido de la plantilla justo
+cuando hay que reconocerla. Confirmado probándolo: cuanto más ceñido, mejor va.
+El único límite por abajo es que tenga dibujo que reconocer, y el calibrado lo
+comprueba.
 
 **Cómo clasifica un píxel.** En HSV: hace falta tono rojo o verde, saturación y
 brillo. En HSV y no en RGB porque el móvil reajusta la exposición y un LED
