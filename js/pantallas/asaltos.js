@@ -346,13 +346,12 @@ function resultadoDelAsalto(asalto) {
   const final = asalto.tanteoFinal;
   if (!final) return crear('span', { class: 'apagado', texto: '—' });
 
-  // En poule un asalto puede acabar en tablas si se agota el tiempo, y
-  // entonces no es ni una cosa ni la otra.
+  // En poule un asalto puede acabar en tablas si se agota el tiempo.
   const como = final.favor > final.contra ? ' victoria'
-             : final.favor < final.contra ? ' derrota' : '';
+             : final.favor < final.contra ? ' derrota' : ' empate';
 
   return crear('span', {
-    class: 'resultado-asalto' + como,
+    class: 'tanteo-pastilla' + como,
     texto: `${final.favor}–${final.contra}`,
   });
 }

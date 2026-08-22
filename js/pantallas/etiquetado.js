@@ -38,7 +38,7 @@ import {
   ALMACENES, obtener, guardar, borrar, listarPor, leerVideo,
 } from '../db.js';
 import { crearReproductor } from '../video.js';
-import { tanteosDeLosTiempos, tanteoCorrido, tanteoEn } from '../tanteo.js';
+import { tanteosDeLosTiempos, tanteoCorrido, tanteoEn, situacionDe } from '../tanteo.js';
 
 // Cuánto se ve de un intercambio al tocarlo: un par de segundos de carrerilla
 // para entender de dónde viene la acción, y medio segundo detrás para ver cómo
@@ -123,7 +123,18 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   const hayVideo = fichero !== null;
 
   // Al lado del reloj del vídeo, cómo va el marcador en ese segundo.
-  const tanteoEnVivo = crear('span', { class: 'tanteo tanteo-en-vivo' });
+  const pastillaDelTanteo = crear('span', { class: 'tanteo-pastilla' });
+  const tanteoEnVivo = crear('span', { class: 'marcador-en-vivo' }, [
+    crear('span', { class: 'etiqueta-marcador', texto: 'Marcador:' }),
+    pastillaDelTanteo,
+  ]);
+  // Lo último que se pintó, para saber cuándo ha cambiado de verdad.
+  let ultimoTanteo = null;
+  // Al acabar el respingo se quita la clase, y así la próxima vez vuelve a
+  // saltar sin depender de nada más.
+  pastillaDelTanteo.addEventListener('animationend', () => {
+    pastillaDelTanteo.classList.remove('cambia');
+  });
 
   const reproductor = hayVideo
     ? crearReproductor({
@@ -220,8 +231,29 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
    */
   function pintarTanteoEnVivo(segundos) {
     if (!hayVideo) return;
+
     const ahora = tanteoEn(intercambios, tanteoInicial, segundos);
-    tanteoEnVivo.textContent = `${ahora.favor}–${ahora.contra}`;
+    const texto = `${ahora.favor}–${ahora.contra}`;
+
+    // Mientras el marcador no cambie no se toca nada. Es lo que deja que el
+    // respingo llegue a verse: esto se llama cuatro veces por segundo con el
+    // vídeo corriendo, y reescribir la clase cada vez lo cortaba en seco.
+    if (texto === ultimoTanteo) return;
+
+    const como = { ganando: 'victoria', perdiendo: 'derrota', empate: 'empate' }[situacionDe(ahora)];
+    pastillaDelTanteo.textContent = texto;
+    pastillaDelTanteo.classList.remove('victoria', 'empate', 'derrota');
+    pastillaDelTanteo.classList.add(como);
+
+    // Un respingo al cambiar, que con el vídeo corriendo se pasa por alto que
+    // acaba de sumar alguien. Reiniciarlo pide un reflujo por medio: si no, el
+    // navegador no vuelve a lanzar la animación al poner otra vez la clase.
+    if (ultimoTanteo !== null) {
+      pastillaDelTanteo.classList.remove('cambia');
+      void pastillaDelTanteo.offsetWidth;
+      pastillaDelTanteo.classList.add('cambia');
+    }
+    ultimoTanteo = texto;
   }
 
   /**
