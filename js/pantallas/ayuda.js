@@ -113,6 +113,10 @@ export async function pantallaAyuda(contenedor) {
       'Cada marca de colores es un intercambio que ya has etiquetado, con el ' +
       'color de la lámpara que se encendió: si tu lámpara era la roja, tus ' +
       'tocados salen en rojo y los suyos en verde. El doble es ámbar.',
+      'A los lados del botón de reproducir tienes "‹" y "›": saltan al ' +
+      'intercambio anterior y al siguiente y te reproducen su trozo. Es la ' +
+      'forma más cómoda de repasar un asalto entero ya etiquetado. Se apagan ' +
+      'cuando no queda ninguno hacia ese lado.',
       'Tocar una marca reproduce ese intercambio, igual que desde la tabla. Y ' +
       'tocar la barra en cualquier otro punto salta a ese momento y se queda ' +
       'ahí parado. Si las marcas se te resisten con el dedo, usa la tabla de ' +
@@ -175,8 +179,23 @@ export async function pantallaAyuda(contenedor) {
       'de empezar, y eso enciende la lámpara igual que un tocado.',
       'Un tocado anulado por el árbitro se marca como "Nulo": queda apuntado ' +
       'pero no mueve el marcador.',
+      'Cuando confirmas una propuesta, Teseo tira solo las que caigan en los ' +
+      'ocho segundos siguientes: desde que suena un tocado hasta que se vuelve ' +
+      'a tirar no puede haber otro, así que ésas eran falsas —lo típico es ' +
+      'probar la punta en la guardia del contrario—. Lo que hayas etiquetado a ' +
+      'mano no se toca nunca. Los ocho segundos se cambian en Menú → ' +
+      'Configuración → Ajustes avanzados.',
       'Si en tu vídeo no se ve el marcador, esto no se puede usar. No pasa ' +
       'nada: se etiqueta a mano, como siempre.'),
+
+    apartado('Ajustes avanzados',
+      'En Menú → Configuración, al final, hay unos cuantos números finos de la ' +
+      'aplicación: cuántos segundos se ven antes y después de un intercambio al ' +
+      'reproducirlo, y cuánto silencio se da por bueno detrás de un tocado ' +
+      'confirmado.',
+      'Vienen puestos en un valor que funciona, así que no hace falta tocarlos. ' +
+      'Están ahí porque cada uno graba y tira de una manera. Si te lías, hay un ' +
+      'botón para devolverlos a como venían de fábrica.'),
 
     apartado('El ranking',
       'En Menú → Ranking tienes el ranking de la federación tal cual lo ' +

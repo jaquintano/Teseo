@@ -1,6 +1,6 @@
 // Menú y pantalla de configuración.
 
-import { anadir, crear, cabecera, ir, formatearBytes } from '../ui.js';
+import { anadir, crear, rellenar, cabecera, ir, formatearBytes } from '../ui.js';
 import {
   ALMACENES, estimarEspacio, pedirPersistencia, obtenerPerfilPropio, borrarTodo,
   listar, listarRivales, borrar,
@@ -9,6 +9,7 @@ import { textoDelRegistro } from '../registro.js';
 import { sePuedeInstalar, instalar } from '../instalacion.js';
 import { concordar } from '../genero.js';
 import { nombreCompleto } from '../constantes.js';
+import { porGrupos, ajuste, fijarAjuste, restablecerAjustes, hayAjustesTocados } from '../ajustes.js';
 
 export async function pantallaMenu(contenedor) {
   const perfil = await obtenerPerfilPropio();
@@ -83,6 +84,56 @@ export async function pantallaConfiguracion(contenedor) {
   const rivalesSinUsar = rivales.filter((r) => !conAsaltos.rivales.has(r.id));
   const competicionesSinUsar = competiciones.filter((c) => !conAsaltos.competiciones.has(c.id));
 
+  // Los ajustes avanzados. Se repintan enteros al cambiar uno, que es lo que
+  // enciende o apaga el botón de volver a los valores de fábrica.
+  const ajustesAvanzados = crear('div');
+
+  function pintarAjustes() {
+    const partes = [];
+
+    for (const [grupo, fichas] of porGrupos()) {
+      partes.push(crear('h4', { class: 'subtitulo-grupo', texto: grupo }));
+
+      for (const ficha of fichas) {
+        const entrada = crear('input', {
+          class: 'entrada corta',
+          type: 'number',
+          inputmode: 'decimal',
+          min: ficha.min,
+          max: ficha.max,
+          step: ficha.paso,
+          value: ajuste(ficha.id),
+          id: 'ajuste-' + ficha.id,
+        });
+
+        // Al cambiarlo se guarda y se vuelve a pintar: si el número se salía
+        // del rango, el usuario ve enseguida en qué ha quedado.
+        entrada.addEventListener('change', async () => {
+          await fijarAjuste(ficha.id, entrada.value);
+          pintarAjustes();
+        });
+
+        partes.push(crear('div', { class: 'bloque-campo' }, [
+          crear('label', {
+            class: 'etiqueta-campo', for: 'ajuste-' + ficha.id,
+            texto: `${ficha.etiqueta} (de fábrica: ${ficha.fabrica})`,
+          }),
+          entrada,
+          crear('p', { class: 'ayuda', texto: ficha.ayuda }),
+        ]));
+      }
+    }
+
+    if (hayAjustesTocados()) {
+      partes.push(crear('button', {
+        type: 'button', class: 'boton', texto: 'Volver a los valores de fábrica',
+        onclick: async () => { await restablecerAjustes(); pintarAjustes(); },
+      }));
+    }
+
+    rellenar(ajustesAvanzados, partes);
+  }
+
   async function refrescarEspacio() {
     const espacio = await estimarEspacio();
     ficha.textContent = '';
@@ -143,6 +194,16 @@ export async function pantallaConfiguracion(contenedor) {
       onclick: () => vaciar('competiciones', competicionesSinUsar),
     }) : null,
 
+    // --- Ajustes avanzados ---
+    crear('h3', { class: 'subtitulo-seccion', texto: 'Ajustes avanzados' }),
+    crear('p', {
+      class: 'ayuda',
+      texto: 'Números finos de la aplicación. Vienen puestos en un valor que ' +
+             'funciona, y sólo hace falta tocarlos si tu forma de grabar o de ' +
+             'tirar pide otra cosa. Se guardan al escribirlos.',
+    }),
+    ajustesAvanzados,
+
     // --- Empezar de cero ---
     crear('h3', { class: 'subtitulo-seccion', texto: 'Empezar de cero' }),
     crear('p', {
@@ -180,6 +241,7 @@ export async function pantallaConfiguracion(contenedor) {
     }),
   );
 
+  pintarAjustes();
   await refrescarEspacio();
 
   /** Borra de golpe las fichas que no se usan en ningún asalto. */

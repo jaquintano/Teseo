@@ -19,7 +19,13 @@ const SALTOS = [
 
 /**
  * Crea un reproductor.
- * @param {{ alCambiarTiempo?: (segundos:number) => void }} opciones
+ *
+ * @param {object} opciones
+ * @param {(segundos:number) => void} [opciones.alCambiarTiempo]
+ * @param {Node} [opciones.juntoAlTiempo] lo que se cuelga a la derecha del reloj
+ * @param {{antes?:Node, despues?:Node}} [opciones.flancosDePlay] botones a los
+ *        lados del de reproducir. El vídeo no sabe qué hacen: sólo les hace
+ *        sitio, que es donde la mano ya está.
  */
 export function crearReproductor(opciones = {}) {
   const video = crear('video', {
@@ -253,8 +259,13 @@ export function crearReproductor(opciones = {}) {
     aplicarZoom();
   }, { passive: false });
 
+  const flancos = opciones.flancosDePlay || {};
+  const filaPlay = crear('div', { class: 'fila-play' }, [
+    flancos.antes || null, btnPlay, flancos.despues || null,
+  ]);
+
   const elemento = crear('div', { class: 'reproductor' }, [
-    marco, filaDeTiempo, btnPlay, rejilla,
+    marco, filaDeTiempo, filaPlay, rejilla,
   ]);
 
   return {

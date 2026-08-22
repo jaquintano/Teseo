@@ -13,7 +13,7 @@
 
 // Al cambiar este número, el navegador tira la copia vieja y guarda la nueva.
 // Hay que subirlo en cada despliegue, y el mismo en js/app.js.
-const VERSION = 'teseo-v48';
+const VERSION = 'teseo-v49';
 
 // Los ficheros que forman la aplicación.
 const FICHEROS = [
@@ -22,6 +22,7 @@ const FICHEROS = [
   './manifest.webmanifest',
   './css/estilos.css',
   './js/app.js',
+  './js/ajustes.js',
   './js/analisis.js',
   './js/calculo-estadisticas.js',
   './js/deteccion.js',

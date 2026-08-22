@@ -555,6 +555,33 @@ video::-webkit-media-controls-panel {
   .marcador-en-vivo .tanteo-pastilla.cambia { animation: none; }
 }
 
+/* El botón de reproducir, flanqueado por los de pasar al intercambio anterior
+   y al siguiente. Los tres a la misma altura, y el de en medio se lleva todo
+   el ancho que sobra: es el que más se pulsa. */
+.fila-play {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.fila-play .boton-principal { flex: 1; }
+
+.fila-play .boton-salto {
+  flex: 0 0 auto;
+  width: 64px;
+  padding: 0.5rem 0;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+/* Un escalón por debajo de .subtitulo-seccion, para agrupar dentro de una
+   sección sin que parezca otra sección. */
+.subtitulo-grupo {
+  margin: 1rem 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--texto);
+}
+
 .rejilla-saltos {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

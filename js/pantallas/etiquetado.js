@@ -44,15 +44,15 @@ import {
 import { crearReproductor } from '../video.js';
 import { tanteosDeLosTiempos, tanteoCorrido, tanteoEn, situacionDe } from '../tanteo.js';
 import { analizar } from '../analisis.js';
+import { ajuste } from '../ajustes.js';
 
 /** Una propuesta de la detección automática no mueve el marcador. */
 const cuentaParaElMarcador = (intercambio) => !intercambio.propuesto;
 
-// Cuánto se ve de un intercambio al tocarlo: un par de segundos de carrerilla
-// para entender de dónde viene la acción, y medio segundo detrás para ver cómo
-// acaba. Se para solo.
-const SEGUNDOS_ANTES = 2;
-const SEGUNDOS_DESPUES = 0.5;
+// Cuánto se ve de un intercambio al tocarlo —un par de segundos de carrerilla
+// para entender de dónde viene la acción y medio segundo detrás para ver cómo
+// acaba—, y cuánto silencio hay detrás de un tocado, salen de los ajustes
+// avanzados. Los valores de fábrica y el porqué están en js/ajustes.js.
 
 // El reproductor de la pantalla, para soltarlo al salir y no dejar cientos
 // de megas ocupando memoria.
@@ -116,6 +116,9 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   // El intercambio que se está editando ahora mismo, o null.
   let activo = null;
+  // Cuántas propuestas se ha llevado por delante la última confirmación, para
+  // decirlo una vez y no dejar al usuario preguntándose adónde han ido.
+  let descartadas = 0;
   let corrigiendoMarcador = false;
 
   const estado = crear('p', { class: 'ayuda', texto: 'Recuperando el vídeo…' });
@@ -157,13 +160,29 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     pastillaDelTanteo.classList.remove('cambia');
   });
 
+  // Saltar de intercambio en intercambio, a los lados del botón de reproducir:
+  // es la forma cómoda de repasar un asalto ya etiquetado, y ahí es donde el
+  // dedo ya está. Se apagan cuando no llevan a ninguna parte.
+  const btnAnterior = hayVideo ? crear('button', {
+    type: 'button', class: 'boton boton-salto', texto: '‹',
+    'aria-label': 'Intercambio anterior',
+    onclick: () => saltar(-1),
+  }) : null;
+  const btnSiguiente = hayVideo ? crear('button', {
+    type: 'button', class: 'boton boton-salto', texto: '›',
+    'aria-label': 'Intercambio siguiente',
+    onclick: () => saltar(1),
+  }) : null;
+
   const reproductor = hayVideo
     ? crearReproductor({
         alCambiarTiempo: (segundos) => {
           moverCursor(segundos);
           pintarTanteoEnVivo(segundos);
+          pintarSaltos();
         },
         juntoAlTiempo: tanteoEnVivo,
+        flancosDePlay: { antes: btnAnterior, despues: btnSiguiente },
       })
     : null;
   reproductorActivo = reproductor;
@@ -209,13 +228,15 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     // Lo primero de la pantalla, y bloqueante mientras falte: de tu color
     // dependen el sentido de cada etiqueta y el color de cada marca.
     preguntaColor,
+    // La detección automática, encima del vídeo: se calibra y se lanza antes
+    // de ponerse a etiquetar, no después de bajar toda la tabla.
+    hayVideo ? deteccion : null,
     marcador,
     hayVideo ? reproductor.elemento : null,
     barra,
     contador,
     btnNuevo,
     tabla,
-    hayVideo ? deteccion : null,
     ficha,
     crear('p', {
       class: 'ayuda pie',
@@ -305,6 +326,47 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   function ordenar(lista) {
     lista.sort((a, b) => a.instante - b.instante);
+  }
+
+  /**
+   * Desde dónde se cuenta el "anterior" y el "siguiente".
+   *
+   * Desde donde esté el vídeo, que es lo que se ve. La única excepción es
+   * mientras se está reproduciendo el tramo de un intercambio: ahí el vídeo va
+   * unos segundos POR DETRÁS de su marca —esa es la gracia del tramo, verlo
+   * venir—, y contar desde el instante del vídeo devolvería una y otra vez el
+   * mismo intercambio en vez de pasar al de después.
+   */
+  function desdeDonde() {
+    const ahora = reproductor.tiempoActual();
+    if (!activo) return ahora;
+
+    const desde = activo.instante - ajuste('segundosAntes') - 0.05;
+    const hasta = activo.instante + ajuste('segundosDespues') + 0.05;
+    return ahora >= desde && ahora <= hasta ? activo.instante : ahora;
+  }
+
+  /** El intercambio anterior o el siguiente al punto en el que va el vídeo. */
+  function elDeAlLado(direccion) {
+    if (intercambios.length === 0) return null;
+
+    // Un pelo de margen: si no, el intercambio que se acaba de abrir cuenta a
+    // la vez como anterior y como siguiente por milésimas de redondeo.
+    const punto = desdeDonde();
+    if (direccion > 0) return intercambios.find((uno) => uno.instante > punto + 0.01) || null;
+    return [...intercambios].reverse().find((uno) => uno.instante < punto - 0.01) || null;
+  }
+
+  function saltar(direccion) {
+    const siguiente = elDeAlLado(direccion);
+    if (siguiente) abrir(siguiente);
+  }
+
+  /** Se apaga el botón que no lleva a ninguna parte. */
+  function pintarSaltos() {
+    if (!hayVideo) return;
+    btnAnterior.classList.toggle('desactivado', !elDeAlLado(-1));
+    btnSiguiente.classList.toggle('desactivado', !elDeAlLado(1));
   }
 
   function moverCursor(segundos) {
@@ -449,15 +511,27 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     }
 
     moverCursor(reproductor.tiempoActual());
+    pintarSaltos();
     pintarContador();
     pintarTabla();
   }
 
   function pintarContador() {
     const cuantos = intercambios.length;
-    contador.textContent = cuantos === 0
+    const cuenta = cuantos === 0
       ? 'Todavía no has etiquetado ningún intercambio.'
       : `${cuantos} intercambio${cuantos === 1 ? '' : 's'} etiquetado${cuantos === 1 ? '' : 's'}.`;
+
+    // Lo que se acaba de tirar solo se cuenta una vez: si no, el aviso se
+    // quedaría ahí pegado el resto de la sesión.
+    const aviso = descartadas > 0
+      ? ` Descartada${descartadas === 1 ? '' : 's'} ${descartadas} propuesta${descartadas === 1 ? '' : 's'} `
+        + `de los ${ajuste('segundosDeRearme')} s siguientes.`
+      : '';
+    descartadas = 0;
+
+    contador.textContent = cuenta + aviso;
+    contador.classList.toggle('aviso-bueno', aviso !== '');
   }
 
   /**
@@ -766,7 +840,40 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     // el instante no le cuadraba lo habrá movido.
     delete intercambio.aproximado;
     await guardar(ALMACENES.intercambios, intercambio);
+    await limpiarElRearme(intercambio);
     pintarIntercambios();
+  }
+
+  /**
+   * Fuera las propuestas del rato que sigue a un tocado confirmado.
+   *
+   * Desde que suena un tocado hasta que se vuelve a tirar pasan ocho segundos
+   * largos: el árbitro concede, los tiradores vuelven a la línea y se rearma.
+   * En ese rato NO se puede tocar, así que cualquier encendido que la
+   * detección haya propuesto ahí es un falso positivo —lo típico es probar la
+   * punta en la guardia del contrario, que enciende la lámpara igual—.
+   *
+   * Sólo se van propuestas. Lo que hayas etiquetado a mano no se toca nunca,
+   * ni siquiera si cae dentro: si lo pusiste tú, es que pasó.
+   */
+  async function limpiarElRearme(confirmado) {
+    const rearme = ajuste('segundosDeRearme');
+    if (rearme <= 0) { descartadas = 0; return; }
+
+    const hasta = confirmado.instante + rearme;
+    const sobran = intercambios.filter((otro) => otro.propuesto
+      && otro.id !== confirmado.id
+      && otro.instante > confirmado.instante
+      && otro.instante <= hasta);
+
+    for (const propuesta of sobran) {
+      await borrar(ALMACENES.intercambios, propuesta.id);
+      if (activo && activo.id === propuesta.id) activo = null;
+    }
+
+    const fuera = new Set(sobran.map((otro) => otro.id));
+    intercambios = intercambios.filter((otro) => !fuera.has(otro.id));
+    descartadas = sobran.length;
   }
 
   async function descartar(intercambio) {
@@ -806,8 +913,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   function abrir(intercambio) {
     activo = intercambio;
     if (hayVideo) {
-      reproductor.verTramo(intercambio.instante - SEGUNDOS_ANTES,
-                           intercambio.instante + SEGUNDOS_DESPUES);
+      reproductor.verTramo(intercambio.instante - ajuste('segundosAntes'),
+                           intercambio.instante + ajuste('segundosDespues'));
     }
     pintarIntercambios();
   }

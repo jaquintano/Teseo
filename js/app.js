@@ -7,6 +7,7 @@
 import { registrar, capturarErroresGlobales } from './registro.js';
 import { registrarPantalla, ir, empezarEn, iniciarBotonAtras } from './ui.js';
 import { obtenerPerfilPropio, pedirPersistencia } from './db.js';
+import { cargarAjustes } from './ajustes.js';
 import { iniciarInstalacion } from './instalacion.js';
 import { fijarPerfil } from './genero.js';
 import { VERSION } from './version.js';
@@ -76,6 +77,10 @@ async function arrancar() {
   // concede sin preguntar cuando la aplicación está instalada.
   const protegido = await pedirPersistencia();
   registrar(`Datos protegidos frente a borrado automático: ${protegido}.`);
+
+  // Los ajustes avanzados se leen una vez y se quedan en memoria: las
+  // pantallas los consultan mientras pintan y no pueden esperar a la base.
+  await cargarAjustes();
 
   const perfil = await obtenerPerfilPropio();
 

@@ -87,6 +87,8 @@ js/genero.js                   el género y las categorías del tirador, que
 js/competiciones.js            lee el calendario y decide qué importar
 js/instalacion.js              el ofrecimiento de instalar en la pantalla
 js/db.js                       base de datos local y almacenamiento de vídeos
+js/ajustes.js                  los ajustes avanzados: catálogo, valores de
+                               fábrica y límites
 js/ui.js                       piezas de interfaz y navegación entre pantallas
 js/registro.js                 registro interno, visible en Configuración
 js/video.js                    el reproductor, como pieza reutilizable
@@ -139,7 +141,17 @@ guarda solo.
 o una fila de la tabla, sólo reproduce ese intercambio: arranca dos segundos
 antes y para medio segundo después. No abre nada, porque repasar un asalto no
 tiene por qué interrumpirse. Para corregir una etiqueta está el lápiz de su
-fila.
+fila. Esos dos segundos y ese medio son configurables (ver *Ajustes
+avanzados*).
+
+**Los botones "‹" y "›"**, a los lados del de reproducir, saltan al intercambio
+anterior y al siguiente y reproducen su trozo: es la forma más cómoda de
+repasar un asalto ya etiquetado, sin acertarle con el dedo a una marca de
+catorce píxeles. Se apagan cuando no llevan a ninguna parte, y lo que cuenta
+para eso es **dónde está el vídeo**, no cuál sea la fila abierta. La única
+excepción es mientras se reproduce el tramo de un intercambio: ahí el vídeo va
+por detrás de su marca —esa es la gracia del tramo—, y se cuenta desde el
+intercambio, que si no "siguiente" devolvería una y otra vez el mismo.
 
 Debajo del vídeo hay una tabla con lo etiquetado: instante, resultado con el
 color de su marca y cómo iba el marcador. Y junto al reloj del vídeo, el marcador del segundo que se está
@@ -314,6 +326,42 @@ sale del encuadre entero, no hay nada que hacer hasta que vuelva. Y si el
 recuadro no tiene dibujo —una pared lisa, un aparato sobre fondo negro— no se
 puede seguir: el calibrado avisa y el análisis mira siempre al mismo sitio, que
 sólo vale con trípode.
+
+## Ajustes avanzados
+
+En **Menú → Configuración**, al final, se pueden tocar unas cuantas constantes
+sin tocar el código. Viven en `js/ajustes.js`: catálogo, valor de fábrica y
+límites en un solo sitio, guardadas todas juntas en un objeto de la tabla de
+ajustes.
+
+Se leen **muchas** veces y desde el pintado, así que se cargan una vez al
+arrancar (`cargarAjustes()` en `js/app.js`) y se quedan en memoria;
+`ajuste(id)` es síncrono a propósito. Todo valor pasa por `acotar()`: nada de
+aquí puede dejar la aplicación inservible por un dedo torpe.
+
+Grupo **Intercambios**:
+
+| Ajuste | De fábrica | Para qué |
+|---|---|---|
+| Segundos antes del tocado | 2 | La carrerilla que se ve al reproducir un intercambio |
+| Segundos después del tocado | 0,5 | Cuánto se sigue viendo detrás |
+| Silencio tras un tocado confirmado | 8 | La ventana de limpieza de falsos positivos |
+
+### La limpieza del rearme
+
+Desde que suena un tocado hasta que los tiradores vuelven a estar en guardia
+pasan ocho segundos largos: el árbitro concede, se vuelve a la línea y se
+rearma. **En ese rato no se puede tocar**, así que cualquier propuesta de la
+detección automática que caiga ahí es casi con seguridad un falso positivo —lo
+típico es probar la punta en la guardia del contrario, que enciende la lámpara
+igual que un tocado—.
+
+Por eso, al **confirmar** una propuesta, se borran solas todas las propuestas
+de los segundos siguientes. Dos límites deliberados: sólo se van **propuestas**
+—lo etiquetado a mano no se toca nunca, si lo pusiste tú es que pasó—, y sólo
+hacia **adelante**. Y se dice cuántas se han ido, en el contador de debajo de
+la línea de tiempo: una limpieza silenciosa deja al usuario preguntándose
+adónde han ido sus propuestas.
 
 ## El ranking
 
