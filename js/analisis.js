@@ -17,8 +17,19 @@
 // `requestVideoFrameCallback` y el análisis se queda congelado, no lento. Por
 // si acaso el bloqueo falla o el usuario se va a otra aplicación, se vigila
 // `visibilitychange` y se pausa avisando, en vez de fingir que sigue.
+//
+// El recuadro no está quieto
+// --------------------------
+// En cada muestra se busca primero dónde está el marcador (js/seguimiento.js)
+// y luego se miran las lámparas ahí. Cuando no se encuentra —el tirador
+// delante, un movimiento brusco— NO se mira nada: contar píxeles de donde ya
+// no está el marcador es inventarse tocados. Se abre un hueco, y al cerrarse
+// se compara: si una lámpara estaba apagada antes del hueco y está encendida
+// después, el tocado ocurrió mientras no se veía, y se propone con el
+// instante en que se recuperó el marcador y marcado como aproximado.
 
 import { recortar, contarEnZona, crearDetector, resultadoDelTocado } from './deteccion.js';
+import { escenaDe, plantillaDesde, crearSeguidor } from './seguimiento.js';
 
 const NUMERO = { rojo: 1, verde: 2 };
 
@@ -54,6 +65,11 @@ const SEGUNDOS_ENTRE_MUESTRAS = 0.1;
 // que se salta son justo los que interesan.
 const VELOCIDAD = 2;
 
+// Un tocado que salga en este rato después de recuperar el marcador viene de
+// un hueco: la lámpara pudo encenderse en cualquier momento mientras el
+// marcador no se veía, así que el instante es orientativo.
+const SEGUNDOS_DE_CORTESIA = 0.6;
+
 /**
  * Analiza un vídeo entero y va avisando de lo que encuentra.
  *
@@ -61,27 +77,43 @@ const VELOCIDAD = 2;
  * @param {HTMLVideoElement} opciones.video ya cargado y visible
  * @param {object} opciones.calibrado el guardado en el tiempo
  * @param {(parte:number) => void} opciones.alProgresar de 0 a 1
- * @param {(tocado:object) => void} opciones.alDetectar {instante, resultado}
+ * @param {(tocado:object) => void} opciones.alDetectar {instante, resultado, aproximado}
  * @param {(pausado:boolean) => void} [opciones.alPausar] la página se ocultó
- * @returns {{terminado: Promise<string>, cancelar: () => void}}
+ * @param {(donde:object) => void} [opciones.alSeguir] {estado, recuadro, parecido}
+ * @returns {{terminado: Promise<string>, cancelar: () => void, resumen: () => object}}
  *          termina en 'completo' o en 'cancelado'
  */
-export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar }) {
+export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar, alSeguir }) {
   const lienzo = document.createElement('canvas');
+  const lienzoEscena = document.createElement('canvas');
   const detector = crearDetector(umbralesDe(calibrado.lamparas));
 
   let cancelado = false;
   let ultimaMuestra = -Infinity;
   let bloqueo = null;
   let terminar;
+  let seguidor = null;
+  let recuadroAhora = calibrado.recuadro;
+  let recuperadoEn = -Infinity;
+
+  // Lo que se le cuenta al usuario al final: sin esto, un análisis con el
+  // marcador tapado media hora parece un asalto sin tocados.
+  const cuenta = { seguido: 0, perdido: 0, huecos: 0, aproximados: 0, seguimiento: false };
 
   const terminado = new Promise((resolver) => { terminar = resolver; });
 
   function avisar(tocados) {
     for (const tocado of tocados) {
+      // Sólo lo que sale JUSTO DESPUÉS de recuperar el marcador. Un tocado
+      // anterior al hueco, soltado tarde porque se quedó esperando pareja, no
+      // es aproximado: su instante se vio.
+      const desdeElHueco = tocado.instante - recuperadoEn;
+      const aproximado = desdeElHueco >= 0 && desdeElHueco <= SEGUNDOS_DE_CORTESIA;
+      if (aproximado) cuenta.aproximados++;
       alDetectar({
         instante: tocado.instante,
         resultado: resultadoDelTocado(tocado.color, calibrado.miColor),
+        aproximado,
       });
     }
   }
@@ -92,16 +124,53 @@ export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar }
     const segundos = datos ? datos.mediaTime : video.currentTime;
 
     if (segundos - ultimaMuestra >= SEGUNDOS_ENTRE_MUESTRAS) {
+      const transcurrido = ultimaMuestra === -Infinity
+        ? 0
+        : Math.max(0, Math.min(1, segundos - ultimaMuestra));
       ultimaMuestra = segundos;
-      const imagen = recortar(video, calibrado.recuadro, lienzo);
-      if (imagen) {
-        avisar(detector.muestra(segundos, cuentasPorLampara(imagen, calibrado.lamparas)));
-        avisar(detector.vencidos(segundos));
-      }
+      mirar(segundos, transcurrido);
       if (video.duration) alProgresar(Math.min(1, segundos / video.duration));
     }
 
     seguir();
+  }
+
+  /** Una muestra: dónde está el marcador y qué se ve en él. */
+  function mirar(segundos, transcurrido) {
+    const donde = seguidor
+      ? seguidor.situar(escenaDe(video, lienzoEscena))
+      : { estado: 'imposible', recuadro: calibrado.recuadro, parecido: 0, reencontrado: false };
+
+    recuadroAhora = donde.recuadro;
+    if (alSeguir) alSeguir(donde);
+
+    // La plantilla podía no valer para este vídeo. Se sabe al primer intento,
+    // y más vale contarlo al final que presumir de un seguimiento que no hubo.
+    if (donde.estado === 'imposible') cuenta.seguimiento = false;
+
+    if (donde.estado === 'perdido') {
+      cuenta.perdido += transcurrido;
+      // Lo que veníamos viendo ya no vale, pero lo que sabíamos de cada
+      // lámpara sí: en espada se quedan encendidas hasta que el árbitro
+      // rearma, y esa memoria es la que dirá luego si hubo tocado en el hueco.
+      detector.perder();
+      // El emparejamiento de dobles sí sigue corriendo: media hora tapado no
+      // debe dejar un tocado suelto esperando pareja para siempre.
+      avisar(detector.vencidos(segundos));
+      return;
+    }
+
+    cuenta.seguido += transcurrido;
+    if (donde.reencontrado) {
+      cuenta.huecos++;
+      recuperadoEn = segundos;
+    }
+
+    const imagen = recortar(video, recuadroAhora, lienzo);
+    if (!imagen) return;
+
+    avisar(detector.muestra(segundos, cuentasPorLampara(imagen, calibrado.lamparas)));
+    avisar(detector.vencidos(segundos));
   }
 
   function seguir() {
@@ -153,12 +222,42 @@ export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar }
   // --- Arranque ---
   video.muted = true;
   video.playbackRate = VELOCIDAD;
-  video.currentTime = 0;
   document.addEventListener('visibilitychange', alCambiarVisibilidad);
   video.addEventListener('ended', alAcabar);
 
-  pedirPantallaEncendida();
-  arrancar();
+  prepararYArrancar();
+
+  /**
+   * Antes de reproducir hay que tener la plantilla del seguimiento.
+   *
+   * Los calibrados hechos antes de que existiera el seguimiento no la traen.
+   * En vez de obligar a repetirlos, se reconstruye aquí volviendo al instante
+   * en que se tomó la referencia, que es el fotograma exacto que el usuario
+   * eligió para enmarcar.
+   */
+  async function prepararYArrancar() {
+    await esperarMetadatos(video);
+    if (cancelado) return;
+
+    let plantilla = calibrado.plantilla || null;
+    if (!plantilla && calibrado.referencia) {
+      await irYEsperar(video, calibrado.referencia.instante || 0);
+      if (cancelado) return;
+      const escena = escenaDe(video, lienzoEscena);
+      if (escena) plantilla = plantillaDesde(escena, calibrado.recuadro);
+    }
+
+    if (plantilla) {
+      const candidato = crearSeguidor(plantilla, calibrado.recuadro);
+      if (candidato.posible) { seguidor = candidato; cuenta.seguimiento = true; }
+    }
+
+    await irYEsperar(video, 0);
+    if (cancelado) return;
+
+    pedirPantallaEncendida();
+    arrancar();
+  }
 
   /**
    * Empieza a reproducir, o espera si no se puede todavía.
@@ -181,6 +280,7 @@ export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar }
 
   return {
     terminado,
+    resumen: () => ({ ...cuenta }),
     cancelar() {
       if (cancelado) return;
       cancelado = true;
@@ -190,23 +290,37 @@ export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar }
 }
 
 /**
- * ¿Hay algo permanentemente rojo o verde dentro del recuadro?
+ * ¿Hay algo permanentemente rojo o verde dentro del recuadro? ¿Y se puede
+ * seguir el marcador por el vídeo?
  *
  * Mira unos cuantos fotogramas repartidos por todo el vídeo y cuenta en
  * cuántos "habría lámpara" dentro de las zonas localizadas. Si sale encendida
  * casi siempre, lo que se localizó en el calibrado no era una lámpara sino un
  * dígito. Son un par de segundos que ahorran dos minutos perdidos.
  *
+ * De paso se prueba el seguimiento: en cada fotograma se busca el marcador en
+ * todo el encuadre, que es el caso difícil —entre uno y otro han pasado
+ * segundos y la cámara está en otro sitio—. Si no aparece casi nunca, el
+ * análisis no va a funcionar y más vale saberlo ahora.
+ *
  * Aquí sí se salta de un sitio a otro, que son veinte fotogramas y no mil
  * ochocientos.
  */
 export async function buscarFalsosPositivos({ video, calibrado, cuantos = 20 }) {
   const lienzo = document.createElement('canvas');
+  const lienzoEscena = document.createElement('canvas');
   const duracion = video.duration;
-  if (!isFinite(duracion) || duracion <= 0) return { mirados: 0, encendidos: 0 };
+  if (!isFinite(duracion) || duracion <= 0) {
+    return { mirados: 0, encendidos: 0, perdidos: 0, seguimiento: false };
+  }
+
+  const seguidor = calibrado.plantilla
+    ? crearSeguidor(calibrado.plantilla, calibrado.recuadro)
+    : null;
 
   const guardado = video.currentTime;
   let encendidos = 0;
+  let perdidos = 0;
   let mirados = 0;
 
   for (let i = 0; i < cuantos; i++) {
@@ -215,21 +329,43 @@ export async function buscarFalsosPositivos({ video, calibrado, cuantos = 20 }) 
     const llego = await irYEsperar(video, momento);
     if (!llego) continue;
 
-    const imagen = recortar(video, calibrado.recuadro, lienzo);
-    if (!imagen) continue;
+    const donde = seguidor
+      ? seguidor.situar(escenaDe(video, lienzoEscena))
+      : { estado: 'imposible', recuadro: calibrado.recuadro };
 
     mirados++;
+    if (donde.estado === 'perdido') { perdidos++; continue; }
+
+    const imagen = recortar(video, donde.recuadro, lienzo);
+    if (!imagen) continue;
+
     const cuentas = cuentasPorLampara(imagen, calibrado.lamparas);
     const umbral = umbralesDe(calibrado.lamparas);
     if (cuentas.rojo >= umbral.rojo || cuentas.verde >= umbral.verde) encendidos++;
   }
 
   await irYEsperar(video, guardado);
-  return { mirados, encendidos };
+  return {
+    mirados, encendidos, perdidos, seguimiento: Boolean(seguidor && seguidor.posible),
+  };
+}
+
+/** Espera a que el vídeo sepa cuánto mide y de qué tamaño es. */
+function esperarMetadatos(video) {
+  if (video.readyState >= 1) return Promise.resolve();
+  return new Promise((resolver) => {
+    const listo = () => { video.removeEventListener('loadedmetadata', listo); resolver(); };
+    video.addEventListener('loadedmetadata', listo);
+    setTimeout(listo, 5000);
+  });
 }
 
 /** Lleva el vídeo a un instante y espera a que llegue de verdad. */
 function irYEsperar(video, segundos) {
+  // Si ya está ahí no hay salto, y por tanto tampoco habrá `seeked`: sin esto
+  // se esperaría el segundo y medio del plazo de seguridad para nada.
+  if (Math.abs(video.currentTime - segundos) < 0.01) return Promise.resolve(true);
+
   return new Promise((resolver) => {
     let hecho = false;
     const listo = () => {

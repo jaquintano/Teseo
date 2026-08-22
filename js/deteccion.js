@@ -394,6 +394,28 @@ export function crearDetector(umbrales) {
     return soltar;
   }
 
+  /**
+   * Se ha perdido el marcador: se tira lo que se estaba viendo.
+   *
+   * La ventana de las últimas muestras se vacía, porque mezclar lo de antes
+   * del hueco con lo de después es comparar dos sitios distintos del vídeo. Y
+   * el conteo de muestras seguidas también, que un encendido a medio
+   * confirmar cuando el marcador desaparece no se confirma.
+   *
+   * Lo que NO se toca es `encendida`, y es lo importante: en espada la
+   * lámpara se queda puesta hasta que el árbitro rearma, así que saber si
+   * estaba encendida ANTES del hueco es lo único que permite distinguir
+   * después "sigue el mismo tocado" de "ha habido otro mientras no se veía".
+   */
+  function perder() {
+    for (const color of ['rojo', 'verde']) {
+      const canal = estado[color];
+      canal.ultimas = [];
+      canal.seguidas = 0;
+      canal.desde = null;
+    }
+  }
+
   /** Al acabar el vídeo, lo que quedara esperando pareja ya no la tiene. */
   function terminar() {
     const ultimo = pendiente ? [pendiente] : [];
@@ -411,7 +433,7 @@ export function crearDetector(umbrales) {
     return [];
   }
 
-  return { muestra, vencidos, terminar };
+  return { muestra, vencidos, perder, terminar };
 }
 
 /**

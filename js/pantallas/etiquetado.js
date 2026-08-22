@@ -400,7 +400,15 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
                + (intercambio.propuesto ? ' fila-propuesta' : ''),
         onclick: () => abrir(intercambio),
       }, [
-        crear('td', { class: 'apagado', texto: formatearSegundos(intercambio.instante) }),
+        // El ≈ es de las propuestas que salieron de un hueco: el marcador
+        // estaba tapado cuando se encendió la lámpara, así que el instante es
+        // el de cuando volvió a verse. Hay que moverlo a mano.
+        crear('td', {
+          class: 'apagado',
+          texto: (intercambio.aproximado ? '≈ ' : '') + formatearSegundos(intercambio.instante),
+          title: intercambio.aproximado
+            ? 'El marcador estaba tapado: el instante es aproximado.' : '',
+        }),
         crear('td', {}, [
           // Sin texto: el color ya lo dice, y es el mismo de su marca. El
           // nombre queda en el título, para quien no distinga los colores.
@@ -517,13 +525,18 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     videoDelAnalisis.src = URL.createObjectURL(fichero);
 
     const marca = crear('div', { class: 'recuadro-dibujado' });
-    marca.style.left = `${calibrado.recuadro.x * 100}%`;
-    marca.style.top = `${calibrado.recuadro.y * 100}%`;
-    marca.style.width = `${calibrado.recuadro.ancho * 100}%`;
-    marca.style.height = `${calibrado.recuadro.alto * 100}%`;
+    colocarMarca(calibrado.recuadro);
+
+    function colocarMarca(recuadro) {
+      marca.style.left = `${recuadro.x * 100}%`;
+      marca.style.top = `${recuadro.y * 100}%`;
+      marca.style.width = `${recuadro.ancho * 100}%`;
+      marca.style.height = `${recuadro.alto * 100}%`;
+    }
 
     const barra = crear('progress', { class: 'progreso-analisis', max: 1, value: 0 });
     const cuenta = crear('p', { class: 'ayuda', texto: '0 %' });
+    const rastro = crear('p', { class: 'ayuda', texto: '' });
     let encontrados = 0;
 
     const botonCancelar = crear('button', {
@@ -541,6 +554,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       crear('div', { class: 'marco-calibrado marco-analisis' }, [videoDelAnalisis, marca]),
       barra,
       cuenta,
+      rastro,
       botonCancelar,
     ]);
     deteccion.open = true;
@@ -557,6 +571,18 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
           ? 'En pausa: vuelve a Teseo para seguir.'
           : `${Math.round(barra.value * 100)} % · ${encontrados} propuesta${encontrados === 1 ? '' : 's'}`;
       },
+      // El recuadro persigue al marcador por el vídeo pequeño. No es adorno:
+      // es la única forma de ver de un vistazo si el seguimiento va bien o
+      // se ha quedado clavado en una pared.
+      alSeguir: (donde) => {
+        colocarMarca(donde.recuadro);
+        marca.classList.toggle('recuadro-perdido', donde.estado === 'perdido');
+        rastro.textContent = donde.estado === 'imposible'
+          ? 'Sin seguimiento: recuadro fijo.'
+          : donde.estado === 'perdido'
+            ? 'Marcador tapado o fuera de encuadre: buscándolo.'
+            : `Marcador localizado (${Math.round(donde.parecido * 100)} %).`;
+      },
       alDetectar: async (tocado) => {
         encontrados++;
         const propuesta = {
@@ -569,6 +595,9 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
           zonaCuerpo: null,
           zonaPista: null,
           propuesto: true,
+          // El tocado cayó mientras el marcador estaba tapado: el instante es
+          // el de cuando volvió a verse, no el del encendido.
+          aproximado: tocado.aproximado || undefined,
         };
         propuesta.id = await guardar(ALMACENES.intercambios, propuesta);
         intercambios.push(propuesta);
@@ -578,6 +607,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     });
 
     const comoAcaba = await analisisActivo.terminado;
+    const resumen = analisisActivo.resumen();
     analisisActivo = null;
     URL.revokeObjectURL(videoDelAnalisis.src);
 
@@ -593,6 +623,51 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
             'el vídeo, prueba a repetir el calibrado enmarcándolo más ajustado ' +
             'y midiendo con una lámpara encendida.',
     }));
+
+    for (const texto of loQuePasoConElMarcador(resumen)) {
+      anadir(deteccion, crear('p', { class: 'ayuda', texto }));
+    }
+  }
+
+  /**
+   * Cuánto se vio el marcador, contado en cristiano.
+   *
+   * Sin esto, un análisis con el tirador delante del aparato la mitad del
+   * asalto se parece demasiado a un asalto sin tocados, y el usuario no tiene
+   * forma de distinguirlos.
+   */
+  function loQuePasoConElMarcador(resumen) {
+    if (!resumen) return [];
+
+    if (!resumen.seguimiento) {
+      return ['Este calibrado no lleva seguimiento, así que se ha mirado siempre ' +
+              'al mismo sitio del fotograma. Si la cámara se movió, repite el ' +
+              'calibrado para que Teseo pueda perseguir el marcador.'];
+    }
+
+    const total = resumen.seguido + resumen.perdido;
+    if (total <= 0) return [];
+
+    const parte = Math.round((resumen.seguido / total) * 100);
+    const textos = [`El marcador se vio el ${parte} % del vídeo` +
+      (resumen.huecos > 0
+        ? `, con ${resumen.huecos} hueco${resumen.huecos === 1 ? '' : 's'} ` +
+          `(${Math.round(resumen.perdido)} s en total) en los que estuvo tapado o fuera de encuadre.`
+        : ', sin perderlo ni una vez.')];
+
+    if (resumen.aproximados > 0) {
+      textos.push(`${resumen.aproximados} propuesta(s) salieron de un hueco y van ` +
+                  'marcadas con ≈ en la tabla: la lámpara se encendió mientras el ' +
+                  'marcador no se veía, así que el instante hay que ajustarlo a mano.');
+    }
+
+    if (parte < 60) {
+      textos.push('Con tanto rato sin ver el marcador se escapan tocados. Ayuda ' +
+                  'grabar con el móvil apoyado, a 720p o más, y encuadrando de ' +
+                  'forma que el aparato no quede detrás de los tiradores.');
+    }
+
+    return textos;
   }
 
   /**
@@ -609,6 +684,9 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   /** La propuesta pasa a ser un intercambio como los demás. */
   async function confirmar(intercambio) {
     delete intercambio.propuesto;
+    // Al confirmarla deja de ser aproximada: el usuario ya la ha mirado, y si
+    // el instante no le cuadraba lo habrá movido.
+    delete intercambio.aproximado;
     await guardar(ALMACENES.intercambios, intercambio);
     pintarIntercambios();
   }

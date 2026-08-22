@@ -95,6 +95,13 @@ js/pantallas/ficha-tirador.js  el formulario que comparten perfil y rivales
 js/pantallas/rivales.js        lista y ficha de rivales
 js/pantallas/asaltos.js        lista, alta y detalle de asaltos con sus tiempos
 js/pantallas/competiciones.js  lista, ficha e importación de competiciones
+js/deteccion.js                de píxeles a lámparas encendidas, y de
+                               encendidos a tocados. Puro
+js/seguimiento.js              busca el marcador en el fotograma cuando la
+                               cámara se mueve o alguien lo tapa. Puro
+js/analisis.js                 recorre el vídeo muestreando: junta las dos
+                               cosas anteriores
+js/pantallas/calibrado.js      enseñarle a Teseo dónde está el marcador
 js/pantallas/etiquetado.js     EL CORAZÓN: vídeo, marcas, tabla y tanteo
 js/pantallas/estadisticas.js   los filtros y la presentación de las cuentas
 js/pantallas/ayuda.js          la ayuda para quien abre Teseo por primera vez
@@ -168,14 +175,15 @@ marcador en cada intercambio habría hecho lo contrario.
 El **resultado final del asalto** se pregunta aparte, en su ficha. Es cómo
 acabó de verdad, lo diga o no la grabación.
 
-## Detección automática de tocados (fase 1)
+## Detección automática de tocados
 
 Si en el encuadre se ve el marcador del aparato, Teseo puede proponer los
 tocados solo. **Es opcional**: hay grabaciones donde el marcador no se ve, y
 ésas se etiquetan a mano como siempre.
 
-`js/deteccion.js` es puro —píxeles a cuentas, cuentas a tocados— y
-`js/analisis.js` es el que reproduce y muestrea. La pantalla de calibrado es
+`js/deteccion.js` es puro —píxeles a cuentas, cuentas a tocados—,
+`js/seguimiento.js` busca el marcador en cada fotograma y `js/analisis.js` es
+el que reproduce, muestrea y junta las dos cosas. La pantalla de calibrado es
 `js/pantallas/calibrado.js`.
 
 **El problema de verdad: el marcador no es una caja con dos bombillas.** Lleva
@@ -192,8 +200,7 @@ dos capturas y desaparecen en la comparación; la lámpara, no. Con eso se sabe
 sólo ahí, con holgura alrededor para el temblor de la cámara.
 
 Por eso el recuadro se dibuja grande, alrededor de todo el aparato: da margen
-para el movimiento, y de paso servirá de plantilla para el seguimiento de la
-fase 2.
+para el movimiento, y además es la plantilla con la que se sigue el marcador.
 
 **Cómo clasifica un píxel.** En HSV: hace falta tono rojo o verde, saturación y
 brillo. En HSV y no en RGB porque el móvil reajusta la exposición y un LED
@@ -227,10 +234,61 @@ todo el vídeo; si en la mayoría "habría lámpara", lo localizado es un dígit
 que aparecen en la tabla pero **no cuentan ni para el marcador ni para las
 estadísticas** hasta que alguien las confirma.
 
+### El marcador no se está quieto
+
+Un vídeo grabado con el móvil en la mano se mueve, y a los treinta segundos el
+marcador ya no está donde se enmarcó. Peor: **el tirador se planta delante del
+aparato durante segundos enteros**, que es justo cuando hay tocados. Por eso el
+recuadro no está fijo: en cada muestra se busca dónde está el marcador
+(`js/seguimiento.js`) y se miran las lámparas ahí.
+
+**Cómo se busca.** Con una plantilla —el recuadro en escala de grises tal y
+como se veía al calibrar— y **correlación cruzada normalizada**, que resta la
+media y divide por la desviación de cada trozo. Eso la hace inmune a la
+autoexposición del móvil: si toda la escena se aclara, la plantilla sigue
+encajando porque lo que se compara es el dibujo, no el brillo. En gris y no en
+color a propósito: el color de un marcador son cuatro dígitos que cambian.
+
+**Y en pirámide**, o no cabría en un móvil. Se rastrea el fotograma entero en
+una copia reducida a la cuarta parte —dieciséis veces menos posiciones, y cada
+una dieciséis veces más barata—, de ahí salen cuatro sitios prometedores y cada
+uno se afina hacia abajo mirando dos píxeles alrededor. Cuatro y no uno porque
+si un reflejo gana en miniatura ya no habría vuelta atrás. Medido: 0,6 ms por
+muestra siguiendo, 2,3 ms rebuscando en todo el encuadre.
+
+**Dos umbrales.** Seguir donde estaba pide 0,55 de parecido; reencontrarlo en
+todo el fotograma pide 0,70, porque ahí se prueban miles de posiciones y alguna
+se parecerá por casualidad. Además, al reencontrarlo **se prefiere lo cercano**:
+se resta hasta un cuarto del parecido al que esté en la otra punta del encuadre.
+Una sala de armas está llena de cosas rectangulares y claras sobre fondo oscuro,
+y sin eso el recuadro se muda a un cartel de la pared y no vuelve.
+
+**Cuando no se encuentra, no se mira nada.** Contar píxeles de donde ya no está
+el marcador es inventarse tocados. Se abre un hueco, y lo que sabíamos de cada
+lámpara se conserva —en espada se quedan encendidas hasta que el árbitro
+rearma—: si estaba apagada antes del hueco y encendida después, el tocado
+ocurrió mientras no se veía. Se propone igual, con el instante en que se
+recuperó el marcador y **marcado con ≈** en la tabla, porque sólo se sabe
+aproximadamente cuándo fue.
+
+Lo que el seguimiento **no** hace: zooms ni giros, sólo desplazamiento. Si se
+graba acercando y alejando, la plantilla deja de encajar y el marcador se da
+por perdido, que al menos es no mentir.
+
+### Hace falta resolución
+
+La detección se juega en unas pocas decenas de píxeles. En un vídeo de 1024×576
+la lámpara son cuatro píxeles y cualquier reflejo se le parece: falsos positivos
+a montones. **Hay que grabar a 720p o más**, y con el marcador lo más cerca que
+se pueda. El calibrado lo dice al abrirlo, y también avisa cuando la mancha que
+localiza es pequeña.
+
 **Limitaciones conocidas.** Los tiradores prueban la punta antes de empezar y
-eso enciende la lámpara: habrá propuestas de más en las pausas. Y si quien
-graba hace barridos y el marcador se sale del encuadre, no hay nada que hacer
-hasta que exista el seguimiento de la fase 2.
+eso enciende la lámpara: habrá propuestas de más en las pausas. Si el marcador
+sale del encuadre entero, no hay nada que hacer hasta que vuelva. Y si el
+recuadro no tiene dibujo —una pared lisa, un aparato sobre fondo negro— no se
+puede seguir: el calibrado avisa y el análisis mira siempre al mismo sitio, que
+sólo vale con trípode.
 
 ## El ranking
 

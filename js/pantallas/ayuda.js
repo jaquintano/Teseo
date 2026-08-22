@@ -134,14 +134,25 @@ export async function pantallaAyuda(contenedor) {
       'tocados mirando cuándo se encienden las lámparas. Está debajo de la ' +
       'tabla, en "Detección automática". Es opcional: si no lo usas nunca, ' +
       'todo funciona igual.',
+      'Antes que nada, un consejo para grabar: hazlo a 720p o más. La lámpara ' +
+      'del aparato es pequeña, y en un vídeo de poca calidad son cuatro píxeles ' +
+      'que se confunden con cualquier reflejo. Teseo te avisa al calibrar si el ' +
+      'vídeo se queda corto.',
       'Primero hay que calibrar. Enmarca con el dedo el aparato ENTERO y con ' +
-      'holgura, no las bombillas: la cámara se mueve aunque no quieras.',
+      'holgura, no las bombillas. El recuadro no es sólo dónde mirar: es la ' +
+      'foto con la que Teseo reconoce el marcador cuando la cámara se mueve, ' +
+      'así que cuanto más entre ahí —el soporte, lo que haya detrás—, mejor.',
       'Se mide dos veces. Una con las lámparas apagadas y otra en un tocado. ' +
       'Comparando las dos, Teseo encuentra las lámparas y no se confunde con el ' +
       'cronómetro ni con el tanteo, que están encendidos en las dos capturas. ' +
       'Te dibuja encima del vídeo lo que ha encontrado: míralo, es la forma de ' +
       'saber que ha acertado.',
       'Y te dice si va a funcionar antes de que pierdas dos minutos analizando.',
+      'Durante el análisis, el recuadro persigue al marcador por el vídeo. Si ' +
+      'alguien se pone delante, Teseo deja de mirar hasta que vuelva a verlo: ' +
+      'los tocados que caigan en ese hueco salen marcados con ≈ en la tabla, ' +
+      'porque sólo se sabe aproximadamente cuándo fueron y conviene ajustar el ' +
+      'instante a mano. Al terminar te dice cuánto rato pudo ver el marcador.',
       'El análisis tarda alrededor de la mitad de lo que dure el vídeo. Deja ' +
       'Teseo en pantalla: si te vas a otra aplicación o se apaga el móvil, se ' +
       'queda en pausa hasta que vuelvas.',

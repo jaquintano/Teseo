@@ -616,6 +616,16 @@ video::-webkit-media-controls-panel {
   pointer-events: none;
 }
 
+/* Durante el análisis el recuadro persigue al marcador. Cuando lo pierde —el
+   tirador delante, un movimiento brusco— se queda donde estaba, y hay que
+   verlo: un recuadro quieto y de otro color es "aquí no se está mirando
+   nada", que es muy distinto de "aquí no ha pasado nada". */
+.recuadro-perdido {
+  border-color: var(--contra);
+  border-style: dashed;
+  background: transparent;
+}
+
 /* Dónde cree Teseo que está cada lámpara. Se dibuja encima del vídeo porque
    es la única forma de que el usuario compruebe de un vistazo que ha acertado
    y no ha cogido un dígito del tanteo. */

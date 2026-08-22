@@ -16,12 +16,15 @@
 // ahí y no en el resto.
 //
 // Por eso el recuadro se dibuja GRANDE, alrededor de todo el aparato: da
-// holgura para que la cámara se mueva, y de paso será la plantilla del
-// seguimiento cuando llegue.
+// holgura para que la cámara se mueva, y además es la PLANTILLA con la que se
+// reconoce el marcador después. De ahí que aquí mismo se use ya el
+// seguimiento: el tocado con el que se localizan las lámparas se busca por
+// todo el vídeo, y para cuando aparece la cámara está en otro sitio.
 
 import { anadir, crear, rellenar, cabecera, ir, desplegable, formatearSegundos } from '../ui.js';
 import { ALMACENES, obtener, guardar, borrar, leerVideo, listarPor } from '../db.js';
 import { recortar, guardarReferencia, loQueHaAparecido, conHolgura } from '../deteccion.js';
+import { escenaDe, plantillaDesde, crearSeguidor, detalleDe, sePuedeSeguir } from '../seguimiento.js';
 import { buscarFalsosPositivos } from '../analisis.js';
 
 // Un recuadro más pequeño que esto en píxeles del vídeo no da para nada.
@@ -30,6 +33,11 @@ const ALTO_MINIMO = 40;
 
 // Y uno que se coma más de la mitad del fotograma no enmarca el aparato.
 const PARTE_MAXIMA = 0.5;
+
+// Por debajo de esta altura de vídeo, las lámparas salen tan pequeñas que
+// distinguirlas del fondo es cuestión de suerte. 720 es lo que graba
+// cualquier móvil de hace diez años.
+const ALTO_RECOMENDADO = 720;
 
 // Por debajo de esto, lo que ha aparecido son cuatro píxeles sueltos.
 const MANCHA_INSUFICIENTE = 15;
@@ -81,10 +89,18 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
   const previo = tiempo.calibrado || null;
   let recuadro = previo ? { ...previo.recuadro } : null;
   let referencia = previo ? previo.referencia : null;
+  // La plantilla con la que el análisis seguirá el marcador por el vídeo. Se
+  // saca del mismo fotograma que la referencia, que es el que el usuario ha
+  // elegido a conciencia para enmarcar.
+  let plantilla = previo ? previo.plantilla || null : null;
   let lamparas = previo ? { ...previo.lamparas } : { rojo: null, verde: null };
   let miColor = previo ? previo.miColor : null;
   // Lo que se le dice al usuario del último intento de localizar.
   let ultimoIntento = null;
+  // Dónde estaba el marcador la última vez que se buscó una lámpara. Puede no
+  // ser el recuadro dibujado: el usuario busca los tocados por todo el vídeo y
+  // para entonces la cámara se ha movido.
+  let dondeSeMidio = null;
 
   // --- El vídeo, con lo justo para moverse por él ---
   const video = crear('video', { class: 'video-calibrado', playsinline: true, muted: true });
@@ -118,8 +134,14 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     })));
 
   video.addEventListener('timeupdate', refrescarReloj);
-  video.addEventListener('seeked', refrescarReloj);
-  video.addEventListener('loadedmetadata', () => { refrescarReloj(); pintarMarcas(); });
+  video.addEventListener('seeked', () => { refrescarReloj(); olvidarDondeSeMidio(); });
+  video.addEventListener('loadedmetadata', () => {
+    refrescarReloj();
+    pintarMarcas();
+    // Hasta aquí no se sabía de qué tamaño es el vídeo, y de eso depende lo
+    // que se le dice al usuario en el paso 1.
+    pintarPasos();
+  });
   video.addEventListener('play', () => { btnPlay.textContent = 'Pausa'; });
   video.addEventListener('pause', () => { btnPlay.textContent = 'Reproducir'; });
 
@@ -137,6 +159,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     try { capa.setPointerCapture(evento.pointerId); } catch { /* da igual */ }
     arrastrando = puntoRelativo(evento);
     recuadro = null;
+    dondeSeMidio = null;
     pintarMarcas();
   });
 
@@ -153,6 +176,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     recuadro = entreDosPuntos(desde, puntoRelativo(evento));
     // Al mover el recuadro, la referencia y las lámparas de antes ya no valen.
     referencia = null;
+    plantilla = null;
     lamparas = { rojo: null, verde: null };
     pintarMarcas();
     pintarPasos();
@@ -189,6 +213,19 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     }
   }
 
+  /**
+   * Deja de dibujar las lámparas donde se midieron.
+   *
+   * Se llama al moverse por el vídeo: las zonas se pintan sobre el fotograma
+   * donde se localizaron, y dejarlas puestas mientras el usuario busca otro
+   * tocado sería enseñarle una lámpara donde ya no hay ninguna.
+   */
+  function olvidarDondeSeMidio() {
+    if (!dondeSeMidio) return;
+    dondeSeMidio = null;
+    pintarMarcas();
+  }
+
   function colocar(elemento, caja) {
     elemento.style.left = `${caja.x * 100}%`;
     elemento.style.top = `${caja.y * 100}%`;
@@ -196,13 +233,19 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     elemento.style.height = `${caja.alto * 100}%`;
   }
 
-  /** De coordenadas del recuadro a coordenadas del fotograma. */
+  /**
+   * De coordenadas del recuadro a coordenadas del fotograma.
+   *
+   * Sobre el recuadro donde se midió, que es donde estaba el marcador en ese
+   * momento; y si no se ha medido nada todavía, sobre el dibujado.
+   */
   function enElFotograma(zona) {
+    const donde = dondeSeMidio || recuadro;
     return {
-      x: recuadro.x + zona.x * recuadro.ancho,
-      y: recuadro.y + zona.y * recuadro.alto,
-      ancho: zona.ancho * recuadro.ancho,
-      alto: zona.alto * recuadro.alto,
+      x: donde.x + zona.x * donde.ancho,
+      y: donde.y + zona.y * donde.alto,
+      ancho: zona.ancho * donde.ancho,
+      alto: zona.alto * donde.alto,
     };
   }
 
@@ -239,9 +282,19 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       'se hace en dos capturas: una con las lámparas apagadas y otra con una ' +
       'encendida. Lo que aparece entre las dos es la lámpara, y ahí es donde ' +
       'mirará Teseo. Los dígitos quedan fuera.',
-      'Enmarca el aparato ENTERO y con holgura, no las bombillas. La cámara se ' +
-      'mueve aunque no quieras, y cuanto más grande sea el recuadro, más ' +
-      'margen hay.',
+      'Enmarca el aparato ENTERO y con holgura, no las bombillas. El recuadro ' +
+      'no es sólo dónde mirar: es también la foto con la que Teseo va a ' +
+      'reconocer el marcador cuando la cámara se mueva. Cuanto más entre ahí ' +
+      '—el soporte, la mesa, lo que haya detrás—, mejor lo reconocerá. Lo que ' +
+      'no vale es un recuadro liso.',
+      'De la resolución depende todo. Las lámparas del aparato son pequeñas, y ' +
+      'en un vídeo de baja calidad acaban siendo cuatro píxeles que se ' +
+      'confunden con cualquier reflejo. Graba a 720p o más, y si puedes, con ' +
+      'el marcador cerca.',
+      'Si el tirador se pone delante del aparato, Teseo se queda sin ver ' +
+      'durante ese rato y lo vuelve a buscar en cuanto reaparece. Los tocados ' +
+      'que caigan en un hueco se proponen igual, pero con el instante marcado ' +
+      'con ≈ porque sólo se sabe aproximadamente cuándo fueron.',
       'Un consejo: toma la referencia apagada justo antes del tocado que vayas ' +
       'a usar. Si entre las dos capturas cambia el tanteo, ese dígito también ' +
       'aparece en la comparación y puede confundirse con una lámpara. Por eso ' +
@@ -292,12 +345,42 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     return `${arriba} ${lado}`;
   }
 
+  /**
+   * Si el vídeo da o no da para esto.
+   *
+   * La detección se juega en unas pocas decenas de píxeles: la lámpara del
+   * aparato dentro del encuadre. A 576 de alto, esa lámpara son cuatro
+   * píxeles y cualquier reflejo se le parece. Merece la pena decirlo antes de
+   * que el usuario pierda la tarde y no después.
+   */
+  function queTalLaResolucion() {
+    if (!video.videoHeight) return null;
+    const medida = `${video.videoWidth}×${video.videoHeight}`;
+    if (video.videoHeight >= ALTO_RECOMENDADO) {
+      return { bien: true, texto: `Vídeo de ${medida}: resolución de sobra.` };
+    }
+    return {
+      bien: false,
+      texto: `Este vídeo es de ${medida}, y para la detección automática conviene ` +
+             `grabar a 720p (1280×720) o más. Con menos, las lámparas ocupan tan ` +
+             `pocos píxeles que se confunden con reflejos: habrá tocados falsos y ` +
+             `tocados sin detectar. Se puede intentar igualmente, pero la próxima ` +
+             `vez sube la calidad en la cámara del móvil.`,
+    };
+  }
+
   function pintarPasos() {
     const problema = queLeFaltaAlRecuadro();
     const { ancho, alto } = tamanoDelRecuadro();
     const localizadas = ['rojo', 'verde'].filter((color) => lamparas[color]);
+    const resolucion = queTalLaResolucion();
+    const seguimiento = queTalElSeguimiento();
 
     rellenar(pasos, [
+      resolucion ? crear('p', {
+        class: resolucion.bien ? 'ayuda' : 'aviso', texto: resolucion.texto,
+      }) : null,
+
       crear('h3', { class: 'subtitulo-seccion', texto: '1. Enmarca el aparato entero' }),
       crear('p', {
         class: problema ? 'aviso' : 'ayuda',
@@ -317,6 +400,9 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       referencia ? crear('p', {
         class: 'aviso-bueno',
         texto: `Referencia guardada del segundo ${referencia.instante.toFixed(2)}.`,
+      }) : null,
+      seguimiento ? crear('p', {
+        class: seguimiento.bien ? 'ayuda' : 'aviso', texto: seguimiento.texto,
       }) : null,
 
       crear('h3', { class: 'subtitulo-seccion', texto: '3. Localiza las lámparas' }),
@@ -366,10 +452,60 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     if (!imagen) return;
 
     referencia = { ...guardarReferencia(imagen), instante: video.currentTime };
+    dondeSeMidio = null;
+
+    // Y del mismo fotograma, la plantilla del seguimiento: lo que hay dentro
+    // del recuadro en gris, para reconocerlo luego en cualquier parte del
+    // encuadre.
+    const escena = escenaDe(video, document.createElement('canvas'));
+    plantilla = escena ? plantillaDesde(escena, recuadro) : null;
+
     // Con referencia nueva, lo localizado antes puede no cuadrar.
     lamparas = { rojo: null, verde: null };
     pintarMarcas();
     pintarPasos();
+  }
+
+  /** Lo que hay que decirle al usuario sobre el seguimiento, o null. */
+  function queTalElSeguimiento() {
+    if (!plantilla) return null;
+    if (sePuedeSeguir(plantilla)) {
+      return {
+        bien: true,
+        texto: `Marcador reconocible: Teseo podrá seguirlo aunque se mueva la cámara ` +
+               `(plantilla de ${plantilla.ancho}×${plantilla.alto}, detalle ` +
+               `${Math.round(detalleDe(plantilla))}).`,
+      };
+    }
+    return {
+      bien: false,
+      texto: 'Dentro del recuadro casi no hay dibujo: es todo del mismo tono. Así ' +
+             'no se puede reconocer el marcador cuando la cámara se mueva, y el ' +
+             'análisis mirará siempre al mismo sitio del fotograma. Prueba a ' +
+             'enmarcar algo más: el soporte, el borde de la mesa, lo que rodee al ' +
+             'aparato.',
+    };
+  }
+
+  /**
+   * El recorte de ahora, con el recuadro puesto donde esté el marcador.
+   *
+   * Un tocado se busca por todo el vídeo, y para cuando se encuentra la cámara
+   * está en otro sitio: comparar con la referencia el recuadro dibujado sería
+   * comparar dos trozos distintos de la sala, y ahí "aparece" media pista.
+   */
+  function recorteDelMarcador() {
+    if (!plantilla) return { imagen: recorteDeAhora(), donde: recuadro, movido: false };
+
+    const seguidor = crearSeguidor(plantilla, recuadro);
+    const encontrado = seguidor.situar(escenaDe(video, document.createElement('canvas')));
+    if (encontrado.estado === 'perdido') return { imagen: null, donde: null, movido: false };
+
+    const donde = encontrado.estado === 'imposible' ? recuadro : encontrado.recuadro;
+    const movido = Math.abs(donde.x - recuadro.x) > 0.005 || Math.abs(donde.y - recuadro.y) > 0.005;
+    return {
+      imagen: recortar(video, donde, document.createElement('canvas')), donde, movido,
+    };
   }
 
   function localizarLamparas() {
@@ -382,8 +518,14 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       return;
     }
 
-    const imagen = recorteDeAhora();
-    if (!imagen) return;
+    const { imagen, donde, movido } = recorteDelMarcador();
+    if (!imagen) {
+      ultimoIntento = 'Aquí no se reconoce el marcador: puede que lo tape alguien o ' +
+                      'que se haya salido del encuadre. Busca un tocado en el que se vea.';
+      pintarPasos();
+      return;
+    }
+    dondeSeMidio = donde;
 
     const encontradas = [];
     for (const color of ['rojo', 'verde']) {
@@ -408,14 +550,24 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       encontradas.push(color);
     }
 
-    ultimoIntento = encontradas.length === 0
+    const aviso = encontradas.length === 0
       ? 'Aquí no ha aparecido nada nuevo, o lo que hay es más pequeño que lo ya ' +
         'localizado. ¿Hay alguna lámpara encendida en este momento? Prueba en ' +
         'otro tocado.'
       : encontradas.some((color) => lamparas[color].pixeles < MANCHA_JUSTA)
-        ? 'Localizada, pero la mancha es pequeña y la detección irá justa. Si ' +
-          'puedes, graba más cerca del marcador la próxima vez.'
+        ? 'Localizada, pero la mancha es pequeña y la detección irá justa: ' +
+          'habrá falsos positivos. La próxima vez graba a más resolución (720p ' +
+          'o más) o más cerca del marcador.'
         : null;
+
+    // Si el marcador no estaba donde se enmarcó, conviene decirlo: lo que se
+    // dibuja encima del vídeo sale entonces fuera del recuadro, y sin
+    // explicación parece un fallo.
+    const nota = movido && encontradas.length > 0
+      ? 'El marcador se ha reconocido desplazado —la cámara se ha movido desde ' +
+        'la referencia—, y ahí es donde se ha medido.'
+      : null;
+    ultimoIntento = [aviso, nota].filter(Boolean).join(' ') || null;
 
     pintarMarcas();
     pintarPasos();
@@ -449,10 +601,12 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     }
 
     const calibrado = {
-      recuadro, miColor, referencia, lamparas,
+      recuadro, miColor, referencia, lamparas, plantilla,
       instante: video.currentTime,
       fechaISO: new Date().toISOString(),
     };
+
+    let avisoDelBarrido = null;
 
     if (!saltarBarrido) {
       rellenar(resultadoFinal, crear('p', {
@@ -460,13 +614,42 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       }));
 
       const barrido = await buscarFalsosPositivos({ video, calibrado });
-      const parte = barrido.mirados > 0 ? barrido.encendidos / barrido.mirados : 0;
+      const vistos = barrido.mirados - barrido.perdidos;
+      const parte = vistos > 0 ? barrido.encendidos / vistos : 0;
+
+      // El barrido busca el marcador en el fotograma entero, que es el caso
+      // difícil: entre un momento y el siguiente han pasado segundos. Si no
+      // aparece casi nunca, el análisis se va a pasar el vídeo a ciegas.
+      if (barrido.seguimiento && barrido.perdidos > barrido.mirados / 2) {
+        rellenar(resultadoFinal, [
+          crear('p', {
+            class: 'aviso',
+            texto: `El marcador sólo se ha reconocido en ${vistos} de ` +
+                   `${barrido.mirados} momentos repartidos por el vídeo. O la ` +
+                   'cámara se mueve muchísimo, o el recuadro coge poco del ' +
+                   'aparato, o hay alguien delante casi todo el rato. Así se ' +
+                   'perderán muchos tocados: prueba a enmarcar más cosa alrededor ' +
+                   'del marcador y a tomar la referencia en un momento bien visible.',
+          }),
+          crear('button', {
+            type: 'button', class: 'boton', texto: 'Guardar de todas formas',
+            onclick: () => guardarCalibrado(true),
+          }),
+        ]);
+        return;
+      }
+
+      if (barrido.seguimiento && barrido.perdidos > 0) {
+        avisoDelBarrido = `El marcador se ha reconocido en ${vistos} de ` +
+                          `${barrido.mirados} momentos del vídeo. En los huecos no ` +
+                          'se mira nada, así que puede escaparse algún tocado.';
+      }
 
       if (parte > DEMASIADO_ENCENDIDO) {
         rellenar(resultadoFinal, [
           crear('p', {
             class: 'aviso',
-            texto: `En ${barrido.encendidos} de ${barrido.mirados} momentos repartidos ` +
+            texto: `En ${barrido.encendidos} de ${vistos} momentos repartidos ` +
                    'por el vídeo parecería haber una lámpara encendida. Lo más ' +
                    'probable es que lo localizado en el paso 3 no sea una lámpara ' +
                    'sino un dígito. Míralo en el vídeo y repite ese paso.',
@@ -501,6 +684,12 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
           : `Calibrado guardado con la lámpara ${cuales[0]} solamente: los tocados ` +
             'del otro color no se detectarán.',
       }),
+      avisoDelBarrido ? crear('p', { class: 'ayuda', texto: avisoDelBarrido }) : null,
+      plantilla && !sePuedeSeguir(plantilla) ? crear('p', {
+        class: 'aviso',
+        texto: 'Sin seguimiento: el análisis mirará siempre al mismo sitio del ' +
+               'fotograma, así que sólo servirá si la cámara está en un trípode.',
+      }) : null,
       crear('button', {
         type: 'button', class: 'boton boton-principal', texto: 'Volver al vídeo',
         onclick: volver,
