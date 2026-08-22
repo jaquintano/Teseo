@@ -481,10 +481,13 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
       calibrado ? crear('p', {
         class: 'ayuda',
-        texto: calibrado.encendido
-          ? `Calibrado y comprobado con una lámpara ${calibrado.encendido.color}.`
-          : 'Calibrado, pero sin comprobar con ninguna lámpara encendida: puede ' +
-            'que no encuentre nada.',
+        texto: (() => {
+          const cuales = ['rojo', 'verde'].filter((color) => calibrado.lamparas[color]);
+          return cuales.length === 2
+            ? 'Calibrado con las dos lámparas localizadas.'
+            : `Calibrado sólo con la lámpara ${cuales[0]}: los tocados del otro ` +
+              'color no se detectarán.';
+        })(),
       }) : crear('p', {
         class: 'ayuda',
         texto: 'Antes hay que calibrar: enmarcar el marcador en el vídeo y decir ' +

@@ -18,7 +18,33 @@
 // si acaso el bloqueo falla o el usuario se va a otra aplicación, se vigila
 // `visibilitychange` y se pausa avisando, en vez de fingir que sigue.
 
-import { recortar, contarColores, crearDetector, resultadoDelTocado } from './deteccion.js';
+import { recortar, contarEnZona, crearDetector, resultadoDelTocado } from './deteccion.js';
+
+const NUMERO = { rojo: 1, verde: 2 };
+
+/**
+ * Cuántos píxeles encendidos hay en cada lámpara.
+ *
+ * No se cuenta el recuadro entero sino la zona de cada lámpara, que es lo que
+ * deja fuera al cronómetro y al tanteo. Una lámpara sin localizar cuenta cero:
+ * nunca se enciende, que es la verdad —no sabemos dónde mirar—.
+ */
+function cuentasPorLampara(imagen, lamparas) {
+  const cuentas = { rojo: 0, verde: 0 };
+  for (const color of ['rojo', 'verde']) {
+    const lampara = lamparas[color];
+    if (lampara) cuentas[color] = contarEnZona(imagen, lampara.zona, NUMERO[color]);
+  }
+  return cuentas;
+}
+
+/** El umbral de cada lámpara, o inalcanzable si no está localizada. */
+function umbralesDe(lamparas) {
+  return {
+    rojo: lamparas.rojo ? lamparas.rojo.umbral : Infinity,
+    verde: lamparas.verde ? lamparas.verde.umbral : Infinity,
+  };
+}
 
 // A 10 muestras por segundo de vídeo, una lámpara encendida cae en varias
 // aunque el árbitro rearme rápido.
@@ -42,7 +68,7 @@ const VELOCIDAD = 2;
  */
 export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar }) {
   const lienzo = document.createElement('canvas');
-  const detector = crearDetector(calibrado.umbral);
+  const detector = crearDetector(umbralesDe(calibrado.lamparas));
 
   let cancelado = false;
   let ultimaMuestra = -Infinity;
@@ -69,7 +95,7 @@ export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar }
       ultimaMuestra = segundos;
       const imagen = recortar(video, calibrado.recuadro, lienzo);
       if (imagen) {
-        avisar(detector.muestra(segundos, contarColores(imagen)));
+        avisar(detector.muestra(segundos, cuentasPorLampara(imagen, calibrado.lamparas)));
         avisar(detector.vencidos(segundos));
       }
       if (video.duration) alProgresar(Math.min(1, segundos / video.duration));
@@ -167,9 +193,9 @@ export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar }
  * ¿Hay algo permanentemente rojo o verde dentro del recuadro?
  *
  * Mira unos cuantos fotogramas repartidos por todo el vídeo y cuenta en
- * cuántos "habría lámpara". Si sale encendida en la mitad, dentro del recuadro
- * hay un marcador de siete segmentos, una bandera o un maillot, y el análisis
- * va a dar basura. Son un par de segundos que ahorran dos minutos perdidos.
+ * cuántos "habría lámpara" dentro de las zonas localizadas. Si sale encendida
+ * casi siempre, lo que se localizó en el calibrado no era una lámpara sino un
+ * dígito. Son un par de segundos que ahorran dos minutos perdidos.
  *
  * Aquí sí se salta de un sitio a otro, que son veinte fotogramas y no mil
  * ochocientos.
@@ -193,10 +219,9 @@ export async function buscarFalsosPositivos({ video, calibrado, cuantos = 20 }) 
     if (!imagen) continue;
 
     mirados++;
-    const cuentas = contarColores(imagen);
-    if (cuentas.rojo >= calibrado.umbral.rojo || cuentas.verde >= calibrado.umbral.verde) {
-      encendidos++;
-    }
+    const cuentas = cuentasPorLampara(imagen, calibrado.lamparas);
+    const umbral = umbralesDe(calibrado.lamparas);
+    if (cuentas.rojo >= umbral.rojo || cuentas.verde >= umbral.verde) encendidos++;
   }
 
   await irYEsperar(video, guardado);

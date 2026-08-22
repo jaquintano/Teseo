@@ -129,6 +129,17 @@ export function medirMancha(imagen, cual) {
     }
   }
 
+  const mayor = manchaMasGrande(mascara, ancho, alto);
+  return { pixeles: deEseColor, mancha: mayor.tamano, caja: mayor.caja };
+}
+
+/**
+ * La mancha contigua más grande de una máscara de unos y ceros.
+ *
+ * Ocho vecinos: una lámpara con el halo desigual sigue siendo una.
+ */
+function manchaMasGrande(mascara, ancho, alto) {
+
   let mayor = 0;
   let caja = null;
   const pila = [];
@@ -173,7 +184,103 @@ export function medirMancha(imagen, cual) {
     }
   }
 
-  return { pixeles: deEseColor, mancha: mayor, caja };
+  return { tamano: mayor, caja };
+}
+
+// --- Localizar las lámparas comparando con el marcador apagado ---------
+//
+// Un marcador de competición no es una caja negra con dos bombillas: lleva el
+// cronómetro en ámbar y el tanteo en rojo de siete segmentos, y esos dígitos
+// están encendidos todo el rato y además cambian. Enmarcarlo entero y contar
+// píxeles rojos sería contar el tanteo.
+//
+// La salida es comparar dos capturas del MISMO recuadro: una con las lámparas
+// apagadas y otra con una encendida. Lo que aparece entre las dos es la
+// lámpara, y sólo la lámpara: los dígitos están en las dos y se van solos en
+// la resta. Con eso se sabe DÓNDE está cada lámpara dentro del recuadro, y
+// durante el análisis se mira ahí y no en el resto.
+
+/** Copia utilizable y guardable de un recorte. */
+export function guardarReferencia(imagen) {
+  return {
+    ancho: imagen.width,
+    alto: imagen.height,
+    datos: new Uint8ClampedArray(imagen.data),
+  };
+}
+
+/**
+ * Qué ha aparecido de un color respecto a la referencia.
+ *
+ * Un píxel cuenta si AHORA es de ese color y en la referencia NO lo era. Un
+ * dígito rojo encendido en las dos capturas no aparece; una lámpara que antes
+ * estaba apagada, sí.
+ *
+ * @returns {{mancha:number, zona:object|null}} `zona` en 0..1 del recuadro
+ */
+export function loQueHaAparecido(imagen, referencia, cual) {
+  const { width: ancho, height: alto, data: ahora } = imagen;
+  if (!referencia || referencia.ancho !== ancho || referencia.alto !== alto) {
+    return { mancha: 0, zona: null };
+  }
+
+  const antes = referencia.datos;
+  const mascara = new Uint8Array(ancho * alto);
+
+  for (let i = 0, p = 0; i < ahora.length; i += 4, p++) {
+    const esAhora = colorDelPixel(ahora[i], ahora[i + 1], ahora[i + 2]) === cual;
+    if (!esAhora) continue;
+    const eraAntes = colorDelPixel(antes[i], antes[i + 1], antes[i + 2]) === cual;
+    if (!eraAntes) mascara[p] = 1;
+  }
+
+  const mayor = manchaMasGrande(mascara, ancho, alto);
+  if (!mayor.caja) return { mancha: 0, zona: null };
+
+  return {
+    mancha: mayor.tamano,
+    zona: {
+      x: mayor.caja.x / ancho,
+      y: mayor.caja.y / alto,
+      ancho: mayor.caja.ancho / ancho,
+      alto: mayor.caja.alto / alto,
+    },
+  };
+}
+
+/**
+ * La zona de una lámpara, ensanchada para que la cámara pueda moverse un poco
+ * sin sacarla. Sin holgura, cuatro píxeles de temblor la dejan fuera.
+ */
+export function conHolgura(zona, cuanto = 0.6) {
+  const dx = zona.ancho * cuanto;
+  const dy = zona.alto * cuanto;
+  const x = Math.max(0, zona.x - dx);
+  const y = Math.max(0, zona.y - dy);
+  return {
+    x,
+    y,
+    ancho: Math.min(1 - x, zona.ancho + dx * 2),
+    alto: Math.min(1 - y, zona.alto + dy * 2),
+  };
+}
+
+/** Cuántos píxeles de un color hay dentro de una zona del recorte. */
+export function contarEnZona(imagen, zona, cual) {
+  const { width: ancho, height: alto, data: pixeles } = imagen;
+  const x1 = Math.max(0, Math.floor(zona.x * ancho));
+  const y1 = Math.max(0, Math.floor(zona.y * alto));
+  const x2 = Math.min(ancho, Math.ceil((zona.x + zona.ancho) * ancho));
+  const y2 = Math.min(alto, Math.ceil((zona.y + zona.alto) * alto));
+
+  let cuenta = 0;
+  for (let y = y1; y < y2; y++) {
+    for (let x = x1; x < x2; x++) {
+      const i = (y * ancho + x) * 4;
+      if (colorDelPixel(pixeles[i], pixeles[i + 1], pixeles[i + 2]) === cual) cuenta++;
+    }
+  }
+  return cuenta;
 }
 
 // --- Encontrar los tocados en una sucesión de muestras -----------------

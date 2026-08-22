@@ -616,6 +616,19 @@ video::-webkit-media-controls-panel {
   pointer-events: none;
 }
 
+/* Dónde cree Teseo que está cada lámpara. Se dibuja encima del vídeo porque
+   es la única forma de que el usuario compruebe de un vistazo que ha acertado
+   y no ha cogido un dígito del tanteo. */
+.zona-lampara {
+  position: absolute;
+  border: 2px dashed;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.zona-roja { border-color: var(--contra); }
+.zona-verde { border-color: var(--favor); }
+
 .progreso-analisis {
   display: block;
   width: 100%;

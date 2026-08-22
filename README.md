@@ -178,11 +178,28 @@ tocados solo. **Es opcional**: hay grabaciones donde el marcador no se ve, y
 `js/analisis.js` es el que reproduce y muestrea. La pantalla de calibrado es
 `js/pantallas/calibrado.js`.
 
-**Cómo detecta.** Se clasifica cada píxel del recuadro en HSV: hace falta tono
-rojo o verde, saturación y brillo. En HSV y no en RGB porque el móvil reajusta
-la exposición y un LED potente satura el sensor y sale blanco, conservando el
-tinte sólo en el halo. El rojo está partido en los dos extremos de la rueda de
-tonos, así que se miran los dos rangos.
+**El problema de verdad: el marcador no es una caja con dos bombillas.** Lleva
+el cronómetro en ámbar y el tanteo en rojo de siete segmentos, encendidos todo
+el rato y cambiando. Medido sobre un marcador de competición: con el recuadro
+alrededor del aparato y **sin ningún tocado**, hay 443 píxeles rojos, más que
+los 290 de la propia lámpara. Contar el recuadro entero es contar el tanteo.
+
+**La solución: una imagen de referencia.** El calibrado guarda una captura del
+recuadro con las lámparas apagadas. Al medir en un tocado, se compara: un píxel
+cuenta si AHORA es rojo y en la referencia NO lo era. Los dígitos están en las
+dos capturas y desaparecen en la comparación; la lámpara, no. Con eso se sabe
+**dónde** está cada lámpara dentro del recuadro, y durante el análisis se mira
+sólo ahí, con holgura alrededor para el temblor de la cámara.
+
+Por eso el recuadro se dibuja grande, alrededor de todo el aparato: da margen
+para el movimiento, y de paso servirá de plantilla para el seguimiento de la
+fase 2.
+
+**Cómo clasifica un píxel.** En HSV: hace falta tono rojo o verde, saturación y
+brillo. En HSV y no en RGB porque el móvil reajusta la exposición y un LED
+potente satura el sensor y sale blanco, conservando el tinte sólo en el halo.
+El rojo está partido en los dos extremos de la rueda de tonos, así que se miran
+los dos rangos.
 
 **Cuándo da por encendida una lámpara.** No con la muestra de ahora, sino con
 **dos de las tres últimas**. Esa regla hace dos cosas a la vez: aguanta que un
@@ -194,12 +211,17 @@ Lo que se busca es el **flanco de subida**, y el instante que se apunta es el
 de la primera muestra que vio la luz, no el de la que lo confirmó. Si las dos
 lámparas suben con menos de medio segundo de diferencia, es un doble.
 
-**El calibrado se mide dos veces.** Apagado da la línea base —lo que hay ahí
-cuando no pasa nada, que descubre banderas y maillots dentro del recuadro— y
-encendido da la escala para poner el umbral. El segundo paso se puede saltar,
-pero entonces el umbral es una estimación y se avisa. Al guardar se barren
-veinte fotogramas repartidos por todo el vídeo: si en la mayoría "habría
-lámpara", el recuadro no vale.
+**El calibrado se mide dos veces, y las dos son obligatorias.** La referencia
+apagada y al menos un tocado para localizar la lámpara. Se puede repetir el
+segundo paso en tocados de distinto color, y de cada color se guarda la mayor
+mancha vista: si al medir un tocado verde cambia además el tanteo, esos veinte
+píxeles rojos no pisan la lámpara roja de trescientos ya localizada.
+
+Un riesgo que queda: si entre la referencia y el tocado **cambia el tanteo**,
+ese dígito también aparece en la comparación. Por eso Teseo **dibuja sobre el
+vídeo lo que ha localizado** y dice dónde cae ("arriba a la derecha"): mirarlo
+es la comprobación. Y al guardar se barren veinte fotogramas repartidos por
+todo el vídeo; si en la mayoría "habría lámpara", lo localizado es un dígito.
 
 **Nada se etiqueta solo.** Lo que sale son propuestas (`intercambio.propuesto`),
 que aparecen en la tabla pero **no cuentan ni para el marcador ni para las

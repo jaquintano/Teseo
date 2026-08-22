@@ -134,11 +134,14 @@ export async function pantallaAyuda(contenedor) {
       'tocados mirando cuándo se encienden las lámparas. Está debajo de la ' +
       'tabla, en "Detección automática". Es opcional: si no lo usas nunca, ' +
       'todo funciona igual.',
-      'Primero hay que calibrar: buscar un momento donde se vea el marcador, ' +
-      'enmarcarlo con el dedo —con holgura, que la cámara se mueve— y decir de ' +
-      'qué color eres tú. Se mide dos veces, con las lámparas apagadas y con ' +
-      'una encendida, y Teseo te dice si va a funcionar antes de que pierdas ' +
-      'dos minutos analizando.',
+      'Primero hay que calibrar. Enmarca con el dedo el aparato ENTERO y con ' +
+      'holgura, no las bombillas: la cámara se mueve aunque no quieras.',
+      'Se mide dos veces. Una con las lámparas apagadas y otra en un tocado. ' +
+      'Comparando las dos, Teseo encuentra las lámparas y no se confunde con el ' +
+      'cronómetro ni con el tanteo, que están encendidos en las dos capturas. ' +
+      'Te dibuja encima del vídeo lo que ha encontrado: míralo, es la forma de ' +
+      'saber que ha acertado.',
+      'Y te dice si va a funcionar antes de que pierdas dos minutos analizando.',
       'El análisis tarda alrededor de la mitad de lo que dure el vídeo. Deja ' +
       'Teseo en pantalla: si te vas a otra aplicación o se apaga el móvil, se ' +
       'queda en pausa hasta que vuelvas.',
