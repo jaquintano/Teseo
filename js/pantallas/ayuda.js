@@ -77,6 +77,9 @@ export async function pantallaAyuda(contenedor) {
       'uno en contra y dos dobles son un 5-3.',
       'Y no se reinicia con cada vídeo: si el asalto tiene varios tiempos, el ' +
       'segundo empieza donde lo dejó el primero.',
+      'Debajo del vídeo, a la derecha del reloj, va el marcador tal y como iba ' +
+      'en el segundo que estás viendo: sube según van quedando atrás los ' +
+      'intercambios que ya has etiquetado.',
       'Arriba te dice con qué marcador empieza el tiempo, y lo puedes ' +
       'corregir. Es para cuando el vídeo tiene agujeros: no grabaste el primer ' +
       'tiempo, o se cortó antes de acabar y se perdieron varios tocados. Súbelo ' +

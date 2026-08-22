@@ -97,6 +97,20 @@ export function tanteoCorrido(intercambios, inicial = { favor: 0, contra: 0 }) {
   });
 }
 
+/**
+ * Cómo iba el marcador en un segundo concreto del vídeo: lo que traía el
+ * tiempo más lo que se haya etiquetado hasta ahí.
+ */
+export function tanteoEn(intercambios, inicial, segundos) {
+  const hasta = intercambios.filter((intercambio) => intercambio.instante <= segundos);
+  const cuenta = contarTocados(hasta);
+
+  return {
+    favor: inicial.favor + cuenta.favor,
+    contra: inicial.contra + cuenta.contra,
+  };
+}
+
 /** Ganando, perdiendo o empate, mirando el marcador que sea. */
 export function situacionDe({ favor, contra }) {
   if (favor > contra) return 'ganando';

@@ -29,7 +29,10 @@ export function crearReproductor(opciones = {}) {
     disableremoteplayback: true,
   });
 
-  const marcador = crear('p', { class: 'tiempo', texto: '0.00 s / — s' });
+  // El reloj a la izquierda; a la derecha, lo que quiera colgar quien use el
+  // reproductor. El vídeo no sabe de esgrima: se limita a hacerle sitio.
+  const reloj = crear('span', { class: 'reloj', texto: '0.00 s / — s' });
+  const filaDeTiempo = crear('p', { class: 'tiempo' }, [reloj, opciones.juntoAlTiempo]);
   const btnPlay = crear('button', {
     type: 'button', class: 'boton boton-principal', texto: 'Reproducir',
   });
@@ -53,7 +56,7 @@ export function crearReproductor(opciones = {}) {
 
   function refrescar() {
     const duracion = isFinite(video.duration) ? video.duration.toFixed(2) : '—';
-    marcador.textContent = `${video.currentTime.toFixed(2)} s / ${duracion} s`;
+    reloj.textContent = `${video.currentTime.toFixed(2)} s / ${duracion} s`;
     if (opciones.alCambiarTiempo) opciones.alCambiarTiempo(video.currentTime);
   }
 
@@ -117,7 +120,7 @@ export function crearReproductor(opciones = {}) {
     destinoPendiente = Math.min(Math.max(0, base + segundos), maximo);
 
     // Pintamos el destino ya, aunque la imagen tarde un poco en llegar.
-    marcador.textContent = `${destinoPendiente.toFixed(2)} s / ` +
+    reloj.textContent = `${destinoPendiente.toFixed(2)} s / ` +
       `${isFinite(video.duration) ? video.duration.toFixed(2) : '—'} s`;
 
     aplicarSalto();
@@ -251,7 +254,7 @@ export function crearReproductor(opciones = {}) {
   }, { passive: false });
 
   const elemento = crear('div', { class: 'reproductor' }, [
-    marco, marcador, btnPlay, rejilla,
+    marco, filaDeTiempo, btnPlay, rejilla,
   ]);
 
   return {

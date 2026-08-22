@@ -38,7 +38,7 @@ import {
   ALMACENES, obtener, guardar, borrar, listarPor, leerVideo,
 } from '../db.js';
 import { crearReproductor } from '../video.js';
-import { tanteosDeLosTiempos, tanteoCorrido } from '../tanteo.js';
+import { tanteosDeLosTiempos, tanteoCorrido, tanteoEn } from '../tanteo.js';
 
 // Cuánto se ve de un intercambio al tocarlo: un par de segundos de carrerilla
 // para entender de dónde viene la acción, y medio segundo detrás para ver cómo
@@ -122,8 +122,17 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   const hayVideo = fichero !== null;
 
+  // Al lado del reloj del vídeo, cómo va el marcador en ese segundo.
+  const tanteoEnVivo = crear('span', { class: 'tanteo tanteo-en-vivo' });
+
   const reproductor = hayVideo
-    ? crearReproductor({ alCambiarTiempo: (segundos) => moverCursor(segundos) })
+    ? crearReproductor({
+        alCambiarTiempo: (segundos) => {
+          moverCursor(segundos);
+          pintarTanteoEnVivo(segundos);
+        },
+        juntoAlTiempo: tanteoEnVivo,
+      })
     : null;
   reproductorActivo = reproductor;
 
@@ -205,6 +214,17 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   }
 
   /**
+   * El marcador tal y como iba en el segundo que se está viendo: el de
+   * partida mientras no haya pasado nada, y lo que sumen los intercambios ya
+   * etiquetados según van quedando atrás.
+   */
+  function pintarTanteoEnVivo(segundos) {
+    if (!hayVideo) return;
+    const ahora = tanteoEn(intercambios, tanteoInicial, segundos);
+    tanteoEnVivo.textContent = `${ahora.favor}–${ahora.contra}`;
+  }
+
+  /**
    * Con qué marcador empieza este tiempo, y el botón para corregirlo.
    *
    * Hace falta porque el vídeo tiene agujeros: puede no haberse grabado el
@@ -283,6 +303,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   function pintarIntercambios() {
     pintarMarcador();
     if (!hayVideo) { pintarTabla(); pintarContador(); return; }
+
+    pintarTanteoEnVivo(reproductor.tiempoActual());
 
     for (const vieja of barra.querySelectorAll('.marca')) vieja.remove();
 

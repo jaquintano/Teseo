@@ -502,14 +502,23 @@ video::-webkit-media-controls-panel {
   opacity: 0 !important;
 }
 
+/* El reloj a la izquierda y el marcador a la derecha, cada uno en su punta:
+   son dos datos que se miran por separado. */
 .tiempo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin: 0 0 0.5rem;
   /* Tabular para que los dígitos no bailen al avanzar el tiempo. */
   font-variant-numeric: tabular-nums;
   font-size: 0.95rem;
   font-weight: 600;
-  text-align: center;
 }
+
+/* El marcador del instante que se ve: un poco mayor, que es lo que se busca
+   de un vistazo mientras corre el vídeo. */
+.tanteo-en-vivo { font-size: 1.2rem; }
 
 .rejilla-saltos {
   display: grid;
