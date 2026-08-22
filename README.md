@@ -40,8 +40,18 @@ tirador ─┬─ tú (uno)
 asalto ── un combate contra un rival, con su contexto
    └── tiempo ── en poule uno; en directas dos o tres
           ├── un vídeo
-          └── intercambios ── las etiquetas (fase 4)
+          └── intercambios ── las etiquetas
 ```
+
+Del **asalto** se guardan el rival, la competición, la fase (poule, tablón de
+32, final…), el resultado final, de quién era la prioridad si la hubo, la
+fatiga percibida del 1 al 5 y una nota. No se guarda la fecha: la pone la
+competición, que es obligatoria por eso mismo.
+
+Del **tiempo**, su vídeo y **con qué marcador empieza**. Eso último se guarda
+y se puede corregir a mano porque el vídeo tiene agujeros: puede no haberse
+grabado el primer tiempo, o cortarse antes de acabar y perderse tocados. Ver
+"El tanteo", más abajo.
 
 Un intercambio tiene un instante en segundos y tres capas —acción ofensiva,
 acción defensiva y resultado—, todas opcionales. **Las capas describen lo que
@@ -70,15 +80,24 @@ js/calculo-estadisticas.js     LAS CUENTAS. Módulo independiente: no toca ni
                                la pantalla ni la base de datos. Junto con
                                constantes.js se puede llevar a otro sitio
                                (por ejemplo, algo para el entrenador)
+js/tanteo.js                   el marcador: quién va ganando y con qué se
+                               llega a cada tiempo. También puro
+js/genero.js                   el género y las categorías del tirador, que
+                               mandan en media aplicación
+js/competiciones.js            lee el calendario y decide qué importar
+js/instalacion.js              el ofrecimiento de instalar en la pantalla
 js/db.js                       base de datos local y almacenamiento de vídeos
 js/ui.js                       piezas de interfaz y navegación entre pantallas
-js/registro.js                 registro interno, visible en Diagnóstico
+js/registro.js                 registro interno, visible en Configuración
 js/video.js                    el reproductor, como pieza reutilizable
 js/pantallas/perfil.js         tu ficha
 js/pantallas/ficha-tirador.js  el formulario que comparten perfil y rivales
 js/pantallas/rivales.js        lista y ficha de rivales
 js/pantallas/asaltos.js        lista, alta y detalle de asaltos con sus tiempos
-js/pantallas/etiquetado.js     por ahora sólo reproduce; la fase 4 va aquí
+js/pantallas/competiciones.js  lista, ficha e importación de competiciones
+js/pantallas/etiquetado.js     EL CORAZÓN: vídeo, marcas, tabla y tanteo
+js/pantallas/estadisticas.js   los filtros y la presentación de las cuentas
+js/pantallas/ayuda.js          la ayuda para quien abre Teseo por primera vez
 js/pantallas/menu.js           menú y configuración
 iconos/logo-teseo.jpg          el logotipo original, y la pantalla de arranque
 iconos/icon-*.png              recortes del escudo, generados desde el logotipo
@@ -104,24 +123,59 @@ viendo la versión vieja. La versión aparece junto al título.
 ## Cómo se etiqueta
 
 Reproduce, pausa donde ha pasado algo, afina con los saltos de ±0,1 s y pulsa
-**Nuevo intercambio aquí**. Eso deja una marca en ese instante exacto y abre
-las tres capas de botones. Cada toque se guarda solo.
+**Nuevo intercambio**. Eso deja una marca en ese instante exacto y abre su
+ficha, que es una ventana encima de todo: primero el resultado, que es lo
+único que se sabe siempre, y debajo las acciones y las zonas. Cada cambio se
+guarda solo.
 
-La línea de tiempo bajo el vídeo lleva una marca por intercambio, con color
-según el resultado: verde a favor, rojo en contra, ámbar doble, gris el resto.
-Tocar una marca lleva el vídeo a ese instante y abre su ficha para corregirla
-o borrarla. Tocando la línea en cualquier otro sitio saltas a ese momento.
+**Navegar y editar están separados.** Tocar una marca de la línea de tiempo,
+o una fila de la tabla, sólo reproduce ese intercambio: arranca dos segundos
+antes y para medio segundo después. No abre nada, porque repasar un asalto no
+tiene por qué interrumpirse. Para corregir una etiqueta está el lápiz de su
+fila.
 
-## Qué probar en la fase 4
+Debajo del vídeo hay una tabla con lo etiquetado: instante, resultado con el
+color de su marca —verde a favor, rojo en contra, ámbar doble— y cómo iba el
+marcador. Y junto al reloj del vídeo, el marcador del segundo que se está
+viendo, que da un respingo cuando cambia.
 
-1. Abre un tiempo con vídeo y etiqueta cinco o seis intercambios seguidos,
-   como lo harías de verdad.
+El reproductor se queda pegado al borde de arriba al bajar por la tabla:
+etiquetar es mirar el vídeo y la lista a la vez.
+
+### Qué probar cuando se toca esta pantalla
+
+1. Etiqueta cinco o seis intercambios seguidos, como lo harías de verdad.
 2. Comprueba que los saltos de ±0,1 s te dejan en el fotograma que quieres.
-3. Toca una marca ya puesta: debe llevarte a su instante y abrirla con lo que
-   habías elegido.
-4. Cambia el resultado a *Nada*: las zonas deben desaparecer.
-5. Borra un intercambio.
-6. Cierra Teseo del todo y vuelve: debe estar todo.
+3. Toca una fila: debe reproducir su trozo y parar solo, sin abrir la ficha.
+4. Toca su lápiz: debe abrir la ficha con lo que habías elegido.
+5. Cambia el resultado a *Nada*: las zonas deben desaparecer y el marcador de
+   la tabla recalcularse de ahí abajo.
+6. Corrige el marcador de partida: todo debe moverse con él.
+7. Borra un intercambio.
+8. Cierra Teseo del todo y vuelve: debe estar todo.
+
+## El tanteo
+
+Un doble suma a los dos: tres tocados a favor, uno en contra y dos dobles
+dejan un 5-3. Lo que **no** se deduce de las etiquetas es con qué marcador
+empieza cada tiempo, y por eso se guarda en el tiempo y se puede corregir a
+mano: el vídeo puede no tener el primer tiempo, o cortarse antes de acabar.
+
+Lo de dentro se sigue derivando de las etiquetas, y ésa es la razón: al
+corregir un resultado se recalcula todo lo que viene detrás. Guardar el
+marcador en cada intercambio habría hecho lo contrario.
+
+El **resultado final del asalto** se pregunta aparte, en su ficha. Es cómo
+acabó de verdad, lo diga o no la grabación.
+
+## El ranking
+
+**Menú → Ranking** enseña el ranking federativo tal cual lo publica la RFEE:
+puesto, tirador, club y puntos. Se eligen la temporada y la categoría; el
+arma y el género salen del perfil.
+
+El descargador guarda la posición y los puntos, y ordena por puesto. A quien
+la federación aún no ha colocado lo marca con un 9999, y ahí se pone un guion.
 
 ## Traer rivales del ranking de la RFEE
 
@@ -163,7 +217,7 @@ node herramientas/traer-ranking.js --todo --ultimas 2
 ```
 
 Eso deja los ficheros en `datos/` y rehace el índice. Los rankings **no** se
-precargan con la aplicación: son 19 ficheros y creciendo, así que se piden
+precargan con la aplicación: son decenas de ficheros, así que se piden
 cuando hacen falta y el service worker los va guardando por el camino.
 
 Reglas de la importación:
@@ -248,7 +302,7 @@ pantallas. Sólo sale de la aplicación desde "Mis asaltos". Volver a esa
 pantalla deshace todo el camino andado, para que desde ella el siguiente
 atrás salga de verdad.
 
-**Empezar de cero.** En Menú → Diagnóstico hay un botón que borra todo:
+**Empezar de cero.** En Menú → Configuración hay un botón que borra todo:
 perfil, rivales, asaltos, vídeos y marcas. Pide confirmación dos veces
 porque no se puede deshacer. Existe porque desde los ajustes de Android no
 siempre es evidente cómo vaciar los datos de una aplicación instalada desde
@@ -256,12 +310,22 @@ el navegador.
 
 **La ayuda** (Menú → Ayuda) está escrita para alguien que abre Teseo por
 primera vez. **Hay que actualizarla en cada versión que cambie algo que el
-usuario vea**: vive en .
+usuario vea**: vive en `js/pantallas/ayuda.js`.
+
+**Menú → Configuración** reúne lo que no es del día a día: cuánto espacio
+ocupa Teseo, protegerlo frente al borrado automático, vaciar de golpe los
+rivales y las competiciones que no aparecen en ningún asalto, empezar de cero
+y el registro interno por si algo falla.
 
 ## Las estadísticas
 
 Se llega desde Menú → Estadísticas, y se pueden filtrar por rival, por mano
-del rival y por número de asalto de la sesión.
+del rival y por **cómo iba el marcador** —ganando, empate o perdiendo—, que
+no se tira igual por delante que por detrás. La situación es la de **antes**
+del intercambio: es el estado con el que se decidió cómo tirarlo.
+
+Queda también un filtro por número de asalto de la sesión, que sólo aparece
+si hay asaltos viejos que lo tengan: ese dato dejó de preguntarse.
 
 **Ofensivas.** Eficacia por acción (intentos frente a tocados conseguidos),
 iniciativa (cuándo atacaste frente a cuándo defendiste), y el reparto de tus
@@ -288,3 +352,8 @@ Dos criterios que conviene conocer para leerlas bien:
 3. ✅ Perfil, rivales, asaltos y tiempos con su vídeo.
 4. ✅ Etiquetado: línea de tiempo con marcas y las tres capas.
 5. ✅ Estadísticas y filtros.
+
+Desde entonces el trabajo va a petición, versión a versión: importación desde
+la RFEE (rivales, competiciones y ranking), el tanteo, la tabla de
+intercambios, el resultado del asalto y un buen repaso de la pantalla de
+etiquetado para que quepa todo en un móvil.
