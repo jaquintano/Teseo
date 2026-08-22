@@ -457,7 +457,12 @@ textarea.entrada {
    Se pega entero y no sólo la imagen: si no, al llegar abajo estarías viendo
    el vídeo sin poder pausarlo ni afinar con los saltos.
 
-   El fondo es imprescindible: sin él, la tabla se leería por debajo. */
+   El fondo es imprescindible: sin él, la tabla se leería por debajo.
+
+   Pegarse arriba sólo funciona si la página da de sí lo bastante para que el
+   reproductor llegue hasta el borde. Encima de él hay tres cosas y en un
+   tiempo recién abierto debajo no hay nada, así que de eso se encarga
+   ajustarColchon() en js/pantallas/etiquetado.js. */
 .reproductor {
   position: sticky;
   top: 0;

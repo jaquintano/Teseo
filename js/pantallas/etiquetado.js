@@ -62,7 +62,12 @@ let reproductorActivo = null;
 // seguiría reproduciendo un vídeo invisible en otra pantalla.
 let analisisActivo = null;
 
+// Lo que la pantalla haya enganchado fuera de su propio árbol —de momento, un
+// oyente de `resize`—, para poder deshacerlo al irse.
+let alSalir = null;
+
 export function soltarReproductor() {
+  if (alSalir) { alSalir(); alSalir = null; }
   if (analisisActivo) {
     analisisActivo.cancelar();
     analisisActivo = null;
@@ -201,6 +206,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
   const marcador = crear('div', { class: 'marcador' });
   const preguntaColor = crear('div');
+  // Hueco al final de la página. Ver ajustarColchon().
+  const colchon = crear('div', { 'aria-hidden': 'true' });
   let cambiandoColor = false;
   const contador = crear('p', { class: 'ayuda contador' });
   const tabla = crear('div');
@@ -245,7 +252,17 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
         formatearBytes(tiempo.tamano),
       ].join(' · '),
     }),
+    hayVideo ? colchon : null,
   );
+
+  if (hayVideo) {
+    // El alto del vídeo cambia con la pantalla, y con él lo que hay que
+    // desplazarse para que llegue arriba.
+    window.addEventListener('resize', ajustarColchon);
+    alSalir = () => window.removeEventListener('resize', ajustarColchon);
+    // Y al abrir o cerrar la detección automática, que está justo encima.
+    deteccion.addEventListener('toggle', ajustarColchon);
+  }
 
   if (hayVideo) {
     reproductor.cargar(fichero);
@@ -367,6 +384,40 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     if (!hayVideo) return;
     btnAnterior.classList.toggle('desactivado', !elDeAlLado(-1));
     btnSiguiente.classList.toggle('desactivado', !elDeAlLado(1));
+  }
+
+  /**
+   * Deja al final de la página el hueco justo para que el vídeo pueda subir
+   * del todo.
+   *
+   * El reproductor se queda pegado al borde de arriba (`position: sticky`),
+   * pero eso sólo pasa si la página da de sí lo suficiente para que llegue
+   * hasta ahí. Encima de él hay tres cosas —tu color, la detección automática
+   * y el marcador de partida— que suman sus buenos trescientos píxeles, y en
+   * un tiempo recién abierto, sin intercambios todavía, debajo no hay nada que
+   * ocupe otro tanto: el scroll se acaba antes y el vídeo se queda a medio
+   * camino, que es justo lo que no queremos.
+   *
+   * Así que se mide lo que falta y se pone de hueco, ni un píxel más. Cuando
+   * la tabla crece, el hueco se encoge solo hasta desaparecer.
+   */
+  function ajustarColchon() {
+    if (!hayVideo) return;
+
+    // A cero primero: si no, se estaría midiendo contando el hueco de antes.
+    colchon.style.height = '0px';
+
+    // Para saber dónde vive el reproductor hay que despegarlo un instante:
+    // mientras está pegado arriba, lo que dice de su posición es dónde se está
+    // pintando. Y no vale medir el elemento de encima y sumar: entre los dos
+    // hay un margen que no entra en ninguna de las dos cajas, y el vídeo se
+    // quedaba nueve píxeles sin llegar.
+    const pegado = reproductor.elemento.style.position;
+    reproductor.elemento.style.position = 'static';
+    const donde = reproductor.elemento.getBoundingClientRect().top + window.scrollY;
+    reproductor.elemento.style.position = pegado;
+    const desplazable = document.documentElement.scrollHeight - window.innerHeight;
+    colchon.style.height = `${Math.max(0, Math.ceil(donde - desplazable))}px`;
   }
 
   function moverCursor(segundos) {
@@ -514,6 +565,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     pintarSaltos();
     pintarContador();
     pintarTabla();
+    ajustarColchon();
   }
 
   function pintarContador() {
