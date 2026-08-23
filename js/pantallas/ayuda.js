@@ -118,6 +118,13 @@ export async function pantallaAyuda(contenedor) {
       'Cada marca de colores es un intercambio que ya has etiquetado, con el ' +
       'color de la lámpara que se encendió: si tu lámpara era la roja, tus ' +
       'tocados salen en rojo y los suyos en verde. El doble es ámbar.',
+      'El botón "×2", al lado del de reproducir, pone el vídeo al doble de ' +
+      'velocidad: un asalto tiene mucho rato de nada entre tocado y tocado. Se ' +
+      'queda puesto hasta que lo vuelvas a tocar.',
+      'Debajo de los botones de afinar el tiempo hay cuatro para apuntar un ' +
+      'intercambio de un toque: A favor, En contra, Doble y Nulo. No paran el ' +
+      'vídeo ni te abren nada, así que puedes ir apuntando sobre la marcha; si ' +
+      'luego quieres describir la acción, el lápiz de su fila.',
       'A los lados del botón de reproducir tienes "‹" y "›": saltan al ' +
       'intercambio anterior y al siguiente y te reproducen su trozo. Es la ' +
       'forma más cómoda de repasar un asalto entero ya etiquetado. Se apagan ' +

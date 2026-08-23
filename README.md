@@ -164,6 +164,20 @@ tiene por qué interrumpirse. Para corregir una etiqueta está el lápiz de su
 fila. Esos dos segundos y ese medio son configurables (ver *Ajustes
 avanzados*).
 
+**El botón "×2"**, entre reproducir y "›", dobla la velocidad. Un asalto tiene
+mucho rato de nada entre tocado y tocado, y a 2× se repasa en la mitad de
+tiempo. Se queda puesto hasta que se vuelva a tocar, también al pausar y al
+saltar.
+
+**Los cuatro botones de apuntar de un toque** —A favor, En contra, Doble,
+Nulo— van justo debajo de los saltos finos, encima de "Nuevo intercambio".
+Crean el intercambio con su resultado ya puesto **sin parar el vídeo y sin
+abrir la ficha**: al repasar un asalto ya sabes cómo acabó cada intercambio y
+no quieres nada más. Las tres capas se rellenan luego con el lápiz de su fila,
+o no se rellenan nunca. Llevan el mismo gris que los saltos finos porque son de
+la misma familia —se tocan y pasa algo en el vídeo, sin abrir nada—, y el doble
+va en ámbar, que es el único que no es de nadie.
+
 **Los botones "‹" y "›"**, a los lados del de reproducir, saltan al intercambio
 anterior y al siguiente y reproducen su trozo: es la forma más cómoda de
 repasar un asalto ya etiquetado, sin acertarle con el dedo a una marca de
@@ -349,29 +363,36 @@ sólo vale con trípode.
 
 ## Una sola altura para todo lo que se toca
 
-**Botones, campos, desplegables, botones de opción y el resumen de un
-`<details>` miden 56 px de alto en toda la aplicación.** No es capricho: una
-columna con controles de tres alturas parece rota, y con el dedo se falla más
-cuando el objetivo cambia de tamaño en cada fila.
+**Botones, campos, desplegables, botones de opción, deslizadores, el resumen de
+un `<details>` y la cabecera de la pantalla miden 40 px de alto en toda la
+aplicación.** No es capricho: una columna con controles de tres alturas parece
+rota, y con el dedo se falla más cuando el objetivo cambia de tamaño en cada
+fila.
 
 La altura sale del token `--alto-control` en `css/estilos.css`, **nunca de un
 número suelto**. "Compacto" (`.boton-compacto`) quiere decir menos aire por
 dentro y menos hueco por fuera, no más bajo.
 
-Cuatro excepciones, y están escritas al lado de la regla:
+**Cuidado al cambiar ese número:** el relleno de arriba y abajo tiene que caber
+dentro. Un botón con `padding: 0.75rem` mide 49 px por su cuenta, y entonces la
+altura mínima no manda nada y bajar el token no se nota. Los rellenos están
+puestos para que quepan.
+
+Tres excepciones, y están escritas al lado de la regla:
 
 | Qué | Cuánto | Por qué |
 |---|---|---|
-| Cabecera de pantalla (Volver, Menú) | `--alto-cabecera`, 44 px | Va pegada al título, no es una fila más; a 56 se comería la primera pantallada |
 | Filas de lista | `--alto-fila-lista`, 64 px | Llevan dos renglones de texto |
-| Iconos dentro de una fila de tabla | lo que ocupen | A 56 la fila sería el doble de alta y la tabla dejaría de caber de un vistazo |
+| Iconos dentro de una fila de tabla | lo que ocupen | A 40 la fila sería el doble de alta y la tabla dejaría de caber de un vistazo |
 | El botón que flota sobre el vídeo | 40 px | No está en el cuerpo de la pantalla, y cuanto menos tape mejor |
 
 Un área de texto (`textarea`) es más alta a propósito: la regla es que nada
-**baje** de `--alto-control`, no que nada la pase.
+**baje** de `--alto-control`, no que nada la pase. Y un rótulo que no quepa en
+un renglón parte el botón en dos y lo deja más alto: eso se arregla acortando
+el rótulo, no tocando la altura.
 
 **Esto se comprueba al tocar la interfaz**, midiendo los controles de todas las
-pantallas: cualquier valor que no sea 56 o una de las cuatro excepciones es un
+pantallas: cualquier valor que no sea 40 o una de las tres excepciones es un
 fallo.
 
 ## Ajustes avanzados

@@ -10,6 +10,9 @@
 
 import { crear } from './ui.js';
 
+// Lo que vale el ×2. Más arriba se pierde el hilo de lo que pasa en la pista.
+const VELOCIDAD_DOBLE = 2;
+
 const SALTOS = [
   { segundos: -1, etiqueta: '−1 s' },
   { segundos: -0.1, etiqueta: '−0,1 s' },
@@ -259,9 +262,26 @@ export function crearReproductor(opciones = {}) {
     aplicarZoom();
   }, { passive: false });
 
+  // Doblar la velocidad. Un asalto tiene mucho rato de nada entre tocado y
+  // tocado, y a 2× se repasa en la mitad de tiempo sin perder de vista lo que
+  // pasa. Se queda puesto hasta que se vuelva a tocar: el navegador conserva
+  // playbackRate entre pausas y saltos.
+  const btnVelocidad = crear('button', {
+    type: 'button', class: 'boton boton-velocidad', texto: '×2',
+    'aria-label': 'Reproducir al doble de velocidad',
+    'aria-pressed': 'false',
+  });
+
+  btnVelocidad.addEventListener('click', () => {
+    const doble = video.playbackRate !== VELOCIDAD_DOBLE;
+    video.playbackRate = doble ? VELOCIDAD_DOBLE : 1;
+    btnVelocidad.classList.toggle('elegido', doble);
+    btnVelocidad.setAttribute('aria-pressed', String(doble));
+  });
+
   const flancos = opciones.flancosDePlay || {};
   const filaPlay = crear('div', { class: 'fila-play' }, [
-    flancos.antes || null, btnPlay, flancos.despues || null,
+    flancos.antes || null, btnPlay, btnVelocidad, flancos.despues || null,
   ]);
 
   const elemento = crear('div', { class: 'reproductor' }, [

@@ -46,6 +46,16 @@ import { tanteosDeLosTiempos, tanteoCorrido, tanteoEn, situacionDe } from '../ta
 import { analizar } from '../analisis.js';
 import { ajuste } from '../ajustes.js';
 
+// Los cuatro botones de apuntar un intercambio de un toque. Van con rótulo
+// corto y por su cuenta, no derivados de RESULTADOS: ahí pone "Tocado a favor",
+// que en un botón de un cuarto de pantalla no cabe.
+const RAPIDOS = [
+  { id: 'favor', etiqueta: 'A favor' },
+  { id: 'contra', etiqueta: 'En contra' },
+  { id: 'doble', etiqueta: 'Doble' },
+  { id: 'nada', etiqueta: 'Nulo' },
+];
+
 /** Una propuesta de la detección automática no mueve el marcador. */
 const cuentaParaElMarcador = (intercambio) => !intercambio.propuesto;
 
@@ -218,6 +228,23 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   const ficha = crear('dialog', { class: 'ficha-intercambio' });
   ficha.addEventListener('close', pintarIntercambios);
 
+  /**
+   * Cuatro botones para apuntar un intercambio de un toque.
+   *
+   * Lo corriente al repasar un asalto es que ya sepas cómo acabó cada
+   * intercambio y no quieras nada más: con esto se apunta sin abrir la ficha
+   * y sin parar el vídeo, que es lo que hacen "Nuevo intercambio" y el lápiz
+   * cuando además quieres describir la acción. Las tres capas se pueden
+   * rellenar después, o no rellenarse nunca.
+   */
+  const rapidos = hayVideo ? crear('div', { class: 'rejilla-saltos rejilla-rapida' },
+    RAPIDOS.map(({ id, etiqueta }) => crear('button', {
+      type: 'button',
+      class: 'boton boton-rapido boton-rapido-' + id,
+      texto: etiqueta,
+      onclick: () => crearIntercambioRapido(id),
+    }))) : null;
+
   const btnNuevo = hayVideo ? crear('button', {
     type: 'button', class: 'boton boton-principal boton-compacto',
     texto: 'Nuevo intercambio',
@@ -240,9 +267,12 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     hayVideo ? deteccion : null,
     marcador,
     hayVideo ? reproductor.elemento : null,
+    // Pegados a los saltos finos del reproductor: se afina el instante y se
+    // apunta ahí mismo, sin bajar a buscar el botón.
+    rapidos,
+    btnNuevo,
     barra,
     contador,
-    btnNuevo,
     tabla,
     ficha,
     crear('p', {
@@ -330,6 +360,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   function aplicarBloqueo() {
     if (!hayVideo) return;
     btnNuevo.classList.toggle('desactivado', !miColor);
+    if (rapidos) rapidos.classList.toggle('desactivado', !miColor);
     deteccion.hidden = !miColor;
   }
 
@@ -707,7 +738,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       crear('button', {
         type: 'button',
         class: 'boton boton-principal boton-compacto' + (calibrado ? '' : ' desactivado'),
-        texto: 'Buscar los tocados',
+        texto: 'Búsqueda automática de intercambios',
         onclick: () => { if (calibrado) lanzarAnalisis(calibrado); },
       }),
 
@@ -936,6 +967,33 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   }
 
   /** Crea un intercambio en el instante en el que está parado el vídeo. */
+  /**
+   * Un intercambio con su resultado ya puesto, en el instante que se ve.
+   *
+   * No para el vídeo a propósito: la gracia de los cuatro botones es ir
+   * apuntando sobre la marcha. Tampoco abre la ficha; para describir la
+   * acción está el lápiz de su fila.
+   */
+  async function crearIntercambioRapido(resultado) {
+    if (!miColor) return;
+
+    const nuevo = {
+      tiempoId: tiempo.id,
+      asaltoId: tiempo.asaltoId,
+      instante: reproductor.tiempoActual(),
+      ofensiva: null,
+      defensiva: null,
+      resultado,
+      zonaCuerpo: null,
+      zonaPista: null,
+    };
+
+    nuevo.id = await guardar(ALMACENES.intercambios, nuevo);
+    intercambios.push(nuevo);
+    ordenar(intercambios);
+    pintarIntercambios();
+  }
+
   async function crearIntercambio() {
     if (!miColor) return;
     await reproductor.pausar();

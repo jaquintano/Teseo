@@ -1,6 +1,6 @@
 /* Teseo — hoja de estilos única.
    Pensada para móvil en vertical, de pie, y con los dedos.
-   Regla de oro: nada por debajo de 56 px de alto en algo que se toca. */
+   Regla de oro: todo lo que se toca mide --alto-control. */
 
 :root {
   --fondo: #12161c;
@@ -27,21 +27,25 @@
   --radio: 12px;
 
   /* LA ALTURA DE LOS CONTROLES, Y ES UNA SOLA.
-     Todo lo que se toca en el cuerpo de una pantalla —botones, campos,
-     desplegables, opciones— mide esto de alto. No es capricho: una columna de
-     controles de tres alturas distintas parece rota, y con el dedo se falla
-     más cuando el objetivo cambia de tamaño a cada fila.
+     Todo lo que se toca —botones, campos, desplegables, botones de opción,
+     deslizadores, resúmenes de desplegable y la cabecera de la pantalla— mide
+     esto de alto. No es capricho: una columna de controles de tres alturas
+     distintas parece rota, y con el dedo se falla más cuando el objetivo
+     cambia de tamaño a cada fila.
 
      Al añadir un control nuevo, su alto sale de aquí. Si de verdad hace falta
-     otro, se pone la excepción POR ESCRITO al lado de la regla, como las
-     cuatro de abajo, y no se inventa un número suelto. */
-  --alto-control: 56px;
+     otro, se pone la excepción POR ESCRITO al lado de la regla, como las de
+     abajo, y no se inventa un número suelto.
 
-  /* Las excepciones, que son las que no van en el cuerpo de la pantalla:
-     la cabecera (volver y menú), el botón que flota sobre el vídeo, los
-     iconos de dentro de una fila de tabla y las filas de lista, que llevan
-     dos renglones de texto y por eso son más altas. */
-  --alto-cabecera: 44px;
+     OJO al tocar este número: el relleno de arriba y abajo de cada control
+     tiene que caber dentro. Un botón con 0,75rem de relleno mide 49 px por su
+     cuenta, y entonces la altura mínima no manda nada. Los rellenos están
+     puestos para que quepan. */
+  --alto-control: 40px;
+
+  /* Las excepciones: los iconos de dentro de una fila de tabla, el botón que
+     flota sobre el vídeo y las filas de lista, que llevan dos renglones de
+     texto y por eso son más altas. */
   --alto-fila-lista: 64px;
 }
 
@@ -109,13 +113,6 @@ h1 {
   margin-bottom: 1rem;
 }
 
-/* La cabecera es la excepción: va pegada al título, no es una fila más de la
-   pantalla, y con la altura de un control se comería la primera pantallada. */
-.cabecera .boton-volver,
-.cabecera .boton-menu {
-  min-height: var(--alto-cabecera);
-}
-
 .titulo-pantalla {
   flex: 1;
   margin: 0;
@@ -134,6 +131,7 @@ h1 {
 .boton-volver,
 .boton-menu {
   min-height: var(--alto-control);
+  height: var(--alto-control);
   padding: 0.5rem 0.75rem;
   background: transparent;
   color: var(--acento);
@@ -170,7 +168,9 @@ h1 {
   width: 100%;
   min-height: var(--alto-control);
   margin-bottom: 0.5rem;
-  padding: 0.75rem 1rem;
+  /* Poco relleno a propósito: lo que decide el alto es --alto-control, y si
+     el relleno se pasa, manda él y la regla deja de valer. */
+  padding: 0.35rem 1rem;
   background: #29313d;
   color: var(--texto);
   border: 1px solid var(--borde);
@@ -235,7 +235,7 @@ h1 {
   width: 100%;
   min-height: var(--alto-control);
   margin-bottom: 0.5rem;
-  padding: 0.6rem 0.8rem;
+  padding: 0.35rem 0.8rem;
   background: var(--fondo-caja);
   color: var(--texto);
   border: 1px solid var(--borde);
@@ -287,8 +287,8 @@ textarea.entrada {
   appearance: none;
   display: block;
   width: 100%;
-  /* Como todo lo que se toca: nada por debajo de 56 px de alto. */
-  height: 56px;
+  /* Como todo lo que se toca. */
+  height: var(--alto-control);
   margin: 0;
   padding: 0;
   background: transparent;
@@ -368,13 +368,13 @@ textarea.entrada {
 
 .grupo-opciones.categorias .boton-opcion {
   min-height: var(--alto-control);
-  padding: 0.6rem 0.3rem;
+  padding: 0.35rem 0.3rem;
   font-size: 0.9rem;
 }
 
 .boton-opcion {
   margin-bottom: 0;
-  padding: 0.75rem 0.5rem;
+  padding: 0.35rem 0.5rem;
   font-size: 0.95rem;
 }
 
@@ -603,11 +603,16 @@ video::-webkit-media-controls-panel {
 
 .fila-play .boton-principal { flex: 1; }
 
-.fila-play .boton-salto {
+/* Las flechas llevan el rótulo más grande de la aplicación —son dos signos
+   solos y hay que acertarles de un vistazo—, así que se quedan sin relleno:
+   si no, el renglón más el relleno se pasan de --alto-control y la fila
+   entera crece. El selector lleva .reproductor delante para ganarle a la
+   regla de los botones del reproductor, que impone otro interlineado. */
+.reproductor .fila-play .boton-salto {
   flex: 0 0 auto;
   width: 64px;
-  padding: 0.5rem 0;
-  font-size: 1.6rem;
+  padding: 0;
+  font-size: 1.5rem;
   line-height: 1;
 }
 
@@ -626,9 +631,6 @@ video::-webkit-media-controls-panel {
   margin-bottom: 0.75rem;
 }
 
-/* La excepción a los 56 px de alto de todo lo que se toca: en esta pantalla
-   se pelean por el sitio el vídeo, la barra y la tabla, y estos botones se
-   dan sentado mirando el vídeo, no de pie en la sala. */
 /* "Compacto" es menos aire por dentro y menos hueco por fuera, NO menos
    alto: la altura es la misma en toda la aplicación. */
 .reproductor .boton,
@@ -638,6 +640,32 @@ video::-webkit-media-controls-panel {
   /* Explícito para que un <label> y un <button> midan lo mismo: los botones
      no heredan el interlineado del cuerpo. */
   line-height: 1.4;
+}
+
+/* Los cuatro de apuntar un intercambio de un toque. Van con el mismo gris que
+   los saltos finos que tienen justo encima —son de la misma familia: se toca y
+   pasa algo en el vídeo, sin abrir nada— y el rótulo en blanco. El doble se
+   sale en ámbar porque es el único que no es de nadie, y confundirlo con un
+   tocado a favor estropea el marcador. */
+.rejilla-rapida { margin-bottom: 0.5rem; }
+
+.boton-rapido-doble { color: var(--doble); }
+
+/* El ×2, entre reproducir y el salto al intercambio siguiente. Estrecho, que
+   lo que tiene que crecer es el botón de en medio. */
+.reproductor .fila-play .boton-velocidad {
+  flex: 0 0 auto;
+  width: 56px;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.fila-play .boton-velocidad.elegido {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #0b1220;
 }
 
 .rejilla-saltos .boton {
