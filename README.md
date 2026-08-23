@@ -333,6 +333,33 @@ recuadro no tiene dibujo —una pared lisa, un aparato sobre fondo negro— no s
 puede seguir: el calibrado avisa y el análisis mira siempre al mismo sitio, que
 sólo vale con trípode.
 
+## Una sola altura para todo lo que se toca
+
+**Botones, campos, desplegables, botones de opción y el resumen de un
+`<details>` miden 56 px de alto en toda la aplicación.** No es capricho: una
+columna con controles de tres alturas parece rota, y con el dedo se falla más
+cuando el objetivo cambia de tamaño en cada fila.
+
+La altura sale del token `--alto-control` en `css/estilos.css`, **nunca de un
+número suelto**. "Compacto" (`.boton-compacto`) quiere decir menos aire por
+dentro y menos hueco por fuera, no más bajo.
+
+Cuatro excepciones, y están escritas al lado de la regla:
+
+| Qué | Cuánto | Por qué |
+|---|---|---|
+| Cabecera de pantalla (Volver, Menú) | `--alto-cabecera`, 44 px | Va pegada al título, no es una fila más; a 56 se comería la primera pantallada |
+| Filas de lista | `--alto-fila-lista`, 64 px | Llevan dos renglones de texto |
+| Iconos dentro de una fila de tabla | lo que ocupen | A 56 la fila sería el doble de alta y la tabla dejaría de caber de un vistazo |
+| El botón que flota sobre el vídeo | 40 px | No está en el cuerpo de la pantalla, y cuanto menos tape mejor |
+
+Un área de texto (`textarea`) es más alta a propósito: la regla es que nada
+**baje** de `--alto-control`, no que nada la pase.
+
+**Esto se comprueba al tocar la interfaz**, midiendo los controles de todas las
+pantallas: cualquier valor que no sea 56 o una de las cuatro excepciones es un
+fallo.
+
 ## Ajustes avanzados
 
 En **Menú → Configuración**, al final, se pueden tocar unas cuantas constantes

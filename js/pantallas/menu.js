@@ -195,14 +195,18 @@ export async function pantallaConfiguracion(contenedor) {
     }) : null,
 
     // --- Ajustes avanzados ---
-    crear('h3', { class: 'subtitulo-seccion', texto: 'Ajustes avanzados' }),
-    crear('p', {
-      class: 'ayuda',
-      texto: 'Números finos de la aplicación. Vienen puestos en un valor que ' +
-             'funciona, y sólo hace falta tocarlos si tu forma de grabar o de ' +
-             'tirar pide otra cosa. Se guardan al escribirlos.',
-    }),
-    ajustesAvanzados,
+    // Plegados: son cuatro números que casi nadie va a tocar, y desplegados
+    // ocupan más que todo lo demás junto.
+    crear('details', { class: 'filtros' }, [
+      crear('summary', { texto: 'Ajustes avanzados' }),
+      crear('p', {
+        class: 'ayuda',
+        texto: 'Números finos de la aplicación. Vienen puestos en un valor que ' +
+               'funciona, y sólo hace falta tocarlos si tu forma de grabar o de ' +
+               'tirar pide otra cosa. Se guardan al escribirlos.',
+      }),
+      ajustesAvanzados,
+    ]),
 
     // --- Empezar de cero ---
     crear('h3', { class: 'subtitulo-seccion', texto: 'Empezar de cero' }),

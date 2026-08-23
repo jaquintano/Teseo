@@ -157,7 +157,7 @@ export async function pantallaInicio(contenedor) {
 
       deCompeticion.length > 1 ? desplegable('Competición', deCompeticion, null,
         (valor) => { filtros.competicion = valor; pintar(); },
-        { vacio: 'Todas las competiciones', clase: 'compacta' }).bloque : null,
+        { vacio: 'Todas las competiciones' }).bloque : null,
     ];
   }
 
@@ -523,7 +523,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     .sort(compararCompeticiones);
 
   const selectorCompeticion = crear('select', {
-    class: 'entrada compacta',
+    class: 'entrada',
     onchange: (evento) => {
       competicionId = Number(evento.target.value) || null;
       if (competicionId != null) avisoCompeticion.hidden = true;

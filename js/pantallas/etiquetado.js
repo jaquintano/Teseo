@@ -707,7 +707,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       crear('button', {
         type: 'button',
         class: 'boton boton-principal boton-compacto' + (calibrado ? '' : ' desactivado'),
-        texto: 'Detección automática de intercambios',
+        texto: 'Buscar los tocados',
         onclick: () => { if (calibrado) lanzarAnalisis(calibrado); },
       }),
 
