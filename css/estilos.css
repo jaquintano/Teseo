@@ -523,15 +523,19 @@ video {
   position: absolute;
   right: 8px;
   bottom: 8px;
-  min-height: 40px;
-  padding: 0.4rem 0.9rem;
+  /* Cuadrado y con el icono centrado: sólo lleva dibujo, y con el rótulo
+     "Ajustar" tapaba media esquina del vídeo, que es justo lo que se está
+     mirando cuando hay zoom. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   background: rgba(18, 22, 28, 0.85);
   color: var(--texto);
   border: 1px solid var(--borde);
   border-radius: var(--radio);
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
   cursor: pointer;
   touch-action: pan-x pan-y;
 }
@@ -603,15 +607,20 @@ video::-webkit-media-controls-panel {
 
 .fila-play .boton-principal { flex: 1; }
 
-/* Las flechas llevan el rótulo más grande de la aplicación —son dos signos
-   solos y hay que acertarles de un vistazo—, así que se quedan sin relleno:
-   si no, el renglón más el relleno se pasan de --alto-control y la fila
-   entera crece. El selector lleva .reproductor delante para ganarle a la
-   regla de los botones del reproductor, que impone otro interlineado. */
+/* En la fila caben cinco botones, así que cada uno se queda con lo que ocupa
+   su rótulo y el de reproducir se lleva lo que sobre: es el que más se pulsa y
+   el único cuyo texto cambia, y así al pasar de "Reproducir" a "Pausa" no se
+   mueven los otros cuatro de sitio.
+
+   Sin relleno de arriba y abajo: las flechas llevan el rótulo más grande de la
+   aplicación —son dos signos solos y hay que acertarles de un vistazo—, y con
+   relleno el renglón se pasaría de --alto-control y crecería la fila entera.
+   El selector lleva .reproductor delante para ganarle a la regla de los
+   botones del reproductor, que impone otro interlineado. */
 .reproductor .fila-play .boton-salto {
   flex: 0 0 auto;
-  width: 64px;
-  padding: 0;
+  width: auto;
+  padding: 0 0.7rem;
   font-size: 1.5rem;
   line-height: 1;
 }
@@ -667,8 +676,8 @@ video::-webkit-media-controls-panel {
    lo que tiene que crecer es el botón de en medio. */
 .reproductor .fila-play .boton-velocidad {
   flex: 0 0 auto;
-  width: 56px;
-  padding: 0;
+  width: auto;
+  padding: 0 0.6rem;
   font-size: 1rem;
   line-height: 1;
   font-variant-numeric: tabular-nums;

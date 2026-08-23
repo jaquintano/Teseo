@@ -164,10 +164,16 @@ tiene por qué interrumpirse. Para corregir una etiqueta está el lápiz de su
 fila. Esos dos segundos y ese medio son configurables (ver *Ajustes
 avanzados*).
 
-**El botón "×2"**, entre reproducir y "›", dobla la velocidad. Un asalto tiene
-mucho rato de nada entre tocado y tocado, y a 2× se repasa en la mitad de
-tiempo. Se queda puesto hasta que se vuelva a tocar, también al pausar y al
-saltar.
+**Los botones "×½" y "×2"**, a los lados del de reproducir, cambian la
+velocidad: la mitad para mirar con lupa un intercambio dudoso, el doble para
+pasar de largo el mucho rato de nada que hay entre tocado y tocado. Se excluyen
+entre ellos, volver a tocar el que está puesto devuelve a la velocidad normal,
+y lo elegido aguanta pausas y saltos.
+
+La fila del reproductor lleva ya cinco botones, así que **cada uno se queda con
+lo que ocupa su rótulo** y el de reproducir se lleva lo que sobre: es el único
+cuyo texto cambia, y así al pasar de "Reproducir" a "Pausa" no se mueven los
+otros cuatro de sitio.
 
 **Los cuatro botones de apuntar de un toque** —A favor, En contra, Doble,
 Nulo— van **dentro del panel del reproductor**, debajo de los saltos finos.

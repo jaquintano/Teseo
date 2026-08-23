@@ -10,8 +10,14 @@
 
 import { crear } from './ui.js';
 
-// Lo que vale el ×2. Más arriba se pierde el hilo de lo que pasa en la pista.
-const VELOCIDAD_DOBLE = 2;
+// Las velocidades que se pueden poner, además de la normal. Media para mirar
+// con lupa un intercambio dudoso, y doble para pasar de largo el mucho rato de
+// nada que hay entre tocado y tocado. Más de dos veces y se pierde el hilo de
+// lo que pasa en la pista; menos de la mitad y el vídeo va a trompicones.
+const VELOCIDADES = [
+  { valor: 0.5, etiqueta: '×½', ayuda: 'Reproducir a la mitad de velocidad' },
+  { valor: 2, etiqueta: '×2', ayuda: 'Reproducir al doble de velocidad' },
+];
 
 const SALTOS = [
   { segundos: -1, etiqueta: '−1 s' },
@@ -19,6 +25,39 @@ const SALTOS = [
   { segundos: 0.1, etiqueta: '+0,1 s' },
   { segundos: 1, etiqueta: '+1 s' },
 ];
+
+/**
+ * Las cuatro esquinas apuntando hacia dentro: el dibujo de "devolver esto a
+ * su tamaño".
+ *
+ * En SVG y no con una letra porque no hay ningún signo de teclado que diga
+ * esto, y los que se le acercan no están en todas las tipografías de Android:
+ * saldría un cuadrado vacío justo encima del vídeo. Se dibuja a mano porque
+ * crear() usa createElement, que para SVG no vale: hay que nombrar su espacio
+ * de nombres o el navegador lo trata como una etiqueta desconocida y no pinta
+ * nada.
+ */
+function iconoDeAjustar() {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('width', '22');
+  svg.setAttribute('height', '22');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', 'currentColor');
+  svg.setAttribute('stroke-width', '2');
+  svg.setAttribute('stroke-linecap', 'round');
+  svg.setAttribute('stroke-linejoin', 'round');
+  svg.setAttribute('aria-hidden', 'true');
+
+  for (const d of ['M8 3v3a2 2 0 0 1-2 2H3', 'M21 8h-3a2 2 0 0 1-2-2V3',
+                   'M3 16h3a2 2 0 0 1 2 2v3', 'M16 21v-3a2 2 0 0 1 2-2h3']) {
+    const trazo = document.createElementNS(NS, 'path');
+    trazo.setAttribute('d', d);
+    svg.append(trazo);
+  }
+  return svg;
+}
 
 /**
  * Crea un reproductor.
@@ -185,8 +224,10 @@ export function crearReproductor(opciones = {}) {
   let despY = 0;
 
   const btnAjustar = crear('button', {
-    type: 'button', class: 'boton-ajustar', texto: 'Ajustar', hidden: true,
-  });
+    type: 'button', class: 'boton-ajustar', hidden: true,
+    'aria-label': 'Ajustar el vídeo a la pantalla',
+    title: 'Ajustar el vídeo a la pantalla',
+  }, [iconoDeAjustar()]);
 
   const marco = crear('div', { class: 'marco-video' }, [video, btnAjustar]);
 
@@ -265,26 +306,36 @@ export function crearReproductor(opciones = {}) {
     aplicarZoom();
   }, { passive: false });
 
-  // Doblar la velocidad. Un asalto tiene mucho rato de nada entre tocado y
-  // tocado, y a 2× se repasa en la mitad de tiempo sin perder de vista lo que
-  // pasa. Se queda puesto hasta que se vuelva a tocar: el navegador conserva
-  // playbackRate entre pausas y saltos.
-  const btnVelocidad = crear('button', {
-    type: 'button', class: 'boton boton-velocidad', texto: '×2',
-    'aria-label': 'Reproducir al doble de velocidad',
-    'aria-pressed': 'false',
+  // Un botón por velocidad, y se excluyen entre ellos: volver a tocar el que
+  // está puesto devuelve a la normal. Lo que se elija se queda hasta que se
+  // cambie, también al pausar y al saltar, porque el navegador conserva
+  // playbackRate.
+  const botonesDeVelocidad = VELOCIDADES.map(({ valor, etiqueta, ayuda }) => {
+    const boton = crear('button', {
+      type: 'button', class: 'boton boton-velocidad', texto: etiqueta,
+      'aria-label': ayuda, 'aria-pressed': 'false',
+    });
+    boton.addEventListener('click', () => {
+      ponerVelocidad(video.playbackRate === valor ? 1 : valor);
+    });
+    return boton;
   });
 
-  btnVelocidad.addEventListener('click', () => {
-    const doble = video.playbackRate !== VELOCIDAD_DOBLE;
-    video.playbackRate = doble ? VELOCIDAD_DOBLE : 1;
-    btnVelocidad.classList.toggle('elegido', doble);
-    btnVelocidad.setAttribute('aria-pressed', String(doble));
-  });
+  function ponerVelocidad(cual) {
+    video.playbackRate = cual;
+    botonesDeVelocidad.forEach((boton, i) => {
+      const puesta = VELOCIDADES[i].valor === cual;
+      boton.classList.toggle('elegido', puesta);
+      boton.setAttribute('aria-pressed', String(puesta));
+    });
+  }
 
+  // La media a la izquierda del botón de reproducir y la doble a la derecha,
+  // en el orden en que se leen: primero lo lento, luego lo rápido.
   const flancos = opciones.flancosDePlay || {};
   const filaPlay = crear('div', { class: 'fila-play' }, [
-    flancos.antes || null, btnPlay, btnVelocidad, flancos.despues || null,
+    flancos.antes || null, botonesDeVelocidad[0], btnPlay,
+    botonesDeVelocidad[1], flancos.despues || null,
   ]);
 
   const elemento = crear('div', { class: 'reproductor' }, [

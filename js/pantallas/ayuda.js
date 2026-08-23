@@ -118,9 +118,10 @@ export async function pantallaAyuda(contenedor) {
       'Cada marca de colores es un intercambio que ya has etiquetado, con el ' +
       'color de la lámpara que se encendió: si tu lámpara era la roja, tus ' +
       'tocados salen en rojo y los suyos en verde. El doble es ámbar.',
-      'El botón "×2", al lado del de reproducir, pone el vídeo al doble de ' +
-      'velocidad: un asalto tiene mucho rato de nada entre tocado y tocado. Se ' +
-      'queda puesto hasta que lo vuelvas a tocar.',
+      'A los lados del botón de reproducir están "×½" y "×2": la mitad de ' +
+      'velocidad para mirar con lupa un intercambio dudoso, y el doble para ' +
+      'pasar de largo el mucho rato de nada que hay entre tocado y tocado. Se ' +
+      'quedan puestos hasta que los vuelvas a tocar, y sólo puede haber uno.',
       'Debajo de los botones de afinar el tiempo hay cuatro para apuntar un ' +
       'intercambio de un toque: A favor, En contra, Doble y Nulo. No paran el ' +
       'vídeo ni te abren nada, así que puedes ir apuntando sobre la marcha; si ' +
@@ -135,7 +136,8 @@ export async function pantallaAyuda(contenedor) {
       'tocar la barra en cualquier otro punto salta a ese momento y se queda ' +
       'ahí parado. Si las marcas se te resisten con el dedo, usa la tabla de ' +
       'más abajo, que se acierta mejor.',
-      'Puedes ampliar el vídeo con dos dedos, y el botón "Ajustar" lo devuelve ' +
+      'Puedes ampliar el vídeo con dos dedos, y el botón con las cuatro ' +
+      'esquinas que sale abajo a la derecha lo devuelve ' +
       'a su tamaño.'),
 
     apartado('Rellenar de golpe',
