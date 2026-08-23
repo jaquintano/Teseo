@@ -189,6 +189,28 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     onclick: () => saltar(1),
   }) : null;
 
+  /**
+   * Cuatro botones para apuntar un intercambio de un toque.
+   *
+   * Lo corriente al repasar un asalto es que ya sepas cómo acabó cada
+   * intercambio y no quieras nada más: con esto se apunta sin abrir la ficha
+   * y sin parar el vídeo, que es lo que hacen "Nuevo intercambio" y el lápiz
+   * cuando además quieres describir la acción. Las tres capas se pueden
+   * rellenar después, o no rellenarse nunca.
+   *
+   * Van DENTRO del reproductor, que es lo que se queda pegado arriba al bajar
+   * por la tabla: si se quedaran fuera, se irían de la pantalla justo cuando
+   * más falta hacen. Por eso "Doble" y "Nulo" se ajustan a su rótulo, para
+   * que el ancho que sobra se lo lleven los dos que se pulsan a todas horas.
+   */
+  const rapidos = hayVideo ? crear('div', { class: 'rejilla-saltos rejilla-rapida' },
+    RAPIDOS.map(({ id, etiqueta }) => crear('button', {
+      type: 'button',
+      class: 'boton boton-rapido boton-rapido-' + id,
+      texto: etiqueta,
+      onclick: () => crearIntercambioRapido(id),
+    }))) : null;
+
   const reproductor = hayVideo
     ? crearReproductor({
         alCambiarTiempo: (segundos) => {
@@ -198,6 +220,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
         },
         juntoAlTiempo: tanteoEnVivo,
         flancosDePlay: { antes: btnAnterior, despues: btnSiguiente },
+        alPie: rapidos,
       })
     : null;
   reproductorActivo = reproductor;
@@ -228,23 +251,6 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   const ficha = crear('dialog', { class: 'ficha-intercambio' });
   ficha.addEventListener('close', pintarIntercambios);
 
-  /**
-   * Cuatro botones para apuntar un intercambio de un toque.
-   *
-   * Lo corriente al repasar un asalto es que ya sepas cómo acabó cada
-   * intercambio y no quieras nada más: con esto se apunta sin abrir la ficha
-   * y sin parar el vídeo, que es lo que hacen "Nuevo intercambio" y el lápiz
-   * cuando además quieres describir la acción. Las tres capas se pueden
-   * rellenar después, o no rellenarse nunca.
-   */
-  const rapidos = hayVideo ? crear('div', { class: 'rejilla-saltos rejilla-rapida' },
-    RAPIDOS.map(({ id, etiqueta }) => crear('button', {
-      type: 'button',
-      class: 'boton boton-rapido boton-rapido-' + id,
-      texto: etiqueta,
-      onclick: () => crearIntercambioRapido(id),
-    }))) : null;
-
   const btnNuevo = hayVideo ? crear('button', {
     type: 'button', class: 'boton boton-principal boton-compacto',
     texto: 'Nuevo intercambio',
@@ -267,9 +273,6 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     hayVideo ? deteccion : null,
     marcador,
     hayVideo ? reproductor.elemento : null,
-    // Pegados a los saltos finos del reproductor: se afina el instante y se
-    // apunta ahí mismo, sin bajar a buscar el botón.
-    rapidos,
     btnNuevo,
     barra,
     contador,

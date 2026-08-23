@@ -647,7 +647,19 @@ video::-webkit-media-controls-panel {
    pasa algo en el vídeo, sin abrir nada— y el rótulo en blanco. El doble se
    sale en ámbar porque es el único que no es de nadie, y confundirlo con un
    tocado a favor estropea el marcador. */
-.rejilla-rapida { margin-bottom: 0.5rem; }
+/* "Doble" y "Nulo" se quedan con lo que ocupa su rótulo y sueltan el resto:
+   los que se pulsan a todas horas son los otros dos, y en un móvil cada
+   milímetro de ancho es un dedo que no falla. */
+.rejilla-rapida {
+  grid-template-columns: 1fr 1fr auto auto;
+  margin-bottom: 0.5rem;
+}
+
+.reproductor .rejilla-rapida .boton-rapido-doble,
+.reproductor .rejilla-rapida .boton-rapido-nada {
+  padding-right: 0.7rem;
+  padding-left: 0.7rem;
+}
 
 .boton-rapido-doble { color: var(--doble); }
 

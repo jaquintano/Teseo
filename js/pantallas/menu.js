@@ -39,7 +39,7 @@ export async function pantallaMenu(contenedor) {
       onclick: () => ir('competiciones', { volverA: 'menu' }),
     }),
     crear('button', {
-      type: 'button', class: 'boton boton-principal boton-compacto', texto: 'Estadísticas',
+      type: 'button', class: 'boton boton-compacto', texto: 'Estadísticas',
       onclick: () => ir('estadisticas'),
     }),
     crear('button', {

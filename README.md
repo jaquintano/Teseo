@@ -170,7 +170,12 @@ tiempo. Se queda puesto hasta que se vuelva a tocar, también al pausar y al
 saltar.
 
 **Los cuatro botones de apuntar de un toque** —A favor, En contra, Doble,
-Nulo— van justo debajo de los saltos finos, encima de "Nuevo intercambio".
+Nulo— van **dentro del panel del reproductor**, debajo de los saltos finos.
+Ahí y no fuera porque el panel se queda pegado al borde de arriba al bajar por
+la tabla: fuera se irían de la pantalla justo cuando más falta hacen. "Doble" y
+"Nulo" se ajustan a su rótulo y sueltan el ancho que les sobra, que los que se
+pulsan a todas horas son los otros dos.
+
 Crean el intercambio con su resultado ya puesto **sin parar el vídeo y sin
 abrir la ficha**: al repasar un asalto ya sabes cómo acabó cada intercambio y
 no quieres nada más. Las tres capas se rellenan luego con el lápiz de su fila,

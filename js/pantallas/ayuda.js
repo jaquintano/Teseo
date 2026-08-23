@@ -125,6 +125,8 @@ export async function pantallaAyuda(contenedor) {
       'intercambio de un toque: A favor, En contra, Doble y Nulo. No paran el ' +
       'vídeo ni te abren nada, así que puedes ir apuntando sobre la marcha; si ' +
       'luego quieres describir la acción, el lápiz de su fila.',
+      'Van pegados al vídeo, así que al bajar por la tabla siguen ahí: no ' +
+      'tienes que volver arriba para apuntar el siguiente.',
       'A los lados del botón de reproducir tienes "‹" y "›": saltan al ' +
       'intercambio anterior y al siguiente y te reproducen su trozo. Es la ' +
       'forma más cómoda de repasar un asalto entero ya etiquetado. Se apagan ' +

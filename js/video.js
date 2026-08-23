@@ -29,6 +29,9 @@ const SALTOS = [
  * @param {{antes?:Node, despues?:Node}} [opciones.flancosDePlay] botones a los
  *        lados del de reproducir. El vídeo no sabe qué hacen: sólo les hace
  *        sitio, que es donde la mano ya está.
+ * @param {Node} [opciones.alPie] lo que se cuelgue al final del panel. Entra
+ *        dentro del reproductor a propósito: el panel se queda pegado arriba
+ *        al bajar por la página, así que lo que viva aquí no se oculta nunca.
  */
 export function crearReproductor(opciones = {}) {
   const video = crear('video', {
@@ -285,7 +288,7 @@ export function crearReproductor(opciones = {}) {
   ]);
 
   const elemento = crear('div', { class: 'reproductor' }, [
-    marco, filaDeTiempo, filaPlay, rejilla,
+    marco, filaDeTiempo, filaPlay, rejilla, opciones.alPie || null,
   ]);
 
   return {
