@@ -526,7 +526,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     class: 'entrada',
     onchange: (evento) => {
       competicionId = Number(evento.target.value) || null;
-      if (competicionId != null) avisoCompeticion.hidden = true;
+      pintarFecha();
     },
   });
   selectorCompeticion.append(crear('option', {
@@ -542,11 +542,35 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   }
 
   const aviso = crear('p', { class: 'aviso', texto: 'Elige un rival.', hidden: true });
-  // Sin competición un asalto no tiene ni cuándo ni dónde: es el único sitio
-  // del que sale la fecha desde que dejó de preguntarse.
-  const avisoCompeticion = crear('p', {
-    class: 'aviso', texto: 'Elige la competición.', hidden: true,
+
+  // --- La fecha, sólo cuando no hay competición ---
+  //
+  // Lo normal es que un asalto salga de una competición, y de ella sale su
+  // fecha. Pero la federación tarda en publicar el calendario, y darla de alta
+  // a mano para salir del paso acaba en competiciones duplicadas: es mejor
+  // dejar el asalto sin ella y asignársela cuando aparezca.
+  //
+  // Entonces la fecha hay que preguntarla, porque es lo único que sitúa al
+  // asalto en el tiempo. Se pregunta y no se pone sola: se etiqueta con
+  // retraso —grabas el sábado y lo repasas el martes—, y una fecha puesta a
+  // escondidas colocaría el asalto en el día equivocado sin que te enteres.
+  // Con hoy ya escrito, quien no quiera pensarlo no piensa.
+  const hoy = new Date().toISOString().slice(0, 10);
+  const fecha = campo('Fecha del asalto', {
+    type: 'date', value: asalto.fecha || hoy,
   });
+  const ayudaFecha = crear('p', {
+    class: 'ayuda',
+    texto: 'Sin competición, esto es lo único que dice cuándo se tiró. Cuando la ' +
+           'federación publique el torneo, tráelo desde Competiciones y asígnalo ' +
+           'aquí: entonces mandará su fecha.',
+  });
+  const bloqueFecha = crear('div', {}, [fecha.bloque, ayudaFecha]);
+
+  function pintarFecha() {
+    bloqueFecha.hidden = competicionId != null;
+  }
+  pintarFecha();
 
   anadir(contenedor,
     cabecera(esNuevo ? 'Nuevo asalto' : 'Editar asalto',
@@ -566,7 +590,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     ])),
 
     bloque('Competición', selectorCompeticion),
-    avisoCompeticion,
+    bloqueFecha,
     desplegable('Fase', FASES, fase, (valor) => { fase = valor; },
                 { vacio: '— Sin indicar —' }).bloque,
     bloqueResultado,
@@ -583,13 +607,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
         if (!rivalId) { aviso.hidden = false; return; }
         aviso.hidden = true;
 
-        if (competicionId == null) {
-          avisoCompeticion.hidden = false;
-          avisoCompeticion.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-        avisoCompeticion.hidden = true;
-
         // Sin la mano del rival no se guarda: las estadísticas se filtran por
         // ella y un asalto sin ese dato quedaría cojo.
         const rival = rivalActual();
@@ -605,12 +622,13 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
         const ficha = {
           ...(asalto.id !== undefined ? { id: asalto.id } : {}),
           rivalId,
-          // El número de asalto y la fecha ya no se preguntan, pero los que
-          // tuvieran los asaltos viejos se conservan: el número porque las
-          // estadísticas filtran por él, y la fecha porque puede ser la única
-          // que tengan. La de los nuevos sale de su competición.
+          // El número de asalto ya no se pregunta, pero el que tuvieran los
+          // asaltos viejos se conserva: las estadísticas filtran por él.
           numero: asalto.numero ?? null,
-          fecha: asalto.fecha ?? null,
+          // Con competición, la fecha sale de ella y ésta se guarda de todas
+          // formas: si algún día se le quita la competición, el asalto no se
+          // queda sin cuándo.
+          fecha: fecha.entrada.value || asalto.fecha || null,
           competicionId,
           fase,
           tanteoFinal: leerResultado(),
@@ -710,6 +728,15 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     cabecera(rival ? nombreCompleto(rival) : 'Rival borrado', () => ir('inicio')),
 
     crear('p', { class: 'ayuda', texto: contexto }),
+
+    // Un empujón, no un regaño: el asalto está perfectamente bien así, pero
+    // con la competición puesta cuenta para sus estadísticas y se agrupa con
+    // los demás del mismo torneo.
+    !competicion && !asalto.torneo ? crear('p', {
+      class: 'ayuda',
+      texto: 'Sin competición. Cuando la federación la publique, tráela desde ' +
+             'Menú → Competiciones y asígnala aquí con "Editar datos del asalto".',
+    }) : null,
     // El club del rival sale de su ficha, no se vuelve a preguntar en cada asalto.
     rivalEnUnaLinea(rival),
     bloqueColor,

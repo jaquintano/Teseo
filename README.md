@@ -45,8 +45,22 @@ asalto ── un combate contra un rival, con su contexto
 
 Del **asalto** se guardan el rival, la competición, la fase (poule, tablón de
 32, final…), el resultado final, de quién era la prioridad si la hubo, la
-fatiga percibida del 1 al 5 y una nota. No se guarda la fecha: la pone la
-competición, que es obligatoria por eso mismo.
+fatiga percibida del 1 al 5 y una nota.
+
+**La competición no es obligatoria.** La federación tarda en publicar su
+calendario, y dar el torneo de alta a mano para salir del paso acaba en
+competiciones duplicadas: es mejor dejar el asalto sin ella y asignársela
+cuando aparezca —desde "Editar datos del asalto", y entonces manda su fecha—.
+Cuando no la hay, **se pregunta la fecha**, que es lo único que sitúa al
+asalto en el tiempo: el campo sale con hoy ya escrito y desaparece en cuanto
+se elige competición. Se pregunta y no se pone sola porque se etiqueta con
+retraso —grabas el sábado y lo repasas el martes— y una fecha puesta a
+escondidas colocaría el asalto en el día equivocado.
+
+Por dentro es el mismo campo `asalto.fecha` de cuando la fecha se preguntaba
+siempre, y `fechaDeAsalto()` ya miraba primero la competición y caía en él si
+no la había: la lista, la agrupación y el orden por calendario funcionan sin
+tocar nada.
 
 Del **tiempo**, su vídeo y **con qué marcador empieza**. Eso último se guarda
 y se puede corregir a mano porque el vídeo tiene agujeros: puede no haberse
