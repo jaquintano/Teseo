@@ -47,9 +47,24 @@
      flota sobre el vídeo y las filas de lista, que llevan dos renglones de
      texto y por eso son más altas. */
   --alto-fila-lista: 64px;
+
+  /* Los cuatro botones pequeños de la fila del reproductor —las dos flechas y
+     las dos velocidades— miden todos esto de ancho. Iguales entre ellos
+     porque la fila se lee de un vistazo y cuatro anchos distintos alrededor
+     del botón grande parecen puestos al azar. */
+  --ancho-boton-chico: 46px;
 }
 
 * { box-sizing: border-box; }
+
+/* El atributo hidden esconde poniendo display:none, y cualquier display que
+   se declare aquí le gana: pasó con el botón de ajustar el vídeo, que al
+   volverse un icono con display:flex se quedó puesto para siempre. Con esto
+   no vuelve a pasar, ni aquí ni en lo que venga después.
+
+   El !important es el sitio donde toca usarlo: "esto está escondido" no es una
+   preferencia de estilo con la que negociar. */
+[hidden] { display: none !important; }
 
 /* El zoom del navegador queda desactivado en toda la aplicación: si se
    ampliara la página, los botones se moverían de sitio y habría que ir
@@ -605,7 +620,15 @@ video::-webkit-media-controls-panel {
   gap: 0.5rem;
 }
 
-.fila-play .boton-principal { flex: 1; }
+/* El de reproducir se queda con lo que sobre, y con poco relleno de los
+   lados: los cuatro pequeños son ahora igual de anchos y le dejan menos sitio,
+   y si el rótulo no cupiera en un renglón partiría en dos y crecería la fila
+   entera. */
+.fila-play .boton-principal {
+  flex: 1;
+  padding-right: 0.4rem;
+  padding-left: 0.4rem;
+}
 
 /* En la fila caben cinco botones, así que cada uno se queda con lo que ocupa
    su rótulo y el de reproducir se lleva lo que sobre: es el que más se pulsa y
@@ -620,7 +643,8 @@ video::-webkit-media-controls-panel {
 .reproductor .fila-play .boton-salto {
   flex: 0 0 auto;
   width: auto;
-  padding: 0 0.7rem;
+  min-width: var(--ancho-boton-chico);
+  padding: 0 0.5rem;
   font-size: 1.5rem;
   line-height: 1;
 }
@@ -677,7 +701,8 @@ video::-webkit-media-controls-panel {
 .reproductor .fila-play .boton-velocidad {
   flex: 0 0 auto;
   width: auto;
-  padding: 0 0.6rem;
+  min-width: var(--ancho-boton-chico);
+  padding: 0 0.5rem;
   font-size: 1rem;
   line-height: 1;
   font-variant-numeric: tabular-nums;
