@@ -528,8 +528,20 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
   // o borrarlas es cosa de Menú → Competiciones: aquí sólo se apunta cuál.
   let competicionId = asalto.competicionId ?? null;
 
-  const competiciones = (await listar(ALMACENES.competiciones))
-    .sort(compararCompeticiones);
+  const guardadas = (await listar(ALMACENES.competiciones)).sort(compararCompeticiones);
+
+  // En cuanto marcas una competición con el corazón, el desplegable se queda
+  // sólo con las marcadas: el calendario de la federación son doscientas por
+  // temporada y las tuyas son cuatro. Sin ninguna marcada salen todas, que es
+  // como funcionaba antes.
+  //
+  // La del asalto que estás editando no se cae nunca aunque no tenga corazón:
+  // si desapareciera de la lista, guardar volvería a dejar el asalto sin
+  // competición sin haber tocado nada.
+  const hayFavoritas = guardadas.some((c) => c.favorita);
+  const competiciones = hayFavoritas
+    ? guardadas.filter((c) => c.favorita || c.id === competicionId)
+    : guardadas;
 
   const selectorCompeticion = crear('select', {
     class: 'entrada',
@@ -598,7 +610,13 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
       avisoMano,
     ])),
 
-    bloque('Competición', selectorCompeticion),
+    bloque('Competición', crear('div', {}, [
+      selectorCompeticion,
+      hayFavoritas ? crear('p', {
+        class: 'ayuda',
+        texto: 'Sólo salen las que has marcado con el corazón en Competiciones.',
+      }) : null,
+    ])),
     bloqueFecha,
     desplegable('Fase', FASES, fase, (valor) => { fase = valor; },
                 { vacio: '— Sin indicar —' }).bloque,

@@ -24,8 +24,61 @@ async function listarCompeticiones() {
 
 // --- Lista ------------------------------------------------------------
 
+/**
+ * El menú de competiciones: darlas de alta, traerlas y ver la lista.
+ *
+ * La lista se fue a su propia pantalla en cuanto el calendario de la
+ * federación empezó a traer cientos: aquí sólo estorbaba a los botones.
+ */
 export async function pantallaCompeticiones(contenedor, datos = {}) {
   const volverA = datos.volverA || 'menu';
+  const competiciones = await listar(ALMACENES.competiciones);
+  const hayCompeticiones = competiciones.length > 0;
+  const favoritas = competiciones.filter((c) => c.favorita).length;
+
+  anadir(contenedor,
+    cabecera('Competiciones', () => ir(volverA)),
+
+    crear('button', {
+      type: 'button', class: 'boton boton-principal', texto: 'Nueva competición a mano',
+      onclick: () => ir('competicion', { volverA: 'competiciones' }),
+    }),
+    // Con el calendario ya traído, volver a traerlo es ponerlo al día.
+    crear('button', {
+      type: 'button', class: 'boton',
+      texto: hayCompeticiones
+        ? 'Actualizar del calendario de la RFEE'
+        : 'Traer del calendario de la RFEE',
+      onclick: () => ir('importar-competiciones'),
+    }),
+    crear('button', {
+      type: 'button',
+      class: 'boton' + (hayCompeticiones ? '' : ' desactivado'),
+      texto: 'Lista de competiciones',
+      'aria-disabled': hayCompeticiones ? null : 'true',
+      onclick: () => { if (hayCompeticiones) ir('lista-competiciones'); },
+    }),
+
+    crear('p', {
+      class: 'ayuda',
+      texto: hayCompeticiones
+        ? `${competiciones.length} competici${competiciones.length === 1 ? 'ón' : 'ones'} ` +
+          `en la lista, ${favoritas} con corazón.`
+        : 'Todavía no hay ninguna competición. Tráelas del calendario de la ' +
+          'federación, o añade a mano las de tu club.',
+    }),
+  );
+}
+
+/**
+ * La lista de competiciones: buscador, filtros y el corazón de cada una.
+ *
+ * El corazón dice "voy" o "fui". Es sólo eso, pero en cuanto marcas la
+ * primera, el desplegable de un asalto se queda con las marcadas: de un
+ * calendario de doscientas competiciones, las tuyas son cuatro.
+ */
+export async function pantallaListaCompeticiones(contenedor, datos = {}) {
+  const volverA = datos.volverA || 'competiciones';
   const [competiciones, asaltos] = await Promise.all([
     listarCompeticiones(),
     listar(ALMACENES.asaltos),
@@ -38,39 +91,40 @@ export async function pantallaCompeticiones(contenedor, datos = {}) {
     cuenta.set(asalto.competicionId, (cuenta.get(asalto.competicionId) || 0) + 1);
   }
 
+  // Los filtros sólo ofrecen lo que hay: las competiciones escritas a mano no
+  // tienen ni temporada ni categoría, y salen únicamente con "Todas".
+  const temporadas = [...new Set(competiciones.map((c) => c.temporada).filter(Boolean))]
+    .sort().reverse();
+  const categorias = [...new Set(competiciones.map((c) => c.categoria).filter(Boolean))].sort();
+  let temporada = null;
+  let categoria = null;
+
   const cuerpo = crear('tbody');
   const buscador = campo('Buscar', { placeholder: 'Nombre o población', oninput: pintarFilas });
   const contador = crear('p', { class: 'ayuda' });
 
   anadir(contenedor,
-    cabecera('Competiciones', () => ir(volverA)),
+    cabecera('Lista de competiciones', () => ir(volverA)),
 
-    crear('button', {
-      type: 'button', class: 'boton boton-principal', texto: 'Nueva competición a mano',
-      onclick: () => ir('competicion', { volverA: 'competiciones' }),
-    }),
-    // Con el calendario ya traído, volver a traerlo es ponerlo al día.
-    crear('button', {
-      type: 'button', class: 'boton',
-      texto: competiciones.length === 0
-        ? 'Traer del calendario de la RFEE'
-        : 'Actualizar del calendario de la RFEE',
-      onclick: () => ir('importar-competiciones'),
-    }),
+    buscador.bloque,
 
-    competiciones.length === 0 ? crear('p', {
-      class: 'ayuda',
-      texto: 'Todavía no hay ninguna competición. Tráelas del calendario de la ' +
-             'federación, o añade a mano las de tu club.',
-    }) : null,
+    temporadas.length > 0 ? desplegable('Temporada',
+      temporadas.map((t) => ({ id: t, etiqueta: t })), temporada,
+      (valor) => { temporada = valor; pintarFilas(); },
+      { vacio: 'Todas' }).bloque : null,
 
-    competiciones.length > 0 ? buscador.bloque : null,
+    categorias.length > 0 ? desplegable('Categoría',
+      categorias.map((c) => ({ id: c, etiqueta: c })), categoria,
+      (valor) => { categoria = valor; pintarFilas(); },
+      { vacio: 'Todas' }).bloque : null,
+
     contador,
 
-    competiciones.length > 0 ? crear('div', { class: 'tabla-scroll' }, [
+    crear('div', { class: 'tabla-scroll' }, [
       crear('table', { class: 'tabla-rivales' }, [
         crear('thead', {}, [
           crear('tr', {}, [
+            crear('th', { 'aria-label': 'Favorita' }),
             crear('th', { texto: 'Competición' }),
             crear('th', { texto: 'Fecha' }),
             crear('th', { class: 'derecha', texto: 'Asaltos' }),
@@ -78,25 +132,46 @@ export async function pantallaCompeticiones(contenedor, datos = {}) {
         ]),
         cuerpo,
       ]),
-    ]) : null,
+    ]),
   );
 
   pintarFilas();
 
+  // ------------------------------------------------------------------
+
+  /** Marca o desmarca el corazón de una competición. */
+  async function alternarFavorita(competicion, boton) {
+    competicion.favorita = !competicion.favorita;
+    await guardar(ALMACENES.competiciones, competicion);
+    pintarCorazon(boton, competicion);
+  }
+
+  function pintarCorazon(boton, competicion) {
+    boton.textContent = competicion.favorita ? '♥' : '♡';
+    boton.setAttribute('aria-pressed', competicion.favorita ? 'true' : 'false');
+    boton.setAttribute('aria-label',
+      competicion.favorita
+        ? `Quitar ${competicion.nombre} de tus competiciones`
+        : `Marcar ${competicion.nombre} como tuya`);
+  }
+
   function pintarFilas() {
     const busqueda = buscador.entrada.value.trim();
-    const visibles = busqueda
-      ? competiciones.filter((c) => coincide(c.nombre + ' ' + (c.poblacion || ''), busqueda))
-      : competiciones;
+    const visibles = competiciones.filter((c) =>
+      (!busqueda || coincide(c.nombre + ' ' + (c.poblacion || ''), busqueda))
+      && (!temporada || c.temporada === temporada)
+      && (!categoria || c.categoria === categoria));
 
-    contador.textContent = busqueda
+    const filtrando = busqueda || temporada || categoria;
+    contador.textContent = filtrando
       ? `${visibles.length} de ${competiciones.length} competiciones.`
       : `${competiciones.length} competici${competiciones.length === 1 ? 'ón' : 'ones'}.`;
 
     rellenar(cuerpo, visibles.map((competicion) => crear('tr', {
       class: 'fila-rival',
-      onclick: () => ir('competicion', { id: competicion.id, volverA: 'competiciones' }),
+      onclick: () => ir('competicion', { id: competicion.id, volverA: 'lista-competiciones' }),
     }, [
+      crear('td', { class: 'celda-corazon' }, [corazonDe(competicion)]),
       crear('td', {}, [
         crear('span', { texto: competicion.nombre }),
         crear('span', { class: 'segunda-linea', texto: resumirCompeticion(competicion) }),
@@ -107,9 +182,21 @@ export async function pantallaCompeticiones(contenedor, datos = {}) {
 
     if (visibles.length === 0) {
       rellenar(cuerpo, crear('tr', {}, [
-        crear('td', { colspan: '3', class: 'apagado', texto: 'Ninguna coincide con esa búsqueda.' }),
+        crear('td', { colspan: '4', class: 'apagado', texto: 'Ninguna coincide con eso.' }),
       ]));
     }
+  }
+
+  /** El corazón de una fila. Tocarlo no abre la ficha: sólo marca. */
+  function corazonDe(competicion) {
+    const boton = crear('button', { type: 'button', class: 'boton-corazon' });
+    pintarCorazon(boton, competicion);
+    boton.addEventListener('click', (evento) => {
+      // Si no, el toque llegaría también a la fila y se abriría la ficha.
+      evento.stopPropagation();
+      alternarFavorita(competicion, boton);
+    });
+    return boton;
   }
 }
 

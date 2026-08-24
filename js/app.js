@@ -14,7 +14,7 @@ import { VERSION } from './version.js';
 
 import { pantallaPerfil } from './pantallas/perfil.js';
 import { pantallaPerfilRfee } from './pantallas/perfil-rfee.js';
-import { pantallaRivales, pantallaRival } from './pantallas/rivales.js';
+import { pantallaRivales, pantallaListaRivales, pantallaRival } from './pantallas/rivales.js';
 import { pantallaInicio, pantallaAsaltoNuevo, pantallaAsalto } from './pantallas/asaltos.js';
 import { pantallaEtiquetado, soltarReproductor } from './pantallas/etiquetado.js';
 import { pantallaCalibrado } from './pantallas/calibrado.js';
@@ -25,7 +25,8 @@ import { pantallaRanking } from './pantallas/ranking.js';
 import { pantallaAyuda } from './pantallas/ayuda.js';
 import { pantallaPreparar } from './pantallas/preparar.js';
 import {
-  pantallaCompeticiones, pantallaCompeticion, pantallaImportarCompeticiones,
+  pantallaCompeticiones, pantallaListaCompeticiones, pantallaCompeticion,
+  pantallaImportarCompeticiones,
 } from './pantallas/competiciones.js';
 
 
@@ -52,10 +53,12 @@ registrarPantalla('estadisticas', conLimpieza(pantallaEstadisticas));
 registrarPantalla('ayuda', conLimpieza(pantallaAyuda));
 registrarPantalla('preparar', conLimpieza(pantallaPreparar));
 registrarPantalla('rivales', conLimpieza(pantallaRivales));
+registrarPantalla('lista-rivales', conLimpieza(pantallaListaRivales));
 registrarPantalla('rival', conLimpieza(pantallaRival));
 registrarPantalla('importar-rfee', conLimpieza(pantallaImportarRfee));
 registrarPantalla('ranking', conLimpieza(pantallaRanking));
 registrarPantalla('competiciones', conLimpieza(pantallaCompeticiones));
+registrarPantalla('lista-competiciones', conLimpieza(pantallaListaCompeticiones));
 registrarPantalla('competicion', conLimpieza(pantallaCompeticion));
 registrarPantalla('importar-competiciones', conLimpieza(pantallaImportarCompeticiones));
 registrarPantalla('asalto-nuevo', conLimpieza(pantallaAsaltoNuevo));

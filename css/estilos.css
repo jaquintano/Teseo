@@ -476,6 +476,33 @@ textarea.entrada {
   font-size: 1rem;
 }
 
+/* El corazón de la lista de competiciones: dice si vas o has ido. Va dentro
+   de una fila de tabla, así que es una de las tres excepciones a la altura de
+   control: se gana dedo a lo ancho, que a lo alto no hay sitio. Fallar por
+   arriba o por abajo tampoco rompe nada, porque ahí está la fila. */
+.boton-corazon {
+  width: var(--ancho-boton-chico);
+  min-height: 0;
+  padding: 0.25rem;
+  background: transparent;
+  border: 0;
+  color: var(--sin-etiquetar);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: pan-x pan-y;
+}
+
+.boton-corazon[aria-pressed="true"] { color: var(--contra); }
+
+/* Sin esto la columna se estira con el ancho del botón y aparta el nombre. */
+.tabla-rivales .celda-corazon {
+  width: var(--ancho-boton-chico);
+  padding: 0.2rem 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
 .boton-icono {
   width: 56px;
   min-height: var(--alto-fila-lista);

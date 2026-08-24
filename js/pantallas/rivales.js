@@ -15,8 +15,53 @@ import {
   ALMACENES, listarRivales, listar, guardar, obtener, borrar, listarPor,
 } from '../db.js';
 
+/**
+ * El menú de rivales: dar de alta, traer de la federación y ver la lista.
+ *
+ * La lista se fue a su propia pantalla cuando empezó a tener cientos de
+ * fichas: colgando de aquí, los dos botones de arriba quedaban aplastados
+ * contra una tabla que se come la pantalla entera.
+ */
 export async function pantallaRivales(contenedor, datos = {}) {
   const volverA = datos.volverA || 'inicio';
+  const rivales = await listarRivales();
+  const hayRivales = rivales.length > 0;
+
+  anadir(contenedor,
+    cabecera('Rivales', () => ir(volverA)),
+
+    crear('button', {
+      type: 'button', class: 'boton boton-principal', texto: 'Nuevo rival a mano',
+      onclick: () => ir('rival', { volverA: 'rivales' }),
+    }),
+    // Si ya hay fichas, traerlas otra vez es ponerlas al día: sólo se añaden
+    // las que falten.
+    crear('button', {
+      type: 'button', class: 'boton',
+      texto: hayRivales ? 'Actualizar de la RFEE' : 'Traer de la RFEE',
+      onclick: () => ir('importar-rfee'),
+    }),
+    crear('button', {
+      type: 'button',
+      class: 'boton' + (hayRivales ? '' : ' desactivado'),
+      texto: 'Lista de rivales',
+      'aria-disabled': hayRivales ? null : 'true',
+      onclick: () => { if (hayRivales) ir('lista-rivales'); },
+    }),
+
+    crear('p', {
+      class: 'ayuda',
+      texto: hayRivales
+        ? `${rivales.length} rival${rivales.length === 1 ? '' : 'es'} en la lista.`
+        : 'Todavía no hay ningún rival. Da de alta el primero, o trae una ' +
+          'categoría entera del ranking de la federación.',
+    }),
+  );
+}
+
+/** La lista de rivales: tabla con buscador. */
+export async function pantallaListaRivales(contenedor, datos = {}) {
+  const volverA = datos.volverA || 'rivales';
   const [rivales, asaltos] = await Promise.all([
     listarRivales(),
     listar(ALMACENES.asaltos),
@@ -40,25 +85,7 @@ export async function pantallaRivales(contenedor, datos = {}) {
   const contador = crear('p', { class: 'ayuda' });
 
   anadir(contenedor,
-    cabecera('Rivales', () => ir(volverA)),
-
-    crear('button', {
-      type: 'button', class: 'boton boton-principal', texto: 'Nuevo rival a mano',
-      onclick: () => ir('rival', { volverA: 'rivales' }),
-    }),
-    // Si ya hay fichas, traerlas otra vez es ponerlas al día: sólo se añaden
-    // las que falten.
-    crear('button', {
-      type: 'button', class: 'boton',
-      texto: rivales.length === 0 ? 'Traer de la RFEE' : 'Actualizar de la RFEE',
-      onclick: () => ir('importar-rfee'),
-    }),
-
-    rivales.length === 0 ? crear('p', {
-      class: 'ayuda',
-      texto: 'Todavía no hay ningún rival. Da de alta el primero, o trae una ' +
-             'categoría entera del ranking de la federación.',
-    }) : null,
+    cabecera('Lista de rivales', () => ir(volverA)),
 
     rivales.length > 0 ? buscador.bloque : null,
     contador,
@@ -94,7 +121,7 @@ export async function pantallaRivales(contenedor, datos = {}) {
 
     rellenar(cuerpo, visibles.map((rival) => crear('tr', {
       class: 'fila-rival',
-      onclick: () => ir('rival', { id: rival.id, volverA: 'rivales' }),
+      onclick: () => ir('rival', { id: rival.id, volverA: 'lista-rivales' }),
     }, [
       crear('td', { texto: nombreCompleto(rival) }),
       crear('td', { class: 'apagado', texto: rival.club || '—' }),
