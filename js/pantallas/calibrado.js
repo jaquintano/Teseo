@@ -194,13 +194,17 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     if (video.duration) posicion.value = String((video.currentTime / video.duration) * 1000);
   }
 
-  // --- Un dedo dibuja el recuadro; dos amplían la imagen ---
+  // --- Un dedo dibuja el recuadro; dos amplían y pasean la imagen ---
   //
   // Hacen falta las dos cosas y en la misma capa: el marcador sale pequeño en
   // un vídeo grabado de lejos, y encuadrarlo a pulso sobre una miniatura es
   // imposible. Se amplía con dos dedos, se ajusta con uno, y no hay botón de
   // volver al tamaño normal porque se vuelve con el mismo gesto de siempre:
   // juntando los dedos.
+  //
+  // Con dos dedos también se pasea la imagen, moviéndolos juntos, como en
+  // cualquier visor de fotos. Aquí no es un lujo: con un dedo se dibuja, así
+  // que la pinza es la única mano libre que queda para mover lo ampliado.
   let arrastrando = null;
   // Lo que se lleva dibujado a medio trazo: {que, caja}. Se pinta mientras se
   // arrastra y se guarda al soltar.
@@ -211,6 +215,9 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
   let despY = 0;
   let distanciaInicial = 0;
   let escalaInicial = 1;
+  // Punto medio entre los dos dedos la última vez que se miró: lo que se mueva
+  // de un movimiento al siguiente es lo que se pasea la imagen.
+  let centroAnterior = null;
 
   function aplicarZoom() {
     // El desplazamiento se acota para que la imagen no se despegue del marco
@@ -234,6 +241,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       const [a, b] = [...dedos.values()];
       distanciaInicial = Math.hypot(a.x - b.x, a.y - b.y);
       escalaInicial = escala;
+      centroAnterior = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
       pintarMarcas();
       return;
     }
@@ -254,6 +262,14 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       const distancia = Math.hypot(a.x - b.x, a.y - b.y);
       escala = Math.min(ESCALA_MAXIMA,
                         Math.max(1, escalaInicial * (distancia / distanciaInicial)));
+
+      const centro = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+      if (centroAnterior) {
+        despX += centro.x - centroAnterior.x;
+        despY += centro.y - centroAnterior.y;
+      }
+      centroAnterior = centro;
+
       aplicarZoom();
       return;
     }
@@ -274,7 +290,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
 
   const soltar = (evento) => {
     dedos.delete(evento.pointerId);
-    if (dedos.size < 2) distanciaInicial = 0;
+    if (dedos.size < 2) { distanciaInicial = 0; centroAnterior = null; }
     if (escala <= 1.01) { escala = 1; despX = 0; despY = 0; aplicarZoom(); }
 
     if (!arrastrando) return;
