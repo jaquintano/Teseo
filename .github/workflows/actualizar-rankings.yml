@@ -61,11 +61,11 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
 
           if git diff --quiet -- datos/; then
-            echo "Los rankings están igual que ayer. No se toca nada."
+            echo "Los datos están igual que ayer. No se toca nada."
             exit 0
           fi
 
           git add datos/
           git commit -m "Datos de la RFEE al $(TZ=Europe/Madrid date +%d/%m/%Y)"
           git push
-          echo "Rankings actualizados."
+          echo "Datos actualizados."

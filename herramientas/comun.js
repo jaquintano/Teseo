@@ -29,19 +29,74 @@ function fechaISO(texto) {
   return partes[3] + '-' + partes[2] + '-' + partes[1];
 }
 
-/** Devuelve las filas del primer <tbody>, ya troceadas en celdas. */
+/**
+ * Las filas de la tabla principal, ya troceadas en celdas.
+ *
+ * Dos cosas de las páginas de la federación que obligan a hilar fino:
+ *
+ * - Cada fila del calendario lleva dentro una ventana de detalle con OTRA
+ *   tabla, la de inscritos. Así que no vale cortar por el primer </tbody> ni
+ *   partir por <tr>: hay que llevar la cuenta de las tablas anidadas y no
+ *   hacer caso de nada de lo que caiga dentro de ellas.
+ *
+ * - Hay celdas que sólo se enseñan en móvil —las marcadas hidden-lg—, y son
+ *   un resumen repetido de las columnas anteriores: "E ABS", "Ind.". Se dejan
+ *   fuera, porque son las que hacen que la misma columna caiga en un sitio
+ *   distinto en cada página.
+ */
 function filasDeLaTabla(html) {
   const inicio = html.indexOf('<tbody');
-  const fin = html.indexOf('</tbody>');
-  if (inicio < 0 || fin < 0) throw new Error('No se encontró la tabla. ¿Ha cambiado la página?');
+  if (inicio < 0) throw new Error('No se encontró la tabla. ¿Ha cambiado la página?');
 
-  return html.slice(inicio, fin)
-    .split(/<tr[^>]*>/i)
-    .slice(1)
-    .map((fila) => ({
-      cruda: fila,
-      celdas: [...fila.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((m) => m[1]),
-    }));
+  const etiquetas = /<(\/?)(tbody|table|tr|td)\b([^>]*)>/gi;
+  etiquetas.lastIndex = inicio;
+
+  const filas = [];
+  let tbodys = 0;    // <tbody> abiertos: al cerrarse el primero, se acabó
+  let anidadas = 0;  // tablas metidas dentro de una fila
+  let fila = null;
+  let celda = null;
+
+  let etiqueta;
+  while ((etiqueta = etiquetas.exec(html)) !== null) {
+    const [, cierra, nombre, atributos] = etiqueta;
+    const cerrando = cierra === '/';
+
+    if (nombre.toLowerCase() === 'tbody') {
+      tbodys += cerrando ? -1 : 1;
+      if (tbodys === 0) break;
+      continue;
+    }
+
+    if (nombre.toLowerCase() === 'table') {
+      anidadas = Math.max(0, anidadas + (cerrando ? -1 : 1));
+      continue;
+    }
+
+    if (anidadas > 0) continue;
+
+    if (nombre.toLowerCase() === 'tr') {
+      if (cerrando) {
+        if (fila) filas.push({ cruda: html.slice(fila.desde, etiquetas.lastIndex), celdas: fila.celdas });
+        fila = null;
+        celda = null;
+      } else {
+        fila = { desde: etiqueta.index, celdas: [] };
+      }
+      continue;
+    }
+
+    // Aquí ya sólo quedan las celdas.
+    if (!fila) continue;
+    if (cerrando) {
+      if (celda && !celda.deMovil) fila.celdas.push(html.slice(celda.desde, etiqueta.index));
+      celda = null;
+    } else {
+      celda = { desde: etiquetas.lastIndex, deMovil: /hidden-lg/.test(atributos) };
+    }
+  }
+
+  return filas;
 }
 
 // Los códigos que usa la federación en la dirección.

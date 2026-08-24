@@ -3,7 +3,14 @@
   "fichero": "competiciones-2025-2026-E.json",
   "temporada": "2025-2026",
   "arma": "Espada",
-  "cuantas": 239,
-  "descargadoEl": "2026-08-20T12:25:09.912Z"
+  "cuantas": 240,
+  "descargadoEl": "2026-08-24T12:49:24.633Z"
+ },
+ {
+  "fichero": "competiciones-2026-2027-E.json",
+  "temporada": "2026-2027",
+  "arma": "Espada",
+  "cuantas": 148,
+  "descargadoEl": "2026-08-24T12:49:27.993Z"
  }
 ]

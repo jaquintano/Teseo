@@ -10,8 +10,24 @@
 // el navegador, así que se descarga antes y viaja dentro de la aplicación.
 //
 // De una tacada se traen todas las categorías y ambos géneros de espada
-// individual: son unas 80 competiciones por temporada, así que no merece la
-// pena partirlo en ficheros más pequeños.
+// individual: un par de cientos de competiciones por temporada, así que no
+// merece la pena partirlo en ficheros más pequeños.
+//
+// Por qué hacen falta DOS páginas
+// -------------------------------
+// La federación cuenta lo mismo en dos sitios distintos, y ninguno de los dos
+// lo cuenta entero:
+//
+// - "Resultados" lista lo que ya se ha celebrado. Es de donde salía todo
+//   hasta ahora, y por eso no aparecía ni una competición futura: en una
+//   temporada recién empezada esa página viene VACÍA.
+//
+// - "Calendario" lista lo convocado, con fecha y sede, antes de que se tire.
+//   Pero se deja atrás cosas que sí están en Resultados.
+//
+// Así que se piden las dos y se juntan. Lo que salga en las dos se queda una
+// sola vez: se reconocen por el identificador de la federación y, si no lo
+// llevan, por nombre, fecha, categoría, género y población.
 
 const fs = require('fs');
 const path = require('path');
@@ -19,7 +35,8 @@ const {
   soloTexto, fechaISO, filasDeLaTabla, TEMPORADAS, ultimasTemporadas,
 } = require('./comun.js');
 
-const BASE = 'https://app.skermo.org/calendar/public/rfee/results';
+const BASE_RESULTADOS = 'https://app.skermo.org/calendar/public/rfee/results';
+const BASE_CALENDARIO = 'https://app.skermo.org/calendar/public/rfee';
 const RAIZ = path.resolve(__dirname, '..');
 
 // Espada siempre, e individual siempre: Teseo va de asaltos de uno contra uno.
@@ -35,22 +52,45 @@ const MODALIDAD_INDIVIDUAL = '1';
 // interesan. Con 1 pasamos de 83 a 239 competiciones por temporada.
 const TODAS_CON_Y_SIN_RESULTADO = '1';
 
+/** Las dos direcciones de una temporada, con los mismos filtros. */
+function direcciones(temporada) {
+  const filtros = 'season=' + TEMPORADAS[temporada] +
+                  '&weapon%5B%5D=' + ARMA +
+                  '&modality%5B%5D=' + MODALIDAD_INDIVIDUAL;
+
+  return {
+    resultados: BASE_RESULTADOS + '?' + filtros + '&owa=' + TODAS_CON_Y_SIN_RESULTADO,
+
+    // Las dos casillas del calendario importan, y mucho:
+    //
+    // - "Ver anteriores" (showPrevious): sin ella sólo se enseña lo que aún
+    //   está por venir, y perderíamos media temporada según avance.
+    //
+    // - "Comp. externas" (showExt): sin ella no salen las internacionales.
+    //   En la temporada 2026-2027 es la diferencia entre 2 competiciones
+    //   y 148.
+    calendario: BASE_CALENDARIO + '?' + filtros + '&showPrevious=1&showExt=1',
+  };
+}
+
 /**
- * Las columnas de la tabla, por orden:
- * fecha, nombre, arma, género, categoría, modalidad, etiqueta corta,
- * población y enlaces.
+ * Las columnas de la tabla, por orden y ya sin las que sólo salen en el
+ * móvil: fecha, nombre, arma, género, categoría, modalidad, población y
+ * enlaces. Las dos páginas se leen igual.
  */
 function extraerCompeticiones(html) {
   const competiciones = [];
 
   for (const { cruda, celdas } of filasDeLaTabla(html)) {
-    if (celdas.length < 8) continue;
+    if (celdas.length < 7) continue;
 
     const nombre = soloTexto(celdas[1]);
     if (!nombre) continue;
 
-    // El identificador va en el enlace a los resultados de la competición.
-    const enlace = cruda.match(/\/competition\/(\d+)/);
+    // En Resultados el identificador va en el enlace a la clasificación. En
+    // Calendario no hay clasificación que enlazar todavía, así que sale de la
+    // ventana de detalle de la fila, que es #detail<id>. Es el mismo número.
+    const enlace = cruda.match(/\/competition\/(\d+)/) || cruda.match(/#detail(\d+)/);
 
     competiciones.push({
       idRfee: enlace ? Number(enlace[1]) : null,
@@ -58,23 +98,76 @@ function extraerCompeticiones(html) {
       fecha: fechaISO(soloTexto(celdas[0])),
       genero: soloTexto(celdas[3]) === 'Femenino' ? 'F' : 'M',
       categoria: soloTexto(celdas[4]),
-      poblacion: soloTexto(celdas[7]),
+      poblacion: soloTexto(celdas[6]),
     });
   }
 
   return competiciones;
 }
 
-async function traerUna(temporada) {
-  const url = BASE + '?season=' + TEMPORADAS[temporada] +
-              '&weapon%5B%5D=' + ARMA +
-              '&modality%5B%5D=' + MODALIDAD_INDIVIDUAL +
-              '&owa=' + TODAS_CON_Y_SIN_RESULTADO;
+/**
+ * Cómo se reconoce la misma competición cuando no lleva identificador.
+ *
+ * Un mismo torneo se parte en una competición por categoría y género, y el
+ * circuito europeo celebra el mismo día pruebas con el mismo nombre en
+ * ciudades distintas. Hacen falta los cinco datos.
+ */
+function clave(competicion) {
+  return [competicion.nombre, competicion.fecha, competicion.categoria,
+          competicion.genero, competicion.poblacion].join('|').toUpperCase();
+}
 
+/**
+ * Junta las listas de las dos páginas sin repetir nada.
+ *
+ * Manda la primera en la que aparezca. Lo único que se toma de la segunda es
+ * el identificador cuando la primera no lo traía: Resultados sólo lo enseña
+ * si hay clasificación publicada, y el Calendario lo lleva siempre.
+ */
+function unir(...listas) {
+  const porId = new Map();
+  const porClave = new Map();
+  const todas = [];
+
+  for (const competicion of listas.flat()) {
+    const conocida = (competicion.idRfee != null && porId.get(competicion.idRfee))
+                  || porClave.get(clave(competicion));
+
+    if (conocida) {
+      if (conocida.idRfee == null && competicion.idRfee != null) {
+        conocida.idRfee = competicion.idRfee;
+        porId.set(competicion.idRfee, conocida);
+      }
+      continue;
+    }
+
+    todas.push(competicion);
+    porClave.set(clave(competicion), competicion);
+    if (competicion.idRfee != null) porId.set(competicion.idRfee, competicion);
+  }
+
+  return todas;
+}
+
+const esperar = (milisegundos) => new Promise((seguir) => setTimeout(seguir, milisegundos));
+
+async function traerTabla(url) {
   const respuesta = await fetch(url);
   if (!respuesta.ok) throw new Error('La federación respondió ' + respuesta.status);
+  return extraerCompeticiones(await respuesta.text());
+}
 
-  const competiciones = extraerCompeticiones(await respuesta.text());
+async function traerUna(temporada) {
+  const urls = direcciones(temporada);
+
+  // Si falla cualquiera de las dos, el error sube y la temporada se queda
+  // como estaba. Mejor eso que guardar media lista y que al usuario le
+  // desaparezcan competiciones que ayer estaban.
+  const deResultados = await traerTabla(urls.resultados);
+  await esperar(1200);
+  const delCalendario = await traerTabla(urls.calendario);
+
+  const competiciones = unir(deResultados, delCalendario);
   if (competiciones.length === 0) return 'vacio';
 
   // Orden propio y estable, para que el fichero sólo cambie cuando cambie
@@ -101,12 +194,14 @@ async function traerUna(temporada) {
     temporada,
     arma: 'Espada',
     modalidad: 'Individual',
-    origen: url,
+    origen: [urls.resultados, urls.calendario],
     descargadoEl: new Date().toISOString(),
     competiciones,
   }, null, 1) + '\n');
 
-  return 'guardado';
+  const soloEnCalendario = competiciones.length - deResultados.length;
+  return 'guardado: ' + competiciones.length + ' competiciones, ' +
+         soloEnCalendario + ' de ellas sólo en el calendario';
 }
 
 /** Rehace datos/competiciones.json, el índice de lo que hay disponible. */
@@ -158,7 +253,7 @@ async function principal() {
     } catch (error) {
       console.warn('  ' + temporada + ': ERROR ' + error.message);
     }
-    await new Promise((seguir) => setTimeout(seguir, 1200));
+    await esperar(1200);
   }
 
   actualizarIndice();
