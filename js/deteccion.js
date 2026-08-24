@@ -18,9 +18,19 @@
 // tolerante con lo segundo sin dejar de exigir lo primero.
 
 // Un píxel cuenta como encendido si tiene color de verdad y no está apagado.
-// Generosos los dos: el halo de un LED saturado no es un rojo puro.
-const SATURACION_MINIMA = 0.35;
-const BRILLO_MINIMO = 0.40;
+//
+// Y son generosos a propósito, sobre todo desde que la criba de verdad la hace
+// el tiempo —hay que aguantar encendida ocho décimas— y la zona donde se mira
+// es estrecha. Ser tacaño aquí no quita falsos positivos; sólo pierde luz.
+//
+// A quien más le duele ser tacaño es al VERDE. Un LED potente satura el sensor
+// y el centro sale blanco, sin tinte que medir, y con el verde pasa antes que
+// con el rojo: el verde pesa un 59 % del brillo de un píxel frente al 30 % del
+// rojo, así que revienta el canal mucho antes. De un tocado verde queda un
+// aro de color y un agujero blanco en medio; del rojo, casi toda la mancha.
+// Por eso el verde se detectaba peor, y no porque el código lo mirara menos.
+const SATURACION_MINIMA = 0.25;
+const BRILLO_MINIMO = 0.35;
 
 // El tono va en grados. El rojo está partido en los dos extremos de la rueda,
 // así que hay que mirar los dos rangos.
@@ -310,6 +320,9 @@ export function contarEnZona(imagen, zona, cual) {
 // muestras en blanco de cada diez.
 const PARTE_SOLIDA = 0.8;
 
+// Y lo que se le pide al segundo color de un doble, que ya va acompañado.
+const PARTE_DE_ACOMPANANTE = 0.5;
+
 // Y para que la cuenta valga, la ventana tiene que estar llena: al principio
 // del vídeo, o al volver de un hueco, no hay con qué comparar.
 const PARTE_DE_VENTANA_MINIMA = 0.9;
@@ -367,14 +380,21 @@ export function crearDetector(umbrales, ventana = 0.8) {
   function muestra(segundos, cuentas) {
     const sueltos = [];
 
+    // Las dos muestras se apuntan antes de decidir nada: la decisión de un
+    // color mira el estado del otro, y con media vuelta dada el otro todavía
+    // no tendría la muestra de este instante.
+    for (const color of ['rojo', 'verde']) {
+      estado[color].ultimas.push({ segundos, valor: cuentas[color] });
+    }
+
     for (const color of ['rojo', 'verde']) {
       const canal = estado[color];
-      canal.ultimas.push({ segundos, valor: cuentas[color] });
       const ahora = comoEsta(canal, segundos);
 
       if (!canal.encendida && ahora.llena && ahora.parte >= PARTE_SOLIDA) {
         canal.encendida = true;
         sueltos.push({ instante: ahora.desde, color });
+        mirarAlOtro(color, ahora.desde, sueltos);
         continue;
       }
 
@@ -385,6 +405,38 @@ export function crearDetector(umbrales, ventana = 0.8) {
     }
 
     return sueltos.flatMap((tocado) => emparejar(tocado));
+  }
+
+  /**
+   * Acaba de confirmarse un color: ¿le acompaña el otro?
+   *
+   * Al segundo se le pide menos, y con motivo. Cuando una lámpara ya ha pasado
+   * el filtro del tiempo sabemos que ahí hubo un tocado de verdad, así que la
+   * pregunta que queda no es "¿ha pasado algo?" sino "¿se encendieron las
+   * dos?", y para eso basta con ver luz en la mitad de la ventana.
+   *
+   * Sin esto, un doble con la lámpara verde justa —y la verde se ve peor que
+   * la roja, por lo que se explica arriba— se apuntaba como tocado en contra:
+   * el peor error posible, porque suma un punto al rival y te quita uno a ti.
+   */
+  function mirarAlOtro(color, desde, sueltos) {
+    const cual = color === 'rojo' ? 'verde' : 'rojo';
+    const otro = estado[cual];
+    if (otro.encendida) return;
+
+    // Se mira sólo DESDE QUE EMPEZÓ el tocado, no la ventana entera. La
+    // ventana del otro color todavía arrastra muestras de antes del tocado,
+    // todas apagadas, y ésas diluyen la cuenta hasta hundirla: la pregunta no
+    // es "¿ha habido luz verde en el último segundo?" sino "¿ha habido luz
+    // verde desde que se encendió la roja?".
+    const desdeElTocado = otro.ultimas.filter((m) => m.segundos >= desde);
+    if (desdeElTocado.length === 0) return;
+
+    const encendidas = desdeElTocado.filter((m) => m.valor >= otro.umbral);
+    if (encendidas.length / desdeElTocado.length < PARTE_DE_ACOMPANANTE) return;
+
+    otro.encendida = true;
+    sueltos.push({ instante: encendidas[0].segundos, color: cual });
   }
 
   /** Junta en un doble los dos colores que se encienden casi a la vez. */

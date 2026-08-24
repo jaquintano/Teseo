@@ -58,7 +58,11 @@ const MANCHA_INSUFICIENTE = 15;
 const MANCHA_JUSTA = 40;
 
 // Del tamaño de la lámpara, cuánto hay que ver encendido para darla por tal.
-const PARTE_PARA_ENCENDER = 0.4;
+const PARTE_PARA_ENCENDER = 0.25;
+
+// Si una lámpara da menos de esta parte de píxeles que la otra, conviene
+// decirlo: la floja se va a perder tocados y a estropear dobles.
+const DESEQUILIBRIO = 0.4;
 
 // Con más de esto encendido a lo largo del vídeo, algo va mal.
 const DEMASIADO_ENCENDIDO = 0.7;
@@ -521,6 +525,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
         });
       }),
       ultimoIntento ? crear('p', { class: 'aviso', texto: ultimoIntento }) : null,
+      desequilibrio() ? crear('p', { class: 'aviso', texto: desequilibrio() }) : null,
 
       crear('h3', { class: 'subtitulo-seccion', texto: '4. Tu color' }),
       crear('p', {
@@ -551,6 +556,28 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     miColor = valor || null;
     if (valor && asalto) await fijarColorDelAsalto(asalto, valor);
     pintarPasos();
+  }
+
+  /**
+   * Si una lámpara ha salido mucho más floja que la otra, dilo.
+   *
+   * Pasa sobre todo con la verde: un LED verde potente satura el sensor y sale
+   * blanco por dentro, así que deja menos color que medir. Y una lámpara floja
+   * no sólo pierde sus tocados: convierte los dobles en tocados del otro color.
+   */
+  function desequilibrio() {
+    const { rojo, verde } = lamparas;
+    if (!rojo || !verde) return null;
+
+    const floja = rojo.pixeles < verde.pixeles ? 'roja' : 'verde';
+    const menos = Math.min(rojo.pixeles, verde.pixeles);
+    const mas = Math.max(rojo.pixeles, verde.pixeles);
+    if (menos >= mas * DESEQUILIBRIO) return null;
+
+    return `La lámpara ${floja} ha salido bastante más floja que la otra ` +
+           `(${menos} píxeles contra ${mas}). Prueba a medirla otra vez en un ` +
+           'tocado en el que se vea de frente y bien encendida: se queda la ' +
+           'mancha más grande de las que encuentres, así que sólo puede mejorar.';
   }
 
   function guardarLaReferencia() {

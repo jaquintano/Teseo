@@ -318,6 +318,32 @@ potente satura el sensor y sale blanco, conservando el tinte sólo en el halo.
 El rojo está partido en los dos extremos de la rueda de tonos, así que se miran
 los dos rangos.
 
+### Por qué el verde se ve peor que el rojo
+
+No es cosa del código: es del sensor. **El verde pesa un 59 % del brillo de un
+píxel y el rojo sólo un 30 %**, así que un LED verde potente revienta el canal
+mucho antes. De un tocado verde queda un aro de color con un agujero blanco en
+medio; de uno rojo, casi toda la mancha. Con los mismos umbrales para los dos,
+el verde llega con la mitad de píxeles y se pierde tocados, y —lo peor— convierte
+los dobles en tocados del rival.
+
+Tres cosas lo compensan:
+
+- **Menos exigencia por píxel** (saturación 0,25 y brillo 0,35, antes 0,35 y
+  0,40). Ser tacaño aquí ya no quita falsos positivos —de eso se encarga el
+  filtro del tiempo y una zona estrecha—, sólo pierde luz.
+- **Menos exigencia por muestra**: hace falta ver encendida la cuarta parte de
+  la mancha que se midió al calibrar, no el 40 %. Se rehace al analizar desde
+  la mancha guardada, así que los calibrados viejos también se benefician.
+- **Al segundo color de un doble se le pide menos.** Cuando una lámpara ya ha
+  pasado el filtro del tiempo, sabemos que ahí hubo un tocado: la pregunta que
+  queda no es "¿ha pasado algo?" sino "¿se encendieron las dos?", y basta con
+  ver luz en la mitad de las muestras **desde que empezó el tocado** —no de la
+  ventana entera, que arrastra muestras de antes y las diluye—.
+
+Y el calibrado avisa si una lámpara sale con menos de la mitad de píxeles que
+la otra, para poder volver a medirla en un tocado mejor.
+
 **Cuándo da por encendida una lámpara: por el TIEMPO que aguanta.**
 
 Una lámpara de espada se queda encendida unos **dos segundos**, hasta que el

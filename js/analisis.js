@@ -65,12 +65,28 @@ function zonaDeLaLampara(lampara) {
   return lampara.zonaMedida ? conHolgura(lampara.zonaMedida) : lampara.zona;
 }
 
-/** El umbral de cada lámpara, o inalcanzable si no está localizada. */
+// De la mancha que se midió al calibrar, qué parte hay que ver encendida para
+// dar la lámpara por encendida.
+//
+// Era 0,4 y ahora es 0,25, por lo mismo que se relajó el color: la criba la
+// hace el tiempo. Y le duele más al verde, que llega con menos píxeles.
+const PARTE_PARA_ENCENDER = 0.25;
+const PISO_DE_UMBRAL = 8;
+
+/**
+ * El umbral de cada lámpara, o inalcanzable si no está localizada.
+ *
+ * Se rehace desde la mancha medida en vez de usar el umbral guardado, por lo
+ * mismo que la zona: así los calibrados de antes se aprovechan del umbral de
+ * ahora sin repetirlos.
+ */
 function umbralesDe(lamparas) {
-  return {
-    rojo: lamparas.rojo ? lamparas.rojo.umbral : Infinity,
-    verde: lamparas.verde ? lamparas.verde.umbral : Infinity,
+  const deUna = (lampara) => {
+    if (!lampara) return Infinity;
+    if (!lampara.pixeles) return lampara.umbral;
+    return Math.max(PISO_DE_UMBRAL, Math.round(lampara.pixeles * PARTE_PARA_ENCENDER));
   };
+  return { rojo: deUna(lamparas.rojo), verde: deUna(lamparas.verde) };
 }
 
 // Cada cuánto se mira, en segundos de vídeo.
