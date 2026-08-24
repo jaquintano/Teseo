@@ -244,6 +244,24 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   let cambiandoColor = false;
   const contador = crear('p', { class: 'ayuda contador' });
   const tabla = crear('div');
+  // El armazón de la tabla se crea UNA vez y se queda puesto; en cada
+  // repintado sólo se cambian las filas de dentro. Si se rehiciera entero, el
+  // marco con la barra de desplazamiento sería otro elemento cada vez y la
+  // lista volvería arriba en cuanto se tocara una fila.
+  const cuerpoTabla = crear('tbody');
+  const armazonTabla = crear('div', { class: 'tabla-scroll' }, [
+    crear('table', { class: 'tabla-rivales tabla-intercambios' }, [
+      crear('thead', {}, [
+        crear('tr', {}, [
+          crear('th', { texto: 'Instante' }),
+          crear('th', { texto: 'Resultado' }),
+          crear('th', { class: 'derecha', texto: 'Tanteo' }),
+          crear('th', { 'aria-label': 'Corregir' }),
+        ]),
+      ]),
+      cuerpoTabla,
+    ]),
+  ]);
   const deteccion = crear('details', { class: 'filtros' });
 
   // La ficha del intercambio va en una ventana encima de todo: en la pantalla
@@ -681,19 +699,10 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
             ]),
       ]));
 
-    rellenar(tabla, crear('div', { class: 'tabla-scroll' }, [
-      crear('table', { class: 'tabla-rivales tabla-intercambios' }, [
-        crear('thead', {}, [
-          crear('tr', {}, [
-            crear('th', { texto: 'Instante' }),
-            crear('th', { texto: 'Resultado' }),
-            crear('th', { class: 'derecha', texto: 'Tanteo' }),
-            crear('th', { 'aria-label': 'Corregir' }),
-          ]),
-        ]),
-        crear('tbody', {}, filas),
-      ]),
-    ]));
+    // Se pone la primera vez, y a partir de ahí ya está: lo único que cambia
+    // son las filas, así que la lista se queda donde el usuario la dejó.
+    if (armazonTabla.parentElement !== tabla) rellenar(tabla, armazonTabla);
+    rellenar(cuerpoTabla, filas);
   }
 
   /**
