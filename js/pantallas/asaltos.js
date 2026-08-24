@@ -9,14 +9,13 @@ import {
 } from '../ui.js';
 import {
   FASES, PRIORIDADES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe, nombreCompleto,
-  coincide, opcionesPara, COLORES_LAMPARA, PREGUNTA_COLOR,
+  coincide, opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
 import { resumirCompeticion } from '../competiciones.js';
 import {
   ALMACENES, guardar, obtener, listar, listarPor, listarRivales, obtenerPerfilPropio,
   guardarVideo, borrarAsalto, borrarTiempo, comprobarLegible,
-  colorDelAsalto, fijarColorDelAsalto,
 } from '../db.js';
 
 // La fatiga se apunta con una barra del 1 al 5, y una barra siempre marca
@@ -117,7 +116,7 @@ export async function pantallaInicio(contenedor) {
     }),
 
     asaltos.length === 0 ? crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Todavía no has registrado ningún asalto. Empieza por crear uno.',
     }) : null,
 
@@ -468,7 +467,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           avisoMano.hidden = true;
         }, { vacio: '— Elige —' }).bloque);
       partes.push(crear('p', {
-        class: 'ayuda',
+        class: 'ayuda explicacion',
         texto: 'Su ficha no dice con qué mano tira. Hace falta para las ' +
                'estadísticas, y se guardará en su ficha. Si no lo sabes, marca ' +
                '"Desconocido": ese asalto no aparecerá al filtrar por mano.',
@@ -602,7 +601,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
       // Los rivales se dan de alta en su pantalla, no aquí: al crear un
       // asalto se elige entre los que ya tienes.
       rivales.length === 0 ? crear('p', {
-        class: 'ayuda',
+        class: 'ayuda explicacion',
         texto: 'Todavía no hay ningún rival. Se dan de alta en Menú → Rivales, ' +
                'a mano o trayéndolos del ranking de la federación.',
       }) : buscador.bloque,
@@ -703,36 +702,12 @@ export async function pantallaAsalto(contenedor, datos = {}) {
   const listaTiempos = crear('div', { class: 'lista' });
   await pintarTiempos(listaTiempos, asalto, tiempos);
 
-  // --- Tu color en el asalto ---
-  //
-  // No se pregunta al crear el asalto porque nadie se acuerda de qué lámpara
-  // le tocó hasta que ve el vídeo. Aparece en cuanto hay uno, y hasta que se
-  // conteste no se puede etiquetar: sin él, un tocado a favor no dice de qué
-  // lámpara fue.
-  let miColor = await colorDelAsalto(asalto);
-  const bloqueColor = crear('div');
-
-  function pintarColor() {
-    if (tiempos.length === 0) { rellenar(bloqueColor, []); return; }
-
-    rellenar(bloqueColor, [
-      desplegable(PREGUNTA_COLOR, COLORES_LAMPARA, miColor, async (valor) => {
-        miColor = valor || null;
-        if (valor) await fijarColorDelAsalto(asalto, valor);
-        pintarColor();
-      }, { vacio: '— Elige —' }).bloque,
-      crear('p', {
-        class: miColor ? 'ayuda' : 'aviso',
-        texto: miColor
-          ? 'Vale para todos los tiempos de este asalto. Es lo que dice de quién ' +
-            'es cada lámpara, y de qué color se pintan las marcas.'
-          : 'Hace falta para etiquetar: sin saber cuál era tu lámpara, un tocado ' +
-            'a favor no significa nada. Se ve en el vídeo.',
-      }),
-    ]);
-  }
-
-  pintarColor();
+  // Tu color en el asalto se preguntaba también aquí, y sobraba: se pregunta
+  // en el tiempo, que es donde se etiqueta y el único sitio donde puedes
+  // comprobarlo mirando el vídeo. Preguntarlo dos veces sólo servía para
+  // contestar de memoria, y de memoria nadie se acuerda de qué lámpara le
+  // tocó. El dato sigue colgando del asalto y valiendo para todos sus
+  // tiempos: lo que se ha ido es la pregunta repetida.
 
   // --- Añadir un tiempo con su vídeo ---
   const progreso = crear('p', { class: 'progreso' });
@@ -766,7 +741,6 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     }) : null,
     // El club del rival sale de su ficha, no se vuelve a preguntar en cada asalto.
     rivalEnUnaLinea(rival),
-    bloqueColor,
 
     crear('button', {
       type: 'button', class: 'boton boton-compacto', texto: 'Editar datos del asalto',
@@ -834,7 +808,7 @@ async function pintarTiempos(lista, asalto, tiempos) {
 
   if (tiempos.length === 0) {
     lista.append(crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Este asalto todavía no tiene ningún vídeo.',
     }));
     return;

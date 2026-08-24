@@ -229,10 +229,12 @@ gris, que no son de nadie.
 Para eso hace falta saber **de qué color eras tú**, y ése es un dato del
 asalto (`asalto.miColor`), no de cada tiempo: te enchufas a un lado de la pista
 y ahí te quedas. No se pregunta al crear el asalto, porque hasta que no ves el
-vídeo no te acuerdas; aparece **en cuanto hay un vídeo**, y **sin contestarlo no
-se puede etiquetar** —ni a mano ni con la detección automática—, porque un
-"tocado a favor" sin saber cuál era tu lámpara no se puede ni pintar ni
-verificar.
+vídeo no te acuerdas; se pregunta **al abrir un tiempo**, que es donde se
+etiqueta y el único sitio donde puedes comprobarlo mirando el vídeo. Estuvo
+también en la pantalla del asalto y se quitó en v70: preguntarlo dos veces
+sólo servía para contestar de memoria. **Sin contestarlo no se puede
+etiquetar** —ni a mano ni con la detección automática—, porque un "tocado a
+favor" sin saber cuál era tu lámpara no se puede ni pintar ni verificar.
 
 Antes este dato vivía dentro del calibrado de cada tiempo. Los asaltos de
 entonces se migran solos al abrirlos: si alguno de sus tiempos lo trae en su

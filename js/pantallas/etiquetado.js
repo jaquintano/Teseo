@@ -742,7 +742,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
               'color no se detectarán.';
         })(),
       }) : crear('p', {
-        class: 'ayuda',
+        class: 'ayuda explicacion',
         texto: 'Antes hay que calibrar: enmarcar el marcador en el vídeo y decir ' +
                'de qué color eres. Sin eso, Teseo no sabe dónde mirar.',
       }),

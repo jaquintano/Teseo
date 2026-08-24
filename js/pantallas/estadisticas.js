@@ -110,7 +110,7 @@ export async function pantallaEstadisticas(contenedor) {
 
     if (e.resumen.intercambios === 0) {
       rellenar(resultados, crear('p', {
-        class: 'ayuda',
+        class: intercambios.length === 0 ? 'ayuda explicacion' : 'ayuda',
         texto: intercambios.length === 0
           ? 'Todavía no has etiquetado ningún intercambio. Las estadísticas ' +
             'aparecerán en cuanto empieces.'

@@ -50,7 +50,7 @@ export async function pantallaRivales(contenedor, datos = {}) {
     }),
 
     crear('p', {
-      class: 'ayuda',
+      class: hayRivales ? 'ayuda' : 'ayuda explicacion',
       texto: hayRivales
         ? `${rivales.length} rival${rivales.length === 1 ? '' : 'es'} en la lista.`
         : 'Todavía no hay ningún rival. Da de alta el primero, o trae una ' +

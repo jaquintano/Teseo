@@ -60,7 +60,7 @@ export async function pantallaCompeticiones(contenedor, datos = {}) {
     }),
 
     crear('p', {
-      class: 'ayuda',
+      class: hayCompeticiones ? 'ayuda' : 'ayuda explicacion',
       texto: hayCompeticiones
         ? `${competiciones.length} competici${competiciones.length === 1 ? 'ón' : 'ones'} ` +
           `en la lista, ${favoritas} con corazón.`
