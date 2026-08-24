@@ -327,9 +327,8 @@ el tercio central del fotograma.
 **El recuadro, ajustado al aparato.** La primera versión pedía dibujarlo grande
 y con holgura, para que el temblor de la cámara no sacara el marcador; con el
 seguimiento eso ya no hace falta, y lo que sobra estorba. Todo lo que no es el
-aparato —la pista, la gente, el fondo— cambia a lo largo del vídeo: mete ruido
-en la comparación con la referencia y baja el parecido de la plantilla justo
-cuando hay que reconocerla. Confirmado probándolo: cuanto más ceñido, mejor va.
+aparato —la pista, la gente, el fondo— cambia a lo largo del vídeo, y eso baja
+el parecido de la plantilla justo cuando hay que reconocerla. Confirmado probándolo: cuanto más ceñido, mejor va.
 El único límite por abajo es que tenga dibujo que reconocer, y el calibrado lo
 comprueba.
 

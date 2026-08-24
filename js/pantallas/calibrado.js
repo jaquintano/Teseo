@@ -19,16 +19,16 @@
 // vídeo que se quiera: Teseo sabe dónde está el marcador en cada fotograma, y
 // guarda cada lámpara como una posición DENTRO del marcador, no de la pantalla.
 //
-// El recuadro es además la PLANTILLA con la que se reconoce el marcador
-// después, y por eso se dibuja AJUSTADO al aparato. La primera versión pedía
-// holgura para el temblor de la cámara; de eso se encarga ahora el
-// seguimiento, y todo lo que sobre —pista, gente, fondo— cambia a lo largo del
-// vídeo y estorba a las dos cosas: a la comparación con la referencia y al
-// propio seguimiento.
+// El recuadro del marcador es además la PLANTILLA con la que se reconoce el
+// aparato durante todo el vídeo, y por eso se dibuja AJUSTADO. La primera
+// versión pedía holgura para el temblor de la cámara; de eso se encarga ahora
+// el seguimiento, y todo lo que sobre —pista, gente, fondo— cambia a lo largo
+// del vídeo y sólo sirve para que la plantilla deje de encajar.
 //
-// De ahí también que aquí mismo se use ya el seguimiento: el tocado con el que
-// se localizan las lámparas se busca por todo el vídeo, y para cuando aparece,
-// la cámara está en otro sitio.
+// Ese mismo seguimiento se usa aquí, mientras se calibra: los tres recuadros
+// van pegados al marcador según el usuario se mueve por el vídeo, y eso es a
+// la vez la comprobación de que el análisis va a funcionar y lo que permite
+// marcar cada lámpara en el momento que se quiera.
 
 import { anadir, crear, rellenar, cabecera, ir, desplegable, formatearSegundos } from '../ui.js';
 import {
@@ -130,7 +130,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
   // que ya se haya contestado en la pantalla del vídeo. Aquí sólo se enseña, y
   // se puede corregir sin salir.
   let miColor = await colorDelAsalto(asalto);
-  // Lo que se le dice al usuario del último intento de localizar.
+  // Lo que se le dice al usuario del último recuadro que ha marcado.
   let ultimoIntento = null;
   // Dónde está el marcador en el fotograma que se ve ahora mismo. No tiene por
   // qué ser donde se dibujó: el usuario se mueve por el vídeo y la cámara
@@ -501,8 +501,8 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       'No hace falta dejar holgura para el temblor de la cámara —de eso se ' +
       'encarga el seguimiento—, y todo lo que metas de más juega en contra: la ' +
       'pista, la gente y el fondo cambian a lo largo del vídeo, y lo que cambia ' +
-      'estorba tanto a la comparación con la referencia como al seguimiento. Lo ' +
-      'único que no vale es un recuadro liso, sin dibujo que reconocer.',
+      'hace que la plantilla deje de encajar. Lo único que no vale es un ' +
+      'recuadro liso, sin dibujo que reconocer.',
       'De la resolución depende todo. Las lámparas del aparato son pequeñas, y ' +
       'en un vídeo de baja calidad acaban siendo cuatro píxeles que se ' +
       'confunden con cualquier reflejo. Graba a 720p o más, y si puedes, con ' +
