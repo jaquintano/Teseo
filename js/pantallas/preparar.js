@@ -60,16 +60,37 @@ export async function pantallaPreparar(contenedor) {
 
   // ------------------------------------------------------------------
 
+  /**
+   * De qué temporada salen los rivales.
+   *
+   * El calendario y el ranking no van al mismo paso: la federación convoca
+   * las competiciones de la temporada nueva meses antes de publicar su
+   * ranking. Así que en cuanto aparece el calendario de la que viene, ésta
+   * pasa a ser la temporada más reciente y, si se pidieran los rivales de
+   * ella, no habría ninguno: la pantalla llenaba las competiciones y dejaba
+   * la lista de rivales vacía, que es justo lo que venía a arreglar.
+   *
+   * Cuando pasa eso, los rivales se traen de la última temporada que sí tenga
+   * ranking. Son los mismos tiradores: en un año no cambia el circuito.
+   */
+  function temporadaDeRivales(elegida) {
+    if (deRanking.includes(elegida)) return elegida;
+    // deRanking viene de la más reciente a la más antigua.
+    return deRanking.find((t) => t < elegida) || deRanking[0] || null;
+  }
+
   async function refrescar() {
     rellenar(resultado, crear('p', { class: 'ayuda', texto: 'Comprobando…' }));
 
-    const quien = { temporada, genero, categorias };
+    const temporadaRivales = temporadaDeRivales(temporada);
     const [tiradores, competiciones] = await Promise.all([
       listar(ALMACENES.tiradores), listar(ALMACENES.competiciones),
     ]);
     const [rivales, torneos] = await Promise.all([
-      planRivales(quien, tiradores),
-      planCompeticiones(quien, competiciones),
+      temporadaRivales
+        ? planRivales({ temporada: temporadaRivales, genero, categorias }, tiradores)
+        : { nuevos: [], completables: [], sinCambios: 0, categorias: [] },
+      planCompeticiones({ temporada, genero, categorias }, competiciones),
     ]);
 
     const cuantos = rivales.nuevos.length + rivales.completables.length + torneos.nuevas.length;
@@ -79,6 +100,15 @@ export async function pantallaPreparar(contenedor) {
         dato(rivales.nuevos.length, 'rivales'),
         dato(torneos.nuevas.length, 'competiciones'),
       ]),
+
+      // No lleva la marca de explicación: no explica nada, dice de dónde
+      // están saliendo los números de ahí arriba.
+      temporadaRivales && temporadaRivales !== temporada ? crear('p', {
+        class: 'ayuda',
+        texto: `De ${temporada} todavía no hay ranking —la federación lo publica ` +
+               `bastante después que el calendario—, así que los rivales salen ` +
+               `de ${temporadaRivales}. Son los mismos tiradores.`,
+      }) : null,
 
       rivales.categorias.length === 0 && torneos.categorias.length === 0
         ? crear('p', {
