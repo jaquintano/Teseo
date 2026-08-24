@@ -676,9 +676,6 @@ export async function pantallaAsalto(contenedor, datos = {}) {
   const contexto = [
     asalto.tanteoFinal ? `${asalto.tanteoFinal.favor}–${asalto.tanteoFinal.contra}` : '',
     nombreDeCompeticion(competicion, asalto),
-    // Dónde se tiró. Aquí es donde se comprueba que el asalto quedó colgado
-    // de la competición que era y no de la homónima de la otra punta.
-    competicion ? competicion.poblacion : '',
     formatearFecha(fechaDeAsalto(asalto, competicion)),
     asalto.numero ? `Asalto ${asalto.numero}` : '',
     etiquetaDe(FASES, asalto.fase),
@@ -783,12 +780,19 @@ export async function pantallaAsalto(contenedor, datos = {}) {
 }
 
 /**
- * Cómo se nombra la competición de un asalto.
+ * Cómo se nombra la competición de un asalto: el torneo y dónde se tiró.
+ *
+ * La ciudad va pegada al nombre y no aparte porque el mismo torneo, con la
+ * misma categoría y a veces el mismo día, se celebra en media Europa. Sin
+ * ella, dos asaltos de sitios distintos se leen igual.
+ *
  * Los asaltos de antes de que existieran las competiciones guardaban el
- * torneo como texto suelto; si lo tienen, se sigue mostrando.
+ * torneo como texto suelto; si lo tienen, se sigue mostrando tal cual.
  */
 function nombreDeCompeticion(competicion, asalto) {
-  if (competicion) return competicion.nombre;
+  if (competicion) {
+    return [competicion.nombre, competicion.poblacion].filter(Boolean).join(' · ');
+  }
   return asalto.torneo || '';
 }
 
