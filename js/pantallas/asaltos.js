@@ -30,10 +30,16 @@ const ORDEN_DE_FASE = new Map(FASES.map((fase, posicion) => [fase.id, posicion])
 
 /**
  * Cómo se nombra una competición al elegirla: primero la categoría, que es
- * por donde se busca cuando compites en dos, y luego el torneo y el día.
+ * por donde se busca cuando compites en dos, y luego el torneo, dónde se
+ * celebra y el día.
+ *
+ * La población no sobra: el circuito reparte el mismo torneo, con el mismo
+ * nombre y la misma categoría, por media Europa. Sin la ciudad, dos entradas
+ * seguidas de la lista son indistinguibles y se elige la que no era.
  */
 function etiquetaDeCompeticion(competicion) {
-  return [competicion.categoria, competicion.nombre, formatearFecha(competicion.fecha)]
+  return [competicion.categoria, competicion.nombre, competicion.poblacion,
+          formatearFecha(competicion.fecha)]
     .filter(Boolean).join(' · ');
 }
 
@@ -190,7 +196,10 @@ export async function pantallaInicio(contenedor) {
     return {
       competicion,
       titulo: competicion.nombre,
-      detalle: formatearFecha(competicion.fecha),
+      // Misma razón que en la etiqueta: la ciudad es lo que distingue dos
+      // competiciones que se llaman igual.
+      detalle: [competicion.poblacion, formatearFecha(competicion.fecha)]
+        .filter(Boolean).join(' · '),
       etiqueta: etiquetaDeCompeticion(competicion),
       orden: competicion.fecha || '',
     };
@@ -667,6 +676,9 @@ export async function pantallaAsalto(contenedor, datos = {}) {
   const contexto = [
     asalto.tanteoFinal ? `${asalto.tanteoFinal.favor}–${asalto.tanteoFinal.contra}` : '',
     nombreDeCompeticion(competicion, asalto),
+    // Dónde se tiró. Aquí es donde se comprueba que el asalto quedó colgado
+    // de la competición que era y no de la homónima de la otra punta.
+    competicion ? competicion.poblacion : '',
     formatearFecha(fechaDeAsalto(asalto, competicion)),
     asalto.numero ? `Asalto ${asalto.numero}` : '',
     etiquetaDe(FASES, asalto.fase),
