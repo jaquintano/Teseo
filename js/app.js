@@ -8,6 +8,7 @@ import { registrar, capturarErroresGlobales } from './registro.js';
 import { registrarPantalla, ir, empezarEn, iniciarBotonAtras } from './ui.js';
 import { obtenerPerfilPropio, pedirPersistencia } from './db.js';
 import { cargarAjustes } from './ajustes.js';
+import { cargarPreferencias } from './preferencias.js';
 import { iniciarInstalacion } from './instalacion.js';
 import { fijarPerfil } from './genero.js';
 import { VERSION } from './version.js';
@@ -84,6 +85,11 @@ async function arrancar() {
   // Los ajustes avanzados se leen una vez y se quedan en memoria: las
   // pantallas los consultan mientras pintan y no pueden esperar a la base.
   await cargarAjustes();
+
+  // Y si el usuario apagó los textos de ayuda, que arranque ya sin ellos: si
+  // se leyera después, la primera pantalla saldría con toda la prosa y se
+  // quedaría a medio pintar al quitarla.
+  await cargarPreferencias();
 
   const perfil = await obtenerPerfilPropio();
 

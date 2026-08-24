@@ -59,7 +59,7 @@ export async function pantallaPerfil(contenedor, datos = {}) {
     }) : null,
 
     esPrimeraVez && !datos.ficha ? crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Cuéntame quién eres. Todo esto se queda en tu móvil.',
     }) : null,
 
@@ -76,7 +76,7 @@ function pintarBienvenida(contenedor) {
     ]),
 
     crear('p', {
-      class: 'texto-ayuda destacado',
+      class: 'texto-ayuda destacado explicacion',
       texto: 'Teseo sirve para ver en qué eres bueno y en qué no, mirando tus ' +
              'propios asaltos. Para empezar, sólo hace falta saber quién eres.',
     }),
@@ -87,7 +87,7 @@ function pintarBienvenida(contenedor) {
       onclick: () => ir('perfil-rfee'),
     }),
     crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Lo más rápido: eliges tu categoría, te buscas en la lista y quedan ' +
              'puestos tu nombre, tu fecha de nacimiento, tu club y tu género.',
     }),
@@ -98,13 +98,13 @@ function pintarBienvenida(contenedor) {
       onclick: () => ir('perfil', { aMano: true }),
     }),
     crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Si no compites en el circuito federativo, o si no te encuentras en ' +
              'el ranking.',
     }),
 
     crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Nada de esto sale del teléfono: no hay que registrarse ni hay ' +
              'contraseñas.',
     }),

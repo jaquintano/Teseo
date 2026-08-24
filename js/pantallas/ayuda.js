@@ -159,7 +159,9 @@ export async function pantallaAyuda(contenedor) {
       'Cuando ya tienes fichas, ese botón pasa a decir "Actualizar de la RFEE": ' +
       'vuelve a mirar el ranking y añade las que falten.',
       'La mano hace falta de verdad, porque las estadísticas te dejan comparar ' +
-      'cómo te va contra diestros y contra zurdos.'),
+      'cómo te va contra diestros y contra zurdos.',
+      'La lista de todos los que tienes está en Rivales → "Lista de rivales", ' +
+      'con buscador. Arriba salen aquellos contra los que más has tirado.'),
 
     apartado('Que Teseo busque los tocados solo',
       'Si en el vídeo se ve el marcador del aparato, Teseo puede encontrar los ' +
@@ -237,7 +239,13 @@ export async function pantallaAyuda(contenedor) {
       'Los torneos de tu club, que no están en el calendario federativo, los ' +
       'añades a mano.',
       'Todo esto se hace aquí: al crear un asalto sólo se elige una de las que ' +
-      'ya tengas.'),
+      'ya tengas.',
+      'En "Lista de competiciones" están todas, y se pueden filtrar por ' +
+      'temporada y por categoría: el calendario de la federación trae un par de ' +
+      'cientos por temporada, tiradas y por tirar.',
+      'Cada una lleva un corazón. Márcalo en las que vas a tirar o ya has ' +
+      'tirado, y el desplegable del asalto se quedará sólo con ésas. Sin ningún ' +
+      'corazón marcado salen todas.'),
 
     apartado('Qué te dice Estadísticas',
       'Con qué acciones sueles tocar y con cuáles no. Si atacas más de lo que ' +
@@ -246,6 +254,14 @@ export async function pantallaAyuda(contenedor) {
       'Arriba, en "Filtros", puedes mirar sólo contra un rival, sólo contra ' +
       'zurdos, o sólo lo que hiciste yendo por delante o por detrás en el ' +
       'marcador: no se tira igual ganando que perdiendo.'),
+
+    apartado('Si te sobran las explicaciones',
+      'Teseo explica mucho, y eso está bien el primer día. Cuando ya te sepas ' +
+      'la aplicación, en Menú → Configuración hay una casilla, "Enseñar los ' +
+      'textos de ayuda", que las quita de todas las pantallas.',
+      'No se pierde nada de lo que dicen tus datos —cuántos asaltos hay, cómo ' +
+      'va un análisis, el resumen de un asalto— ni ninguno de los avisos. Y ' +
+      'esta pantalla se queda como está.'),
 
     apartado('Tus datos no salen del móvil',
       'No hay que registrarse ni hay contraseñas. Los vídeos, tus asaltos y ' +

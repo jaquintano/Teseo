@@ -33,7 +33,7 @@ function reparto(titulo, datos, ayuda) {
 
   return crear('section', { class: 'bloque-stat' }, [
     crear('h3', { class: 'subtitulo-seccion', texto: titulo }),
-    ayuda ? crear('p', { class: 'ayuda', texto: ayuda }) : null,
+    ayuda ? crear('p', { class: 'ayuda explicacion', texto: ayuda }) : null,
     conDatos.length === 0
       ? crear('p', { class: 'ayuda', texto: 'Sin datos todavía.' })
       : crear('div', {}, conDatos.map((f) => filaBarra(f.etiqueta, f.cuenta, f.porcentaje, maximo))),
@@ -137,7 +137,7 @@ export async function pantallaEstadisticas(contenedor) {
 
       crear('section', { class: 'bloque-stat' }, [
         crear('h3', { class: 'subtitulo-seccion', texto: 'Eficacia por acción' }),
-        crear('p', { class: 'ayuda', texto: 'Veces que la intentaste y de ésas cuántas acabaron en tocado tuyo.' }),
+        crear('p', { class: 'ayuda explicacion', texto: 'Veces que la intentaste y de ésas cuántas acabaron en tocado tuyo.' }),
         ...e.ofensivas.eficaciaPorAccion
           .filter((f) => f.intentos > 0)
           .map((f) => crear('div', { class: 'fila-stat' }, [
@@ -154,7 +154,7 @@ export async function pantallaEstadisticas(contenedor) {
 
       crear('section', { class: 'bloque-stat' }, [
         crear('h3', { class: 'subtitulo-seccion', texto: 'Iniciativa' }),
-        crear('p', { class: 'ayuda', texto: 'Cuándo llevaste tú la acción y cuándo tuviste que defender. Si marcaste las dos cosas en un intercambio, cuenta como ataque.' }),
+        crear('p', { class: 'ayuda explicacion', texto: 'Cuándo llevaste tú la acción y cuándo tuviste que defender. Si marcaste las dos cosas en un intercambio, cuenta como ataque.' }),
         filaBarra('Atacando', e.ofensivas.iniciativa.ataques, e.ofensivas.iniciativa.porcentajeAtaque,
                   Math.max(e.ofensivas.iniciativa.ataques, e.ofensivas.iniciativa.defensas)),
         filaBarra('Defendiendo', e.ofensivas.iniciativa.defensas, 100 - e.ofensivas.iniciativa.porcentajeAtaque,
@@ -174,7 +174,7 @@ export async function pantallaEstadisticas(contenedor) {
 
       crear('section', { class: 'bloque-stat' }, [
         crear('h3', { class: 'subtitulo-seccion', texto: 'Parada-respuesta' }),
-        crear('p', { class: 'ayuda', texto: 'De las veces que paraste, cuántas acabaron en tocado tuyo.' }),
+        crear('p', { class: 'ayuda explicacion', texto: 'De las veces que paraste, cuántas acabaron en tocado tuyo.' }),
         e.defensivas.paradaRespuesta.intentos === 0
           ? crear('p', { class: 'ayuda', texto: 'Sin datos todavía.' })
           : crear('div', { class: 'resumen' }, [
@@ -190,7 +190,7 @@ export async function pantallaEstadisticas(contenedor) {
       // --- Dobles ---
       crear('h2', { class: 'titulo-bloque', texto: 'Dobles' }),
       crear('section', { class: 'bloque-stat' }, [
-        crear('p', { class: 'ayuda', texto: 'Sobre el total de tocados, no sobre todos los intercambios.' }),
+        crear('p', { class: 'ayuda explicacion', texto: 'Sobre el total de tocados, no sobre todos los intercambios.' }),
         crear('div', { class: 'resumen' }, [
           dato(e.dobles.cuenta, 'dobles'),
           dato(e.dobles.sobreTocados, 'tocados'),

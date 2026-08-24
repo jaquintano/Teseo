@@ -1,6 +1,6 @@
 // Menú y pantalla de configuración.
 
-import { anadir, crear, rellenar, cabecera, ir, formatearBytes } from '../ui.js';
+import { anadir, crear, rellenar, cabecera, ir, casilla, formatearBytes } from '../ui.js';
 import {
   ALMACENES, estimarEspacio, pedirPersistencia, obtenerPerfilPropio, borrarTodo,
   listar, listarRivales, borrar,
@@ -10,6 +10,7 @@ import { sePuedeInstalar, instalar } from '../instalacion.js';
 import { concordar } from '../genero.js';
 import { nombreCompleto } from '../constantes.js';
 import { porGrupos, ajuste, fijarAjuste, restablecerAjustes, hayAjustesTocados } from '../ajustes.js';
+import { ayudaVisible, fijarAyudaVisible } from '../preferencias.js';
 
 export async function pantallaMenu(contenedor) {
   const perfil = await obtenerPerfilPropio();
@@ -119,7 +120,7 @@ export async function pantallaConfiguracion(contenedor) {
             texto: `${ficha.etiqueta} (de fábrica: ${ficha.fabrica})`,
           }),
           entrada,
-          crear('p', { class: 'ayuda', texto: ficha.ayuda }),
+          crear('p', { class: 'ayuda explicacion', texto: ficha.ayuda }),
         ]));
       }
     }
@@ -153,8 +154,23 @@ export async function pantallaConfiguracion(contenedor) {
   anadir(contenedor,
     cabecera('Configuración', () => ir('menu')),
 
+    // --- Cómo se te habla ---
+    // Lo primero de la pantalla, y a propósito: quien viene a apagar la ayuda
+    // es porque le sobra, y no tiene por qué bajar hasta el final buscándola.
+    crear('h3', { class: 'subtitulo-seccion', texto: 'Textos de ayuda' }),
+    casilla('Enseñar los textos de ayuda', ayudaVisible(),
+            (valor) => fijarAyudaVisible(valor)).bloque,
     crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
+      texto: 'Las explicaciones que acompañan a los botones y a los campos. ' +
+             'Apagarlas no quita nada de lo que dicen tus datos ni los avisos, ' +
+             'y la pantalla de Ayuda se queda como está.',
+    }),
+
+    crear('h3', { class: 'subtitulo-seccion', texto: 'Espacio' }),
+
+    crear('p', {
+      class: 'ayuda explicacion',
       texto: '"Datos protegidos" significa que el navegador se compromete a no ' +
              'borrar tus vídeos y etiquetas cuando al móvil le falte espacio. ' +
              'Se concede al instalar Teseo en la pantalla de inicio.',
@@ -177,7 +193,7 @@ export async function pantallaConfiguracion(contenedor) {
       : null,
     rivalesSinUsar.length > 0 || competicionesSinUsar.length > 0
       ? crear('p', {
-          class: 'ayuda',
+          class: 'ayuda explicacion',
           texto: 'Quita las fichas que no aparecen en ningún asalto. Las que sí ' +
                  'lo hacen se quedan, y siempre puedes volver a traerlas de la ' +
                  'federación.',
@@ -200,7 +216,7 @@ export async function pantallaConfiguracion(contenedor) {
     crear('details', { class: 'filtros' }, [
       crear('summary', { texto: 'Ajustes avanzados' }),
       crear('p', {
-        class: 'ayuda',
+        class: 'ayuda explicacion',
         texto: 'Números finos de la aplicación. Vienen puestos en un valor que ' +
                'funciona, y sólo hace falta tocarlos si tu forma de grabar o de ' +
                'tirar pide otra cosa. Se guardan al escribirlos.',
@@ -223,7 +239,7 @@ export async function pantallaConfiguracion(contenedor) {
 
     crear('h3', { class: 'subtitulo-seccion', texto: 'Registro' }),
     crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Si algo falla, copia esto y mándalo: dice qué ha pasado por dentro.',
     }),
     registro,

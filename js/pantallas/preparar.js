@@ -111,7 +111,7 @@ export async function pantallaPreparar(contenedor) {
           }),
 
       crear('p', {
-        class: 'ayuda',
+        class: 'ayuda explicacion',
         texto: 'Los rivales llegan sin la mano, porque la federación no la ' +
                'publica. Se te irá pidiendo la primera vez que crees un asalto ' +
                'contra cada uno.',

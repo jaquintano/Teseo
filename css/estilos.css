@@ -236,6 +236,50 @@ h1 {
 
 .bloque-campo { margin-bottom: 1.25rem; }
 
+/* Una casilla de sí o no. El rótulo va dentro del <label>, así que la fila
+   entera vale para marcarla: una casilla suelta de 22 px no se acierta con el
+   pulgar. La fila mide lo mismo que un botón, como todo lo que se toca. */
+.fila-casilla {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: var(--alto-control);
+  margin-bottom: 0.5rem;
+  padding: 0.35rem 1rem;
+  background: #29313d;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  color: var(--texto);
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: pan-x pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.casilla {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  /* El navegador le pone márgenes propios, y con ellos la fila se pasaba de
+     los 40 px de todo lo demás. */
+  margin: 0;
+  accent-color: var(--acento);
+}
+
+/* --- Textos de ayuda -------------------------------------------------- */
+
+/* Teseo explica mucho, y eso está bien el primer día y sobra el día ochenta.
+   Desde Configuración se apagan, y lo único que pasa es que el <body> se
+   lleva esta clase: no se repinta ninguna pantalla, y las que se pinten
+   después ya nacen sin prosa.
+
+   Sólo desaparece lo marcado como explicación. Lo que dice el estado de las
+   cosas —"3 asaltos", "Analizando…", el resumen de un asalto— y los avisos se
+   quedan siempre: sin eso la pantalla no se entiende, y un aviso escondido es
+   una trampa. */
+body.sin-ayuda .explicacion { display: none; }
+
 .etiqueta-campo {
   display: block;
   margin-bottom: 0.4rem;

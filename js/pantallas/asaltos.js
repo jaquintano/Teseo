@@ -508,7 +508,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
       crear('span', { class: 'separador-resultado', texto: '–' }),
       tocadosContra,
     ]),
-    crear('p', { class: 'ayuda', texto: 'Los tuyos a la izquierda, los del rival a la derecha.' }),
+    crear('p', { class: 'ayuda explicacion', texto: 'Los tuyos a la izquierda, los del rival a la derecha.' }),
   ]);
 
   /** Lo que se guarda del resultado: nada si no has puesto ninguno. */
@@ -581,7 +581,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     type: 'date', value: asalto.fecha || hoy,
   });
   const ayudaFecha = crear('p', {
-    class: 'ayuda',
+    class: 'ayuda explicacion',
     texto: 'Sin competición, esto es lo único que dice cuándo se tiró. Cuando la ' +
            'federación publique el torneo, tráelo desde Competiciones y asígnalo ' +
            'aquí: entonces mandará su fecha.',
@@ -613,7 +613,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     bloque('Competición', crear('div', {}, [
       selectorCompeticion,
       hayFavoritas ? crear('p', {
-        class: 'ayuda',
+        class: 'ayuda explicacion',
         texto: 'Sólo salen las que has marcado con el corazón en Competiciones.',
       }) : null,
     ])),
@@ -760,7 +760,7 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     // con la competición puesta cuenta para sus estadísticas y se agrupa con
     // los demás del mismo torneo.
     !competicion && !asalto.torneo ? crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Sin competición. Cuando la federación la publique, tráela desde ' +
              'Menú → Competiciones y asígnala aquí con "Editar datos del asalto".',
     }) : null,
@@ -775,7 +775,7 @@ export async function pantallaAsalto(contenedor, datos = {}) {
 
     crear('h3', { class: 'subtitulo-seccion', texto: 'Tiempos' }),
     crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Un asalto de poule suele tener un solo tiempo. En directas, dos o ' +
              'tres. Añade cada uno con su vídeo.',
     }),

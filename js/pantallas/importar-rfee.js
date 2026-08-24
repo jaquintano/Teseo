@@ -118,7 +118,7 @@ export async function pantallaImportarRfee(contenedor) {
           }),
 
       crear('p', {
-        class: 'ayuda',
+        class: 'ayuda explicacion',
         texto: 'La federación no publica la mano, así que llegarán sin ella. ' +
                'Se te pedirá la primera vez que crees un asalto contra cada uno.',
       }),

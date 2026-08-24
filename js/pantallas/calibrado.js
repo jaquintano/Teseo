@@ -406,7 +406,9 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
   const resultadoFinal = crear('div');
 
   anadir(contenedor,
-    crear('details', { class: 'filtros' }, [
+    // Aquí dentro no hay más que explicación, así que con la ayuda apagada se
+    // va el desplegable entero: dejarlo sería un botón que abre un hueco.
+    crear('details', { class: 'filtros explicacion' }, [
       crear('summary', { texto: '¿Qué es esto y para qué sirve?' }),
       ...ayuda(),
     ]),

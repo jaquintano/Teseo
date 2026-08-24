@@ -103,6 +103,7 @@ js/instalacion.js              el ofrecimiento de instalar en la pantalla
 js/db.js                       base de datos local y almacenamiento de vídeos
 js/ajustes.js                  los ajustes avanzados: catálogo, valores de
                                fábrica y límites
+js/preferencias.js             la casilla de los textos de ayuda
 js/ui.js                       piezas de interfaz y navegación entre pantallas
 js/registro.js                 registro interno, visible en Configuración
 js/video.js                    el reproductor, como pieza reutilizable
@@ -669,10 +670,18 @@ el navegador.
 primera vez. **Hay que actualizarla en cada versión que cambie algo que el
 usuario vea**: vive en `js/pantallas/ayuda.js`.
 
-**Menú → Configuración** reúne lo que no es del día a día: cuánto espacio
-ocupa Teseo, protegerlo frente al borrado automático, vaciar de golpe los
-rivales y las competiciones que no aparecen en ningún asalto, empezar de cero
-y el registro interno por si algo falla.
+**Menú → Configuración** reúne lo que no es del día a día: la casilla de los
+textos de ayuda, cuánto espacio ocupa Teseo, protegerlo frente al borrado
+automático, vaciar de golpe los rivales y las competiciones que no aparecen en
+ningún asalto, empezar de cero y el registro interno por si algo falla.
+
+**Los textos de ayuda se pueden apagar** con la primera casilla de esa
+pantalla. La preferencia vive en `js/preferencias.js` y no repinta nada: pone
+la clase `sin-ayuda` en el `<body>`, y el CSS esconde lo marcado con la clase
+`explicacion`. Al escribir una pantalla nueva, **un párrafo que explica lleva
+`explicacion` y uno que dice cómo están las cosas no**: los contadores, los
+estados ("Analizando…", "Sin datos todavía"), el resumen de un asalto y los
+avisos se quedan siempre, y la pantalla de Ayuda entera también.
 
 ## Las estadísticas
 

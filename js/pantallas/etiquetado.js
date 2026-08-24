@@ -554,7 +554,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
     rellenar(marcador, [
       crear('p', {
-        class: 'ayuda',
+        class: 'ayuda explicacion',
         texto: 'Con cuántos tocados se llega a este tiempo. Súbelos si hubo ' +
                'puntos que no se grabaron.',
       }),
@@ -719,7 +719,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       crear('summary', { texto: 'Detección automática' }),
 
       crear('p', {
-        class: 'texto-ayuda',
+        class: 'texto-ayuda explicacion',
         texto: 'Si en el vídeo se ve el marcador del aparato, Teseo puede ' +
                'buscar los tocados solo mirando cuándo se encienden las ' +
                'lámparas. Lo que encuentre son propuestas: nada se etiqueta ' +
@@ -755,7 +755,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       }),
 
       calibrado ? crear('p', {
-        class: 'ayuda',
+        class: 'ayuda explicacion',
         texto: 'Tarda alrededor de la mitad de lo que dure el vídeo. Deja Teseo ' +
                'en pantalla y no apagues el móvil mientras corre.',
       }) : null,

@@ -71,7 +71,7 @@ export async function pantallaPerfilRfee(contenedor) {
 
   anadir(contenedor,
     crear('p', {
-      class: 'ayuda',
+      class: 'ayuda explicacion',
       texto: 'Elige tu categoría y búscate en la lista. Con eso quedan puestos ' +
              'tu nombre, tu fecha de nacimiento, tu club y tu género.',
     }),

@@ -221,6 +221,26 @@ export function colorDeEscala(fraccion) {
 }
 
 /** Bloque con título para agrupar unos cuantos botones de opción. */
+/**
+ * Una casilla de sí o no, con su rótulo al lado.
+ *
+ * El rótulo es parte del <label>, así que también se puede tocar él: una
+ * casilla de 20 px es imposible de acertar con el pulgar, y la fila entera
+ * mide lo que mide cualquier otro control.
+ */
+export function casilla(etiqueta, valor, alCambiar) {
+  const entrada = crear('input', { type: 'checkbox', class: 'casilla' });
+  entrada.checked = valor !== false;
+  entrada.addEventListener('change', () => alCambiar(entrada.checked));
+
+  const bloque = crear('label', { class: 'fila-casilla' }, [
+    entrada,
+    crear('span', { texto: etiqueta }),
+  ]);
+
+  return { entrada, bloque };
+}
+
 export function bloque(etiqueta, contenido) {
   return crear('div', { class: 'bloque-campo' }, [
     crear('span', { class: 'etiqueta-campo', texto: etiqueta }),
