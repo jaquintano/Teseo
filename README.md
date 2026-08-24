@@ -268,12 +268,33 @@ el rato y cambiando. Medido sobre un marcador de competición: con el recuadro
 alrededor del aparato y **sin ningún tocado**, hay 443 píxeles rojos, más que
 los 290 de la propia lámpara. Contar el recuadro entero es contar el tanteo.
 
-**La solución: una imagen de referencia.** El calibrado guarda una captura del
-recuadro con las lámparas apagadas. Al medir en un tocado, se compara: un píxel
-cuenta si AHORA es rojo y en la referencia NO lo era. Los dígitos están en las
-dos capturas y desaparecen en la comparación; la lámpara, no. Con eso se sabe
-**dónde** está cada lámpara dentro del recuadro, y durante el análisis se mira
-sólo ahí.
+**La solución: que el usuario marque las lámparas.** Tres recuadros: el
+marcador, la lámpara roja y la lámpara verde. El análisis mira sólo dentro de
+los dos últimos, así que los dígitos quedan fuera.
+
+Antes lo buscaba Teseo solo, comparando una captura del marcador con las
+lámparas apagadas contra otra con una encendida: lo que aparecía entre las dos
+era la lámpara, porque los dígitos están en las dos y se van solos en la resta.
+En teoría es elegante y en la práctica era **la parte más frágil de todo esto**:
+si entre las dos capturas cambiaba el tanteo, ese dígito también "aparecía" y se
+tomaba por lámpara; si el tocado elegido salía de refilón, la mancha se medía
+pequeña; y había que explicarlo todo. Marcarlo a dedo es más rápido, no falla y
+el usuario ve exactamente lo que Teseo va a mirar.
+
+**Cada lámpara se guarda como una posición DENTRO del marcador**, no de la
+pantalla. Eso es lo que permite marcar cada recuadro en el momento del vídeo
+que se quiera: Teseo sabe dónde está el marcador en cada fotograma, así que
+traduce lo que se dibuja a coordenadas del aparato. Lo cómodo es buscar un doble
+y hacerlo todo en un fotograma, pero se puede marcar la roja en un tocado y la
+verde en otro.
+
+Y mientras se navega por el vídeo, **los tres recuadros siguen al marcador**.
+Esa es la comprobación: si van pegados a él, el análisis va a funcionar.
+
+**El umbral sale de lo que se vea al marcar.** Al cerrar el recuadro de una
+lámpara se cuentan los píxeles de su color que hay dentro, y la cuarta parte de
+esa cifra es el listón que habrá que superar durante el análisis. Por eso
+conviene marcarla encendida; si no lo está, se avisa.
 
 **Y sólo ahí de verdad.** La zona de cada lámpara se ensanchaba un 60 % por
 cada lado, o sea 2,2 × 2,2: casi **cinco veces la lámpara**. Ese margen se puso
@@ -371,17 +392,9 @@ Lo que se busca es el **flanco de subida**, y el instante que se apunta es el
 de la primera muestra que vio la luz, no el de la que lo confirmó. Si las dos
 lámparas suben con menos de medio segundo de diferencia, es un doble.
 
-**El calibrado se mide dos veces, y las dos son obligatorias.** La referencia
-apagada y al menos un tocado para localizar la lámpara. Se puede repetir el
-segundo paso en tocados de distinto color, y de cada color se guarda la mayor
-mancha vista: si al medir un tocado verde cambia además el tanteo, esos veinte
-píxeles rojos no pisan la lámpara roja de trescientos ya localizada.
-
-Un riesgo que queda: si entre la referencia y el tocado **cambia el tanteo**,
-ese dígito también aparece en la comparación. Por eso Teseo **dibuja sobre el
-vídeo lo que ha localizado** y dice dónde cae ("arriba a la derecha"): mirarlo
-es la comprobación. Y al guardar se barren veinte fotogramas repartidos por
-todo el vídeo; si en la mayoría "habría lámpara", lo localizado es un dígito.
+Al guardar se barren veinte fotogramas repartidos por todo el vídeo; si en la
+mayoría "habría lámpara encendida", algún recuadro coge de más y está cazando
+un dígito. Se avisa y se deja guardar de todas formas.
 
 **Nada se etiqueta solo.** Lo que sale son propuestas (`intercambio.propuesto`),
 que aparecen en la tabla pero **no cuentan ni para el marcador ni para las

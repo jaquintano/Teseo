@@ -1,19 +1,23 @@
 // Calibrado de la detección automática.
 //
-// Se le enseña a Teseo dónde está el marcador y de qué color es el usuario.
+// Se le enseña a Teseo dónde está el marcador, dónde está cada lámpara y de
+// qué color es el usuario. Tres recuadros y un desplegable.
 //
-// Por qué hace falta una imagen de referencia
-// -------------------------------------------
-// Un marcador de competición no es una caja negra con dos bombillas: lleva el
-// cronómetro en ámbar y el tanteo en rojo de siete segmentos, encendidos todo
-// el rato y cambiando. Contar píxeles rojos dentro del recuadro sería contar
-// el tanteo, y cada vez que alguien marca un punto habría un tocado falso.
+// Por qué lo marca el usuario y no lo busca Teseo
+// -----------------------------------------------
+// Lo buscaba: se guardaba una captura del marcador con las lámparas apagadas y
+// otra con una encendida, y lo que aparecía entre las dos era la lámpara. En
+// teoría es elegante —los dígitos del tanteo están en las dos capturas y se
+// van solos en la resta— y en la práctica era la parte más frágil de todo
+// esto: si entre las dos capturas cambiaba el tanteo, ese dígito también
+// "aparecía" y se tomaba por una lámpara; si el tocado elegido salía de
+// refilón, la mancha se medía pequeña; y había que explicar todo eso.
 //
-// La salida es comparar dos capturas del MISMO recuadro: una con las lámparas
-// apagadas —la referencia— y otra con una encendida. Lo que aparece entre las
-// dos es la lámpara y sólo la lámpara, porque los dígitos están en las dos.
-// Con eso se sabe dónde está cada una dentro del recuadro, y el análisis mira
-// ahí y no en el resto.
+// Marcarlo a dedo es más rápido, no falla nunca y el usuario ve exactamente lo
+// que Teseo va a mirar. Lo ideal es hacerlo sobre un fotograma con las dos
+// lámparas encendidas, pero cada recuadro se puede marcar en el momento del
+// vídeo que se quiera: Teseo sabe dónde está el marcador en cada fotograma, y
+// guarda cada lámpara como una posición DENTRO del marcador, no de la pantalla.
 //
 // El recuadro es además la PLANTILLA con la que se reconoce el marcador
 // después, y por eso se dibuja AJUSTADO al aparato. La primera versión pedía
@@ -32,7 +36,7 @@ import {
   colorDelAsalto, fijarColorDelAsalto,
 } from '../db.js';
 import { COLORES_LAMPARA, PREGUNTA_COLOR } from '../constantes.js';
-import { recortar, guardarReferencia, loQueHaAparecido, conHolgura } from '../deteccion.js';
+import { recortar, contarEnZona } from '../deteccion.js';
 import { escenaDe, plantillaDesde, crearSeguidor, detalleDe, sePuedeSeguir } from '../seguimiento.js';
 import { buscarFalsosPositivos } from '../analisis.js';
 
@@ -53,12 +57,22 @@ const ESCALA_MAXIMA = 6;
 // cualquier móvil de hace diez años.
 const ALTO_RECOMENDADO = 720;
 
-// Por debajo de esto, lo que ha aparecido son cuatro píxeles sueltos.
-const MANCHA_INSUFICIENTE = 15;
-const MANCHA_JUSTA = 40;
+// Con menos luz que esto dentro del recuadro de una lámpara, o está apagada en
+// este fotograma o el recuadro no la coge.
+const LUZ_INSUFICIENTE = 12;
+const LUZ_JUSTA = 40;
 
-// Del tamaño de la lámpara, cuánto hay que ver encendido para darla por tal.
+// Del tamaño de la mancha marcada, cuánto hay que ver encendido para dar la
+// lámpara por encendida.
 const PARTE_PARA_ENCENDER = 0.25;
+const PISO_DE_UMBRAL = 8;
+
+// Los tres recuadros que se dibujan, en el orden en que se piden.
+const PASOS = [
+  { id: 'marcador', etiqueta: 'Marcador' },
+  { id: 'rojo', etiqueta: 'Lámpara roja' },
+  { id: 'verde', etiqueta: 'Lámpara verde' },
+];
 
 // Si una lámpara da menos de esta parte de píxeles que la otra, conviene
 // decirlo: la floja se va a perder tocados y a estropear dobles.
@@ -68,6 +82,9 @@ const DESEQUILIBRIO = 0.4;
 const DEMASIADO_ENCENDIDO = 0.7;
 
 const NUMERO = { rojo: 1, verde: 2 };
+
+/** "la lámpara roja", que "lámpara rojo" no lo dice nadie. */
+const enFemenino = (color) => (color === 'rojo' ? 'roja' : 'verde');
 
 export async function pantallaCalibrado(contenedor, datos = {}) {
   const tiempo = await obtener(ALMACENES.tiempos, datos.tiempoId);
@@ -103,22 +120,23 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
   // --- Lo que se está calibrando ---
   const previo = tiempo.calibrado || null;
   let recuadro = previo ? { ...previo.recuadro } : null;
-  let referencia = previo ? previo.referencia : null;
-  // La plantilla con la que el análisis seguirá el marcador por el vídeo. Se
-  // saca del mismo fotograma que la referencia, que es el que el usuario ha
-  // elegido a conciencia para enmarcar.
+  // La plantilla con la que el análisis seguirá el marcador por el vídeo. Sale
+  // del fotograma en el que se enmarcó el marcador.
   let plantilla = previo ? previo.plantilla || null : null;
   let lamparas = previo ? { ...previo.lamparas } : { rojo: null, verde: null };
+  // Cuál de los tres recuadros se está dibujando.
+  let dibujando = recuadro ? 'rojo' : 'marcador';
   // Tu color no es cosa del calibrado: es del asalto entero, y lo normal es
   // que ya se haya contestado en la pantalla del vídeo. Aquí sólo se enseña, y
   // se puede corregir sin salir.
   let miColor = await colorDelAsalto(asalto);
   // Lo que se le dice al usuario del último intento de localizar.
   let ultimoIntento = null;
-  // Dónde estaba el marcador la última vez que se buscó una lámpara. Puede no
-  // ser el recuadro dibujado: el usuario busca los tocados por todo el vídeo y
-  // para entonces la cámara se ha movido.
-  let dondeSeMidio = null;
+  // Dónde está el marcador en el fotograma que se ve ahora mismo. No tiene por
+  // qué ser donde se dibujó: el usuario se mueve por el vídeo y la cámara
+  // también. Se recalcula al saltar, y con él se pintan los tres recuadros,
+  // que es la única forma de que el usuario compruebe que aquello funciona.
+  let dondeEstaAhora = recuadro ? { ...recuadro } : null;
 
   // --- El vídeo, con lo justo para moverse por él ---
   const video = crear('video', { class: 'video-calibrado', playsinline: true, muted: true });
@@ -159,7 +177,8 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     })));
 
   video.addEventListener('timeupdate', refrescarReloj);
-  video.addEventListener('seeked', () => { refrescarReloj(); olvidarDondeSeMidio(); });
+  video.addEventListener('seeked', () => { refrescarReloj(); situarMarcador(); });
+  video.addEventListener('timeupdate', situarMarcador);
   video.addEventListener('loadedmetadata', () => {
     refrescarReloj();
     pintarMarcas();
@@ -183,6 +202,9 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
   // volver al tamaño normal porque se vuelve con el mismo gesto de siempre:
   // juntando los dedos.
   let arrastrando = null;
+  // Lo que se lleva dibujado a medio trazo: {que, caja}. Se pinta mientras se
+  // arrastra y se guarda al soltar.
+  let trazo = null;
   const dedos = new Map();
   let escala = 1;
   let despX = 0;
@@ -208,6 +230,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       // abandona lo que se llevara dibujando, que si no queda un recuadro
       // puesto donde nadie quiso.
       arrastrando = null;
+      trazo = null;
       const [a, b] = [...dedos.values()];
       distanciaInicial = Math.hypot(a.x - b.x, a.y - b.y);
       escalaInicial = escala;
@@ -245,10 +268,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       return;
     }
 
-    // Al empezar un recuadro nuevo se tira el de antes, pero no antes: si se
-    // borrara en el pointerdown, un toque suelto dejaría la pantalla vacía.
-    if (recuadro) { recuadro = null; dondeSeMidio = null; }
-    recuadro = entreDosPuntos(arrastrando, puntoRelativo(evento));
+    trazo = { que: dibujando, caja: entreDosPuntos(arrastrando, puntoRelativo(evento)) };
     pintarMarcas();
   });
 
@@ -259,18 +279,17 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
 
     if (!arrastrando) return;
     const desde = arrastrando;
+    const que = dibujando;
     arrastrando = null;
+    trazo = null;
 
     const trazado = entreDosPuntos(desde, puntoRelativo(evento));
     // Un toque sin arrastre no es un recuadro: no se toca lo que hubiera.
     if (trazado.ancho < 0.01 || trazado.alto < 0.01) { pintarMarcas(); return; }
 
-    recuadro = trazado;
-    // Al mover el recuadro, la referencia y las lámparas de antes ya no valen.
-    referencia = null;
-    plantilla = null;
-    lamparas = { rojo: null, verde: null };
-    dondeSeMidio = null;
+    if (que === 'marcador') enmarcarMarcador(trazado);
+    else marcarLampara(que, trazado);
+
     pintarMarcas();
     pintarPasos();
   };
@@ -294,28 +313,41 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     };
   }
 
-  /** El recuadro y, encima, dónde cree Teseo que está cada lámpara. */
+  /**
+   * Los tres recuadros, puestos donde esté el marcador en este fotograma.
+   *
+   * Mientras se arrastra el dedo se pinta lo que se lleve dibujado, que si no
+   * el trazo no se ve.
+   */
   function pintarMarcas() {
-    dibujado.hidden = !recuadro;
-    if (recuadro) colocar(dibujado, recuadro);
+    const donde = dondeEstaAhora || recuadro;
+
+    const marcador = trazo && trazo.que === 'marcador' ? trazo.caja : donde;
+    dibujado.hidden = !marcador;
+    if (marcador) colocar(dibujado, marcador);
 
     for (const [color, marca] of [['rojo', marcaRoja], ['verde', marcaVerde]]) {
-      const lampara = lamparas[color];
-      marca.hidden = !(recuadro && lampara);
-      if (recuadro && lampara) colocar(marca, enElFotograma(lampara.zona));
+      const enCurso = trazo && trazo.que === color ? trazo.caja : null;
+      const caja = enCurso
+        || (donde && lamparas[color] ? enElFotograma(lamparas[color].zona, donde) : null);
+      marca.hidden = !caja;
+      if (caja) colocar(marca, caja);
     }
   }
 
   /**
-   * Deja de dibujar las lámparas donde se midieron.
+   * Dónde está el marcador en el fotograma que se ve.
    *
-   * Se llama al moverse por el vídeo: las zonas se pintan sobre el fotograma
-   * donde se localizaron, y dejarlas puestas mientras el usuario busca otro
-   * tocado sería enseñarle una lámpara donde ya no hay ninguna.
+   * Con plantilla se busca; sin ella —todavía no se ha enmarcado, o el
+   * recuadro no tiene dibujo que reconocer— se deja donde se dibujó.
    */
-  function olvidarDondeSeMidio() {
-    if (!dondeSeMidio) return;
-    dondeSeMidio = null;
+  function situarMarcador() {
+    if (!recuadro) { dondeEstaAhora = null; return; }
+    if (!plantilla) { dondeEstaAhora = recuadro; pintarMarcas(); return; }
+
+    const encontrado = crearSeguidor(plantilla, recuadro)
+      .situar(escenaDe(video, document.createElement('canvas')));
+    dondeEstaAhora = encontrado.estado === 'perdido' ? null : encontrado.recuadro;
     pintarMarcas();
   }
 
@@ -326,19 +358,30 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     elemento.style.height = `${caja.alto * 100}%`;
   }
 
-  /**
-   * De coordenadas del recuadro a coordenadas del fotograma.
-   *
-   * Sobre el recuadro donde se midió, que es donde estaba el marcador en ese
-   * momento; y si no se ha medido nada todavía, sobre el dibujado.
-   */
-  function enElFotograma(zona) {
-    const donde = dondeSeMidio || recuadro;
+  /** De coordenadas de dentro del marcador a coordenadas del fotograma. */
+  function enElFotograma(zona, donde) {
     return {
       x: donde.x + zona.x * donde.ancho,
       y: donde.y + zona.y * donde.alto,
       ancho: zona.ancho * donde.ancho,
       alto: zona.alto * donde.alto,
+    };
+  }
+
+  /**
+   * Y al revés: de lo que se ha dibujado en el fotograma a una posición dentro
+   * del marcador.
+   *
+   * Guardar la lámpara así, y no en coordenadas de la pantalla, es lo que
+   * permite marcarla en cualquier momento del vídeo: la cámara se habrá movido,
+   * pero la lámpara sigue en el mismo sitio de su aparato.
+   */
+  function dentroDelMarcador(caja, donde) {
+    return {
+      x: (caja.x - donde.x) / donde.ancho,
+      y: (caja.y - donde.y) / donde.alto,
+      ancho: caja.ancho / donde.ancho,
+      alto: caja.alto / donde.alto,
     };
   }
 
@@ -365,16 +408,92 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
 
   // ------------------------------------------------------------------
 
+  /**
+   * Los dos dibujos de ejemplo del desplegable de ayuda.
+   *
+   * Dibujados y no fotografiados a propósito: un aparato de verdad sería el de
+   * una marca concreta y el de al lado no se le parece en nada, mientras que
+   * lo que hay que entender —qué se enmarca y cuánto margen se deja— es igual
+   * en todos. Y pesan cuatro líneas en vez de cien kilobytes.
+   *
+   * En SVG hecho a mano porque crear() usa createElement, que para SVG no
+   * vale: hay que nombrar su espacio de nombres.
+   */
+  function ejemplo({ bien }) {
+    const NS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 200 120');
+    svg.setAttribute('class', 'ejemplo-calibrado');
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', bien
+      ? 'Ejemplo bueno: un recuadro ajustado al aparato y uno pequeño en cada lámpara'
+      : 'Ejemplo malo: un recuadro que coge media pista y otro que coge un dígito');
+
+    const trazar = (etiqueta, atributos) => {
+      const nodo = document.createElementNS(NS, etiqueta);
+      for (const [nombre, valor] of Object.entries(atributos)) {
+        nodo.setAttribute(nombre, String(valor));
+      }
+      svg.append(nodo);
+      return nodo;
+    };
+
+    // La sala, y el aparato encima de su soporte.
+    trazar('rect', { x: 0, y: 0, width: 200, height: 120, fill: '#1b212a' });
+    trazar('rect', { x: 0, y: 96, width: 200, height: 24, fill: '#2c3542' });
+    trazar('rect', { x: 56, y: 34, width: 88, height: 44, rx: 4, fill: '#0d0d0d' });
+    trazar('rect', { x: 96, y: 78, width: 8, height: 18, fill: '#2c3542' });
+
+    // Las dos lámparas y el tanteo, que es lo que confunde.
+    trazar('circle', { cx: 70, cy: 48, r: 7, fill: '#35c46b' });
+    trazar('circle', { cx: 130, cy: 48, r: 7, fill: '#e05a4a' });
+    trazar('text', {
+      x: 100, y: 70, fill: '#e05a4a', 'font-size': 14, 'font-family': 'monospace',
+      'text-anchor': 'middle',
+    }).textContent = '07';
+
+    const marco = (atributos) => trazar('rect', {
+      ...atributos, fill: 'none', 'stroke-width': 1.5,
+    });
+
+    if (bien) {
+      marco({ x: 52, y: 30, width: 96, height: 52, stroke: '#4c8dff' });
+      marco({ x: 61, y: 39, width: 18, height: 18, stroke: '#35c46b' });
+      marco({ x: 121, y: 39, width: 18, height: 18, stroke: '#e05a4a' });
+    } else {
+      marco({ x: 8, y: 10, width: 184, height: 100, stroke: '#4c8dff' });
+      marco({ x: 108, y: 38, width: 56, height: 40, stroke: '#e05a4a' });
+    }
+
+    return svg;
+  }
+
+  /** Los dos ejemplos, uno al lado del otro, con su pie. */
+  function ejemplos() {
+    const conPie = (bien, pie) => crear('figure', { class: 'figura-ejemplo' }, [
+      ejemplo({ bien }),
+      crear('figcaption', { class: 'ayuda', texto: pie }),
+    ]);
+
+    return crear('div', { class: 'ejemplos-calibrado' }, [
+      conPie(true,
+        'Así. El marcador entero y poco más, y cada lámpara con un par de ' +
+        'píxeles de margen.'),
+      conPie(false,
+        'Así no. El recuadro coge media sala —todo lo que cambia estorba— y el ' +
+        'de la lámpara se lleva dentro un dígito del tanteo.'),
+    ]);
+  }
+
   function ayuda() {
     return [
       'Teseo puede encontrar los tocados solo, mirando las lámparas del ' +
       'aparato: en espada hay una verde y una roja, y se encienden en el ' +
-      'momento del tocado.',
-      'El problema es que el marcador tiene también el cronómetro y el tanteo ' +
-      'encendidos todo el rato, y en los mismos colores. Por eso el calibrado ' +
-      'se hace en dos capturas: una con las lámparas apagadas y otra con una ' +
-      'encendida. Lo que aparece entre las dos es la lámpara, y ahí es donde ' +
-      'mirará Teseo. Los dígitos quedan fuera.',
+      'momento del tocado. Aquí le enseñas dónde mirar, con tres recuadros.',
+      'El problema es que el marcador lleva también el cronómetro y el tanteo ' +
+      'encendidos todo el rato, y en los mismos colores: si Teseo contara el ' +
+      'rojo de todo el marcador, cada punto del rival sería un tocado falso. ' +
+      'Por eso hay que marcarle las lámparas una por una, y ajustadas.',
       'Si el marcador se ve pequeño, amplía la imagen con dos dedos antes de ' +
       'encuadrarlo: con un dedo se dibuja el recuadro y con dos se amplía y se ' +
       'pasea. Para volver al tamaño normal, junta los dedos.',
@@ -392,18 +511,16 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       'durante ese rato y lo vuelve a buscar en cuanto reaparece. Los tocados ' +
       'que caigan en un hueco se proponen igual, pero con el instante marcado ' +
       'con ≈ porque sólo se sabe aproximadamente cuándo fueron.',
-      'Un consejo: toma la referencia apagada justo antes del tocado que vayas ' +
-      'a usar. Si entre las dos capturas cambia el tanteo, ese dígito también ' +
-      'aparece en la comparación y puede confundirse con una lámpara. Por eso ' +
-      'Teseo te dibuja encima del vídeo lo que ha encontrado: míralo.',
+      'Lo más cómodo es buscar un DOBLE —las dos lámparas encendidas a la vez— y ' +
+      'hacerlo todo sobre ese fotograma. Pero no hace falta: cada recuadro se ' +
+      'puede marcar en el momento del vídeo que quieras, porque Teseo guarda cada ' +
+      'lámpara como una posición dentro del marcador, no de la pantalla. Si ' +
+      'marcas la roja en un tocado y la verde en otro, funciona igual.',
+      'Mientras te mueves por el vídeo verás los recuadros seguir al marcador. ' +
+      'Eso es la comprobación: si van pegados a él, el análisis va a funcionar.',
       'Si en tu vídeo no se ve el marcador, esta función no se puede usar: hay ' +
       'que etiquetar a mano, como siempre. No pasa nada.',
-    ].map((texto) => crear('p', { class: 'texto-ayuda', texto }));
-  }
-
-  function recorteDeAhora() {
-    const lienzo = document.createElement('canvas');
-    return recortar(video, recuadro, lienzo);
+    ].map((texto) => crear('p', { class: 'texto-ayuda', texto })).concat(ejemplos());
   }
 
   function tamanoDelRecuadro() {
@@ -467,67 +584,73 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     };
   }
 
+  /** El texto de cada paso: qué hay que dibujar y con qué cuidado. */
+  function loQuePideElPaso(cual) {
+    if (cual === 'marcador') {
+      return 'Arrastra el dedo alrededor del aparato: el marcador entero y poco ' +
+             'más. De aquí sale la foto con la que Teseo lo reconocerá durante ' +
+             'todo el vídeo, así que cuanta menos sala entre dentro, mejor.';
+    }
+    const color = cual === 'rojo' ? 'roja' : 'verde';
+    return `Ahora la lámpara ${color}: un recuadro a su alrededor, dejando un ` +
+           'poco de margen para que el seguimiento pueda desviarse un par de ' +
+           'píxeles sin dejarla fuera. Márcala en un fotograma en el que esté ' +
+           'ENCENDIDA: de la luz que se vea al marcarla sale el listón que tendrá ' +
+           'que superar después.';
+  }
+
+  /** Cómo va cada uno de los tres recuadros. */
+  function comoVaElPaso(cual) {
+    if (cual === 'marcador') {
+      const problema = queLeFaltaAlRecuadro();
+      const { ancho, alto } = tamanoDelRecuadro();
+      return problema
+        ? { bien: false, texto: problema }
+        : { bien: true, texto: `Marcador enmarcado: ${ancho}×${alto} píxeles del vídeo.` };
+    }
+
+    const lampara = lamparas[cual];
+    if (!lampara) return { bien: false, texto: `Lámpara ${enFemenino(cual)}: sin marcar.` };
+
+    return {
+      bien: true,
+      texto: `Lámpara ${enFemenino(cual)}: marcada ${dondeCae(lampara.zona)} del marcador, ` +
+             `con ${lampara.luzAlMarcar ?? lampara.pixeles} píxeles de luz.`,
+    };
+  }
+
   function pintarPasos() {
-    const problema = queLeFaltaAlRecuadro();
-    const { ancho, alto } = tamanoDelRecuadro();
-    const localizadas = ['rojo', 'verde'].filter((color) => lamparas[color]);
     const resolucion = queTalLaResolucion();
     const seguimiento = queTalElSeguimiento();
+    const marcadas = ['rojo', 'verde'].filter((color) => lamparas[color]);
 
     rellenar(pasos, [
       resolucion ? crear('p', {
         class: resolucion.bien ? 'ayuda' : 'aviso', texto: resolucion.texto,
       }) : null,
 
-      crear('h3', { class: 'subtitulo-seccion', texto: '1. Enmarca el aparato, ajustado' }),
-      crear('p', {
-        class: problema ? 'aviso' : 'ayuda',
-        texto: problema || `Recuadro puesto: ${ancho}×${alto} píxeles del vídeo.`,
+      crear('h3', { class: 'subtitulo-seccion', texto: 'Qué estás enmarcando' }),
+      crear('div', { class: 'grupo-opciones tres-columnas' }, PASOS.map((paso) => crear('button', {
+        type: 'button',
+        class: 'boton boton-opcion' + (dibujando === paso.id ? ' elegido' : ''),
+        texto: paso.etiqueta + (comoVaElPaso(paso.id).bien ? ' ✓' : ''),
+        onclick: () => { dibujando = paso.id; ultimoIntento = null; pintarPasos(); },
+      }))),
+
+      crear('p', { class: 'ayuda', texto: loQuePideElPaso(dibujando) }),
+
+      ...PASOS.map((paso) => {
+        const como = comoVaElPaso(paso.id);
+        return crear('p', { class: como.bien ? 'aviso-bueno' : 'ayuda', texto: como.texto });
       }),
 
-      crear('h3', { class: 'subtitulo-seccion', texto: '2. Con las lámparas apagadas' }),
-      crear('p', {
-        class: 'ayuda',
-        texto: 'Busca un momento sin ningún tocado —mejor justo antes del que ' +
-               'vayas a usar en el paso 3— y guarda la referencia.',
-      }),
-      crear('button', {
-        type: 'button', class: 'boton boton-compacto', texto: 'Guardar la referencia',
-        onclick: guardarLaReferencia,
-      }),
-      referencia ? crear('p', {
-        class: 'aviso-bueno',
-        texto: `Referencia guardada del segundo ${referencia.instante.toFixed(2)}.`,
-      }) : null,
       seguimiento ? crear('p', {
         class: seguimiento.bien ? 'ayuda' : 'aviso', texto: seguimiento.texto,
       }) : null,
-
-      crear('h3', { class: 'subtitulo-seccion', texto: '3. Localiza las lámparas' }),
-      crear('p', {
-        class: 'ayuda',
-        texto: 'Busca un tocado y pulsa. Teseo comparará con la referencia y te ' +
-               'dibujará encima del vídeo lo que haya encontrado. Repítelo con ' +
-               'un tocado del otro color, o hazlo en un doble y salen las dos.',
-      }),
-      crear('button', {
-        type: 'button', class: 'boton boton-compacto', texto: 'Buscar lámparas aquí',
-        onclick: localizarLamparas,
-      }),
-      ...['rojo', 'verde'].map((color) => {
-        const lampara = lamparas[color];
-        return crear('p', {
-          class: lampara ? 'aviso-bueno' : 'ayuda',
-          texto: lampara
-            ? `Lámpara ${color}: ${lampara.pixeles} píxeles, ${dondeCae(lampara.zona)} ` +
-              `del recuadro. Compruébalo en el vídeo.`
-            : `Lámpara ${color}: sin localizar.`,
-        });
-      }),
       ultimoIntento ? crear('p', { class: 'aviso', texto: ultimoIntento }) : null,
       desequilibrio() ? crear('p', { class: 'aviso', texto: desequilibrio() }) : null,
 
-      crear('h3', { class: 'subtitulo-seccion', texto: '4. Tu color' }),
+      crear('h3', { class: 'subtitulo-seccion', texto: 'Tu color' }),
       crear('p', {
         class: miColor ? 'ayuda' : 'aviso',
         texto: miColor
@@ -543,12 +666,75 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
         onclick: () => guardarCalibrado(),
       }),
 
-      localizadas.length === 1 ? crear('p', {
+      marcadas.length === 1 ? crear('p', {
         class: 'ayuda',
-        texto: `Sólo está localizada la lámpara ${localizadas[0]}, así que sólo se ` +
+        texto: `Sólo está marcada la lámpara ${marcadas[0]}, así que sólo se ` +
                'detectarán esos tocados. Se puede guardar así y completarlo luego.',
       }) : null,
     ]);
+  }
+
+
+  /**
+   * Se ha enmarcado el marcador: de aquí sale la plantilla del seguimiento.
+   *
+   * Y se tira lo que hubiera de las lámparas: estaban guardadas como una
+   * posición dentro del marcador viejo, y con otro marcador señalarían a otro
+   * sitio.
+   */
+  function enmarcarMarcador(caja) {
+    recuadro = caja;
+    dondeEstaAhora = caja;
+    lamparas = { rojo: null, verde: null };
+    ultimoIntento = null;
+
+    const escena = escenaDe(video, document.createElement('canvas'));
+    plantilla = escena ? plantillaDesde(escena, recuadro) : null;
+
+    // Lo siguiente que toca es la lámpara roja, así que se pasa solo.
+    if (!queLeFaltaAlRecuadro()) dibujando = 'rojo';
+  }
+
+  /**
+   * Se ha enmarcado una lámpara: se guarda dónde está y cuánta luz se ve.
+   *
+   * La cuenta de píxeles de este fotograma es la que fija el umbral, y por eso
+   * conviene marcarla con la lámpara encendida. Si está apagada no pasa nada
+   * grave —queda el umbral mínimo— pero se avisa, porque entonces el umbral no
+   * se ha ajustado a nada.
+   */
+  function marcarLampara(color, caja) {
+    const donde = dondeEstaAhora;
+    if (!donde) {
+      ultimoIntento = 'Aquí no se reconoce el marcador, así que no se sabe en qué ' +
+                      'parte de él cae lo que has marcado. Busca un momento en el ' +
+                      'que se vea.';
+      return;
+    }
+
+    const zona = dentroDelMarcador(caja, donde);
+    const imagen = recortar(video, donde, document.createElement('canvas'));
+    const luz = imagen ? contarEnZona(imagen, zona, NUMERO[color]) : 0;
+
+    lamparas[color] = {
+      zona,
+      pixeles: Math.max(luz, 1),
+      umbral: Math.max(PISO_DE_UMBRAL, Math.round(luz * PARTE_PARA_ENCENDER)),
+      instante: video.currentTime,
+      luzAlMarcar: luz,
+    };
+
+    ultimoIntento = luz >= LUZ_JUSTA ? null
+      : luz < LUZ_INSUFICIENTE
+        ? `Ahí dentro veo ${luz} píxeles de luz ${enFemenino(color)}, que es como no ver nada. ` +
+          'Si la lámpara está apagada en este fotograma, busca un tocado y vuelve ' +
+          'a marcarla: de la luz que se vea al marcar sale el listón que tendrá ' +
+          'que superar después.'
+        : `Sólo ${luz} píxeles de luz ${enFemenino(color)}. Funcionará, pero irá justo: si ` +
+          'puedes, márcala en un tocado en el que se vea más de frente.';
+
+    // Marcada la roja, lo natural es seguir con la verde.
+    if (color === 'rojo' && !lamparas.verde) dibujando = 'verde';
   }
 
   /** Tu color se guarda en el asalto en cuanto se elige, no al guardar. */
@@ -580,28 +766,6 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
            'mancha más grande de las que encuentres, así que sólo puede mejorar.';
   }
 
-  function guardarLaReferencia() {
-    ultimoIntento = queLeFaltaAlRecuadro();
-    if (ultimoIntento) { pintarPasos(); return; }
-
-    const imagen = recorteDeAhora();
-    if (!imagen) return;
-
-    referencia = { ...guardarReferencia(imagen), instante: video.currentTime };
-    dondeSeMidio = null;
-
-    // Y del mismo fotograma, la plantilla del seguimiento: lo que hay dentro
-    // del recuadro en gris, para reconocerlo luego en cualquier parte del
-    // encuadre.
-    const escena = escenaDe(video, document.createElement('canvas'));
-    plantilla = escena ? plantillaDesde(escena, recuadro) : null;
-
-    // Con referencia nueva, lo localizado antes puede no cuadrar.
-    lamparas = { rojo: null, verde: null };
-    pintarMarcas();
-    pintarPasos();
-  }
-
   /** Lo que hay que decirle al usuario sobre el seguimiento, o null. */
   function queTalElSeguimiento() {
     if (!plantilla) return null;
@@ -623,107 +787,15 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     };
   }
 
-  /**
-   * El recorte de ahora, con el recuadro puesto donde esté el marcador.
-   *
-   * Un tocado se busca por todo el vídeo, y para cuando se encuentra la cámara
-   * está en otro sitio: comparar con la referencia el recuadro dibujado sería
-   * comparar dos trozos distintos de la sala, y ahí "aparece" media pista.
-   */
-  function recorteDelMarcador() {
-    if (!plantilla) return { imagen: recorteDeAhora(), donde: recuadro, movido: false };
-
-    const seguidor = crearSeguidor(plantilla, recuadro);
-    const encontrado = seguidor.situar(escenaDe(video, document.createElement('canvas')));
-    if (encontrado.estado === 'perdido') return { imagen: null, donde: null, movido: false };
-
-    const donde = encontrado.estado === 'imposible' ? recuadro : encontrado.recuadro;
-    const movido = Math.abs(donde.x - recuadro.x) > 0.005 || Math.abs(donde.y - recuadro.y) > 0.005;
-    return {
-      imagen: recortar(video, donde, document.createElement('canvas')), donde, movido,
-    };
-  }
-
-  function localizarLamparas() {
-    ultimoIntento = queLeFaltaAlRecuadro();
-    if (ultimoIntento) { pintarPasos(); return; }
-
-    if (!referencia) {
-      ultimoIntento = 'Antes hay que guardar la referencia con las lámparas apagadas (paso 2).';
-      pintarPasos();
-      return;
-    }
-
-    const { imagen, donde, movido } = recorteDelMarcador();
-    if (!imagen) {
-      ultimoIntento = 'Aquí no se reconoce el marcador: puede que lo tape alguien o ' +
-                      'que se haya salido del encuadre. Busca un tocado en el que se vea.';
-      pintarPasos();
-      return;
-    }
-    dondeSeMidio = donde;
-
-    const encontradas = [];
-    for (const color of ['rojo', 'verde']) {
-      const aparecido = loQueHaAparecido(imagen, referencia, NUMERO[color]);
-      if (aparecido.mancha < MANCHA_INSUFICIENTE) continue;
-
-      // Nos quedamos con la mayor mancha que hayamos visto de cada color.
-      //
-      // Al medir en un tocado verde, en el rojo aparece el dígito del tanteo
-      // que acaba de cambiar: una mancha pequeña, pero mancha. Sin esto,
-      // esos veinte píxeles pisaban la lámpara roja buena de trescientos que
-      // ya estaba localizada.
-      if (lamparas[color] && lamparas[color].pixeles >= aparecido.mancha) continue;
-
-      lamparas[color] = {
-        zona: conHolgura(aparecido.zona),
-        zonaMedida: aparecido.zona,
-        pixeles: aparecido.mancha,
-        umbral: Math.max(MANCHA_INSUFICIENTE, Math.round(aparecido.mancha * PARTE_PARA_ENCENDER)),
-        instante: video.currentTime,
-      };
-      encontradas.push(color);
-    }
-
-    const aviso = encontradas.length === 0
-      ? 'Aquí no ha aparecido nada nuevo, o lo que hay es más pequeño que lo ya ' +
-        'localizado. ¿Hay alguna lámpara encendida en este momento? Prueba en ' +
-        'otro tocado.'
-      : encontradas.some((color) => lamparas[color].pixeles < MANCHA_JUSTA)
-        ? 'Localizada, pero la mancha es pequeña y la detección irá justa: ' +
-          'habrá falsos positivos. La próxima vez graba a más resolución (720p ' +
-          'o más) o más cerca del marcador.'
-        : null;
-
-    // Si el marcador no estaba donde se enmarcó, conviene decirlo: lo que se
-    // dibuja encima del vídeo sale entonces fuera del recuadro, y sin
-    // explicación parece un fallo.
-    const nota = movido && encontradas.length > 0
-      ? 'El marcador se ha reconocido desplazado —la cámara se ha movido desde ' +
-        'la referencia—, y ahí es donde se ha medido.'
-      : null;
-    ultimoIntento = [aviso, nota].filter(Boolean).join(' ') || null;
-
-    pintarMarcas();
-    pintarPasos();
-  }
-
   async function guardarCalibrado(saltarBarrido = false) {
     const problema = queLeFaltaAlRecuadro();
     if (problema) { rellenar(resultadoFinal, crear('p', { class: 'aviso', texto: problema })); return; }
 
-    if (!referencia) {
-      rellenar(resultadoFinal, crear('p', {
-        class: 'aviso', texto: 'Falta la referencia con las lámparas apagadas (paso 2).',
-      }));
-      return;
-    }
     if (!lamparas.rojo && !lamparas.verde) {
       rellenar(resultadoFinal, crear('p', {
         class: 'aviso',
-        texto: 'No hay ninguna lámpara localizada (paso 3). Sin eso Teseo no sabe ' +
-               'dónde mirar, y contar todo el recuadro sería contar el tanteo.',
+        texto: 'No has marcado ninguna lámpara. Sin eso Teseo no sabe dónde mirar, ' +
+               'y contar todo el recuadro sería contar el tanteo.',
       }));
       return;
     }
@@ -737,7 +809,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     }
 
     const calibrado = {
-      recuadro, miColor, referencia, lamparas, plantilla,
+      recuadro, miColor, lamparas, plantilla,
       instante: video.currentTime,
       fechaISO: new Date().toISOString(),
     };
@@ -765,7 +837,7 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
                    'cámara se mueve muchísimo, o el recuadro coge poco del ' +
                    'aparato, o hay alguien delante casi todo el rato. Así se ' +
                    'perderán muchos tocados: prueba a enmarcar más cosa alrededor ' +
-                   'del marcador y a tomar la referencia en un momento bien visible.',
+                   'del marcador y a enmarcarlo en un momento en que se vea bien.',
           }),
           crear('button', {
             type: 'button', class: 'boton', texto: 'Guardar de todas formas',
@@ -787,8 +859,9 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
             class: 'aviso',
             texto: `En ${barrido.encendidos} de ${vistos} momentos repartidos ` +
                    'por el vídeo parecería haber una lámpara encendida. Lo más ' +
-                   'probable es que lo localizado en el paso 3 no sea una lámpara ' +
-                   'sino un dígito. Míralo en el vídeo y repite ese paso.',
+                   'probable es que alguno de los recuadros de las lámparas coja ' +
+                   'de más y esté cazando un dígito del tanteo. Míralo en el vídeo ' +
+                   'y vuelve a marcarlo más ajustado.',
           }),
           crear('button', {
             type: 'button', class: 'boton', texto: 'Guardar de todas formas',

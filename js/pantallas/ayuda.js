@@ -175,11 +175,15 @@ export async function pantallaAyuda(contenedor) {
       'temblor de la cámara, que Teseo persigue el marcador él solo, y todo lo ' +
       'que metas de más —pista, gente, fondo— cambia durante el vídeo y sólo ' +
       'sirve para despistarlo.',
-      'Se mide dos veces. Una con las lámparas apagadas y otra en un tocado. ' +
-      'Comparando las dos, Teseo encuentra las lámparas y no se confunde con el ' +
-      'cronómetro ni con el tanteo, que están encendidos en las dos capturas. ' +
-      'Te dibuja encima del vídeo lo que ha encontrado: míralo, es la forma de ' +
-      'saber que ha acertado.',
+      'Son tres recuadros: el marcador, la lámpara roja y la lámpara verde. Lo ' +
+      'más cómodo es buscar un doble —las dos encendidas— y hacerlo todo sobre ' +
+      'ese fotograma, pero puedes marcar cada uno donde quieras. Si el marcador ' +
+      'se ve pequeño, amplía con dos dedos antes de encuadrar.',
+      'A las lámparas déjales un poco de margen, pero sólo un poco: si el ' +
+      'recuadro se lleva dentro un dígito del tanteo, cada punto del rival será ' +
+      'un tocado falso. En la ayuda del calibrado hay dos dibujos que lo enseñan.',
+      'Mientras te mueves por el vídeo verás los tres recuadros seguir al ' +
+      'marcador. Eso es la comprobación: si van pegados a él, funcionará.',
       'Y te dice si va a funcionar antes de que pierdas dos minutos analizando.',
       'Durante el análisis, el recuadro persigue al marcador por el vídeo. Si ' +
       'alguien se pone delante, Teseo deja de mirar hasta que vuelva a verlo: ' +

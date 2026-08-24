@@ -28,9 +28,7 @@
 // después, el tocado ocurrió mientras no se veía, y se propone con el
 // instante en que se recuperó el marcador y marcado como aproximado.
 
-import {
-  recortar, contarEnZona, conHolgura, crearDetector, resultadoDelTocado,
-} from './deteccion.js';
+import { recortar, contarEnZona, crearDetector, resultadoDelTocado } from './deteccion.js';
 import { escenaDe, plantillaDesde, crearSeguidor } from './seguimiento.js';
 import { ajuste } from './ajustes.js';
 
@@ -52,17 +50,34 @@ function cuentasPorLampara(imagen, lamparas) {
   return cuentas;
 }
 
+// El margen que se le daba a la mancha de una lámpara cuando la buscaba Teseo
+// solo. Desde que el usuario marca el recuadro a dedo, el margen lo pone él y
+// esto sólo se usa con los calibrados de antes.
+const HOLGURA_DE_LOS_VIEJOS = 0.15;
+
 /**
  * Dónde se mira cada lámpara.
  *
- * El calibrado guarda dos cosas: la mancha tal y como se midió (`zonaMedida`)
- * y esa mancha ya ensanchada (`zona`). Se rehace el ensanchado aquí, en vez de
- * usar el guardado, para que los calibrados de antes se aprovechen del margen
- * de ahora —mucho más estrecho— sin tener que repetirlos: era ese margen el
- * que metía los dígitos del tanteo dentro de la zona de la lámpara roja.
+ * Los calibrados hechos a dedo traen el recuadro que dibujó el usuario y se usa
+ * tal cual. Los de antes traen la mancha que Teseo midió (`zonaMedida`) y la
+ * misma mancha ensanchada un 60 % por lado (`zona`), que era casi cinco veces
+ * la lámpara y ahí cabían los dígitos del tanteo. A ésos se les rehace el
+ * margen con el de ahora, para que mejoren sin tener que repetirlos.
  */
 function zonaDeLaLampara(lampara) {
-  return lampara.zonaMedida ? conHolgura(lampara.zonaMedida) : lampara.zona;
+  if (!lampara.zonaMedida) return lampara.zona;
+
+  const zona = lampara.zonaMedida;
+  const dx = zona.ancho * HOLGURA_DE_LOS_VIEJOS;
+  const dy = zona.alto * HOLGURA_DE_LOS_VIEJOS;
+  const x = Math.max(0, zona.x - dx);
+  const y = Math.max(0, zona.y - dy);
+  return {
+    x,
+    y,
+    ancho: Math.min(1 - x, zona.ancho + dx * 2),
+    alto: Math.min(1 - y, zona.alto + dy * 2),
+  };
 }
 
 // De la mancha que se midió al calibrar, qué parte hay que ver encendida para

@@ -764,12 +764,39 @@ video::-webkit-media-controls-panel {
   cursor: crosshair;
 }
 
+/* De un píxel y sin relleno: se dibujan encima de lo que hay que ver, y con
+   un marco grueso el recuadro de una lámpara —que mide veinte píxeles— sería
+   casi todo marco. Ampliando con los dedos el trazo crece con la imagen, así
+   que sigue viéndose. */
 .recuadro-dibujado {
   position: absolute;
-  border: 2px solid var(--acento);
-  background: color-mix(in srgb, var(--acento) 15%, transparent);
+  border: 1px solid var(--acento);
   pointer-events: none;
 }
+
+/* Los dos dibujos de ejemplo del calibrado, uno al lado del otro mientras
+   quepan y uno encima de otro cuando no. */
+.ejemplos-calibrado {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.figura-ejemplo {
+  flex: 1 1 220px;
+  margin: 0;
+}
+
+.ejemplo-calibrado {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.figura-ejemplo figcaption { margin: 0.4rem 0 0; }
 
 /* Durante el análisis el recuadro persigue al marcador. Cuando lo pierde —el
    tirador delante, un movimiento brusco— se queda donde estaba, y hay que
@@ -786,8 +813,8 @@ video::-webkit-media-controls-panel {
    y no ha cogido un dígito del tanteo. */
 .zona-lampara {
   position: absolute;
-  border: 2px dashed;
-  border-radius: 4px;
+  border: 1px solid;
+  border-radius: 2px;
   pointer-events: none;
 }
 
