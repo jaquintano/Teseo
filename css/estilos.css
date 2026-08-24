@@ -733,6 +733,15 @@ video::-webkit-media-controls-panel {
   overflow: hidden;
 }
 
+/* Lo que se amplía con los dedos: dentro van el vídeo y la capa que recoge el
+   trazo, para que las coordenadas del recuadro sigan siendo las del fotograma
+   sin tener que deshacer la ampliación a mano. */
+.lienzo-zoom {
+  position: relative;
+  transform-origin: center center;
+  touch-action: none;
+}
+
 .marco-calibrado video {
   display: block;
   width: 100%;

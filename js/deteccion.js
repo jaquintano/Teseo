@@ -249,10 +249,17 @@ export function loQueHaAparecido(imagen, referencia, cual) {
 }
 
 /**
- * La zona de una lámpara, ensanchada para que la cámara pueda moverse un poco
- * sin sacarla. Sin holgura, cuatro píxeles de temblor la dejan fuera.
+ * La zona de una lámpara, con un pelo de margen alrededor.
+ *
+ * El margen era del 60 % por cada lado, y eso hace una zona de 2,2 × 2,2: casi
+ * CINCO VECES la lámpara. Se puso cuando el recuadro estaba clavado en un
+ * sitio del fotograma y hacía falta aguantar el temblor de la cámara; desde
+ * que hay seguimiento, ese margen sólo sirve para que quepan dentro los
+ * dígitos del tanteo, que están al lado, son igual de rojos y parpadean.
+ *
+ * Ahora es un 15 %: lo justo para un par de píxeles de error del seguimiento.
  */
-export function conHolgura(zona, cuanto = 0.6) {
+export function conHolgura(zona, cuanto = 0.15) {
   const dx = zona.ancho * cuanto;
   const dy = zona.alto * cuanto;
   const x = Math.max(0, zona.x - dx);
@@ -285,22 +292,27 @@ export function contarEnZona(imagen, zona, cual) {
 
 // --- Encontrar los tocados en una sucesión de muestras -----------------
 
-// Cuántas muestras seguidas tiene que aguantar encendida para creérselo. A
-// diez muestras por segundo son tres décimas: descarta destellos y a alguien
-// pasando por delante, sin perder un tocado de verdad.
-const MUESTRAS_PARA_CONFIRMAR = 3;
-
-// Los LED parpadean y pueden salir apagados en un fotograma suelto, así que
-// no se mira la muestra de ahora sino las últimas tres: la lámpara está
-// encendida si lo están DOS de las TRES.
+// Lo que separa una lámpara de un dígito: el tiempo que aguanta.
 //
-// La primera versión miraba el máximo de la ventana, y eso se comía la
-// persistencia: un destello de un fotograma se quedaba tres muestras dentro
-// de la ventana y salía confirmado como tocado. Exigir mayoría sirve para las
-// dos cosas a la vez —aguanta un fotograma perdido, descarta un destello—,
-// que es lo que hace falta.
-const VENTANA = 3;
-const ENCENDIDAS_EN_LA_VENTANA = 2;
+// Una lámpara de espada se queda encendida unos DOS SEGUNDOS, hasta que el
+// árbitro rearma. El tanteo del marcador, en cambio, son dígitos enormes de
+// siete segmentos que PARPADEAN cada dos décimas cuando acaban de cambiar. En
+// color y en tamaño se parecen; en el tiempo no se parecen en nada.
+//
+// Así que se mide eso: de todas las muestras de la última ventana, cuántas
+// vieron luz. Una lámpara de verdad da casi el cien por cien; un parpadeo de
+// dos décimas da la mitad, por muy fuerte que sea.
+//
+// Esto sustituye a la regla de "dos de las últimas tres", que era justo lo
+// que dejaba pasar el parpadeo: en tres muestras seguidas de una luz que va y
+// viene, dos están encendidas casi siempre. Aquella regla se escribió para
+// aguantar un fotograma perdido, y eso lo sigue haciendo el 0,8: caben dos
+// muestras en blanco de cada diez.
+const PARTE_SOLIDA = 0.8;
+
+// Y para que la cuenta valga, la ventana tiene que estar llena: al principio
+// del vídeo, o al volver de un hueco, no hay con qué comparar.
+const PARTE_DE_VENTANA_MINIMA = 0.9;
 
 // Si las dos lámparas se encienden con menos de esto de diferencia, es doble.
 const SEGUNDOS_PARA_DOBLE = 0.5;
@@ -314,8 +326,9 @@ const SEGUNDOS_PARA_DOBLE = 0.5;
  * primera muestra que la vio, no el de la que lo confirmó.
  *
  * @param {{rojo:number, verde:number}} umbrales píxeles para dar por encendida
+ * @param {number} ventana segundos que la luz tiene que aguantar para creérsela
  */
-export function crearDetector(umbrales) {
+export function crearDetector(umbrales, ventana = 0.8) {
   const estado = {
     rojo: nuevoCanal(umbrales.rojo),
     verde: nuevoCanal(umbrales.verde),
@@ -324,25 +337,28 @@ export function crearDetector(umbrales) {
   let pendiente = null;
 
   function nuevoCanal(umbral) {
-    return { umbral, ultimas: [], encendida: false, seguidas: 0, desde: null };
+    return { umbral, ultimas: [], encendida: false };
   }
 
   /**
-   * Si la lámpara está encendida ahora, mirando las últimas muestras. Y desde
-   * cuándo: el instante de la primera que la vio, no el de la que lo acabó de
-   * confirmar.
+   * Qué parte de la última ventana vio luz, y desde cuándo.
+   *
+   * `desde` es la primera muestra encendida que queda en la ventana. Con el
+   * 0,8 de arriba, como mucho hay dos apagadas por delante, así que ese
+   * instante no se aleja del encendido de verdad más de un par de décimas.
    */
-  function comoEsta(canal) {
-    const encendidas = canal.ultimas.filter((m) => m.valor >= canal.umbral);
+  function comoEsta(canal, segundos) {
+    // Fuera lo que ya no cabe en la ventana de tiempo.
+    while (canal.ultimas.length > 1 && segundos - canal.ultimas[0].segundos > ventana) {
+      canal.ultimas.shift();
+    }
 
-    // Mientras la ventana se llena se exigen todas: al principio del vídeo no
-    // hay con qué comparar y más vale quedarse corto.
-    const necesarias = canal.ultimas.length >= VENTANA
-      ? ENCENDIDAS_EN_LA_VENTANA
-      : canal.ultimas.length;
+    const encendidas = canal.ultimas.filter((m) => m.valor >= canal.umbral);
+    const cubierto = segundos - canal.ultimas[0].segundos;
 
     return {
-      encendida: encendidas.length >= necesarias && encendidas.length > 0,
+      llena: cubierto >= ventana * PARTE_DE_VENTANA_MINIMA,
+      parte: canal.ultimas.length > 0 ? encendidas.length / canal.ultimas.length : 0,
       desde: encendidas.length > 0 ? encendidas[0].segundos : null,
     };
   }
@@ -353,26 +369,19 @@ export function crearDetector(umbrales) {
 
     for (const color of ['rojo', 'verde']) {
       const canal = estado[color];
-
       canal.ultimas.push({ segundos, valor: cuentas[color] });
-      if (canal.ultimas.length > VENTANA) canal.ultimas.shift();
-      const ahora = comoEsta(canal);
+      const ahora = comoEsta(canal, segundos);
 
-      if (ahora.encendida) {
-        if (!canal.encendida) {
-          if (canal.seguidas === 0) canal.desde = ahora.desde;
-          canal.seguidas++;
-          if (canal.seguidas >= MUESTRAS_PARA_CONFIRMAR) {
-            canal.encendida = true;
-            sueltos.push({ instante: canal.desde, color });
-            canal.seguidas = 0;
-          }
-        }
-      } else {
-        canal.encendida = false;
-        canal.seguidas = 0;
-        canal.desde = null;
+      if (!canal.encendida && ahora.llena && ahora.parte >= PARTE_SOLIDA) {
+        canal.encendida = true;
+        sueltos.push({ instante: ahora.desde, color });
+        continue;
       }
+
+      // Para darla por apagada se exige lo contrario y con la misma holgura:
+      // así, mientras la ventana se vacía de luz vieja, no se enciende y se
+      // apaga a cada muestra.
+      if (canal.encendida && ahora.parte <= 1 - PARTE_SOLIDA) canal.encendida = false;
     }
 
     return sueltos.flatMap((tocado) => emparejar(tocado));
@@ -409,10 +418,7 @@ export function crearDetector(umbrales) {
    */
   function perder() {
     for (const color of ['rojo', 'verde']) {
-      const canal = estado[color];
-      canal.ultimas = [];
-      canal.seguidas = 0;
-      canal.desde = null;
+      estado[color].ultimas = [];
     }
   }
 

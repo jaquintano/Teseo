@@ -28,8 +28,11 @@
 // después, el tocado ocurrió mientras no se veía, y se propone con el
 // instante en que se recuperó el marcador y marcado como aproximado.
 
-import { recortar, contarEnZona, crearDetector, resultadoDelTocado } from './deteccion.js';
+import {
+  recortar, contarEnZona, conHolgura, crearDetector, resultadoDelTocado,
+} from './deteccion.js';
 import { escenaDe, plantillaDesde, crearSeguidor } from './seguimiento.js';
+import { ajuste } from './ajustes.js';
 
 const NUMERO = { rojo: 1, verde: 2 };
 
@@ -44,9 +47,22 @@ function cuentasPorLampara(imagen, lamparas) {
   const cuentas = { rojo: 0, verde: 0 };
   for (const color of ['rojo', 'verde']) {
     const lampara = lamparas[color];
-    if (lampara) cuentas[color] = contarEnZona(imagen, lampara.zona, NUMERO[color]);
+    if (lampara) cuentas[color] = contarEnZona(imagen, zonaDeLaLampara(lampara), NUMERO[color]);
   }
   return cuentas;
+}
+
+/**
+ * Dónde se mira cada lámpara.
+ *
+ * El calibrado guarda dos cosas: la mancha tal y como se midió (`zonaMedida`)
+ * y esa mancha ya ensanchada (`zona`). Se rehace el ensanchado aquí, en vez de
+ * usar el guardado, para que los calibrados de antes se aprovechen del margen
+ * de ahora —mucho más estrecho— sin tener que repetirlos: era ese margen el
+ * que metía los dígitos del tanteo dentro de la zona de la lámpara roja.
+ */
+function zonaDeLaLampara(lampara) {
+  return lampara.zonaMedida ? conHolgura(lampara.zonaMedida) : lampara.zona;
 }
 
 /** El umbral de cada lámpara, o inalcanzable si no está localizada. */
@@ -57,9 +73,25 @@ function umbralesDe(lamparas) {
   };
 }
 
-// A 10 muestras por segundo de vídeo, una lámpara encendida cae en varias
-// aunque el árbitro rearme rápido.
-const SEGUNDOS_ENTRE_MUESTRAS = 0.1;
+// Cada cuánto se mira, en segundos de vídeo.
+//
+// No es un número redondo a propósito. Lo que hay que distinguir es una luz
+// fija de un dígito que parpadea cada dos décimas, y si se mirara justo cada
+// 0,1 o cada 0,2 se podría caer siempre en la misma fase del parpadeo y verlo
+// encendido SIEMPRE: el error clásico de muestrear al compás de lo que se
+// mide. Con 0,08 las muestras van cayendo en cinco puntos distintos de cada
+// parpadeo, y lo que se ve es su verdadera proporción de luz.
+const SEGUNDOS_ENTRE_MUESTRAS = 0.08;
+
+// Por debajo de este parecido no se mide, aunque se siga siguiendo.
+//
+// Seguir y medir no se juegan lo mismo. Para seguir vale un parecido regular:
+// se sabe por dónde anda el marcador y con eso basta para no perderlo. Para
+// contar píxeles hace falta saber dónde está la lámpara con precisión de dos
+// o tres píxeles, y con el marcador medio tapado o de refilón un 0,6 quiere
+// decir "creo que está por aquí". Contar ahí es inventarse tocados; más vale
+// un hueco honesto.
+const PARECIDO_PARA_MEDIR = 0.7;
 
 // Más arriba el decodificador del móvil empieza a saltarse fotogramas, y los
 // que se salta son justo los que interesan.
@@ -86,7 +118,7 @@ const SEGUNDOS_DE_CORTESIA = 0.6;
 export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar, alSeguir }) {
   const lienzo = document.createElement('canvas');
   const lienzoEscena = document.createElement('canvas');
-  const detector = crearDetector(umbralesDe(calibrado.lamparas));
+  const detector = crearDetector(umbralesDe(calibrado.lamparas), ajuste('segundosDeLampara'));
 
   let cancelado = false;
   let ultimaMuestra = -Infinity;
@@ -95,6 +127,8 @@ export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar, 
   let seguidor = null;
   let recuadroAhora = calibrado.recuadro;
   let recuperadoEn = -Infinity;
+  // Si la última muestra no se pudo medir, para saber cuándo se vuelve.
+  let sinMedir = false;
 
   // Lo que se le cuenta al usuario al final: sin esto, un análisis con el
   // marcador tapado media hora parece un asalto sin tocados.
@@ -144,11 +178,19 @@ export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar, 
     recuadroAhora = donde.recuadro;
     if (alSeguir) alSeguir(donde);
 
+    // Se venía de un hueco —perdido o dudoso— y ahora se vuelve a medir.
+    const volviendo = sinMedir;
+    sinMedir = false;
+
     // La plantilla podía no valer para este vídeo. Se sabe al primer intento,
     // y más vale contarlo al final que presumir de un seguimiento que no hubo.
     if (donde.estado === 'imposible') cuenta.seguimiento = false;
 
-    if (donde.estado === 'perdido') {
+    // Seguir con dudas es seguir; medir con dudas es inventar. Un tramo así
+    // cuenta como hueco: si la lámpara se enciende ahí, se dirá al recuperarlo.
+    const dudoso = donde.estado === 'seguido' && donde.parecido < PARECIDO_PARA_MEDIR;
+
+    if (donde.estado === 'perdido' || dudoso) {
       cuenta.perdido += transcurrido;
       // Lo que veníamos viendo ya no vale, pero lo que sabíamos de cada
       // lámpara sí: en espada se quedan encendidas hasta que el árbitro
@@ -157,11 +199,12 @@ export function analizar({ video, calibrado, alProgresar, alDetectar, alPausar, 
       // El emparejamiento de dobles sí sigue corriendo: media hora tapado no
       // debe dejar un tocado suelto esperando pareja para siempre.
       avisar(detector.vencidos(segundos));
+      sinMedir = true;
       return;
     }
 
     cuenta.seguido += transcurrido;
-    if (donde.reencontrado) {
+    if (donde.reencontrado || volviendo) {
       cuenta.huecos++;
       recuperadoEn = segundos;
     }

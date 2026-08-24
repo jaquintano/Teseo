@@ -273,7 +273,35 @@ recuadro con las lámparas apagadas. Al medir en un tocado, se compara: un píxe
 cuenta si AHORA es rojo y en la referencia NO lo era. Los dígitos están en las
 dos capturas y desaparecen en la comparación; la lámpara, no. Con eso se sabe
 **dónde** está cada lámpara dentro del recuadro, y durante el análisis se mira
-sólo ahí, con holgura alrededor para el temblor de la cámara.
+sólo ahí.
+
+**Y sólo ahí de verdad.** La zona de cada lámpara se ensanchaba un 60 % por
+cada lado, o sea 2,2 × 2,2: casi **cinco veces la lámpara**. Ese margen se puso
+cuando el recuadro estaba clavado en un sitio del fotograma y había que aguantar
+el temblor de la cámara; con seguimiento sólo servía para que cupieran dentro
+los dígitos del tanteo, que están al lado y son igual de rojos. Ahora es un
+15 %, y se rehace al analizar a partir de la mancha guardada, así que los
+calibrados viejos se aprovechan sin repetirlos.
+
+**Seguir y medir no se juegan lo mismo.** Para seguir vale un parecido regular
+(0,55): se sabe por dónde anda el marcador y con eso basta. Para contar píxeles
+hace falta saber dónde está la lámpara con precisión de dos o tres píxeles, así
+que por debajo de **0,70 no se mide**: ese tramo cuenta como hueco, y si la
+lámpara se enciende ahí se dirá al recuperarlo. Un hueco honesto vale más que
+un tocado inventado.
+
+**Se puede ampliar con dos dedos para encuadrar.** El marcador sale pequeño en
+un vídeo grabado de lejos, y ajustarle un recuadro a pulso sobre una miniatura
+es imposible. En el calibrado, **un dedo dibuja el recuadro y dos amplían y
+pasean la imagen**; para volver al tamaño normal, se juntan los dedos. No hay
+botón de ajustar porque el gesto ya lo dice.
+
+Por dentro, el zoom se aplica a un envoltorio que lleva **dentro el vídeo y la
+capa que recoge el trazo**. Eso es lo que evita tener que deshacer la
+transformación a mano: `getBoundingClientRect()` de la capa ya viene ampliada,
+así que la cuenta de siempre —(x − izquierda) / ancho— sigue dando la posición
+dentro del fotograma. Comprobado: con zoom 3×, dibujar sobre todo el marco da
+el tercio central del fotograma.
 
 **El recuadro, ajustado al aparato.** La primera versión pedía dibujarlo grande
 y con holgura, para que el temblor de la cámara no sacara el marcador; con el
@@ -290,11 +318,28 @@ potente satura el sensor y sale blanco, conservando el tinte sólo en el halo.
 El rojo está partido en los dos extremos de la rueda de tonos, así que se miran
 los dos rangos.
 
-**Cuándo da por encendida una lámpara.** No con la muestra de ahora, sino con
-**dos de las tres últimas**. Esa regla hace dos cosas a la vez: aguanta que un
-LED salga apagado en un fotograma suelto, y descarta un destello de un
-fotograma. Mirar el máximo de la ventana —que fue la primera versión— se comía
-la persistencia y daba por bueno cualquier destello.
+**Cuándo da por encendida una lámpara: por el TIEMPO que aguanta.**
+
+Una lámpara de espada se queda encendida unos **dos segundos**, hasta que el
+árbitro rearma. El tanteo del marcador, cuando acaba de cambiar, **parpadea
+cada dos décimas**. En color y en tamaño se parecen —dígitos enormes de siete
+segmentos, rojos— pero en el tiempo no se parecen en nada, y eso es lo que se
+mide: de todas las muestras de la última ventana (0,8 s de fábrica), **cuántas
+vieron luz**. Una lámpara de verdad da casi el cien por cien; un parpadeo al
+cincuenta por ciento se queda en la mitad. El corte está en el 80 %, medido:
+por debajo del 85 % de luz por ciclo, un parpadeo no pasa.
+
+Esto sustituyó a la regla de "dos de las tres últimas", que era justo lo que
+dejaba entrar el parpadeo: en tres muestras seguidas de una luz que va y viene,
+dos están encendidas casi siempre. Aquella regla existía para aguantar un
+fotograma perdido, y eso lo sigue haciendo el 80 %: caben dos muestras en
+blanco de cada diez.
+
+**Y por eso se mira cada 0,08 s, que no es un número redondo.** Si se mirara
+justo cada 0,1 o cada 0,2 se podría caer siempre en la misma fase de un
+parpadeo de dos décimas y verlo encendido *siempre*: el error clásico de
+muestrear al compás de lo que se mide. Con 0,08 las muestras caen en cinco
+puntos distintos de cada parpadeo.
 
 Lo que se busca es el **flanco de subida**, y el instante que se apunta es el
 de la primera muestra que vio la luz, no el de la que lo confirmó. Si las dos

@@ -43,6 +43,11 @@ const ALTO_MINIMO = 40;
 // Y uno que se coma más de la mitad del fotograma no enmarca el aparato.
 const PARTE_MAXIMA = 0.5;
 
+// Cuánto se puede ampliar el vídeo del calibrado con los dedos. Seis veces es
+// de sobra para encuadrar un marcador que se vea pequeño, y más allá sólo se
+// ven los píxeles.
+const ESCALA_MAXIMA = 6;
+
 // Por debajo de esta altura de vídeo, las lámparas salen tan pequeñas que
 // distinguirlas del fondo es cuestión de suerte. 720 es lo que graba
 // cualquier móvil de hace diez años.
@@ -119,7 +124,14 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
   const marcaRoja = crear('div', { class: 'zona-lampara zona-roja', hidden: true });
   const marcaVerde = crear('div', { class: 'zona-lampara zona-verde', hidden: true });
   const capa = crear('div', { class: 'capa-recuadro' }, [dibujado, marcaRoja, marcaVerde]);
-  const marco = crear('div', { class: 'marco-calibrado' }, [video, capa]);
+
+  // El zoom se aplica a este envoltorio, con el vídeo y la capa dentro. Es lo
+  // que hace que no haya que deshacer la transformación a mano para saber
+  // dónde ha tocado el dedo: getBoundingClientRect() de la capa ya viene
+  // ampliada, así que la cuenta de siempre —(x - izquierda) / ancho— sigue
+  // dando la posición dentro del fotograma.
+  const lienzoZoom = crear('div', { class: 'lienzo-zoom' }, [video, capa]);
+  const marco = crear('div', { class: 'marco-calibrado' }, [lienzoZoom]);
 
   const posicion = crear('input', {
     class: 'deslizador', type: 'range', min: 0, max: 1000, value: 0,
@@ -159,34 +171,102 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
     if (video.duration) posicion.value = String((video.currentTime / video.duration) * 1000);
   }
 
-  // --- Dibujar el recuadro con el dedo ---
+  // --- Un dedo dibuja el recuadro; dos amplían la imagen ---
+  //
+  // Hacen falta las dos cosas y en la misma capa: el marcador sale pequeño en
+  // un vídeo grabado de lejos, y encuadrarlo a pulso sobre una miniatura es
+  // imposible. Se amplía con dos dedos, se ajusta con uno, y no hay botón de
+  // volver al tamaño normal porque se vuelve con el mismo gesto de siempre:
+  // juntando los dedos.
   let arrastrando = null;
+  const dedos = new Map();
+  let escala = 1;
+  let despX = 0;
+  let despY = 0;
+  let distanciaInicial = 0;
+  let escalaInicial = 1;
+
+  function aplicarZoom() {
+    // El desplazamiento se acota para que la imagen no se despegue del marco
+    // y deje una franja vacía al lado.
+    const maxX = (marco.clientWidth * (escala - 1)) / 2;
+    const maxY = (marco.clientHeight * (escala - 1)) / 2;
+    despX = Math.min(maxX, Math.max(-maxX, despX));
+    despY = Math.min(maxY, Math.max(-maxY, despY));
+    lienzoZoom.style.transform = `translate(${despX}px, ${despY}px) scale(${escala})`;
+  }
 
   capa.addEventListener('pointerdown', (evento) => {
+    dedos.set(evento.pointerId, { x: evento.clientX, y: evento.clientY });
+
+    if (dedos.size >= 2) {
+      // Ha entrado un segundo dedo: esto ya no es un trazo, es una pinza. Se
+      // abandona lo que se llevara dibujando, que si no queda un recuadro
+      // puesto donde nadie quiso.
+      arrastrando = null;
+      const [a, b] = [...dedos.values()];
+      distanciaInicial = Math.hypot(a.x - b.x, a.y - b.y);
+      escalaInicial = escala;
+      pintarMarcas();
+      return;
+    }
+
     // Capturar el puntero mantiene el trazo aunque el dedo se salga del
     // vídeo. Si el navegador no deja, se dibuja igual.
     try { capa.setPointerCapture(evento.pointerId); } catch { /* da igual */ }
     arrastrando = puntoRelativo(evento);
-    recuadro = null;
-    dondeSeMidio = null;
-    pintarMarcas();
   });
 
   capa.addEventListener('pointermove', (evento) => {
-    if (!arrastrando) return;
+    if (!dedos.has(evento.pointerId)) return;
+    const anterior = dedos.get(evento.pointerId);
+    dedos.set(evento.pointerId, { x: evento.clientX, y: evento.clientY });
+
+    if (dedos.size >= 2 && distanciaInicial > 0) {
+      const [a, b] = [...dedos.values()];
+      const distancia = Math.hypot(a.x - b.x, a.y - b.y);
+      escala = Math.min(ESCALA_MAXIMA,
+                        Math.max(1, escalaInicial * (distancia / distanciaInicial)));
+      aplicarZoom();
+      return;
+    }
+
+    if (!arrastrando) {
+      // Un solo dedo y sin trazo empezado: si hay zoom, se pasea la imagen.
+      if (escala > 1) {
+        despX += evento.clientX - anterior.x;
+        despY += evento.clientY - anterior.y;
+        aplicarZoom();
+      }
+      return;
+    }
+
+    // Al empezar un recuadro nuevo se tira el de antes, pero no antes: si se
+    // borrara en el pointerdown, un toque suelto dejaría la pantalla vacía.
+    if (recuadro) { recuadro = null; dondeSeMidio = null; }
     recuadro = entreDosPuntos(arrastrando, puntoRelativo(evento));
     pintarMarcas();
   });
 
   const soltar = (evento) => {
+    dedos.delete(evento.pointerId);
+    if (dedos.size < 2) distanciaInicial = 0;
+    if (escala <= 1.01) { escala = 1; despX = 0; despY = 0; aplicarZoom(); }
+
     if (!arrastrando) return;
     const desde = arrastrando;
     arrastrando = null;
-    recuadro = entreDosPuntos(desde, puntoRelativo(evento));
+
+    const trazado = entreDosPuntos(desde, puntoRelativo(evento));
+    // Un toque sin arrastre no es un recuadro: no se toca lo que hubiera.
+    if (trazado.ancho < 0.01 || trazado.alto < 0.01) { pintarMarcas(); return; }
+
+    recuadro = trazado;
     // Al mover el recuadro, la referencia y las lámparas de antes ya no valen.
     referencia = null;
     plantilla = null;
     lamparas = { rojo: null, verde: null };
+    dondeSeMidio = null;
     pintarMarcas();
     pintarPasos();
   };
@@ -291,6 +371,9 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       'se hace en dos capturas: una con las lámparas apagadas y otra con una ' +
       'encendida. Lo que aparece entre las dos es la lámpara, y ahí es donde ' +
       'mirará Teseo. Los dígitos quedan fuera.',
+      'Si el marcador se ve pequeño, amplía la imagen con dos dedos antes de ' +
+      'encuadrarlo: con un dedo se dibuja el recuadro y con dos se amplía y se ' +
+      'pasea. Para volver al tamaño normal, junta los dedos.',
       'Ajusta el recuadro al aparato: que entre el marcador entero y poco más. ' +
       'No hace falta dejar holgura para el temblor de la cámara —de eso se ' +
       'encarga el seguimiento—, y todo lo que metas de más juega en contra: la ' +

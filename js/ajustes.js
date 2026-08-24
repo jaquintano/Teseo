@@ -46,6 +46,22 @@ export const AJUSTES = [
     paso: 0.5,
   },
   {
+    id: 'segundosDeLampara',
+    grupo: 'Detección automática',
+    etiqueta: 'Segundos que la luz tiene que aguantar',
+    ayuda: 'Lo que separa una lámpara de un dígito del tanteo es el tiempo. La ' +
+           'lámpara de espada se queda encendida unos dos segundos, hasta que el ' +
+           'árbitro rearma; el tanteo, cuando cambia, parpadea cada dos décimas. ' +
+           'Aquí se dice cuánto tiene que aguantar la luz para creérsela. Subirlo ' +
+           'quita falsos positivos y baja el riesgo de perder tocados; bajarlo, ' +
+           'al revés. Por encima de la duración real de la lámpara no se detecta ' +
+           'nada.',
+    fabrica: 0.8,
+    min: 0.2,
+    max: 3,
+    paso: 0.1,
+  },
+  {
     id: 'segundosDeRearme',
     grupo: 'Intercambios',
     etiqueta: 'Silencio tras un tocado confirmado',
