@@ -4,7 +4,7 @@
  "categoria": "ABS",
  "genero": "Masculino",
  "origen": "https://app.skermo.org/ranking-rfee/public/RFEE?season=16&weapon=E&category=7&gender=M",
- "descargadoEl": "2026-08-23T16:29:20.503Z",
+ "descargadoEl": "2026-08-25T16:40:32.623Z",
  "tiradores": [
   {
    "idRfee": 185,
@@ -2752,21 +2752,21 @@
    "puntos": 12.24
   },
   {
-   "idRfee": 4017,
-   "posicion": 306,
-   "nombre": "FRANCISCO JAVIER",
-   "apellidos": "GONZALEZ ROMERO",
-   "fechaNacimiento": "1970-10-04",
-   "club": "FED-V-C",
-   "puntos": 11.82
-  },
-  {
    "idRfee": 4727,
-   "posicion": 307,
+   "posicion": 306,
    "nombre": "JOSE",
    "apellidos": "ALVAREZ REJÓN",
    "fechaNacimiento": "1973-04-27",
    "club": "SA-GR",
+   "puntos": 11.82
+  },
+  {
+   "idRfee": 4017,
+   "posicion": 307,
+   "nombre": "FRANCISCO JAVIER",
+   "apellidos": "GONZALEZ ROMERO",
+   "fechaNacimiento": "1970-10-04",
+   "club": "FED-V-C",
    "puntos": 11.82
   },
   {
