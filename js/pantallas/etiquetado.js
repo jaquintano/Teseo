@@ -34,8 +34,7 @@ import {
   formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  ACCIONES_OFENSIVAS, ACCIONES_DEFENSIVAS, TIPOS_DE_ACCION, LINEAS,
-  VARIANTES_DE_ATAQUE, variantesDe,
+  ACCIONES_OFENSIVAS, ACCIONES_DEFENSIVAS, TIPOS_DE_ACCION, LINEAS, variantesDe,
   RESULTADOS, RESULTADOS_CON_TOCADO, ZONAS_TOCADAS, ZONAS_PISTA, etiquetaDe,
   accionVacia, COLORES_LAMPARA, PREGUNTA_COLOR, colorDeLaLampara,
 } from '../constantes.js';
@@ -1204,19 +1203,15 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   /**
    * Los desplegables de una acción final, la propia o la del rival.
    *
-   * Sale sólo lo que cuelga de la rama elegida: de una defensiva, qué hizo; de
-   * una ofensiva, la acción, con qué se remató —cuando esa acción admite
-   * remate— y la línea; y de un contraataque, con qué ataque simple se cerró.
-   * Preguntarlo todo siempre haría una ficha de veinte campos que nadie
-   * rellena.
+   * Sale sólo lo que cuelga de la rama elegida: de una defensiva, qué hizo; y
+   * de una ofensiva, la acción, con qué se remató —cuando esa acción admite
+   * remate— y la línea. Preguntarlo todo siempre haría una ficha de veinte
+   * campos que nadie rellena.
    */
   function camposDeLaAccion(cual) {
     const accion = activo[cual] || accionVacia();
 
-    // El contraataque acaba en un ataque simple y admite los cuatro remates:
-    // ahí la variante cuelga del propio tipo, no de una acción intermedia.
-    const esContraataque = accion.tipo === 'contraataque';
-    const variantes = esContraataque ? VARIANTES_DE_ATAQUE : variantesDe(accion.accion);
+    const variantes = variantesDe(accion.accion);
 
     return [
       campoDeFicha(`${cual}.tipo`, 'Tipo', TIPOS_DE_ACCION, accion.tipo,
@@ -1234,14 +1229,11 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
             (valor) => cambiarAccion(cual, 'accion', valor)).bloque)
         : null,
 
-      // En una ofensiva el remate cuelga de la acción, así que va un escalón
-      // más adentro; en un contraataque cuelga del tipo y va al mismo nivel
-      // que iría la acción.
+      // El remate cuelga de la acción, así que va un escalón más adentro.
       variantes.length > 0
         ? anidado(campoDeFicha(`${cual}.variante`,
             'Ataque simple', variantes, accion.variante,
-            (valor) => cambiarAccion(cual, 'variante', valor)).bloque,
-            esContraataque ? 1 : 2)
+            (valor) => cambiarAccion(cual, 'variante', valor)).bloque, 2)
         : null,
 
       accion.tipo === 'ofensiva'

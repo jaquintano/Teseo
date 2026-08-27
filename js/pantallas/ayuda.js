@@ -100,11 +100,13 @@ export async function pantallaAyuda(contenedor) {
       'ficha te pregunta dónde cayó el tocado: en uno a favor, dónde le tocaste ' +
       'tú; en uno en contra, dónde te tocaron; en un doble, las dos cosas.',
       'Debajo van las dos acciones finales, la tuya y la del rival, con la misma ' +
-      'estructura. Se empieza por el tipo —ofensiva, defensiva o contraataque— y ' +
-      'sólo aparece lo que cuelgue de esa rama: de una ofensiva, qué acción, con ' +
-      'qué la remataste y en qué línea acabó; de una defensiva, si fue distancia, ' +
-      'parada o ninguna reacción; de un contraataque, con qué ataque simple lo ' +
-      'cerraste.',
+      'estructura. Se empieza por el tipo —ofensiva o defensiva— y sólo aparece ' +
+      'lo que cuelgue de esa rama: de una ofensiva, qué acción, con qué la ' +
+      'remataste y en qué línea acabó; de una defensiva, si fue distancia, parada ' +
+      'o ninguna reacción.',
+      'La parada y el contraataque son acciones ofensivas: las dos salen de una ' +
+      'reacción al ataque del otro y acaban en un ataque simple, así que se ' +
+      'eligen en la misma lista que el resto.',
       'De la frase de armas no se apunta nada: sólo cómo acabó el intercambio ' +
       'cada uno. Es lo que se puede contestar de un vídeo sin que etiquetar un ' +
       'asalto se haga eterno.',

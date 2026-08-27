@@ -107,7 +107,8 @@ export function fichaDesdeRfee(fila, ranking) {
   return {
     nombre: fila.nombre,
     apellidos: fila.apellidos,
-    fechaNacimiento: fila.fechaNacimiento,
+    // De la fecha entera que publica la federación sólo se guarda el año.
+    fechaNacimiento: (fila.fechaNacimiento || '').slice(0, 4) || null,
     // El club llega como código de la federación (CETC-M, ECC-BU...). Se
     // guarda tal cual y se puede corregir a mano.
     club: fila.club,

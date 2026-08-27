@@ -204,12 +204,15 @@ export function calcular(intercambios) {
     };
   });
 
-  // Iniciativa: con qué acabas tú los intercambios. El contraataque va aparte
-  // de las otras dos porque no es ni atacar ni defender, y saber cuánto
+  // Iniciativa: con qué acabas tú los intercambios. El contraataque es una
+  // acción ofensiva más, pero se cuenta aparte de los ataques: saber cuánto
   // contraatacas es media lectura de cómo tiras.
-  const ataques = intercambios.filter((i) => mia(i).tipo === 'ofensiva').length;
+  const esContraataque = (i) => mia(i).tipo === 'ofensiva'
+                             && mia(i).accion === 'contraataque';
+  const ataques = intercambios.filter((i) => mia(i).tipo === 'ofensiva'
+                                          && !esContraataque(i)).length;
   const defensas = intercambios.filter((i) => mia(i).tipo === 'defensiva').length;
-  const contraataques = intercambios.filter((i) => mia(i).tipo === 'contraataque').length;
+  const contraataques = intercambios.filter(esContraataque).length;
   const conAccion = ataques + defensas + contraataques;
   const iniciativa = {
     ataques,

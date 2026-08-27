@@ -49,6 +49,14 @@ function compararCompeticiones(a, b) {
       || (a.nombre || '').localeCompare(b.nombre || '', 'es');
 }
 
+/**
+ * El año en que nació un rival, que es lo único que se enseña de su fecha.
+ * Las fichas traídas de la federación llegaron con la fecha entera.
+ */
+function anoDeNacimiento(tirador) {
+  return (tirador.fechaNacimiento || '').slice(0, 4);
+}
+
 /** Cuándo se tiró un asalto: lo dice su competición. */
 function fechaDeAsalto(asalto, competicion) {
   // Los asaltos viejos guardaban su propia fecha, de cuando se preguntaba.
@@ -448,7 +456,7 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
         crear('span', { class: 'ficha-titulo', texto: nombreCompleto(rival) }),
         crear('span', {
           class: 'ficha-detalle',
-          texto: [rival.club, rival.fechaNacimiento ? `n. ${formatearFecha(rival.fechaNacimiento)}` : '']
+          texto: [rival.club, anoDeNacimiento(rival) ? `n. ${anoDeNacimiento(rival)}` : '']
             .filter(Boolean).join(' · '),
         }),
       ]),

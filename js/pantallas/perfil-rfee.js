@@ -160,7 +160,7 @@ export async function pantallaPerfilRfee(contenedor) {
       ficha: {
         nombre: fila.nombre,
         apellidos: fila.apellidos,
-        fechaNacimiento: fila.fechaNacimiento,
+        fechaNacimiento: (fila.fechaNacimiento || '').slice(0, 4) || null,
         club: fila.club,
         genero: ranking.genero === 'Femenino' ? 'F' : 'M',
         // Ya sabemos una categoría en la que compite: la del ranking en el

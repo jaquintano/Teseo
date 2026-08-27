@@ -35,8 +35,13 @@ export function fichaTirador(tirador = {}, opciones = {}) {
   const apellidos = campo('Apellidos', {
     value: tirador.apellidos || '', placeholder: 'Opcional',
   });
-  const fechaNacimiento = campo('Fecha de nacimiento', {
-    value: tirador.fechaNacimiento || '', type: 'date',
+  // Sólo el año: el día y el mes no le dicen nada a nadie y son un dato
+  // personal de más. De las fichas que traían la fecha entera se enseña su
+  // año, y al guardar se queda el año a secas.
+  const anoNacimiento = campo('Año de nacimiento', {
+    value: (tirador.fechaNacimiento || '').slice(0, 4),
+    type: 'number', inputmode: 'numeric', min: 1900, max: 2100,
+    placeholder: 'Opcional',
   });
   const club = campo('Club', {
     value: tirador.club || '', placeholder: 'Club al que pertenece',
@@ -99,7 +104,7 @@ export function fichaTirador(tirador = {}, opciones = {}) {
     // De ti no se preguntan: ni la mano ni la empuñadura significan nada aquí.
     esPropio ? null : selectorMano.bloque,
     esPropio ? null : selectorEmpunadura.bloque,
-    fechaNacimiento.bloque,
+    anoNacimiento.bloque,
     club.bloque,
     notas.bloque,
     aviso,
@@ -136,7 +141,7 @@ export function fichaTirador(tirador = {}, opciones = {}) {
       categorias: esPropio ? categorias : (tirador.categorias || null),
       mano: esPropio ? null : mano,
       empunadura: esPropio ? null : empunadura,
-        fechaNacimiento: fechaNacimiento.entrada.value || null,
+        fechaNacimiento: anoNacimiento.entrada.value.trim() || null,
       club: club.entrada.value.trim(),
       notas: notas.entrada.value.trim(),
     };

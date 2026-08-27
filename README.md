@@ -81,14 +81,19 @@ corregirlo. Con cualquier tocado se puede añadir además la zona de la pista.
 
 La **acción final** se guarda de los dos, `accionPropia` y `accionRival`, con
 la misma estructura: `{ tipo, accion, variante, linea }`. El tipo abre una de
-tres ramas y sólo se pregunta lo que cuelga de ella:
+dos ramas y sólo se pregunta lo que cuelga de ella:
 
 - **Ofensiva** → qué acción (ataque simple, toma de hierro, finta, pase,
-  batimiento, ligamento, cuerpo a cuerpo, remise o reprise), con qué se
-  remató el ataque simple —y eso sólo si esa acción lo admite: la flecha no
-  sale de un ligamento, ni el coupé de una finta— y en qué línea acabó.
+  batimiento, ligamento, parada, contraataque, cuerpo a cuerpo, remise o
+  reprise), con qué se remató el ataque simple —y eso sólo si esa acción lo
+  admite: la flecha no sale de un ligamento, ni el coupé de una finta— y en
+  qué línea acabó.
 - **Defensiva** → distancia, parada o sin reacción.
-- **Contraataque** → con qué ataque simple se cerró.
+
+El **contraataque** fue una rama para él solo hasta v75. Es una acción como
+las demás —acaba en un ataque simple y va a por el tocado—, así que vive
+entre las ofensivas. En la iniciativa se sigue contando aparte de los
+ataques, que saber cuánto contraatacas es media lectura de cómo tiras.
 
 **Cada grupo va de un color**, y el color tiñe el título, los rótulos de sus
 campos y las líneas de las que cuelgan los anidados: el tocado en morado —no
@@ -642,7 +647,9 @@ Reglas de la importación:
 Una advertencia: estos rankings incluyen nombre, apellidos, fecha de
 nacimiento y club de **menores de edad**. Todo se queda en el dispositivo y no
 sale de él, pero conviene importar sólo las categorías en las que realmente
-competís, no el catálogo entero.
+competís, no el catálogo entero. **De la fecha de nacimiento Teseo se queda
+sólo con el año**, que es lo único que dice algo al mirar a un rival; el día
+y el mes no se guardan.
 
 ## Competiciones
 

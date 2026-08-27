@@ -16,16 +16,18 @@
 // primer nivel, preguntar toda la conversación de hierros es largo y se acaba
 // dejando en blanco, que es peor que no preguntarlo.
 //
-// El árbol tiene tres ramas y sólo se pregunta lo que cuelga de la elegida:
+// El árbol tiene dos ramas y sólo se pregunta lo que cuelga de la elegida:
 //
-//   Ofensiva      → qué acción, con qué se remató y en qué línea acabó
-//   Defensiva     → qué hizo: distancia, parada o nada
-//   Contraataque  → nada más
+//   Ofensiva   → qué acción, con qué se remató y en qué línea acabó
+//   Defensiva  → qué hizo: distancia, parada o nada
+//
+// El contraataque fue un tipo aparte hasta v75. Es una acción como las
+// demás: acaba en un ataque simple y busca el tocado, así que vive entre las
+// ofensivas y no en una rama para él solo.
 
 export const TIPOS_DE_ACCION = [
   { id: 'ofensiva', etiqueta: 'Ofensiva' },
   { id: 'defensiva', etiqueta: 'Defensiva' },
-  { id: 'contraataque', etiqueta: 'Contraataque + ataque simple' },
 ];
 
 // Casi todas las ofensivas rematan en un ataque simple, y de ése se pregunta
@@ -46,6 +48,14 @@ export const ACCIONES_OFENSIVAS = [
     variantes: ['flecha', 'fondo', 'directo'] },
   { id: 'ligamento', etiqueta: 'Ligamento + ataque simple',
     variantes: ['fondo', 'directo'] },
+
+  // Las dos que salen de una reacción al ataque del otro: se para o se
+  // contraataca, y de ahí sale el tocado.
+  { id: 'parada', etiqueta: 'Parada + ataque simple',
+    variantes: ['flecha', 'fondo', 'directo'] },
+  { id: 'contraataque', etiqueta: 'Contraataque + ataque simple',
+    variantes: ['flecha', 'fondo', 'coupe', 'directo'] },
+
   { id: 'cuerpo-a-cuerpo', etiqueta: 'Cuerpo a cuerpo', variantes: [] },
   { id: 'remise', etiqueta: 'Remise', variantes: [] },
   { id: 'reprise', etiqueta: 'Reprise', variantes: [] },
