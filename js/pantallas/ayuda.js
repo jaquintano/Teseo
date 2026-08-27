@@ -114,10 +114,14 @@ export async function pantallaAyuda(contenedor) {
       'marca eso y dale a "Listo".',
       'Todo se guarda solo. No hay botón de guardar que se pueda olvidar.'),
 
-    apartado('Tu color en el asalto',
-      'Lo primero que Teseo te pregunta al abrir el vídeo es de qué color eras ' +
-      'tú: verde o rojo. Hasta que no lo contestes no deja etiquetar, porque ' +
-      'un tocado a favor no significa nada si no se sabe cuál era tu lámpara.',
+    apartado('Tu lado de la pista',
+      'Lo primero que Teseo te pregunta al abrir el vídeo es de qué lado de la ' +
+      'pista estabas, según se te ve en la grabación: izquierda o derecha. ' +
+      'Hasta que no lo contestes no deja etiquetar.',
+      'De ahí sale tu lámpara, que es lo que Teseo necesita de verdad: la ' +
+      'izquierda es la roja y la derecha la verde. Se pregunta el lado y no el ' +
+      'color porque el lado se ve siempre; el aparato puede quedar de espaldas, ' +
+      'tapado, o no salir en el vídeo.',
       'No se pregunta antes, al crear el asalto, porque hasta que no ves el ' +
       'vídeo no hay quien se acuerde. Y vale para todo el asalto: te enchufas ' +
       'a un lado de la pista y ahí te quedas.',

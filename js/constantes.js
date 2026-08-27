@@ -86,9 +86,12 @@ export const LINEAS = [
   { id: 'octava', etiqueta: '8ª' },
 ];
 
+// La parada de aquí es la que se queda en nada: paraste y ahí acabó la cosa.
+// La que remata en tocado es "Parada + ataque simple" y vive entre las
+// ofensivas, que es donde está el resto de lo que busca el tocado.
 export const ACCIONES_DEFENSIVAS = [
   { id: 'distancia', etiqueta: 'Distancia' },
-  { id: 'parada', etiqueta: 'Parada' },
+  { id: 'parada', etiqueta: 'Parada sin respuesta' },
   { id: 'sin-reaccion', etiqueta: 'Sin reacción' },
 ];
 
@@ -135,8 +138,33 @@ export const COLORES_LAMPARA = [
   { id: 'rojo', etiqueta: 'Rojo' },
 ];
 
+// Pero al usuario NO se le pregunta el color, sino de qué lado de la pista
+// estaba, que es lo que siempre se sabe: el aparato puede quedar de espaldas,
+// tapado o directamente no verse en el vídeo, y entonces "¿eras el verde?" no
+// hay quien lo conteste. El lado se ve siempre.
+//
+// La correspondencia es fija: izquierda es rojo y derecha es verde. Se guarda
+// el color, que es lo que necesitan la detección automática y el pintado; el
+// lado es sólo la forma de preguntarlo.
+export const LADOS_DE_LA_PISTA = [
+  { id: 'izquierda', etiqueta: 'Izquierda', color: 'rojo' },
+  { id: 'derecha', etiqueta: 'Derecha', color: 'verde' },
+];
+
 /** La misma pregunta en todas las pantallas, que si no parecen dos cosas. */
-export const PREGUNTA_COLOR = '¿Tu color en el asalto?';
+export const PREGUNTA_LADO = '¿En qué lado de la pista estabas?';
+
+/** El color de lámpara que le toca a un lado. */
+export function colorDelLado(lado) {
+  const ficha = LADOS_DE_LA_PISTA.find((l) => l.id === lado);
+  return ficha ? ficha.color : null;
+}
+
+/** Y al revés, para enseñar el lado de un asalto ya contestado. */
+export function ladoDelColor(color) {
+  const ficha = LADOS_DE_LA_PISTA.find((l) => l.color === color);
+  return ficha ? ficha.id : null;
+}
 
 /**
  * De qué color fue la lámpara de un intercambio.

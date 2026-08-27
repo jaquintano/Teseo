@@ -269,9 +269,17 @@ la roja, tus tocados salen en rojo y los del rival en verde. Se probó al revés
 una lámpara concreta, y el ojo la busca. El doble sigue en ámbar y el nulo en
 gris, que no son de nadie.
 
-Para eso hace falta saber **de qué color eras tú**, y ése es un dato del
+Para eso hace falta saber **cuál era tu lámpara**, y ése es un dato del
 asalto (`asalto.miColor`), no de cada tiempo: te enchufas a un lado de la pista
-y ahí te quedas. No se pregunta al crear el asalto, porque hasta que no ves el
+y ahí te quedas.
+
+Al usuario, sin embargo, **no se le pregunta el color sino el lado**: de qué
+lado de la pista estaba, según se le ve en el vídeo. Izquierda es rojo y
+derecha es verde, y la correspondencia la hace Teseo. El motivo es que el
+lado se ve siempre y el color no: el aparato puede quedar de espaldas, tapado
+o directamente fuera del encuadre, y entonces "¿eras el verde?" no hay quien
+lo conteste. Lo que se guarda sigue siendo el color, que es lo que necesitan
+la detección automática y el pintado; el lado es sólo la puerta de entrada. No se pregunta al crear el asalto, porque hasta que no ves el
 vídeo no te acuerdas; se pregunta **al abrir un tiempo**, que es donde se
 etiqueta y el único sitio donde puedes comprobarlo mirando el vídeo. Estuvo
 también en la pantalla del asalto y se quitó en v70: preguntarlo dos veces

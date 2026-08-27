@@ -224,13 +224,18 @@ export function calcular(intercambios) {
 
   // --- Defensivas ---
 
-  // Parada-respuesta: de las veces que paraste, cuántas acabaron en tocado tuyo.
+  // Parada-respuesta: de las veces que paraste Y respondiste, cuántas
+  // acabaron en tocado tuyo. La parada que se queda sin respuesta se cuenta
+  // aparte: no es un intento fallido de tocar, es otra cosa, y meterla en el
+  // mismo saco hundiría el porcentaje sin querer decir nada.
   const paradas = intercambios.filter((i) =>
-    mia(i).tipo === 'defensiva' && mia(i).accion === 'parada');
+    mia(i).tipo === 'ofensiva' && mia(i).accion === 'parada');
   const paradaRespuesta = {
     intentos: paradas.length,
     conseguidos: paradas.filter((i) => i.resultado === 'favor').length,
     dobles: paradas.filter((i) => i.resultado === 'doble').length,
+    sinRespuesta: intercambios.filter((i) =>
+      mia(i).tipo === 'defensiva' && mia(i).accion === 'parada').length,
     porcentaje: paradas.length
       ? (paradas.filter((i) => i.resultado === 'favor').length / paradas.length) * 100
       : 0,

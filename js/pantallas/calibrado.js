@@ -35,7 +35,7 @@ import {
   ALMACENES, obtener, guardar, borrar, leerVideo, listarPor,
   colorDelAsalto, fijarColorDelAsalto,
 } from '../db.js';
-import { COLORES_LAMPARA, PREGUNTA_COLOR } from '../constantes.js';
+import { LADOS_DE_LA_PISTA, PREGUNTA_LADO, colorDelLado, ladoDelColor } from '../constantes.js';
 import { recortar, contarEnZona } from '../deteccion.js';
 import { escenaDe, plantillaDesde, crearSeguidor, detalleDe, sePuedeSeguir } from '../seguimiento.js';
 import { buscarFalsosPositivos } from '../analisis.js';
@@ -668,16 +668,18 @@ export async function pantallaCalibrado(contenedor, datos = {}) {
       ultimoIntento ? crear('p', { class: 'aviso', texto: ultimoIntento }) : null,
       desequilibrio() ? crear('p', { class: 'aviso', texto: desequilibrio() }) : null,
 
-      crear('h3', { class: 'subtitulo-seccion', texto: 'Tu color' }),
+      crear('h3', { class: 'subtitulo-seccion', texto: 'Tu lado' }),
       crear('p', {
         class: miColor ? 'ayuda' : 'aviso',
         texto: miColor
           ? 'Es el del asalto entero, así que vale para todos sus tiempos. ' +
             'Cambiarlo aquí lo cambia en todas partes.'
-          : 'Sin esto se pueden detectar los tocados pero no saber de quién son.',
+          : 'De tu lado sale tu lámpara: la izquierda es la roja y la derecha la ' +
+            'verde. Sin esto se pueden detectar los tocados pero no saber de ' +
+            'quién son.',
       }),
-      desplegable(PREGUNTA_COLOR, COLORES_LAMPARA, miColor,
-        (valor) => { fijarColor(valor); }, { vacio: '— Elige —' }).bloque,
+      desplegable(PREGUNTA_LADO, LADOS_DE_LA_PISTA, ladoDelColor(miColor),
+        (lado) => { fijarColor(colorDelLado(lado)); }, { vacio: '— Elige —' }).bloque,
 
       crear('button', {
         type: 'button', class: 'boton boton-principal', texto: 'Guardar el calibrado',

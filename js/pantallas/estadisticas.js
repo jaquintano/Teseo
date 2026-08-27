@@ -184,13 +184,15 @@ export async function pantallaEstadisticas(contenedor) {
 
       crear('section', { class: 'bloque-stat' }, [
         crear('h3', { class: 'subtitulo-seccion', texto: 'Parada-respuesta' }),
-        crear('p', { class: 'ayuda explicacion', texto: 'De las veces que paraste, cuántas acabaron en tocado tuyo.' }),
+        crear('p', { class: 'ayuda explicacion', texto: 'De las veces que paraste y respondiste, cuántas acabaron en tocado tuyo. Las paradas que se quedaron sin respuesta van aparte.' }),
         e.defensivas.paradaRespuesta.intentos === 0
+        && e.defensivas.paradaRespuesta.sinRespuesta === 0
           ? crear('p', { class: 'ayuda', texto: 'Sin datos todavía.' })
           : crear('div', { class: 'resumen' }, [
-              dato(e.defensivas.paradaRespuesta.intentos, 'paradas'),
+              dato(e.defensivas.paradaRespuesta.intentos, 'con respuesta'),
               dato(e.defensivas.paradaRespuesta.conseguidos, 'con tocado'),
               dato(`${unaCifra(e.defensivas.paradaRespuesta.porcentaje)} %`, 'eficacia'),
+              dato(e.defensivas.paradaRespuesta.sinRespuesta, 'sin respuesta'),
             ]),
       ]),
 

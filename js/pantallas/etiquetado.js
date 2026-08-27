@@ -15,8 +15,9 @@
 //
 // La línea de tiempo de debajo del vídeo lleva una marca por intercambio,
 // con el color de la LÁMPARA que se encendió: si tu lámpara es la roja, tus
-// tocados salen en rojo. Por eso lo primero que se pregunta es de qué color
-// eras tú, y sin contestarlo no se puede etiquetar. Tocar una marca te lleva
+// tocados salen en rojo. Por eso lo primero que se pregunta es de qué lado de
+// la pista estabas —de ahí sale tu lámpara—, y sin contestarlo no se puede
+// etiquetar. Tocar una marca te lleva
 // a ese instante; tocar la línea en cualquier otro sitio, a ese momento del
 // vídeo.
 //
@@ -36,7 +37,8 @@ import {
 import {
   ACCIONES_OFENSIVAS, ACCIONES_DEFENSIVAS, TIPOS_DE_ACCION, LINEAS, variantesDe,
   RESULTADOS, RESULTADOS_CON_TOCADO, ZONAS_TOCADAS, ZONAS_PISTA, etiquetaDe,
-  accionVacia, COLORES_LAMPARA, PREGUNTA_COLOR, colorDeLaLampara,
+  accionVacia, LADOS_DE_LA_PISTA, PREGUNTA_LADO, colorDelLado, ladoDelColor,
+  colorDeLaLampara,
 } from '../constantes.js';
 import {
   ALMACENES, obtener, guardar, borrar, listarPor, leerVideo,
@@ -118,9 +120,9 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   const asalto = await obtener(ALMACENES.asaltos, tiempo.asaltoId);
   const rival = asalto ? await obtener(ALMACENES.tiradores, asalto.rivalId) : null;
 
-  // De qué color eras tú. Sin esto no se puede etiquetar: un tocado a favor no
-  // significa nada si no se sabe qué lámpara es la tuya, y además es lo que
-  // decide de qué color se pinta cada marca.
+  // Tu lámpara, que sale del lado en que estabas. Sin esto no se puede
+  // etiquetar: un tocado a favor no significa nada si no se sabe qué lámpara
+  // es la tuya, y además es lo que decide de qué color se pinta cada marca.
   let miColor = await colorDelAsalto(asalto);
 
   let intercambios = await listarPor(ALMACENES.intercambios, 'por-tiempo', tiempo.id);
@@ -329,7 +331,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   // ------------------------------------------------------------------
 
   /**
-   * Tu color en el asalto: se enseña si se sabe y se pide si no.
+   * Tu lado de la pista: se enseña si se sabe y se pide si no.
    *
    * No se pregunta al crear el asalto porque entonces no hay forma de
    * acordarse; se pregunta aquí, con el vídeo delante, que es donde se ve.
@@ -338,9 +340,11 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   function pintarColor() {
     if (miColor && !cambiandoColor) {
       rellenar(preguntaColor, crear('div', { class: 'marcador-fila' }, [
-        crear('span', { class: 'etiqueta-campo', texto: 'Tu color' }),
+        crear('span', { class: 'etiqueta-campo', texto: 'Tu lado' }),
+        // El punto va del color de tu lámpara aunque lo que se lea sea el
+        // lado: es el mismo color que llevan tus marcas y tus rótulos.
         crear('span', { class: 'punto-resultado punto-' + miColor }),
-        crear('span', { texto: etiquetaDe(COLORES_LAMPARA, miColor) }),
+        crear('span', { texto: etiquetaDe(LADOS_DE_LA_PISTA, ladoDelColor(miColor)) }),
         crear('button', {
           type: 'button', class: 'boton-volver', texto: 'Cambiar',
           onclick: () => { cambiandoColor = true; pintarColor(); },
@@ -355,10 +359,12 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
         texto: miColor
           ? 'Vale para todos los tiempos de este asalto. Al cambiarlo, las marcas ' +
             'cambian de color pero las etiquetas siguen diciendo lo mismo.'
-          : 'Antes de etiquetar hay que decir de qué color eras tú en este asalto. ' +
-            'Sin eso no se sabe de qué lámpara fue cada tocado.',
+          : 'Antes de etiquetar hay que decir de qué lado de la pista estabas, ' +
+            'según se te ve en el vídeo. De ahí sale tu lámpara —la izquierda es ' +
+            'la roja y la derecha la verde—, y sin ella no se sabe de quién fue ' +
+            'cada tocado.',
       }),
-      desplegable(PREGUNTA_COLOR, COLORES_LAMPARA, miColor, elegirColor,
+      desplegable(PREGUNTA_LADO, LADOS_DE_LA_PISTA, ladoDelColor(miColor), elegirLado,
                   { vacio: '— Elige —' }).bloque,
       miColor ? crear('button', {
         type: 'button', class: 'boton boton-compacto', texto: 'Dejarlo como está',
@@ -367,7 +373,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     ]);
   }
 
-  async function elegirColor(valor) {
+  async function elegirLado(lado) {
+    const valor = colorDelLado(lado);
     if (!valor) return;
     await fijarColorDelAsalto(asalto, valor);
     miColor = valor;
@@ -745,7 +752,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       }) : crear('p', {
         class: 'ayuda explicacion',
         texto: 'Antes hay que calibrar: enmarcar el marcador en el vídeo y decir ' +
-               'de qué color eres. Sin eso, Teseo no sabe dónde mirar.',
+               'de qué lado estabas. Sin eso, Teseo no sabe dónde mirar.',
       }),
 
       crear('button', {
