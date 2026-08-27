@@ -23,6 +23,11 @@
      lámpara es la roja, tus tocados se pintan en rojo. */
   --lampara-verde: #35c46b;
   --lampara-roja: #e05a4a;
+
+  /* Para el grupo del tocado en la ficha de un intercambio. No es de nadie
+     —ni de una lámpara ni del azul de la aplicación—, que es justo lo que
+     tiene que decir: eso pasó, sin dueño. */
+  --morado: #a97bff;
   --sin-etiquetar: #4c5c70;
   --radio: 12px;
 
@@ -731,12 +736,20 @@ video::-webkit-media-controls-panel {
   border-top: 0;
 }
 
+/* Cada grupo se tiñe entero de su color: el título, los rótulos de sus
+   campos y las líneas de las que cuelgan los anidados. Con cuatro bloques en
+   la misma ventana, el color es lo que dice de un golpe dónde estás. El azul
+   de la aplicación es el de partida, y cada grupo lo cambia por el suyo. */
+.grupo-ficha { --color-grupo: var(--acento); }
+
 .titulo-grupo-ficha {
   margin: 0 0 0.75rem;
-  color: var(--acento);
+  color: var(--color-grupo);
   font-size: 1.05rem;
   font-weight: 700;
 }
+
+.grupo-ficha .etiqueta-campo { color: var(--color-grupo); }
 
 /* Dentro de un grupo los campos van más juntos: lo que separa ahora es el
    grupo, no el aire entre campos. */
@@ -750,7 +763,11 @@ video::-webkit-media-controls-panel {
 .anidado-1,
 .anidado-2 {
   padding-left: 0.75rem;
+  /* La línea, del color del grupo pero apagada: tiene que verse de dónde
+     cuelga el campo sin competir con el rótulo. El navegador que no entienda
+     color-mix se queda con la línea gris de la primera regla. */
   border-left: 2px solid var(--borde);
+  border-left-color: color-mix(in srgb, var(--color-grupo) 55%, transparent);
 }
 
 .anidado-1 { margin-left: 0.5rem; }

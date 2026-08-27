@@ -1157,8 +1157,14 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
    * metido hacia dentro, colgando de una línea. Así se ve de un vistazo qué
    * pregunta viene de qué respuesta.
    */
-  function grupoDeFicha(titulo, hijos) {
-    return crear('div', { class: 'grupo-ficha' }, [
+  function grupoDeFicha(titulo, hijos, color) {
+    return crear('div', {
+      class: 'grupo-ficha',
+      // El color tiñe el título, los rótulos de dentro y las líneas de las
+      // que cuelgan los campos anidados: es lo que hace que un grupo se lea
+      // como un bloque y no como cinco desplegables sueltos.
+      style: color ? `--color-grupo: ${color}` : null,
+    }, [
       crear('h4', { class: 'titulo-grupo-ficha', texto: titulo }),
       ...hijos,
     ]);
@@ -1263,12 +1269,23 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     const huboTocado = RESULTADOS_CON_TOCADO.includes(activo.resultado);
     const esDoble = activo.resultado === 'doble';
 
+    // Sin color elegido se supone verde, que es lo que hace el resto de la
+    // aplicación desde antes de que se preguntara.
+    const lamparaPropia = miColor === 'rojo' ? 'roja' : 'verde';
+    const lamparaDelRival = lamparaPropia === 'roja' ? 'verde' : 'roja';
+
     rellenar(ficha, [
       crear('div', { class: 'cabecera-editor' }, [
         crear('span', { class: 'instante', texto: formatearSegundos(activo.instante) }),
         crear('span', { class: 'ayuda', texto: `${activo.instante.toFixed(2)} s` }),
       ]),
 
+      // Cada grupo con su color. El tocado en morado, la pista en el azul de
+      // la aplicación, y las dos acciones con el color de la LÁMPARA de cada
+      // uno: la tuya con la tuya y la suya con la contraria. Es el mismo
+      // idioma de colores que las marcas de la línea de tiempo y los puntos
+      // de la tabla, así que de un vistazo se sabe de quién habla cada
+      // bloque sin leer el título.
       grupoDeFicha('Tocado', [
         campoDeFicha('resultado', 'Resultado', RESULTADOS, activo.resultado,
           (valor) => cambiar('resultado', valor)).bloque,
@@ -1292,7 +1309,7 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
           ? anidado(campoDeFicha('zonaRival', 'Zona tocada al rival', ZONAS_TOCADAS,
               activo.zonaRival, (valor) => cambiar('zonaRival', valor)).bloque)
           : null,
-      ]),
+      ], 'var(--morado)'),
 
       // El sitio de la pista es del intercambio entero, no del tocado de uno
       // ni del otro, así que va en su propio grupo.
@@ -1303,8 +1320,10 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
           ])
         : null,
 
-      grupoDeFicha('Acción final propia', camposDeLaAccion('accionPropia')),
-      grupoDeFicha('Acción final del rival', camposDeLaAccion('accionRival')),
+      grupoDeFicha('Acción final propia', camposDeLaAccion('accionPropia'),
+                   `var(--lampara-${lamparaPropia})`),
+      grupoDeFicha('Acción final del rival', camposDeLaAccion('accionRival'),
+                   `var(--lampara-${lamparaDelRival})`),
 
       crear('button', {
         type: 'button', class: 'boton boton-principal', texto: 'Listo',

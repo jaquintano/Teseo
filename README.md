@@ -90,6 +90,13 @@ tres ramas y sólo se pregunta lo que cuelga de ella:
 - **Defensiva** → distancia, parada o sin reacción.
 - **Contraataque** → con qué ataque simple se cerró.
 
+**Cada grupo va de un color**, y el color tiñe el título, los rótulos de sus
+campos y las líneas de las que cuelgan los anidados: el tocado en morado —no
+es de nadie—, la pista en el azul de la aplicación, y las dos acciones con el
+color de la LÁMPARA de cada uno, la tuya con la tuya y la del rival con la
+contraria. Es el mismo idioma de colores que las marcas de la línea de tiempo,
+así que se sabe de quién habla cada bloque sin leer el título.
+
 La ficha **encadena sola**: al contestar algo que destapa un campo nuevo,
 salta a él y le abre la lista. Elegir "Ofensiva" lleva a "Acción", y elegir
 allí un ataque simple lleva a su remate. Etiquetar un asalto son decenas de
