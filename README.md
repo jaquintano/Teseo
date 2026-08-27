@@ -90,6 +90,15 @@ tres ramas y sólo se pregunta lo que cuelga de ella:
 - **Defensiva** → distancia, parada o sin reacción.
 - **Contraataque** → con qué ataque simple se cerró.
 
+La ficha **encadena sola**: al contestar algo que destapa un campo nuevo,
+salta a él y le abre la lista. Elegir "Ofensiva" lleva a "Acción", y elegir
+allí un ataque simple lleva a su remate. Etiquetar un asalto son decenas de
+intercambios, y buscar a mano el siguiente desplegable era la mitad del
+trabajo. Se apoya en `showPicker()`, que pide venir de un toque del usuario:
+por eso la ficha se repinta ANTES de guardar en la base y no después, para no
+perder ese permiso por el camino. Donde el navegador no lo permita, el campo
+se queda al menos enfocado.
+
 De la **frase de armas** no se apunta nada: sólo el último movimiento de cada
 uno. Es el primer nivel a propósito. Preguntar la conversación de hierros
 entera es largo, se acaba dejando en blanco, y un campo en blanco es peor

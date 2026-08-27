@@ -1053,6 +1053,42 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     ficha.showModal();
   }
 
+  /**
+   * Los campos que hay ahora mismo en la ficha, por orden.
+   *
+   * Sirve para comparar antes y después de repintar y saber cuál ha salido
+   * nuevo. Así el salto automático no depende de una lista de casos escrita a
+   * mano: si mañana un campo abre otro, funciona solo.
+   */
+  function camposDeLaFicha() {
+    return [...ficha.querySelectorAll('select[data-campo]')];
+  }
+
+  /**
+   * Tras repintar, deja el dedo donde toca seguir.
+   *
+   * Si la respuesta ha destapado un campo nuevo, salta a él y le abre la
+   * lista: etiquetar un asalto son decenas de intercambios, y obligar a
+   * buscar y tocar el siguiente desplegable cada vez es la mitad del trabajo.
+   * Si no ha salido nada nuevo, se vuelve al mismo campo, que si no el
+   * repintado deja la ficha sin foco.
+   *
+   * showPicker() es lo que abre la lista sola. Pide que venga de un toque del
+   * usuario y no está en todos los navegadores, así que si falla se queda en
+   * el foco, que ya es la mitad del camino.
+   */
+  function seguirEn(campoTocado, habia) {
+    const antes = new Set(habia);
+    const campos = camposDeLaFicha();
+    const nuevo = campos.find((s) => !antes.has(s.dataset.campo));
+    const donde = nuevo || campos.find((s) => s.dataset.campo === campoTocado);
+    if (!donde) return;
+
+    donde.focus();
+    if (!nuevo) return;
+    try { donde.showPicker(); } catch { /* el navegador no deja: queda enfocado */ }
+  }
+
   /** Guarda un campo suelto del intercambio. */
   async function cambiar(campo, valor) {
     activo[campo] = valor;
@@ -1066,11 +1102,18 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       if (valor !== 'favor' && valor !== 'doble') activo.zonaRival = null;
     }
 
+    // Se repinta ANTES de guardar, y no después, para no perder por el camino
+    // el permiso que da el toque del usuario: sin él, el navegador no deja
+    // abrir la lista del campo nuevo. Lo que se pinta sale de `activo`, que ya
+    // está al día.
+    if (campo === 'resultado') {
+      const habia = camposDeLaFicha().map((s) => s.dataset.campo);
+      pintarEditor();
+      seguirEn(campo, habia);
+    }
+
     await guardar(ALMACENES.intercambios, activo);
     pintarIntercambios();
-
-    // Al cambiar el resultado aparecen o desaparecen las zonas.
-    if (campo === 'resultado') pintarEditor();
   }
 
   /**
@@ -1097,8 +1140,12 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     }
 
     activo[cual] = accion;
-    await guardar(ALMACENES.intercambios, activo);
+
+    const habia = camposDeLaFicha().map((s) => s.dataset.campo);
     pintarEditor();
+    seguirEn(`${cual}.${campo}`, habia);
+
+    await guardar(ALMACENES.intercambios, activo);
   }
 
   /**
@@ -1122,11 +1169,24 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
    * título del grupo ya dice lo que es, y repetirlo debajo es decir dos veces
    * lo mismo. El rótulo sigue estando para quien navegue a oídas.
    */
-  function desplegableSuelto(etiqueta, catalogo, valor, alElegir) {
-    const { entrada } = desplegable(etiqueta, catalogo, valor, alElegir,
-                                    { vacio: '— Sin indicar —' });
+  function desplegableSuelto(campo, etiqueta, catalogo, valor, alElegir) {
+    const { entrada } = campoDeFicha(campo, etiqueta, catalogo, valor, alElegir);
     entrada.setAttribute('aria-label', etiqueta);
     return entrada;
+  }
+
+  /**
+   * Un desplegable de la ficha, con su nombre puesto.
+   *
+   * El nombre es lo que permite reconocerlo después de repintar: la ficha se
+   * rehace entera en cada respuesta, así que los elementos de antes ya no son
+   * los mismos.
+   */
+  function campoDeFicha(campo, etiqueta, catalogo, valor, alElegir) {
+    const hecho = desplegable(etiqueta, catalogo, valor, alElegir,
+                              { vacio: '— Sin indicar —' });
+    hecho.entrada.dataset.campo = campo;
+    return hecho;
   }
 
   /** Mete un campo hacia dentro: cuelga del que tiene encima. */
@@ -1146,7 +1206,6 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
    */
   function camposDeLaAccion(cual) {
     const accion = activo[cual] || accionVacia();
-    const sinIndicar = { vacio: '— Sin indicar —' };
 
     // El contraataque acaba en un ataque simple y admite los cuatro remates:
     // ahí la variante cuelga del propio tipo, no de una acción intermedia.
@@ -1154,31 +1213,35 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     const variantes = esContraataque ? VARIANTES_DE_ATAQUE : variantesDe(accion.accion);
 
     return [
-      desplegable('Tipo', TIPOS_DE_ACCION, accion.tipo,
-        (valor) => cambiarAccion(cual, 'tipo', valor), sinIndicar).bloque,
+      campoDeFicha(`${cual}.tipo`, 'Tipo', TIPOS_DE_ACCION, accion.tipo,
+        (valor) => cambiarAccion(cual, 'tipo', valor)).bloque,
 
       accion.tipo === 'ofensiva'
-        ? anidado(desplegable('Acción', ACCIONES_OFENSIVAS, accion.accion,
-            (valor) => cambiarAccion(cual, 'accion', valor), sinIndicar).bloque)
+        ? anidado(campoDeFicha(`${cual}.accion`,
+            'Acción', ACCIONES_OFENSIVAS, accion.accion,
+            (valor) => cambiarAccion(cual, 'accion', valor)).bloque)
         : null,
 
       accion.tipo === 'defensiva'
-        ? anidado(desplegable('Acción', ACCIONES_DEFENSIVAS, accion.accion,
-            (valor) => cambiarAccion(cual, 'accion', valor), sinIndicar).bloque)
+        ? anidado(campoDeFicha(`${cual}.accion`,
+            'Acción', ACCIONES_DEFENSIVAS, accion.accion,
+            (valor) => cambiarAccion(cual, 'accion', valor)).bloque)
         : null,
 
       // En una ofensiva el remate cuelga de la acción, así que va un escalón
       // más adentro; en un contraataque cuelga del tipo y va al mismo nivel
       // que iría la acción.
       variantes.length > 0
-        ? anidado(desplegable('Ataque simple', variantes, accion.variante,
-            (valor) => cambiarAccion(cual, 'variante', valor), sinIndicar).bloque,
+        ? anidado(campoDeFicha(`${cual}.variante`,
+            'Ataque simple', variantes, accion.variante,
+            (valor) => cambiarAccion(cual, 'variante', valor)).bloque,
             esContraataque ? 1 : 2)
         : null,
 
       accion.tipo === 'ofensiva'
-        ? anidado(desplegable('Línea', LINEAS, accion.linea,
-            (valor) => cambiarAccion(cual, 'linea', valor), sinIndicar).bloque)
+        ? anidado(campoDeFicha(`${cual}.linea`,
+            'Línea', LINEAS, accion.linea,
+            (valor) => cambiarAccion(cual, 'linea', valor)).bloque)
         : null,
     ];
   }
@@ -1199,7 +1262,6 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
 
     const huboTocado = RESULTADOS_CON_TOCADO.includes(activo.resultado);
     const esDoble = activo.resultado === 'doble';
-    const sinIndicar = { vacio: '— Sin indicar —' };
 
     rellenar(ficha, [
       crear('div', { class: 'cabecera-editor' }, [
@@ -1208,27 +1270,27 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       ]),
 
       grupoDeFicha('Tocado', [
-        desplegable('Resultado', RESULTADOS, activo.resultado,
-          (valor) => cambiar('resultado', valor), sinIndicar).bloque,
+        campoDeFicha('resultado', 'Resultado', RESULTADOS, activo.resultado,
+          (valor) => cambiar('resultado', valor)).bloque,
 
         activo.resultado === 'favor'
-          ? anidado(desplegable('Zona', ZONAS_TOCADAS, activo.zonaRival,
-              (valor) => cambiar('zonaRival', valor), sinIndicar).bloque)
+          ? anidado(campoDeFicha('zonaRival', 'Zona', ZONAS_TOCADAS, activo.zonaRival,
+              (valor) => cambiar('zonaRival', valor)).bloque)
           : null,
 
         activo.resultado === 'contra'
-          ? anidado(desplegable('Zona', ZONAS_TOCADAS, activo.zonaPropia,
-              (valor) => cambiar('zonaPropia', valor), sinIndicar).bloque)
+          ? anidado(campoDeFicha('zonaPropia', 'Zona', ZONAS_TOCADAS, activo.zonaPropia,
+              (valor) => cambiar('zonaPropia', valor)).bloque)
           : null,
 
         esDoble
-          ? anidado(desplegable('Zona tocada propia', ZONAS_TOCADAS, activo.zonaPropia,
-              (valor) => cambiar('zonaPropia', valor), sinIndicar).bloque)
+          ? anidado(campoDeFicha('zonaPropia', 'Zona tocada propia', ZONAS_TOCADAS,
+              activo.zonaPropia, (valor) => cambiar('zonaPropia', valor)).bloque)
           : null,
 
         esDoble
-          ? anidado(desplegable('Zona tocada al rival', ZONAS_TOCADAS, activo.zonaRival,
-              (valor) => cambiar('zonaRival', valor), sinIndicar).bloque)
+          ? anidado(campoDeFicha('zonaRival', 'Zona tocada al rival', ZONAS_TOCADAS,
+              activo.zonaRival, (valor) => cambiar('zonaRival', valor)).bloque)
           : null,
       ]),
 
@@ -1236,8 +1298,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       // ni del otro, así que va en su propio grupo.
       huboTocado
         ? grupoDeFicha('Zona de la pista', [
-            desplegableSuelto('Zona de la pista', ZONAS_PISTA, activo.zonaPista,
-              (valor) => cambiar('zonaPista', valor)),
+            desplegableSuelto('zonaPista', 'Zona de la pista', ZONAS_PISTA,
+              activo.zonaPista, (valor) => cambiar('zonaPista', valor)),
           ])
         : null,
 
