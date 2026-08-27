@@ -5,10 +5,10 @@
 
 import {
   anadir, crear, rellenar, cabecera, ir, campo, campoLargo, bloque, desplegable,
-  deslizador, formatearFecha, formatearBytes, formatearSegundos,
+  formatearFecha, formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  FASES, PRIORIDADES, MANOS, EMPUNADURAS, ESTATURAS, etiquetaDe, nombreCompleto,
+  FASES, PRIORIDADES, MANOS, EMPUNADURAS, etiquetaDe, nombreCompleto,
   coincide, opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
@@ -18,9 +18,6 @@ import {
   guardarVideo, borrarAsalto, borrarTiempo, comprobarLegible,
 } from '../db.js';
 
-// La fatiga se apunta con una barra del 1 al 5, y una barra siempre marca
-// algo: si nadie la toca, queda en el punto medio.
-const FATIGA_POR_DEFECTO = 3;
 
 // Dentro de una competición, el orden de las fases ES el orden del día: la
 // poule es lo primero que se tira y la final lo último. Para enseñar lo más
@@ -482,9 +479,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     texto: 'Falta indicar con qué mano tira el rival.',
   });
 
-  const fatiga = deslizador('Fatiga percibida', {
-    min: 1, max: 5, valor: asalto.fatiga || FATIGA_POR_DEFECTO,
-  });
 
   // El resultado del asalto. Se pregunta aparte de las etiquetas porque el
   // vídeo puede no tenerlo todo: lo que se apunta aquí es cómo acabó de
@@ -622,7 +616,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
     bloqueResultado,
     desplegable('Prioridad', PRIORIDADES, prioridad, (valor) => { prioridad = valor; },
                 { vacio: '— No hubo —' }).bloque,
-    fatiga.bloque,
     nota.bloque,
     aviso,
 
@@ -660,7 +653,6 @@ export async function pantallaAsaltoNuevo(contenedor, datos = {}) {
           tanteoFinal: leerResultado(),
           prioridad,
           // El club no se pregunta aquí: ya está en la ficha del rival.
-          fatiga: Number(fatiga.entrada.value),
           nota: nota.entrada.value.trim(),
         };
 
@@ -696,7 +688,6 @@ export async function pantallaAsalto(contenedor, datos = {}) {
     formatearFecha(fechaDeAsalto(asalto, competicion)),
     asalto.numero ? `Asalto ${asalto.numero}` : '',
     etiquetaDe(FASES, asalto.fase),
-    asalto.fatiga ? `Fatiga ${asalto.fatiga}/5` : '',
   ].filter(Boolean).join(' · ');
 
   const listaTiempos = crear('div', { class: 'lista' });
@@ -796,7 +787,6 @@ function rivalEnUnaLinea(rival) {
     etiquetaDe(MANOS, rival.mano, genero),
     rival.empunadura ? etiquetaDe(EMPUNADURAS, rival.empunadura) : null,
     rival.club,
-    etiquetaDe(ESTATURAS, rival.estatura, genero),
   ].filter(Boolean);
   if (partes.length === 0) return null;
   return crear('p', { class: 'ayuda', texto: partes.join(' · ') });

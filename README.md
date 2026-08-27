@@ -44,8 +44,8 @@ asalto ── un combate contra un rival, con su contexto
 ```
 
 Del **asalto** se guardan el rival, la competición, la fase (poule, tablón de
-32, final…), el resultado final, de quién era la prioridad si la hubo, la
-fatiga percibida del 1 al 5 y una nota.
+32, final…), el resultado final, de quién era la prioridad si la hubo y una
+nota.
 
 **La competición no es obligatoria.** La federación tarda en publicar su
 calendario, y dar el torneo de alta a mano para salir del paso acaba en
@@ -67,11 +67,33 @@ y se puede corregir a mano porque el vídeo tiene agujeros: puede no haberse
 grabado el primer tiempo, o cortarse antes de acabar y perderse tocados. Ver
 "El tanteo", más abajo.
 
-Un intercambio tiene un instante en segundos y tres capas —acción ofensiva,
-acción defensiva y resultado—, todas opcionales. **Las capas describen lo que
-hiciste tú**, no lo que hizo el rival. Cuando el resultado es un tocado (a
-favor, en contra o doble) se pueden añadir además la zona del cuerpo y la
-zona de la pista.
+Un intercambio tiene un instante en segundos, un **resultado** (a favor, en
+contra, doble o nulo), **dónde cayó el tocado** y **cómo lo acabó cada uno**.
+Todo es opcional menos el instante: un intercambio a medio etiquetar es
+normal y las cuentas lo aguantan.
+
+Las zonas dependen del resultado, y sólo se pregunta la que significa algo:
+en un tocado a favor, dónde le tocaste (`zonaRival`); en uno en contra,
+dónde te tocaron (`zonaPropia`); en un doble, las dos. Si el resultado
+cambia y una zona deja de tener sentido, se borra: un dato que ya no se ve
+en pantalla pero sigue en la base ensucia las cuentas y nadie puede
+corregirlo. Con cualquier tocado se puede añadir además la zona de la pista.
+
+La **acción final** se guarda de los dos, `accionPropia` y `accionRival`, con
+la misma estructura: `{ tipo, accion, variante, linea }`. El tipo abre una de
+tres ramas y sólo se pregunta lo que cuelga de ella:
+
+- **Ofensiva** → qué acción (ataque simple, toma de hierro, finta, pase,
+  batimiento, ligamento, cuerpo a cuerpo, remise o reprise), con qué se
+  remató el ataque simple —y eso sólo si esa acción lo admite: la flecha no
+  sale de un ligamento, ni el coupé de una finta— y en qué línea acabó.
+- **Defensiva** → distancia, parada o sin reacción.
+- **Contraataque** → nada más.
+
+De la **frase de armas** no se apunta nada: sólo el último movimiento de cada
+uno. Es el primer nivel a propósito. Preguntar la conversación de hierros
+entera es largo, se acaba dejando en blanco, y un campo en blanco es peor
+que un campo que no existe.
 
 ## Estructura
 
@@ -185,8 +207,8 @@ pulsan a todas horas son los otros dos.
 
 Crean el intercambio con su resultado ya puesto **sin parar el vídeo y sin
 abrir la ficha**: al repasar un asalto ya sabes cómo acabó cada intercambio y
-no quieres nada más. Las tres capas se rellenan luego con el lápiz de su fila,
-o no se rellenan nunca. Llevan el mismo gris que los saltos finos porque son de
+no quieres nada más. Lo demás se rellena luego con el lápiz de su fila, o no
+se rellena nunca. Llevan el mismo gris que los saltos finos porque son de
 la misma familia —se tocan y pasa algo en el vídeo, sin abrir nada—, y el doble
 va en ámbar, que es el único que no es de nadie.
 
@@ -598,8 +620,6 @@ Reglas de la importación:
 - **El género sale del ranking**, y sólo se ofrecen los de tu mismo género:
   en esgrima no hay asaltos entre hombres y mujeres, así que importar el
   otro sería llenar la lista de gente contra la que nunca vas a tirar.
-- **La estatura no se pide en centímetros**, que no hay forma de saberlos,
-  sino comparada contigo: similar, más alta o más baja.
 - **El club viene como código** (`ECC-BU`, `CETC-M`), que es lo que publica la
   federación. Se puede corregir a mano.
 
@@ -696,11 +716,14 @@ Queda también un filtro por número de asalto de la sesión, que sólo aparece
 si hay asaltos viejos que lo tengan: ese dato dejó de preguntarse.
 
 **Ofensivas.** Eficacia por acción (intentos frente a tocados conseguidos),
-iniciativa (cuándo atacaste frente a cuándo defendiste), y el reparto de tus
-tocados por tramo del asalto y por zona de la pista.
+iniciativa (con qué acabas los intercambios: atacando, defendiendo o
+contraatacando), y el reparto de tus tocados por tramo del asalto, por zona
+del rival y por zona de la pista.
 
-**Defensivas.** Eficacia de la parada-respuesta, y los tocados recibidos por
-zona del cuerpo y por zona de la pista.
+**Defensivas.** Eficacia de la parada-respuesta, **con qué te tocan** —la
+acción con la que el rival acabó cada tocado en contra, que es la pregunta
+que no se podía contestar hasta que se apuntó también su acción— y los
+tocados recibidos por zona propia y por zona de la pista.
 
 **Dobles.** Sobre el total de tocados, no sobre todos los intercambios.
 
@@ -718,7 +741,7 @@ Dos criterios que conviene conocer para leerlas bien:
 1. ✅ Compatibilidad: abrir y reproducir vídeo, medir almacenamiento.
 2. ✅ Instalable en la pantalla de inicio y uso sin cobertura.
 3. ✅ Perfil, rivales, asaltos y tiempos con su vídeo.
-4. ✅ Etiquetado: línea de tiempo con marcas y las tres capas.
+4. ✅ Etiquetado: línea de tiempo con marcas y la ficha del intercambio.
 5. ✅ Estadísticas y filtros.
 
 Desde entonces el trabajo va a petición, versión a versión: importación desde

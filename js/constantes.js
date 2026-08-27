@@ -8,19 +8,84 @@
 // una `etiqueta`, que es lo que se ve en pantalla. Nunca cambies un `id` de
 // algo ya guardado: las etiquetas viejas dejarían de encontrarse.
 
+// La acción final de un intercambio
+// ---------------------------------
+// De cada intercambio se apunta cómo lo acabó cada uno: la acción final
+// propia y la del rival, con la misma estructura las dos. De la frase de
+// armas —lo que pasó ANTES del último movimiento— no se apunta nada: en un
+// primer nivel, preguntar toda la conversación de hierros es largo y se acaba
+// dejando en blanco, que es peor que no preguntarlo.
+//
+// El árbol tiene tres ramas y sólo se pregunta lo que cuelga de la elegida:
+//
+//   Ofensiva      → qué acción, con qué se remató y en qué línea acabó
+//   Defensiva     → qué hizo: distancia, parada o nada
+//   Contraataque  → nada más
+
+export const TIPOS_DE_ACCION = [
+  { id: 'ofensiva', etiqueta: 'Ofensiva' },
+  { id: 'defensiva', etiqueta: 'Defensiva' },
+  { id: 'contraataque', etiqueta: 'Contraataque + ataque simple' },
+];
+
+// Casi todas las ofensivas rematan en un ataque simple, y de ése se pregunta
+// cómo se llegó. La lista de variantes dice cuáles caben en cada una: la
+// flecha no sale de una toma de hierro ni de un ligamento, y el coupé sólo
+// tiene sentido en el ataque simple a secas. Las tres últimas no rematan en
+// ataque simple, así que no preguntan nada.
 export const ACCIONES_OFENSIVAS = [
-  { id: 'fondo', etiqueta: 'Fondo' },
+  { id: 'ataque-simple', etiqueta: 'Ataque simple',
+    variantes: ['flecha', 'fondo', 'coupe', 'directo'] },
+  { id: 'toma-de-hierro', etiqueta: 'Toma de hierro + ataque simple',
+    variantes: ['fondo', 'directo'] },
+  { id: 'finta', etiqueta: 'Finta + ataque simple',
+    variantes: ['flecha', 'fondo', 'directo'] },
+  { id: 'pase', etiqueta: 'Pase + ataque simple',
+    variantes: ['flecha', 'fondo', 'directo'] },
+  { id: 'batimiento', etiqueta: 'Batimiento + ataque simple',
+    variantes: ['flecha', 'fondo', 'directo'] },
+  { id: 'ligamento', etiqueta: 'Ligamento + ataque simple',
+    variantes: ['fondo', 'directo'] },
+  { id: 'cuerpo-a-cuerpo', etiqueta: 'Cuerpo a cuerpo', variantes: [] },
+  { id: 'remise', etiqueta: 'Remise', variantes: [] },
+  { id: 'reprise', etiqueta: 'Reprise', variantes: [] },
+];
+
+export const VARIANTES_DE_ATAQUE = [
   { id: 'flecha', etiqueta: 'Flecha' },
-  { id: 'ataque-brazo', etiqueta: 'Ataque al brazo' },
+  { id: 'fondo', etiqueta: 'Fondo' },
   { id: 'coupe', etiqueta: 'Coupé' },
-  { id: 'punta-linea', etiqueta: 'Punta en línea' },
+  { id: 'directo', etiqueta: 'Directo' },
+];
+
+/** Las variantes que admite una acción ofensiva. Vacío si no admite ninguna. */
+export function variantesDe(accionId) {
+  const accion = ACCIONES_OFENSIVAS.find((a) => a.id === accionId);
+  if (!accion) return [];
+  return VARIANTES_DE_ATAQUE.filter((v) => accion.variantes.includes(v.id));
+}
+
+// En qué línea acabó la acción. "Sin info" es una respuesta de verdad y no un
+// hueco: muchas veces el vídeo no deja verlo, y eso no es lo mismo que
+// dejarlo sin contestar.
+export const LINEAS = [
+  { id: 'sin-info', etiqueta: 'Sin info' },
+  { id: 'cuarta', etiqueta: '4ª' },
+  { id: 'sexta', etiqueta: '6ª' },
+  { id: 'septima', etiqueta: '7ª' },
+  { id: 'octava', etiqueta: '8ª' },
 ];
 
 export const ACCIONES_DEFENSIVAS = [
+  { id: 'distancia', etiqueta: 'Distancia' },
   { id: 'parada', etiqueta: 'Parada' },
-  { id: 'esquiva', etiqueta: 'Esquiva / retirada' },
-  { id: 'contraataque', etiqueta: 'Contraataque' },
+  { id: 'sin-reaccion', etiqueta: 'Sin reacción' },
 ];
+
+/** Una acción final en blanco, que es como nacen los intercambios. */
+export function accionVacia() {
+  return { tipo: null, accion: null, variante: null, linea: null };
+}
 
 // Cómo iba el marcador al empezar un intercambio. No se juega igual ganando
 // que perdiendo, así que las estadísticas se pueden mirar por separado.
@@ -82,12 +147,17 @@ export function colorDeLaLampara(resultado, miColor) {
   return resultado || 'vacio';
 }
 
-export const ZONAS_CUERPO = [
+// Dónde cayó el tocado. Se pregunta de los dos lados: en un tocado a favor,
+// dónde tocaste tú; en uno en contra, dónde te tocaron; en un doble, las dos
+// cosas.
+export const ZONAS_TOCADAS = [
+  { id: 'careta', etiqueta: 'Careta' },
   { id: 'mano', etiqueta: 'Mano' },
   { id: 'brazo', etiqueta: 'Brazo' },
   { id: 'torso', etiqueta: 'Torso' },
   { id: 'pierna', etiqueta: 'Pierna' },
-  { id: 'mascara', etiqueta: 'Máscara' },
+  { id: 'pie', etiqueta: 'Pie' },
+  { id: 'espalda', etiqueta: 'Espalda' },
 ];
 
 export const ZONAS_PISTA = [
@@ -117,16 +187,6 @@ export const EMPUNADURAS = [
   { id: 'pistola', etiqueta: 'Pistola' },
   { id: 'desconocida', etiqueta: 'Desconocida' },
 ];
-
-// La altura del rival no se puede saber con exactitud, así que se compara a
-// ojo con la propia.
-export const ESTATURAS = [
-  { id: 'similar', etiqueta: 'Altura similar' },
-  { id: 'mas-alta', etiqueta: 'Más alto/a', M: 'Más alto', F: 'Más alta' },
-  { id: 'mas-baja', etiqueta: 'Más bajo/a', M: 'Más bajo', F: 'Más baja' },
-];
-
-export const ESTATURA_POR_DEFECTO = 'similar';
 
 export const GENEROS = [
   { id: 'M', etiqueta: 'Masculino' },

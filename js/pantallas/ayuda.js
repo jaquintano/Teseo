@@ -43,9 +43,8 @@ export async function pantallaAyuda(contenedor) {
       '3. Añade el vídeo. Si el asalto tuvo varios tiempos, añade uno por tiempo.',
       '4. Abre el vídeo y ve marcando lo que pasa en cada intercambio.',
       '5. Cuando quieras, entra en Estadísticas y mira qué te sale.',
-      'Del asalto se apunta también la fase —poule, tablón de 32, final…—, cómo ' +
-      'acabó y la fatiga que sentiste, con una barra del 1 al 5 que va del azul ' +
-      'al rojo.',
+      'Del asalto se apunta también la fase —poule, tablón de 32, final…— y ' +
+      'cómo acabó.',
       'La competición puedes dejarla en blanco. Si el torneo todavía no está en ' +
       'el calendario de la federación, no lo crees a mano para salir del paso: ' +
       'espera a que lo publiquen, tráelo y asígnalo luego con "Editar datos del ' +
@@ -97,8 +96,17 @@ export async function pantallaAyuda(contenedor) {
       'Reproduce el vídeo y pausa justo donde pasa algo. Con los botones de ' +
       '−0,1 s y +0,1 s afinas hasta el momento exacto.',
       'Pulsa "Nuevo intercambio" y se abre su ficha. Lo primero es cómo ' +
-      'acabó, que es lo que siempre se sabe; debajo, lo que hiciste TÚ, no el ' +
-      'rival: tu acción ofensiva si atacaste, la defensiva si defendiste.',
+      'acabó, que es lo que siempre se sabe. Según lo que contestes ahí, la ' +
+      'ficha te pregunta dónde cayó el tocado: en uno a favor, dónde le tocaste ' +
+      'tú; en uno en contra, dónde te tocaron; en un doble, las dos cosas.',
+      'Debajo van las dos acciones finales, la tuya y la del rival, con la misma ' +
+      'estructura. Se empieza por el tipo —ofensiva, defensiva o contraataque— y ' +
+      'sólo aparece lo que cuelgue de esa rama: de una ofensiva, qué acción, con ' +
+      'qué la remataste y en qué línea acabó; de una defensiva, si fue distancia, ' +
+      'parada o ninguna reacción; de un contraataque, nada más.',
+      'De la frase de armas no se apunta nada: sólo cómo acabó el intercambio ' +
+      'cada uno. Es lo que se puede contestar de un vídeo sin que etiquetar un ' +
+      'asalto se haga eterno.',
       'No hace falta rellenarlo todo. Si sólo sabes que fue tocado en contra, ' +
       'marca eso y dale a "Listo".',
       'Todo se guarda solo. No hay botón de guardar que se pueda olvidar.'),

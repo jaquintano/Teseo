@@ -30,7 +30,7 @@ export const AJUSTES = [
     etiqueta: 'Segundos antes del tocado',
     ayuda: 'Cuánta carrerilla se ve al tocar un intercambio en la tabla o en la ' +
            'línea de tiempo. Sirve para entender de dónde viene la acción.',
-    fabrica: 2,
+    fabrica: 4,
     min: 0,
     max: 15,
     paso: 0.5,

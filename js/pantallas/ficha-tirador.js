@@ -7,14 +7,12 @@
 //     hay asaltos entre hombres y mujeres, así que tus rivales son siempre
 //     del mismo, y de ahí salen las palabras ("Diestra" o "Diestro") y los
 //     rankings que se te ofrecen al importar.
-//   - La estatura del rival no se pide en centímetros, que no hay forma de
-//     saberlos, sino comparada contigo.
 //   - La mano y la empuñadura sólo se preguntan del rival. Las tuyas ya te
 //     las sabes, y Teseo no las usa para nada.
 
 import { crear, campo, campoLargo, desplegable, bloque, grupoOpcionesMultiple } from '../ui.js';
 import {
-  MANOS, EMPUNADURAS, ESTATURAS, GENEROS, CATEGORIAS, ESTATURA_POR_DEFECTO,
+  MANOS, EMPUNADURAS, GENEROS, CATEGORIAS,
   GENERO_POR_DEFECTO, CATEGORIA_POR_DEFECTO, opcionesPara,
 } from '../constantes.js';
 import { generoDelUsuario } from '../genero.js';
@@ -49,7 +47,6 @@ export function fichaTirador(tirador = {}, opciones = {}) {
 
   let mano = tirador.mano || null;
   let empunadura = tirador.empunadura || null;
-  let estatura = tirador.estatura || ESTATURA_POR_DEFECTO;
   // La ficha propia arranca con una categoría marcada: casi nadie la deja
   // como está, pero así se ve de un vistazo qué se espera aquí.
   let categorias = tirador.categorias
@@ -64,8 +61,6 @@ export function fichaTirador(tirador = {}, opciones = {}) {
   const selectorEmpunadura = desplegable('Empuñadura', EMPUNADURAS, empunadura,
     (valor) => { empunadura = valor; }, { vacio: '— Sin indicar —' });
 
-  const selectorEstatura = desplegable('Estatura, comparada contigo',
-    opcionesPara(ESTATURAS, genero), estatura, (valor) => { estatura = valor; });
 
   // Las palabras que cambian con el género —"Diestra" o "Diestro"— sólo
   // salen en la ficha del rival, y ahí el género no se elige: es el tuyo.
@@ -101,11 +96,9 @@ export function fichaTirador(tirador = {}, opciones = {}) {
     apellidos.bloque,
     selectorGenero ? selectorGenero.bloque : null,
     bloqueCategorias,
-    // De ti no se preguntan: ni la mano ni la empuñadura ni la estatura
-    // comparada contigo significan nada aquí.
+    // De ti no se preguntan: ni la mano ni la empuñadura significan nada aquí.
     esPropio ? null : selectorMano.bloque,
     esPropio ? null : selectorEmpunadura.bloque,
-    esPropio ? null : selectorEstatura.bloque,
     fechaNacimiento.bloque,
     club.bloque,
     notas.bloque,
@@ -143,8 +136,7 @@ export function fichaTirador(tirador = {}, opciones = {}) {
       categorias: esPropio ? categorias : (tirador.categorias || null),
       mano: esPropio ? null : mano,
       empunadura: esPropio ? null : empunadura,
-      estatura: esPropio ? null : estatura,
-      fechaNacimiento: fechaNacimiento.entrada.value || null,
+        fechaNacimiento: fechaNacimiento.entrada.value || null,
       club: club.entrada.value.trim(),
       notas: notas.entrada.value.trim(),
     };

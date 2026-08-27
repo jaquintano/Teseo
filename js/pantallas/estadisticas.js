@@ -154,11 +154,18 @@ export async function pantallaEstadisticas(contenedor) {
 
       crear('section', { class: 'bloque-stat' }, [
         crear('h3', { class: 'subtitulo-seccion', texto: 'Iniciativa' }),
-        crear('p', { class: 'ayuda explicacion', texto: 'Cuándo llevaste tú la acción y cuándo tuviste que defender. Si marcaste las dos cosas en un intercambio, cuenta como ataque.' }),
-        filaBarra('Atacando', e.ofensivas.iniciativa.ataques, e.ofensivas.iniciativa.porcentajeAtaque,
-                  Math.max(e.ofensivas.iniciativa.ataques, e.ofensivas.iniciativa.defensas)),
-        filaBarra('Defendiendo', e.ofensivas.iniciativa.defensas, 100 - e.ofensivas.iniciativa.porcentajeAtaque,
-                  Math.max(e.ofensivas.iniciativa.ataques, e.ofensivas.iniciativa.defensas)),
+        crear('p', { class: 'ayuda explicacion', texto: 'Con qué acabas tú los intercambios: atacando, defendiendo o contraatacando.' }),
+        ...(() => {
+          const ini = e.ofensivas.iniciativa;
+          const mayor = Math.max(ini.ataques, ini.defensas, ini.contraataques);
+          const parte = (cuantos) => (ini.ataques + ini.defensas + ini.contraataques
+            ? (cuantos / (ini.ataques + ini.defensas + ini.contraataques)) * 100 : 0);
+          return [
+            filaBarra('Atacando', ini.ataques, parte(ini.ataques), mayor),
+            filaBarra('Defendiendo', ini.defensas, parte(ini.defensas), mayor),
+            filaBarra('Contraatacando', ini.contraataques, parte(ini.contraataques), mayor),
+          ];
+        })(),
         e.ofensivas.iniciativa.sinAccion > 0
           ? crear('p', { class: 'ayuda', texto: `${e.ofensivas.iniciativa.sinAccion} intercambio(s) sin acción marcada.` })
           : null,
@@ -166,6 +173,9 @@ export async function pantallaEstadisticas(contenedor) {
 
       reparto('Tocados a favor por tramo', e.ofensivas.tocadosPorTramo,
               'El asalto entero repartido en tercios, encadenando sus tiempos.'),
+
+      reparto('Tocados a favor por zona del rival', e.ofensivas.tocadosPorZona,
+              'Dónde le tocas: careta, mano, brazo…'),
 
       reparto('Tocados a favor por zona de la pista', e.ofensivas.tocadosPorZonaPista),
 
@@ -184,7 +194,12 @@ export async function pantallaEstadisticas(contenedor) {
             ]),
       ]),
 
-      reparto('Tocados recibidos por zona del cuerpo', e.defensivas.recibidosPorZonaCuerpo),
+      reparto('Con qué te tocan', e.defensivas.recibidosPorAccionDelRival,
+              'La acción con la que el rival acabó cada tocado en contra.'),
+
+      reparto('Tocados recibidos por zona propia', e.defensivas.recibidosPorZona,
+              'Dónde te tocan a ti.'),
+
       reparto('Tocados recibidos por zona de la pista', e.defensivas.recibidosPorZonaPista),
 
       // --- Dobles ---

@@ -318,24 +318,8 @@ textarea.entrada {
 }
 
 /* --- Barra deslizante -------------------------------------------------- */
-/* Se usa para la fatiga percibida. La barra se tiñe del azul (1) al rojo (5):
-   el color lo calcula el JavaScript y lo deja en --color-actual, y hasta
-   dónde llega el relleno en --relleno. */
-
-.etiqueta-deslizador {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-
-.valor-deslizador {
-  color: var(--texto);
-  font-size: 1.15rem;
-  font-variant-numeric: tabular-nums;
-  text-transform: none;
-  letter-spacing: 0;
-}
+/* La usa la barra de posición del vídeo. El relleno se pinta con dos
+   variables que puede mover el JavaScript: --color-actual y --relleno. */
 
 .deslizador {
   --relleno: 0%;
@@ -727,6 +711,17 @@ video::-webkit-media-controls-panel {
   font-size: 0.9rem;
   color: var(--texto);
 }
+
+/* Las dos acciones finales de un intercambio, la propia y la del rival. Se
+   separan con una línea porque cada una es un bloque de hasta cuatro
+   desplegables, y sin ella no se ve dónde acaba una y empieza la otra. */
+.bloque-accion {
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--borde);
+}
+
+.bloque-accion .subtitulo-grupo { margin-top: 0.25rem; }
 
 .rejilla-saltos {
   display: grid;

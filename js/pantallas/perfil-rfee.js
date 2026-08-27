@@ -9,7 +9,7 @@
 
 import { anadir, crear, rellenar, cabecera, ir, bloque, campo } from '../ui.js';
 import {
-  nombreCompleto, coincide, etiquetaDe, GENEROS, ESTATURA_POR_DEFECTO,
+  nombreCompleto, coincide, etiquetaDe, GENEROS,
   GENERO_POR_DEFECTO, CATEGORIA_POR_DEFECTO,
 } from '../constantes.js';
 import { listarRankings, cargarRanking } from '../rfee.js';
@@ -168,7 +168,6 @@ export async function pantallaPerfilRfee(contenedor) {
         categorias: [ranking.categoria],
         mano: null,
         empunadura: null,
-        estatura: ESTATURA_POR_DEFECTO,
         idRfee: fila.idRfee,
         categoriaRfee: ranking.categoria,
         temporadaRfee: ranking.temporada,

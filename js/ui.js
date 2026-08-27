@@ -167,61 +167,6 @@ export function campoLargo(etiqueta, propiedades = {}) {
 }
 
 /**
- * Barra deslizante para un número corto: fatiga percibida, esfuerzo, etc.
- *
- * La barra se tiñe del azul al rojo según sube el valor, y el tirador lleva
- * el color que toque —en el mínimo la barra todavía no se ve, así que sin
- * eso no habría nada de color que mirar—.
- *
- * @param {string} etiqueta
- * @param {{min?: number, max?: number, valor?: number}} opciones
- */
-export function deslizador(etiqueta, opciones = {}) {
-  const min = opciones.min ?? 1;
-  const max = opciones.max ?? 5;
-  const id = `campo-${Math.random().toString(36).slice(2, 9)}`;
-
-  const entrada = crear('input', {
-    id, class: 'deslizador', type: 'range',
-    min, max, step: 1, value: opciones.valor ?? min,
-    oninput: pintar,
-  });
-  const marca = crear('span', { class: 'valor-deslizador' });
-
-  const bloque = crear('div', { class: 'bloque-campo' }, [
-    crear('label', { class: 'etiqueta-campo etiqueta-deslizador', for: id }, [
-      crear('span', { texto: etiqueta }),
-      marca,
-    ]),
-    entrada,
-  ]);
-
-  function pintar() {
-    const valor = Number(entrada.value);
-    const fraccion = max > min ? (valor - min) / (max - min) : 0;
-    entrada.style.setProperty('--color-actual', colorDeEscala(fraccion));
-    entrada.style.setProperty('--relleno', `${fraccion * 100}%`);
-    marca.textContent = String(valor);
-  }
-
-  pintar();
-
-  return { bloque, entrada };
-}
-
-/**
- * El color de una escala que va del azul (0) al rojo (1), pasando por el
- * verde y el amarillo. Lo usan la barra de fatiga y la lista de asaltos, que
- * tienen que hablar el mismo idioma de colores.
- */
-export function colorDeEscala(fraccion) {
-  const acotada = Math.min(1, Math.max(0, fraccion));
-  // 210 grados es azul y 0 es rojo.
-  return `hsl(${Math.round(210 - 210 * acotada)} 75% 55%)`;
-}
-
-/** Bloque con título para agrupar unos cuantos botones de opción. */
-/**
  * Una casilla de sí o no, con su rótulo al lado.
  *
  * El rótulo es parte del <label>, así que también se puede tocar él: una
@@ -241,6 +186,7 @@ export function casilla(etiqueta, valor, alCambiar) {
   return { entrada, bloque };
 }
 
+/** Bloque con título para agrupar unos cuantos botones de opción. */
 export function bloque(etiqueta, contenido) {
   return crear('div', { class: 'bloque-campo' }, [
     crear('span', { class: 'etiqueta-campo', texto: etiqueta }),

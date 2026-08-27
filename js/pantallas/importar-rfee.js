@@ -105,7 +105,7 @@ export async function pantallaImportarRfee(contenedor) {
         ? crear('p', {
             class: 'ayuda',
             texto: 'Se rellenarán huecos de: ' + muestra(plan.completables) +
-                   '. Nunca se toca la mano, la estatura ni tus notas.',
+                   '. Nunca se toca la mano ni tus notas.',
           })
         : null,
 

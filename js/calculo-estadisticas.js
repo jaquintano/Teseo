@@ -12,13 +12,18 @@
 //   const elegidos   = filtrar(preparados, { manoRival: 'zurdo' });
 //   const numeros    = calcular(elegidos);
 //
-// Un apunte sobre las capas, porque condiciona todo lo que sigue: las
-// acciones etiquetadas son las del propio tirador, no las del rival. Cuando
-// el resultado es "tocado a favor", la zona del cuerpo es donde tocó él;
-// cuando es "en contra", es donde le tocaron.
+// Dos apuntes sobre los datos, porque condicionan todo lo que sigue.
+//
+// Uno: de cada intercambio se guarda la acción final de los DOS, la propia y
+// la del rival, con la misma estructura. Casi todas las cuentas miran la
+// propia; "con qué te tocan" mira la suya.
+//
+// Y dos: las zonas también son de los dos. `zonaRival` es donde tocaste tú y
+// `zonaPropia` donde te tocaron, así que un tocado a favor llena la primera,
+// uno en contra la segunda, y un doble las dos.
 
 import {
-  ACCIONES_OFENSIVAS, ZONAS_CUERPO, ZONAS_PISTA, TRAMOS,
+  ACCIONES_OFENSIVAS, ZONAS_TOCADAS, ZONAS_PISTA, TRAMOS,
 } from './constantes.js';
 import { tanteosDeLosTiempos, tanteoCorrido, situacionDe } from './tanteo.js';
 
@@ -176,11 +181,17 @@ export function calcular(intercambios) {
   const dobles = intercambios.filter((i) => i.resultado === 'doble');
   const sinTocado = intercambios.filter((i) => i.resultado === 'nada');
 
+  // Cómo acabó cada uno el intercambio. Puede no estar contestado, así que
+  // todo lo que sigue tiene que aguantar un intercambio a medio etiquetar.
+  const mia = (i) => i.accionPropia || {};
+  const suya = (i) => i.accionRival || {};
+
   // --- Ofensivas ---
 
-  // Eficacia por acción: cuántas veces la intentó y cuántas acabó en tocado.
+  // Eficacia por acción: cuántas veces la hiciste y cuántas acabó en tocado.
   const eficaciaPorAccion = ACCIONES_OFENSIVAS.map((accion) => {
-    const intentos = intercambios.filter((i) => i.ofensiva === accion.id);
+    const intentos = intercambios.filter((i) => mia(i).accion === accion.id
+                                            && mia(i).tipo === 'ofensiva');
     const conseguidos = intentos.filter((i) => i.resultado === 'favor').length;
     const doblesAccion = intentos.filter((i) => i.resultado === 'doble').length;
     return {
@@ -193,22 +204,26 @@ export function calcular(intercambios) {
     };
   });
 
-  // Iniciativa. Si un intercambio lleva marcadas las dos acciones, cuenta
-  // como ataque: quien inicia manda, aunque después tuviera que defenderse.
-  const ataques = intercambios.filter((i) => i.ofensiva != null).length;
-  const defensas = intercambios.filter((i) => i.ofensiva == null && i.defensiva != null).length;
-  const conAccion = ataques + defensas;
+  // Iniciativa: con qué acabas tú los intercambios. El contraataque va aparte
+  // de las otras dos porque no es ni atacar ni defender, y saber cuánto
+  // contraatacas es media lectura de cómo tiras.
+  const ataques = intercambios.filter((i) => mia(i).tipo === 'ofensiva').length;
+  const defensas = intercambios.filter((i) => mia(i).tipo === 'defensiva').length;
+  const contraataques = intercambios.filter((i) => mia(i).tipo === 'contraataque').length;
+  const conAccion = ataques + defensas + contraataques;
   const iniciativa = {
     ataques,
     defensas,
+    contraataques,
     sinAccion: total - conAccion,
     porcentajeAtaque: conAccion ? (ataques / conAccion) * 100 : 0,
   };
 
   // --- Defensivas ---
 
-  // Parada-respuesta: de las veces que paró, cuántas acabaron en tocado suyo.
-  const paradas = intercambios.filter((i) => i.defensiva === 'parada');
+  // Parada-respuesta: de las veces que paraste, cuántas acabaron en tocado tuyo.
+  const paradas = intercambios.filter((i) =>
+    mia(i).tipo === 'defensiva' && mia(i).accion === 'parada');
   const paradaRespuesta = {
     intentos: paradas.length,
     conseguidos: paradas.filter((i) => i.resultado === 'favor').length,
@@ -216,6 +231,24 @@ export function calcular(intercambios) {
     porcentaje: paradas.length
       ? (paradas.filter((i) => i.resultado === 'favor').length / paradas.length) * 100
       : 0,
+  };
+
+  // Con qué te tocan. Ahora que se apunta también la acción del rival, ésta
+  // es la pregunta que antes no se podía contestar: no cómo defiendes tú,
+  // sino qué te están haciendo cuando encajas.
+  const accionesQueTeTocan = ACCIONES_OFENSIVAS.map((accion) => ({
+    id: accion.id,
+    etiqueta: accion.etiqueta,
+    cuenta: enContra.filter((i) => suya(i).tipo === 'ofensiva'
+                                && suya(i).accion === accion.id).length,
+  }));
+  const totalQueTeTocan = accionesQueTeTocan.reduce((suma, a) => suma + a.cuenta, 0);
+  const recibidosPorAccionDelRival = {
+    total: totalQueTeTocan,
+    filas: accionesQueTeTocan.map((a) => ({
+      ...a,
+      porcentaje: totalQueTeTocan ? (a.cuenta / totalQueTeTocan) * 100 : 0,
+    })),
   };
 
   // --- Dobles ---
@@ -237,12 +270,14 @@ export function calcular(intercambios) {
       eficaciaPorAccion,
       iniciativa,
       tocadosPorTramo: repartirPor(aFavor, TRAMOS, 'tramo'),
+      tocadosPorZona: repartirPor(aFavor, ZONAS_TOCADAS, 'zonaRival'),
       tocadosPorZonaPista: repartirPor(aFavor, ZONAS_PISTA, 'zonaPista'),
     },
 
     defensivas: {
       paradaRespuesta,
-      recibidosPorZonaCuerpo: repartirPor(enContra, ZONAS_CUERPO, 'zonaCuerpo'),
+      recibidosPorAccionDelRival,
+      recibidosPorZona: repartirPor(enContra, ZONAS_TOCADAS, 'zonaPropia'),
       recibidosPorZonaPista: repartirPor(enContra, ZONAS_PISTA, 'zonaPista'),
     },
 

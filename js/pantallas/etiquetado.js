@@ -4,13 +4,14 @@
 // -----------
 // Reproduces, pausas donde ha pasado algo, afinas con los saltos de ±0,1 s y
 // pulsas "Nuevo intercambio". Eso crea una marca en ese instante exacto y
-// abre las tres capas de botones. Cada toque se guarda solo: no hay que
-// acordarse de guardar nada.
+// abre su ficha. Cada toque se guarda solo: no hay que acordarse de guardar
+// nada.
 //
-// Las tres capas describen lo que hiciste TÚ, no el rival. Si atacaste,
-// rellenas la fila ofensiva; si defendiste, la defensiva. Cualquiera de las
-// tres puede quedarse vacía, y volver a pulsar un botón ya elegido lo
-// deselecciona.
+// La ficha pregunta cómo acabó el intercambio, dónde cayó el tocado y cómo lo
+// acabó cada uno de los dos. Va de fuera hacia dentro: según lo que contestes
+// aparecen o desaparecen los campos de debajo, y así no hay veinte
+// desplegables en pantalla de los que sólo valen cuatro. Todo puede quedarse
+// en blanco.
 //
 // La línea de tiempo de debajo del vídeo lleva una marca por intercambio,
 // con el color de la LÁMPARA que se encendió: si tu lámpara es la roja, tus
@@ -33,9 +34,9 @@ import {
   formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  ACCIONES_OFENSIVAS, ACCIONES_DEFENSIVAS, RESULTADOS,
-  RESULTADOS_CON_TOCADO, ZONAS_CUERPO, ZONAS_PISTA, etiquetaDe,
-  COLORES_LAMPARA, PREGUNTA_COLOR, colorDeLaLampara,
+  ACCIONES_OFENSIVAS, ACCIONES_DEFENSIVAS, TIPOS_DE_ACCION, LINEAS, variantesDe,
+  RESULTADOS, RESULTADOS_CON_TOCADO, ZONAS_TOCADAS, ZONAS_PISTA, etiquetaDe,
+  accionVacia, COLORES_LAMPARA, PREGUNTA_COLOR, colorDeLaLampara,
 } from '../constantes.js';
 import {
   ALMACENES, obtener, guardar, borrar, listarPor, leerVideo,
@@ -195,8 +196,8 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
    * Lo corriente al repasar un asalto es que ya sepas cómo acabó cada
    * intercambio y no quieras nada más: con esto se apunta sin abrir la ficha
    * y sin parar el vídeo, que es lo que hacen "Nuevo intercambio" y el lápiz
-   * cuando además quieres describir la acción. Las tres capas se pueden
-   * rellenar después, o no rellenarse nunca.
+   * cuando además quieres describir la acción. Lo demás se rellena después, o
+   * no se rellena nunca.
    *
    * Van DENTRO del reproductor, que es lo que se queda pegado arriba al bajar
    * por la tabla: si se quedaran fuera, se irían de la pantalla justo cuando
@@ -837,10 +838,11 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
           asaltoId: tiempo.asaltoId,
           instante: tocado.instante,
           resultado: tocado.resultado,
-          ofensiva: null,
-          defensiva: null,
-          zonaCuerpo: null,
+          zonaPropia: null,
+          zonaRival: null,
           zonaPista: null,
+          accionPropia: accionVacia(),
+          accionRival: accionVacia(),
           propuesto: true,
           // El tocado cayó mientras el marcador estaba tapado: el instante es
           // el de cuando volvió a verse, no el del encendido.
@@ -993,11 +995,12 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       tiempoId: tiempo.id,
       asaltoId: tiempo.asaltoId,
       instante: reproductor.tiempoActual(),
-      ofensiva: null,
-      defensiva: null,
       resultado,
-      zonaCuerpo: null,
+      zonaPropia: null,
+      zonaRival: null,
       zonaPista: null,
+      accionPropia: accionVacia(),
+      accionRival: accionVacia(),
     };
 
     nuevo.id = await guardar(ALMACENES.intercambios, nuevo);
@@ -1016,11 +1019,12 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       // tener que ir preguntando de qué asalto es cada intercambio.
       asaltoId: tiempo.asaltoId,
       instante: reproductor.tiempoActual(),
-      ofensiva: null,
-      defensiva: null,
       resultado: null,
-      zonaCuerpo: null,
+      zonaPropia: null,
+      zonaRival: null,
       zonaPista: null,
+      accionPropia: accionVacia(),
+      accionRival: accionVacia(),
     };
 
     const id = await guardar(ALMACENES.intercambios, nuevo);
@@ -1048,15 +1052,17 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
     ficha.showModal();
   }
 
-  /** Guarda un cambio de una de las capas. */
+  /** Guarda un campo suelto del intercambio. */
   async function cambiar(campo, valor) {
     activo[campo] = valor;
 
-    // Las zonas sólo tienen sentido si hubo tocado. Si el resultado deja de
-    // serlo, se limpian para no dejar datos sueltos que ensucien las cuentas.
-    if (campo === 'resultado' && !RESULTADOS_CON_TOCADO.includes(valor)) {
-      activo.zonaCuerpo = null;
-      activo.zonaPista = null;
+    // Cada resultado pregunta unas zonas y no las otras. Lo que deja de
+    // preguntarse se borra: un dato que ya no se ve en pantalla pero sigue
+    // en la base ensucia las cuentas y nadie puede corregirlo.
+    if (campo === 'resultado') {
+      if (!RESULTADOS_CON_TOCADO.includes(valor)) activo.zonaPista = null;
+      if (valor !== 'contra' && valor !== 'doble') activo.zonaPropia = null;
+      if (valor !== 'favor' && valor !== 'doble') activo.zonaRival = null;
     }
 
     await guardar(ALMACENES.intercambios, activo);
@@ -1067,16 +1073,91 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   }
 
   /**
+   * Guarda un cambio dentro de una acción final, la propia o la del rival.
+   *
+   * Al cambiar de rama se tira lo que colgaba de la anterior: si pasas de
+   * ofensiva a defensiva, la línea que habías puesto ya no significa nada, y
+   * dejarla guardada sería mentir en las estadísticas.
+   */
+  async function cambiarAccion(cual, campo, valor) {
+    const accion = { ...(activo[cual] || accionVacia()), [campo]: valor };
+
+    if (campo === 'tipo') {
+      accion.accion = null;
+      accion.variante = null;
+      accion.linea = null;
+    }
+
+    // Cada ofensiva admite unas variantes y no otras: la que había puesta
+    // sólo se conserva si la nueva acción también la admite.
+    if (campo === 'accion') {
+      const admitidas = variantesDe(valor).map((v) => v.id);
+      if (!admitidas.includes(accion.variante)) accion.variante = null;
+    }
+
+    activo[cual] = accion;
+    await guardar(ALMACENES.intercambios, activo);
+    pintarEditor();
+  }
+
+  /**
+   * Los desplegables de una acción final, la propia o la del rival.
+   *
+   * Sale sólo lo que cuelga de la rama elegida: en un contraataque no hay
+   * nada más que preguntar, en una defensiva sólo qué hizo, y en una ofensiva
+   * la acción, con qué se remató —cuando esa acción admite remate— y la
+   * línea. Preguntarlo todo siempre haría una ficha de veinte campos que
+   * nadie rellena.
+   */
+  function camposDeLaAccion(cual, titulo) {
+    const accion = activo[cual] || accionVacia();
+    const sinIndicar = { vacio: '— Sin indicar —' };
+    const variantes = variantesDe(accion.accion);
+
+    return crear('div', { class: 'bloque-accion' }, [
+      crear('h4', { class: 'subtitulo-grupo', texto: titulo }),
+
+      desplegable('Tipo', TIPOS_DE_ACCION, accion.tipo,
+        (valor) => cambiarAccion(cual, 'tipo', valor), sinIndicar).bloque,
+
+      accion.tipo === 'ofensiva'
+        ? desplegable('Acción', ACCIONES_OFENSIVAS, accion.accion,
+            (valor) => cambiarAccion(cual, 'accion', valor), sinIndicar).bloque
+        : null,
+
+      accion.tipo === 'ofensiva' && variantes.length > 0
+        ? desplegable('Ataque simple', variantes, accion.variante,
+            (valor) => cambiarAccion(cual, 'variante', valor), sinIndicar).bloque
+        : null,
+
+      accion.tipo === 'ofensiva'
+        ? desplegable('Línea', LINEAS, accion.linea,
+            (valor) => cambiarAccion(cual, 'linea', valor), sinIndicar).bloque
+        : null,
+
+      accion.tipo === 'defensiva'
+        ? desplegable('Acción', ACCIONES_DEFENSIVAS, accion.accion,
+            (valor) => cambiarAccion(cual, 'accion', valor), sinIndicar).bloque
+        : null,
+    ]);
+  }
+
+  /**
    * Pinta la ficha del intercambio abierto.
    *
-   * Todo con desplegables: son ocho catálogos y con botones no cabían en la
+   * Todo con desplegables: son muchos catálogos y con botones no cabían en la
    * pantalla. Y el resultado el primero, que es lo único que se sabe siempre
    * —lo demás puede quedarse en blanco— y lo que mueve el marcador.
+   *
+   * De las zonas se pregunta la que tiene sentido en cada resultado: dónde
+   * tocaste tú si fue a favor, dónde te tocaron si fue en contra, y las dos
+   * en un doble.
    */
   function pintarEditor() {
     if (!activo) { rellenar(ficha, []); return; }
 
     const huboTocado = RESULTADOS_CON_TOCADO.includes(activo.resultado);
+    const esDoble = activo.resultado === 'doble';
     const sinIndicar = { vacio: '— Sin indicar —' };
 
     rellenar(ficha, [
@@ -1088,18 +1169,31 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
       desplegable('Resultado', RESULTADOS, activo.resultado,
         (valor) => cambiar('resultado', valor), sinIndicar).bloque,
 
-      desplegable('Mi acción ofensiva', ACCIONES_OFENSIVAS, activo.ofensiva,
-        (valor) => cambiar('ofensiva', valor), sinIndicar).bloque,
+      activo.resultado === 'favor'
+        ? desplegable('Zona', ZONAS_TOCADAS, activo.zonaRival,
+            (valor) => cambiar('zonaRival', valor), sinIndicar).bloque
+        : null,
 
-      desplegable('Mi acción defensiva', ACCIONES_DEFENSIVAS, activo.defensiva,
-        (valor) => cambiar('defensiva', valor), sinIndicar).bloque,
+      activo.resultado === 'contra'
+        ? desplegable('Zona', ZONAS_TOCADAS, activo.zonaPropia,
+            (valor) => cambiar('zonaPropia', valor), sinIndicar).bloque
+        : null,
 
-      // Estas dos sólo salen cuando hubo tocado, como pediste.
-      huboTocado ? desplegable('Zona del cuerpo', ZONAS_CUERPO, activo.zonaCuerpo,
-        (valor) => cambiar('zonaCuerpo', valor), sinIndicar).bloque : null,
+      esDoble
+        ? desplegable('Zona tocada propia', ZONAS_TOCADAS, activo.zonaPropia,
+            (valor) => cambiar('zonaPropia', valor), sinIndicar).bloque
+        : null,
+
+      esDoble
+        ? desplegable('Zona tocada al rival', ZONAS_TOCADAS, activo.zonaRival,
+            (valor) => cambiar('zonaRival', valor), sinIndicar).bloque
+        : null,
 
       huboTocado ? desplegable('Zona de la pista', ZONAS_PISTA, activo.zonaPista,
         (valor) => cambiar('zonaPista', valor), sinIndicar).bloque : null,
+
+      camposDeLaAccion('accionPropia', 'Acción final propia'),
+      camposDeLaAccion('accionRival', 'Acción final del rival'),
 
       crear('button', {
         type: 'button', class: 'boton boton-principal', texto: 'Listo',
