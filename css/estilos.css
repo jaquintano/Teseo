@@ -712,16 +712,49 @@ video::-webkit-media-controls-panel {
   color: var(--texto);
 }
 
-/* Las dos acciones finales de un intercambio, la propia y la del rival. Se
-   separan con una línea porque cada una es un bloque de hasta cuatro
-   desplegables, y sin ella no se ve dónde acaba una y empieza la otra. */
-.bloque-accion {
-  margin-top: 1rem;
-  padding-top: 0.5rem;
+/* --- La ficha de un intercambio --------------------------------------- */
+
+/* Son cuatro grupos —el tocado, dónde en la pista, tu acción y la del rival—
+   y hasta trece desplegables entre todos. Seguidos y con el mismo aspecto no
+   había quien los leyera, así que cada grupo lleva su título y una línea que
+   lo separa del anterior. */
+.grupo-ficha {
+  margin-bottom: 1rem;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--borde);
 }
 
-.bloque-accion .subtitulo-grupo { margin-top: 0.25rem; }
+/* El primero no separa de nada: antes de él sólo está la cabecera con el
+   instante. */
+.cabecera-editor + .grupo-ficha {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.titulo-grupo-ficha {
+  margin: 0 0 0.75rem;
+  color: var(--acento);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+/* Dentro de un grupo los campos van más juntos: lo que separa ahora es el
+   grupo, no el aire entre campos. */
+.grupo-ficha .bloque-campo { margin-bottom: 0.75rem; }
+.grupo-ficha .bloque-campo:last-child { margin-bottom: 0; }
+
+/* Un campo que sólo existe por lo que se ha contestado arriba se mete hacia
+   dentro y se cuelga de una línea. Es lo que deja ver de un vistazo qué
+   pregunta viene de qué respuesta: la zona sale del resultado, y el remate de
+   la acción. Dos escalones bastan; más adentro no cabe en un móvil. */
+.anidado-1,
+.anidado-2 {
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--borde);
+}
+
+.anidado-1 { margin-left: 0.5rem; }
+.anidado-2 { margin-left: 1.75rem; }
 
 .rejilla-saltos {
   display: grid;

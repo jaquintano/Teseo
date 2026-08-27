@@ -88,7 +88,7 @@ tres ramas y sólo se pregunta lo que cuelga de ella:
   remató el ataque simple —y eso sólo si esa acción lo admite: la flecha no
   sale de un ligamento, ni el coupé de una finta— y en qué línea acabó.
 - **Defensiva** → distancia, parada o sin reacción.
-- **Contraataque** → nada más.
+- **Contraataque** → con qué ataque simple se cerró.
 
 De la **frase de armas** no se apunta nada: sólo el último movimiento de cada
 uno. Es el primer nivel a propósito. Preguntar la conversación de hierros

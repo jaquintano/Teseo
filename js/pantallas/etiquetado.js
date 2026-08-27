@@ -34,7 +34,8 @@ import {
   formatearBytes, formatearSegundos,
 } from '../ui.js';
 import {
-  ACCIONES_OFENSIVAS, ACCIONES_DEFENSIVAS, TIPOS_DE_ACCION, LINEAS, variantesDe,
+  ACCIONES_OFENSIVAS, ACCIONES_DEFENSIVAS, TIPOS_DE_ACCION, LINEAS,
+  VARIANTES_DE_ATAQUE, variantesDe,
   RESULTADOS, RESULTADOS_CON_TOCADO, ZONAS_TOCADAS, ZONAS_PISTA, etiquetaDe,
   accionVacia, COLORES_LAMPARA, PREGUNTA_COLOR, colorDeLaLampara,
 } from '../constantes.js';
@@ -1101,45 +1102,85 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
   }
 
   /**
+   * Un grupo de la ficha, con su título.
+   *
+   * La ficha llegó a tener trece desplegables seguidos y no había forma de
+   * seguirla. Ahora va en cuatro bloques separados —el tocado, dónde en la
+   * pista, tu acción y la suya— y cada campo que depende de otro se pinta
+   * metido hacia dentro, colgando de una línea. Así se ve de un vistazo qué
+   * pregunta viene de qué respuesta.
+   */
+  function grupoDeFicha(titulo, hijos) {
+    return crear('div', { class: 'grupo-ficha' }, [
+      crear('h4', { class: 'titulo-grupo-ficha', texto: titulo }),
+      ...hijos,
+    ]);
+  }
+
+  /**
+   * Un desplegable sin rótulo, para un grupo que no tiene más que él: el
+   * título del grupo ya dice lo que es, y repetirlo debajo es decir dos veces
+   * lo mismo. El rótulo sigue estando para quien navegue a oídas.
+   */
+  function desplegableSuelto(etiqueta, catalogo, valor, alElegir) {
+    const { entrada } = desplegable(etiqueta, catalogo, valor, alElegir,
+                                    { vacio: '— Sin indicar —' });
+    entrada.setAttribute('aria-label', etiqueta);
+    return entrada;
+  }
+
+  /** Mete un campo hacia dentro: cuelga del que tiene encima. */
+  function anidado(bloque, nivel = 1) {
+    if (bloque) bloque.classList.add(`anidado-${nivel}`);
+    return bloque;
+  }
+
+  /**
    * Los desplegables de una acción final, la propia o la del rival.
    *
-   * Sale sólo lo que cuelga de la rama elegida: en un contraataque no hay
-   * nada más que preguntar, en una defensiva sólo qué hizo, y en una ofensiva
-   * la acción, con qué se remató —cuando esa acción admite remate— y la
-   * línea. Preguntarlo todo siempre haría una ficha de veinte campos que
-   * nadie rellena.
+   * Sale sólo lo que cuelga de la rama elegida: de una defensiva, qué hizo; de
+   * una ofensiva, la acción, con qué se remató —cuando esa acción admite
+   * remate— y la línea; y de un contraataque, con qué ataque simple se cerró.
+   * Preguntarlo todo siempre haría una ficha de veinte campos que nadie
+   * rellena.
    */
-  function camposDeLaAccion(cual, titulo) {
+  function camposDeLaAccion(cual) {
     const accion = activo[cual] || accionVacia();
     const sinIndicar = { vacio: '— Sin indicar —' };
-    const variantes = variantesDe(accion.accion);
 
-    return crear('div', { class: 'bloque-accion' }, [
-      crear('h4', { class: 'subtitulo-grupo', texto: titulo }),
+    // El contraataque acaba en un ataque simple y admite los cuatro remates:
+    // ahí la variante cuelga del propio tipo, no de una acción intermedia.
+    const esContraataque = accion.tipo === 'contraataque';
+    const variantes = esContraataque ? VARIANTES_DE_ATAQUE : variantesDe(accion.accion);
 
+    return [
       desplegable('Tipo', TIPOS_DE_ACCION, accion.tipo,
         (valor) => cambiarAccion(cual, 'tipo', valor), sinIndicar).bloque,
 
       accion.tipo === 'ofensiva'
-        ? desplegable('Acción', ACCIONES_OFENSIVAS, accion.accion,
-            (valor) => cambiarAccion(cual, 'accion', valor), sinIndicar).bloque
-        : null,
-
-      accion.tipo === 'ofensiva' && variantes.length > 0
-        ? desplegable('Ataque simple', variantes, accion.variante,
-            (valor) => cambiarAccion(cual, 'variante', valor), sinIndicar).bloque
-        : null,
-
-      accion.tipo === 'ofensiva'
-        ? desplegable('Línea', LINEAS, accion.linea,
-            (valor) => cambiarAccion(cual, 'linea', valor), sinIndicar).bloque
+        ? anidado(desplegable('Acción', ACCIONES_OFENSIVAS, accion.accion,
+            (valor) => cambiarAccion(cual, 'accion', valor), sinIndicar).bloque)
         : null,
 
       accion.tipo === 'defensiva'
-        ? desplegable('Acción', ACCIONES_DEFENSIVAS, accion.accion,
-            (valor) => cambiarAccion(cual, 'accion', valor), sinIndicar).bloque
+        ? anidado(desplegable('Acción', ACCIONES_DEFENSIVAS, accion.accion,
+            (valor) => cambiarAccion(cual, 'accion', valor), sinIndicar).bloque)
         : null,
-    ]);
+
+      // En una ofensiva el remate cuelga de la acción, así que va un escalón
+      // más adentro; en un contraataque cuelga del tipo y va al mismo nivel
+      // que iría la acción.
+      variantes.length > 0
+        ? anidado(desplegable('Ataque simple', variantes, accion.variante,
+            (valor) => cambiarAccion(cual, 'variante', valor), sinIndicar).bloque,
+            esContraataque ? 1 : 2)
+        : null,
+
+      accion.tipo === 'ofensiva'
+        ? anidado(desplegable('Línea', LINEAS, accion.linea,
+            (valor) => cambiarAccion(cual, 'linea', valor), sinIndicar).bloque)
+        : null,
+    ];
   }
 
   /**
@@ -1166,34 +1207,42 @@ export async function pantallaEtiquetado(contenedor, datos = {}) {
         crear('span', { class: 'ayuda', texto: `${activo.instante.toFixed(2)} s` }),
       ]),
 
-      desplegable('Resultado', RESULTADOS, activo.resultado,
-        (valor) => cambiar('resultado', valor), sinIndicar).bloque,
+      grupoDeFicha('Tocado', [
+        desplegable('Resultado', RESULTADOS, activo.resultado,
+          (valor) => cambiar('resultado', valor), sinIndicar).bloque,
 
-      activo.resultado === 'favor'
-        ? desplegable('Zona', ZONAS_TOCADAS, activo.zonaRival,
-            (valor) => cambiar('zonaRival', valor), sinIndicar).bloque
+        activo.resultado === 'favor'
+          ? anidado(desplegable('Zona', ZONAS_TOCADAS, activo.zonaRival,
+              (valor) => cambiar('zonaRival', valor), sinIndicar).bloque)
+          : null,
+
+        activo.resultado === 'contra'
+          ? anidado(desplegable('Zona', ZONAS_TOCADAS, activo.zonaPropia,
+              (valor) => cambiar('zonaPropia', valor), sinIndicar).bloque)
+          : null,
+
+        esDoble
+          ? anidado(desplegable('Zona tocada propia', ZONAS_TOCADAS, activo.zonaPropia,
+              (valor) => cambiar('zonaPropia', valor), sinIndicar).bloque)
+          : null,
+
+        esDoble
+          ? anidado(desplegable('Zona tocada al rival', ZONAS_TOCADAS, activo.zonaRival,
+              (valor) => cambiar('zonaRival', valor), sinIndicar).bloque)
+          : null,
+      ]),
+
+      // El sitio de la pista es del intercambio entero, no del tocado de uno
+      // ni del otro, así que va en su propio grupo.
+      huboTocado
+        ? grupoDeFicha('Zona de la pista', [
+            desplegableSuelto('Zona de la pista', ZONAS_PISTA, activo.zonaPista,
+              (valor) => cambiar('zonaPista', valor)),
+          ])
         : null,
 
-      activo.resultado === 'contra'
-        ? desplegable('Zona', ZONAS_TOCADAS, activo.zonaPropia,
-            (valor) => cambiar('zonaPropia', valor), sinIndicar).bloque
-        : null,
-
-      esDoble
-        ? desplegable('Zona tocada propia', ZONAS_TOCADAS, activo.zonaPropia,
-            (valor) => cambiar('zonaPropia', valor), sinIndicar).bloque
-        : null,
-
-      esDoble
-        ? desplegable('Zona tocada al rival', ZONAS_TOCADAS, activo.zonaRival,
-            (valor) => cambiar('zonaRival', valor), sinIndicar).bloque
-        : null,
-
-      huboTocado ? desplegable('Zona de la pista', ZONAS_PISTA, activo.zonaPista,
-        (valor) => cambiar('zonaPista', valor), sinIndicar).bloque : null,
-
-      camposDeLaAccion('accionPropia', 'Acción final propia'),
-      camposDeLaAccion('accionRival', 'Acción final del rival'),
+      grupoDeFicha('Acción final propia', camposDeLaAccion('accionPropia')),
+      grupoDeFicha('Acción final del rival', camposDeLaAccion('accionRival')),
 
       crear('button', {
         type: 'button', class: 'boton boton-principal', texto: 'Listo',

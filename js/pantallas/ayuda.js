@@ -103,7 +103,8 @@ export async function pantallaAyuda(contenedor) {
       'estructura. Se empieza por el tipo —ofensiva, defensiva o contraataque— y ' +
       'sólo aparece lo que cuelgue de esa rama: de una ofensiva, qué acción, con ' +
       'qué la remataste y en qué línea acabó; de una defensiva, si fue distancia, ' +
-      'parada o ninguna reacción; de un contraataque, nada más.',
+      'parada o ninguna reacción; de un contraataque, con qué ataque simple lo ' +
+      'cerraste.',
       'De la frase de armas no se apunta nada: sólo cómo acabó el intercambio ' +
       'cada uno. Es lo que se puede contestar de un vídeo sin que etiquetar un ' +
       'asalto se haga eterno.',
